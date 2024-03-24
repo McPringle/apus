@@ -32,8 +32,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
-@PWA(name = "Project Base for Vaadin with Spring", shortName = "Project Base")
-@Theme("my-theme")
+@PWA(name = "Apus", shortName = "Apus")
+@Theme("apus")
 @SuppressWarnings({"FinalClass", "HideUtilityClassConstructor"})
 public class Application implements AppShellConfigurator {
 
