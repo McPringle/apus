@@ -31,6 +31,14 @@ See:
 | JavaLand           | work in progress |
 | Voxxed Days Zürich | planned          |
 
+### And more
+
+| Feature                   | Status  |
+|---------------------------|---------|
+| Running text with updates | planned |
+| Show sponsor information  | planned |
+| Use event based styling   | planned |
+
 ## Copyright and License
 
 [AGPL License](https://www.gnu.org/licenses/agpl-3.0.de.html)
