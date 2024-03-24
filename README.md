@@ -9,6 +9,26 @@ See:
 * https://en.wikipedia.org/wiki/Common_swift
 * https://en.wikipedia.org/wiki/Apus_(bird)
 
+## Features
+
+### Show posts from Social Media
+
+| Platform                    | Status  |
+|-----------------------------|---------|
+| Bluesky                     | planned |
+| Instagram                   | planned |
+| Mastodon                    | planned |
+| Twitter                     | planned |
+
+### Show event agenda
+
+| Event              | Status           |
+|--------------------|------------------|
+| BaselOne           | planned          |
+| CyberLand          | work in progress |
+| JavaLand           | work in progress |
+| Voxxed Days Zürich | planned          |
+
 ## Copyright and License
 
 [AGPL License](https://www.gnu.org/licenses/agpl-3.0.de.html)
