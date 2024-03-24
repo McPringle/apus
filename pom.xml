@@ -172,7 +172,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.mvysny.kaributesting</groupId>
-            <artifactId>karibu-testing-v24</artifactId>
+            <artifactId>karibu-testing-v10-spring</artifactId>
             <version>2.1.4</version>
             <scope>test</scope>
         </dependency>
