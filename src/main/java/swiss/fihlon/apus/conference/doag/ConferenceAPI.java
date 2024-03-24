@@ -57,6 +57,7 @@ public final class ConferenceAPI {
                 final JSONObject day = days.getJSONObject(dayCounter);
                 final LocalDate date = LocalDate.parse(day.getString("date"));
                 final JSONObject rooms = day.getJSONObject("rooms");
+                @SuppressWarnings("unchecked")
                 final Iterator<String> roomKeys = rooms.keys();
                 while (roomKeys.hasNext()) {
                     final String roomKey = roomKeys.next();
