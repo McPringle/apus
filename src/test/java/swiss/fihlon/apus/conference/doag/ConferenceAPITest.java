@@ -31,7 +31,7 @@ class ConferenceAPITest {
         final String location = "file:src/test/resources/DOAG.json";
         final ConferenceAPI conferenceAPI = new ConferenceAPI(location);
         final List<Session> sessions = conferenceAPI.getSessions();
-        assertEquals(159, sessions.size());
+        assertEquals(8, sessions.size());
     }
 
 }
