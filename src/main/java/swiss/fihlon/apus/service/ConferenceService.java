@@ -36,29 +36,7 @@ public final class ConferenceService {
     private final List<Session> sessions;
 
     public ConferenceService() {
-        sessions = new ArrayList<>(100);
-
-        int lastMinute = -1;
-        String room = "";
-        for (int counter = 0; counter < 100; counter++) {
-            final String id = UUID.randomUUID().toString();
-            final LocalDateTime startDate = LocalDateTime.now()
-                    .plusMinutes(Math.round(counter / 3f + 0.5f)) // 3 sessions start each minute
-                    .truncatedTo(ChronoUnit.SECONDS)
-                    .withSecond(0);
-            final LocalDateTime endDate = startDate.plusMinutes(1);
-
-            final int minute = startDate.getMinute();
-            if (minute == lastMinute) {
-                room = String.valueOf((char) (room.charAt(0) + 1));
-            } else {
-                lastMinute = minute;
-                room = "A";
-            }
-            final String title = "Test Session #" + counter;
-            final String speaker = "Speaker #" + counter;
-            sessions.add(new Session(id, startDate, endDate, room, title, speaker));
-        }
+        sessions = generateSampleData();
     }
 
     public List<Session> getRunningSessions() {
@@ -88,6 +66,37 @@ public final class ConferenceService {
             nextSessions.add(entry.getValue().getFirst());
         }
         return nextSessions;
+    }
+
+    private List<Session> generateSampleData() {
+        final int sampleDataSize = 100;
+        final int sampleSessionParallel = 5;
+        final int sampleDuration = 5;
+
+        final List<Session> sampleData = new ArrayList<>(sampleDataSize);
+
+        LocalDateTime startDate = LocalDateTime.now()
+                .truncatedTo(ChronoUnit.SECONDS)
+                .withSecond(0)
+                .minusMinutes(5);
+        while (startDate.getMinute() % 5 != 0) {
+            startDate = startDate.minusMinutes(1);
+        }
+
+        while (sampleData.size() < sampleDataSize) {
+            for (int counter = 0; counter < sampleSessionParallel; counter++) {
+                final int index = sampleData.size();
+                final String id = UUID.randomUUID().toString();
+                final LocalDateTime endDate = startDate.plusMinutes(sampleDuration);
+                final String room = String.valueOf((char) ('A' + counter));
+                final String title = "Test Session #" + index;
+                final String speaker = "Speaker #" + (counter + 1);
+                sampleData.add(new Session(id, startDate, endDate, room, title, speaker));
+            }
+            startDate = startDate.plusMinutes(sampleDuration);
+        }
+
+        return sampleData;
     }
 
 }

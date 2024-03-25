@@ -18,18 +18,16 @@
 package swiss.fihlon.apus.service;
 
 import org.junit.jupiter.api.Test;
-import swiss.fihlon.apus.conference.Session;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ConferenceServiceTest {
 
     @Test
-    void getSessions() {
+    void displaySampleData() {
         final ConferenceService conferenceService = new ConferenceService();
-        final List<Session> sessions = conferenceService.getNextSessions();
-        assertEquals(3, sessions.size());
+        assertEquals(5, conferenceService.getRunningSessions().size());
+        assertEquals(5, conferenceService.getNextSessions().size());
+        assertEquals(90, conferenceService.getFutureSessions().size());
     }
 }
