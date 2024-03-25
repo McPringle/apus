@@ -18,6 +18,7 @@
 package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -29,10 +30,9 @@ public class NextSessionView extends VerticalLayout {
 
     public NextSessionView(@NotNull final Session session) {
         add(new H4(session.title()));
-        add(new Paragraph(session.speaker()));
-        add(new Paragraph(String.format("starts at %s in room %s",
-                session.startDate().toLocalTime(),
-                session.room())));
+        add(new Paragraph("\uD83D\uDC64 " + session.speaker()));
+        add(new Div("\uD83D\uDCCD " + String.format("Room %s", session.room())));
+        add(new Paragraph("⌚ " + session.startDate().toLocalTime()));
     }
 
 }

@@ -35,9 +35,9 @@ public class RunningSessionView extends VerticalLayout {
         final long timeLeft = Math.round(duration.getSeconds() / 60f);
         final String timeUnit = timeLeft == 1 ? "minute" : "minutes";
         add(new H4(session.title()));
-        add(new Div(session.speaker()));
-        add(new Div(String.format("Room %s", session.room())));
-        add(new Div(String.format("%d %s left", timeLeft, timeUnit)));
+        add(new Div("\uD83D\uDC64 " + session.speaker()));
+        add(new Div("\uD83D\uDCCD " + String.format("Room %s", session.room())));
+        add(new Div("⌛ " + String.format("%d %s left", timeLeft, timeUnit)));
     }
 
 }
