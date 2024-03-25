@@ -18,28 +18,16 @@
 package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.Route;
 import org.jetbrains.annotations.NotNull;
 import swiss.fihlon.apus.service.ConferenceService;
 
-import java.io.Serial;
+@CssImport(value = "./themes/apus/views/sessions-view.css")
+public class SessionsView extends VerticalLayout {
 
-@Route("")
-@CssImport(value = "./themes/apus/views/social-wall.css")
-public class SocialWall extends VerticalLayout {
-
-    @Serial
-    private static final long serialVersionUID = 7909437130138135008L;
-
-    public SocialWall(@NotNull final ConferenceService conferenceService) {
-        setId("social-wall");
-        add(new HorizontalLayout(
-                new SessionsView(conferenceService),
-                new Div("Posts")));
-        add(new Div("Footer"));
+    public SessionsView(@NotNull final ConferenceService conferenceService) {
+        add(new RunningSessionsView(conferenceService));
+        add(new FutureSessionsView(conferenceService));
     }
 
 }
