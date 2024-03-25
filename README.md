@@ -15,12 +15,12 @@ See:
 
 ### Show posts from Social Media
 
-| Platform                    | Status  |
-|-----------------------------|---------|
-| Bluesky                     | planned |
-| Instagram                   | planned |
-| Mastodon                    | planned |
-| Twitter                     | planned |
+| Platform                    | Status           |
+|-----------------------------|------------------|
+| Bluesky                     | planned          |
+| Instagram                   | planned          |
+| Mastodon                    | work in progress |
+| Twitter                     | planned          |
 
 ### Show event agenda
 
