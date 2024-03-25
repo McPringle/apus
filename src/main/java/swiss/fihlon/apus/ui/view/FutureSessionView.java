@@ -30,7 +30,9 @@ public class FutureSessionView extends VerticalLayout {
     public FutureSessionView(@NotNull final Session session) {
         add(new H4(session.title()));
         add(new Paragraph(session.speaker()));
-        add(new Paragraph(String.format("starts at %s", session.startDate().toLocalTime())));
+        add(new Paragraph(String.format("starts at %s in room %s",
+                session.startDate().toLocalTime(),
+                session.room())));
     }
 
 }

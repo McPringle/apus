@@ -34,6 +34,8 @@ public final class ConferenceService {
     public ConferenceService() {
         sessions = new ArrayList<>(100);
 
+        int lastMinute = -1;
+        String room = "";
         for (int counter = 0; counter < 100; counter++) {
             final String id = UUID.randomUUID().toString();
             final LocalDateTime startDate = LocalDateTime.now()
@@ -41,9 +43,17 @@ public final class ConferenceService {
                     .truncatedTo(ChronoUnit.SECONDS)
                     .withSecond(0);
             final LocalDateTime endDate = startDate.plusMinutes(1);
+
+            final int minute = startDate.getMinute();
+            if (minute == lastMinute) {
+                room = String.valueOf((char) (room.charAt(0) + 1));
+            } else {
+                lastMinute = minute;
+                room = "A";
+            }
             final String title = "Test Session #" + counter;
             final String speaker = "Speaker #" + counter;
-            sessions.add(new Session(id, startDate, endDate, title, speaker));
+            sessions.add(new Session(id, startDate, endDate, room, title, speaker));
         }
     }
 

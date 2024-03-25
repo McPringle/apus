@@ -18,8 +18,8 @@
 package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.jetbrains.annotations.NotNull;
 import swiss.fihlon.apus.conference.Session;
@@ -35,8 +35,9 @@ public class RunningSessionView extends VerticalLayout {
         final long timeLeft = Math.round(duration.getSeconds() / 60f);
         final String timeUnit = timeLeft == 1 ? "minute" : "minutes";
         add(new H4(session.title()));
-        add(new Paragraph(session.speaker()));
-        add(new Paragraph(String.format("%d %s left", timeLeft, timeUnit)));
+        add(new Div(session.speaker()));
+        add(new Div(String.format("Room %s", session.room())));
+        add(new Div(String.format("%d %s left", timeLeft, timeUnit)));
     }
 
 }

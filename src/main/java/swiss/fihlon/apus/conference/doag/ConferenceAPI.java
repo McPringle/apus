@@ -61,8 +61,8 @@ public final class ConferenceAPI {
                 @SuppressWarnings("unchecked")
                 final Iterator<String> roomKeys = rooms.keys();
                 while (roomKeys.hasNext()) {
-                    final String roomKey = roomKeys.next();
-                    final JSONArray slots = rooms.getJSONArray(roomKey);
+                    final String room = roomKeys.next();
+                    final JSONArray slots = rooms.getJSONArray(room);
                     for (int slotCounter = 0; slotCounter < slots.length(); slotCounter++) {
                         final JSONObject slot = slots.getJSONObject(slotCounter);
                         final String type = slot.getString("type");
@@ -82,6 +82,7 @@ public final class ConferenceAPI {
                                 String.format("%s:%d", acronym, slot.getInt("id")),
                                 LocalDateTime.of(date, startTime),
                                 LocalDateTime.of(date, startTime).plus(duration),
+                                room,
                                 slot.getString("title"),
                                 String.join(", ", speakers));
                         sessions.add(session);
