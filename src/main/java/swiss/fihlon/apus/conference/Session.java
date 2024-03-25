@@ -19,4 +19,4 @@ package swiss.fihlon.apus.conference;
 
 import java.time.LocalDateTime;
 
-public record Session(String id, LocalDateTime date, String title, String speaker) { }
+public record Session(String id, LocalDateTime startDate, LocalDateTime endDate, String title, String speaker) { }

@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -68,7 +69,8 @@ public final class ConferenceAPI {
                         if (!"lecture".equalsIgnoreCase(type)) {
                             continue;
                         }
-                        final LocalTime time = LocalTime.parse(slot.getString("start"));
+                        final LocalTime startTime = LocalTime.parse(slot.getString("start"));
+                        final Duration duration = parseDuration(slot.getString("duration"));
                         final JSONArray persons = slot.getJSONArray("persons");
                         final ArrayList<String> speakers = new ArrayList<>(persons.length());
                         for (int personCounter = 0; personCounter < persons.length(); personCounter++) {
@@ -78,7 +80,8 @@ public final class ConferenceAPI {
                         }
                         final Session session = new Session(
                                 String.format("%s:%d", acronym, slot.getInt("id")),
-                                LocalDateTime.of(date, time),
+                                LocalDateTime.of(date, startTime),
+                                LocalDateTime.of(date, startTime).plus(duration),
                                 slot.getString("title"),
                                 String.join(", ", speakers));
                         sessions.add(session);
@@ -89,6 +92,11 @@ public final class ConferenceAPI {
             throw new SessionImportException(e);
         }
         return sessions;
+    }
+
+    private Duration parseDuration(@NotNull final String duration) {
+        final String minutes = duration.split(":")[1];
+        return Duration.ofMinutes(Long.parseLong(minutes));
     }
 
     private String getJSON() throws IOException, URISyntaxException {
