@@ -18,14 +18,47 @@
 package swiss.fihlon.apus.service;
 
 import org.springframework.stereotype.Service;
+import swiss.fihlon.apus.conference.Session;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Service
-public class ConferenceService implements Serializable {
+public final class ConferenceService {
 
-    @Serial
-    private static final long serialVersionUID = -5273205444017934528L;
+    private final List<Session> sessions;
+
+    public ConferenceService() {
+        sessions = new ArrayList<>(100);
+
+        for (int counter = 0; counter < 100; counter++) {
+            final String id = UUID.randomUUID().toString();
+            final LocalDateTime startDate = LocalDateTime.now()
+                    .plusMinutes(Math.round(counter / 3f + 0.5f)) // 3 sessions start each minute
+                    .truncatedTo(ChronoUnit.SECONDS)
+                    .withSecond(0);
+            final LocalDateTime endDate = startDate.plusMinutes(1);
+            final String title = "Test Session #" + counter;
+            final String speaker = "Speaker #" + counter;
+            sessions.add(new Session(id, startDate, endDate, title, speaker));
+        }
+    }
+
+    public List<Session> getRunningSessions() {
+        final LocalDateTime now = LocalDateTime.now();
+        return sessions.stream()
+                .filter(session -> session.startDate().isBefore(now) && session.endDate().isAfter(now))
+                .toList();
+    }
+
+    public List<Session> getFutureSessions() {
+        final LocalDateTime now = LocalDateTime.now();
+        return sessions.stream()
+                .filter(session -> session.startDate().isAfter(now))
+                .toList();
+    }
 
 }
