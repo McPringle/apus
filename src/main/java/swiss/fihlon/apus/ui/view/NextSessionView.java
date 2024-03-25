@@ -29,6 +29,7 @@ import swiss.fihlon.apus.conference.Session;
 public class NextSessionView extends VerticalLayout {
 
     public NextSessionView(@NotNull final Session session) {
+        addClassName("next-session");
         add(new H4(session.title()));
         add(new Paragraph("\uD83D\uDC64 " + session.speaker()));
         add(new Div("\uD83D\uDCCD " + String.format("Room %s", session.room())));

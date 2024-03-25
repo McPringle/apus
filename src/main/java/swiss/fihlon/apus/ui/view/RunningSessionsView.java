@@ -33,6 +33,7 @@ public class RunningSessionsView extends VerticalLayout {
         for (final Session session : conferenceService.getRunningSessions()) {
             runningSessions.add(new RunningSessionView(session));
         }
+        setId("running-sessions");
         add(new H3("Running Sessions"), runningSessions);
     }
 

@@ -26,6 +26,7 @@ import swiss.fihlon.apus.service.ConferenceService;
 public class SessionsView extends VerticalLayout {
 
     public SessionsView(@NotNull final ConferenceService conferenceService) {
+        setId("sessions");
         add(new RunningSessionsView(conferenceService));
         add(new NextSessionsView(conferenceService));
     }

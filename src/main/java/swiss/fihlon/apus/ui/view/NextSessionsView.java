@@ -33,6 +33,7 @@ public class NextSessionsView extends VerticalLayout {
         for (final Session session : conferenceService.getNextSessions()) {
             nextSessions.add(new NextSessionView(session));
         }
+        setId("next-sessions");
         add(new H3("Next Sessions"), nextSessions);
     }
 

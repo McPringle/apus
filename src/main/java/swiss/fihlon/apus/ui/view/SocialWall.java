@@ -36,6 +36,7 @@ public class SocialWall extends VerticalLayout {
 
     public SocialWall(@NotNull final ConferenceService conferenceService) {
         setId("social-wall");
+        setSizeFull();
         add(new HorizontalLayout(
                 new SessionsView(conferenceService),
                 new Div("Posts")));
