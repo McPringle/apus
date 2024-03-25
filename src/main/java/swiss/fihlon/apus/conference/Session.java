@@ -17,6 +17,18 @@
  */
 package swiss.fihlon.apus.conference;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDateTime;
 
-public record Session(String id, LocalDateTime startDate, LocalDateTime endDate, String room, String title, String speaker) { }
+public record Session(String id, LocalDateTime startDate, LocalDateTime endDate, String room, String title, String speaker)
+        implements Comparable<Session> {
+    @Override
+    public int compareTo(@NotNull final Session other) {
+        final var dateCompareResult = startDate.compareTo(other.startDate);
+        if (dateCompareResult == 0) {
+            return room.compareTo(other.room);
+        }
+        return dateCompareResult;
+    }
+}

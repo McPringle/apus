@@ -61,6 +61,7 @@ public final class ConferenceService {
         final LocalDateTime now = LocalDateTime.now();
         return sessions.stream()
                 .filter(session -> session.startDate().isBefore(now) && session.endDate().isAfter(now))
+                .sorted()
                 .toList();
     }
 
@@ -68,6 +69,7 @@ public final class ConferenceService {
         final LocalDateTime now = LocalDateTime.now();
         return sessions.stream()
                 .filter(session -> session.startDate().isAfter(now))
+                .sorted()
                 .toList();
     }
 
