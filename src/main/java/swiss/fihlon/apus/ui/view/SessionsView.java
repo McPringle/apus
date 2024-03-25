@@ -27,7 +27,7 @@ public class SessionsView extends VerticalLayout {
 
     public SessionsView(@NotNull final ConferenceService conferenceService) {
         add(new RunningSessionsView(conferenceService));
-        add(new FutureSessionsView(conferenceService));
+        add(new NextSessionsView(conferenceService));
     }
 
 }

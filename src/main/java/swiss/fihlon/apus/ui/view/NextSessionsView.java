@@ -25,15 +25,15 @@ import org.jetbrains.annotations.NotNull;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.service.ConferenceService;
 
-@CssImport(value = "./themes/apus/views/future-sessions-view.css")
-public class FutureSessionsView extends VerticalLayout {
+@CssImport(value = "./themes/apus/views/next-sessions-view.css")
+public class NextSessionsView extends VerticalLayout {
 
-    public FutureSessionsView(@NotNull final ConferenceService conferenceService) {
-        final HorizontalLayout futureSessions = new HorizontalLayout();
-        for (final Session session : conferenceService.getFutureSessions()) {
-            futureSessions.add(new FutureSessionView(session));
+    public NextSessionsView(@NotNull final ConferenceService conferenceService) {
+        final HorizontalLayout nextSessions = new HorizontalLayout();
+        for (final Session session : conferenceService.getNextSessions()) {
+            nextSessions.add(new NextSessionView(session));
         }
-        add(new H3("Future Sessions"), futureSessions);
+        add(new H3("Next Sessions"), nextSessions);
     }
 
 }

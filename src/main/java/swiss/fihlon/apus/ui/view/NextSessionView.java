@@ -15,3 +15,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+package swiss.fihlon.apus.ui.view;
+
+import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import org.jetbrains.annotations.NotNull;
+import swiss.fihlon.apus.conference.Session;
+
+@CssImport(value = "./themes/apus/views/next-session-view.css")
+public class NextSessionView extends VerticalLayout {
+
+    public NextSessionView(@NotNull final Session session) {
+        add(new H4(session.title()));
+        add(new Paragraph(session.speaker()));
+        add(new Paragraph(String.format("starts at %s in room %s",
+                session.startDate().toLocalTime(),
+                session.room())));
+    }
+
+}

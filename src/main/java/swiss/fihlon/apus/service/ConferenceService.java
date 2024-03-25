@@ -20,11 +20,15 @@ package swiss.fihlon.apus.service;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.conference.Session;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public final class ConferenceService {
@@ -71,6 +75,19 @@ public final class ConferenceService {
                 .filter(session -> session.startDate().isAfter(now))
                 .sorted()
                 .toList();
+    }
+
+    public List<Session> getNextSessions() {
+        final LocalDate today = LocalDate.now();
+        final var sessionsPerRoom = getFutureSessions().stream()
+                .filter(session -> session.startDate().toLocalDate().isEqual(today))
+                .collect(groupingBy(Session::room));
+
+        final List<Session> nextSessions = new ArrayList<>(sessionsPerRoom.keySet().size());
+        for (final Map.Entry<String, List<Session>> entry : sessionsPerRoom.entrySet()) {
+            nextSessions.add(entry.getValue().getFirst());
+        }
+        return nextSessions;
     }
 
 }

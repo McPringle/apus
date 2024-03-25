@@ -29,7 +29,7 @@ class ConferenceServiceTest {
     @Test
     void getSessions() {
         final ConferenceService conferenceService = new ConferenceService();
-        final List<Session> sessions = conferenceService.getFutureSessions();
-        assertEquals(100, sessions.size());
+        final List<Session> sessions = conferenceService.getNextSessions();
+        assertEquals(3, sessions.size());
     }
 }
