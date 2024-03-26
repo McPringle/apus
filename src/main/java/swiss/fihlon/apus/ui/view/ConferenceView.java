@@ -19,33 +19,23 @@ package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.component.html.H2;
 import org.jetbrains.annotations.NotNull;
+import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.service.ConferenceService;
-import swiss.fihlon.apus.service.SocialService;
 
-import java.io.Serial;
+@CssImport(value = "./themes/apus/views/conference-view.css")
+public final class ConferenceView extends Div {
 
-@Route("")
-@CssImport(value = "./themes/apus/views/social-wall.css")
-public class SocialWall extends VerticalLayout {
-
-    @Serial
-    private static final long serialVersionUID = 7909437130138135008L;
-
-    public SocialWall(@NotNull final ConferenceService conferenceService,
-                      @NotNull final SocialService socialService) {
-        setId("social-wall");
-        setSizeFull();
-
-        final var sessionsView = new SessionsView(conferenceService);
-        final var postsView = new PostsView(socialService);
-        final var layout = new HorizontalLayout(sessionsView, postsView);
-        layout.setId("social-wall-container");
-        add(layout);
-        add(new Div("Footer"));
+    public ConferenceView(@NotNull final ConferenceService conferenceService) {
+        setId("conference-view");
+        final var sessions = conferenceService.getRunningSessions();
+        add(new H2(String.format("Agenda (%d)", sessions.size())));
+        final var sessionContainer = new Div();
+        for (final Session session : sessions) {
+            sessionContainer.add(new SessionView(session));
+        }
+        add(sessionContainer);
     }
 
 }

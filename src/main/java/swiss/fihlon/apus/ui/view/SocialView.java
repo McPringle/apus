@@ -18,17 +18,23 @@
 package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H2;
 import org.jetbrains.annotations.NotNull;
-import swiss.fihlon.apus.service.ConferenceService;
+import swiss.fihlon.apus.service.SocialService;
+import swiss.fihlon.apus.social.Message;
 
-@CssImport(value = "./themes/apus/views/sessions-view.css")
-public class SessionsView extends VerticalLayout {
+@CssImport(value = "./themes/apus/views/social-view.css")
+public final class SocialView extends Div {
 
-    public SessionsView(@NotNull final ConferenceService conferenceService) {
-        setId("sessions");
-        add(new RunningSessionsView(conferenceService));
-        add(new NextSessionsView(conferenceService));
+    public SocialView(@NotNull final SocialService socialService) {
+        setId("social-view");
+        add(new H2("#JavaLand on Mastodon"));
+        final var messageContainer = new Div();
+        for (final Message message : socialService.getMessages()) {
+            messageContainer.add(new MessageView(message));
+        }
+        add(messageContainer);
     }
 
 }

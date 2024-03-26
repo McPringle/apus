@@ -15,24 +15,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.ui.view;
+package swiss.fihlon.apus.social;
 
-import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.jetbrains.annotations.NotNull;
-import swiss.fihlon.apus.service.SocialService;
-import swiss.fihlon.apus.social.Post;
 
-@CssImport(value = "./themes/apus/views/posts-view.css")
-public final class PostsView extends VerticalLayout {
+import java.time.LocalDateTime;
 
-    public PostsView(@NotNull final SocialService socialService) {
-        setId("posts");
-        add(new H3("Posts with #JavaLand"));
-        for (final Post post : socialService.getPosts()) {
-            add(new PostView(post));
-        }
+public record Message(String id, LocalDateTime date, String author, String avatar, String html)
+        implements Comparable<Message> {
+    @Override
+    public int compareTo(@NotNull final Message other) {
+        return date.compareTo(other.date);
     }
-
 }

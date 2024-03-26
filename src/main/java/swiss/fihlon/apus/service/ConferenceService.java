@@ -17,6 +17,8 @@
  */
 package swiss.fihlon.apus.service;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.conference.Session;
 
@@ -72,8 +74,8 @@ public final class ConferenceService {
 
     private List<Session> generateSampleData() {
         final int sampleDataSize = 100;
-        final int sampleSessionParallel = 5;
-        final int sampleDuration = 5;
+        final int sampleSessionParallel = 15;
+        final int sampleDuration = 10;
 
         final List<Session> sampleData = new ArrayList<>(sampleDataSize);
 
@@ -91,6 +93,8 @@ public final class ConferenceService {
                 final String id = UUID.randomUUID().toString();
                 final LocalDateTime endDate = startDate.plusMinutes(sampleDuration);
                 final String room = String.valueOf((char) ('A' + counter));
+                // final String random = RandomStringUtils.random(RandomUtils.nextInt(1, 150), "abcd efghi jklmn opqrst uvwxyz ");
+                // final String title = random + " Test Session #" + index;
                 final String title = "Test Session #" + index;
                 final String speaker = "Speaker #" + (counter + 1);
                 sampleData.add(new Session(id, startDate, endDate, room, title, speaker));

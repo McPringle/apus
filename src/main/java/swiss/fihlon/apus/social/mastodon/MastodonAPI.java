@@ -23,7 +23,7 @@ import social.bigbone.api.Pageable;
 import social.bigbone.api.entity.Account;
 import social.bigbone.api.entity.Status;
 import social.bigbone.api.exception.BigBoneRequestException;
-import swiss.fihlon.apus.social.Post;
+import swiss.fihlon.apus.social.Message;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -40,12 +40,12 @@ public final class MastodonAPI {
         this.instance = instance;
     }
 
-    public List<Post> getPosts(@NotNull final String hashtag) {
+    public List<Message> getMessages(@NotNull final String hashtag) {
         try {
             final MastodonClient client = new MastodonClient.Builder(instance).build();
             final Pageable<Status> statuses = client.timelines().getTagTimeline(hashtag, LOCAL_AND_REMOTE).execute();
             return statuses.getPart().stream()
-                    .map(this::convertToPost)
+                    .map(this::convertToMessage)
                     .sorted()
                     .toList()
                     .reversed();
@@ -55,11 +55,11 @@ public final class MastodonAPI {
         return List.of();
     }
 
-    private Post convertToPost(@NotNull final Status status) {
+    private Message convertToMessage(@NotNull final Status status) {
         final Account account = status.getAccount();
         final Instant instant = status.getCreatedAt().mostPreciseInstantOrNull();
         final LocalDateTime date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-        return new Post(
+        return new Message(
                 status.getId(),
                 date,
                 account.getDisplayName(),

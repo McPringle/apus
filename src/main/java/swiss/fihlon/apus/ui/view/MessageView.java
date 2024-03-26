@@ -17,23 +17,18 @@
  */
 package swiss.fihlon.apus.ui.view;
 
+import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.jetbrains.annotations.NotNull;
-import swiss.fihlon.apus.conference.Session;
+import swiss.fihlon.apus.social.Message;
 
-@CssImport(value = "./themes/apus/views/next-session-view.css")
-public class NextSessionView extends VerticalLayout {
+@CssImport(value = "./themes/apus/views/message-view.css")
+public final class MessageView extends Div {
 
-    public NextSessionView(@NotNull final Session session) {
-        addClassName("next-session");
-        add(new H4(session.title()));
-        add(new Paragraph("\uD83D\uDC64 " + session.speaker()));
-        add(new Div("\uD83D\uDCCD " + String.format("Room %s", session.room())));
-        add(new Paragraph("⌚ " + session.startDate().toLocalTime()));
+    public MessageView(@NotNull final Message message) {
+        addClassName("message-view");
+        add(new Html("<div>" + message.html() + "</div>"));
     }
 
 }

@@ -15,15 +15,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+package swiss.fihlon.apus.ui.view;
 
-:root {
-    font-family: Arial, Helvetica, sans-serif;
-}
+import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.router.Route;
+import org.jetbrains.annotations.NotNull;
+import swiss.fihlon.apus.service.ConferenceService;
+import swiss.fihlon.apus.service.SocialService;
 
-#social-wall {
-    background-color: #007e89;
-}
+@Route("")
+@CssImport(value = "./themes/apus/views/social-wall-view.css")
+public final class SocialWallView extends Div {
 
-#social-wall-container {
-    width: 100%;
+    public SocialWallView(@NotNull final ConferenceService conferenceService,
+                          @NotNull final SocialService socialService) {
+        setId("social-wall-view");
+        add(new ConferenceView(conferenceService), new SocialView(socialService));
+    }
+
 }

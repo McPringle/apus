@@ -18,7 +18,7 @@
 package swiss.fihlon.apus.social.mastodon;
 
 import org.junit.jupiter.api.Test;
-import swiss.fihlon.apus.social.Post;
+import swiss.fihlon.apus.social.Message;
 
 import java.util.List;
 
@@ -27,12 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class MastodonAPITest {
 
     @Test
-    void getPosts() {
+    void getMessages() {
         final MastodonAPI mastodonAPI = new MastodonAPI("mastodon.social");
-        final List<Post> posts = mastodonAPI.getPosts("java");
-        assertNotNull(posts);
-        for (final Post post : posts) {
-            System.out.println(post);
-        }
+        final List<Message> messages = mastodonAPI.getMessages("java");
+        assertNotNull(messages);
     }
 }

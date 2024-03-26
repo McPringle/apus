@@ -19,26 +19,31 @@ package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.html.H3;
 import org.jetbrains.annotations.NotNull;
 import swiss.fihlon.apus.conference.Session;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-@CssImport(value = "./themes/apus/views/running-session-view.css")
-public class RunningSessionView extends VerticalLayout {
+@CssImport(value = "./themes/apus/views/session-view.css")
+public final class SessionView extends Div {
 
-    public RunningSessionView(@NotNull final Session session) {
-        final Duration duration = Duration.between(LocalDateTime.now(), session.endDate());
-        final long timeLeft = Math.round(duration.getSeconds() / 60f);
-        final String timeUnit = timeLeft == 1 ? "minute" : "minutes";
-        addClassName("running-session");
-        add(new H4(session.title()));
+    public SessionView(@NotNull final Session session) {
+        addClassName("session-view");
+        add(new H3(session.title()));
         add(new Div("\uD83D\uDC64 " + session.speaker()));
         add(new Div("\uD83D\uDCCD " + String.format("Room %s", session.room())));
-        add(new Div("⌛ " + String.format("%d %s left", timeLeft, timeUnit)));
+
+        final var now = LocalDateTime.now();
+        if (session.startDate().isBefore(now) && session.endDate().isAfter(now)) { // running session
+            final Duration duration = Duration.between(LocalDateTime.now(), session.endDate());
+            final long timeLeft = Math.round(duration.getSeconds() / 60f);
+            final String timeUnit = timeLeft == 1 ? "minute" : "minutes";
+            add(new Div("⌛ " + String.format("%d %s left", timeLeft, timeUnit)));
+        } else {
+            add(new Div("⌚ " + session.startDate().toLocalTime()));
+        }
     }
 
 }

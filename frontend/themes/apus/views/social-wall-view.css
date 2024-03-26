@@ -16,7 +16,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-.running-session {
-    border: 1px solid #007e89;
-    border-radius: 5px;
+:root {
+    background-color: #000000;
+}
+
+:root, h3, a, a:visited {
+    color: #014f7a;
+}
+
+h2 {
+    color: #003861;
+}
+
+#social-wall-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
 }

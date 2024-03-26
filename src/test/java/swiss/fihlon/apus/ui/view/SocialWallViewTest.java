@@ -15,8 +15,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+package swiss.fihlon.apus.ui.view;
 
-#next-sessions {
-    background-color: #1aa3b1;
-    border-radius: 5px;
+import com.vaadin.flow.component.UI;
+import org.junit.jupiter.api.Test;
+import swiss.fihlon.apus.ui.KaribuTest;
+
+import static com.github.mvysny.kaributesting.v10.LocatorJ._assertOne;
+
+class SocialWallViewTest extends KaribuTest {
+
+    @Test
+    @SuppressWarnings("java:S2699") // flase positiv: Karibu assertions are not recognized
+    void socialWallContainsViews() {
+        UI.getCurrent().navigate(SocialWallView.class);
+        _assertOne(SocialWallView.class);
+        _assertOne(ConferenceView.class);
+        _assertOne(SocialView.class);
+    }
+
 }

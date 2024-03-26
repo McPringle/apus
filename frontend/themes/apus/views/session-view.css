@@ -16,7 +16,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#sessions {
-    margin: -15px;
-    width: 2600px !important;
+.session-view {
+    background-color: #21ccdd;
+    border-radius: 5px;
+    display: inline-block;
+    width: 400px;
+    height: 174px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    overflow: clip;
+    font-size: 16px;
+}
+
+.session-view h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
 }

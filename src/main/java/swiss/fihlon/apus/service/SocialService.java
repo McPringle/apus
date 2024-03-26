@@ -18,7 +18,7 @@
 package swiss.fihlon.apus.service;
 
 import org.springframework.stereotype.Service;
-import swiss.fihlon.apus.social.Post;
+import swiss.fihlon.apus.social.Message;
 import swiss.fihlon.apus.social.mastodon.MastodonAPI;
 
 import java.util.Collections;
@@ -27,15 +27,15 @@ import java.util.List;
 @Service
 public final class SocialService {
 
-    private final List<Post> posts;
+    private final List<Message> messages;
 
     public SocialService() {
         final MastodonAPI mastodonAPI = new MastodonAPI("mastodon.social");
-        posts = mastodonAPI.getPosts("javaland");
+        messages = mastodonAPI.getMessages("javaland");
     }
 
-    public List<Post> getPosts() {
-        return Collections.unmodifiableList(posts);
+    public List<Message> getMessages() {
+        return Collections.unmodifiableList(messages);
     }
 
 }

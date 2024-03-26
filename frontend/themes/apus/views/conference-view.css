@@ -16,7 +16,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-.next-session {
-    border: 1px solid #007e89;
-    border-radius: 5px;
+#conference-view {
+    background-color: #007e89;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1300px;
+    height: 1080px;
+    overflow: clip;
+}
+
+#conference-view h2 {
+    font-size: 30px;
+    margin: 10px;
 }

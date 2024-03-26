@@ -16,8 +16,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#posts {
-    background-color: #84ddee;
-    border-radius: 5px;
-    width: 500px;
+#social-view {
+    background-color: #1aa3b1;
+    position: absolute;
+    top: 0;
+    left: 1300px;
+    width: 620px;
+    height: 1080px;
+    overflow: clip;
+}
+
+#social-view h2 {
+    font-size: 30px;
+    margin: 10px;
 }
