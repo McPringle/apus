@@ -16,18 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-:root {
-    background-color: #000000;
-}
-
-:root, h3, a, a:visited {
-    color: #014f7a;
-}
-
-h2 {
-    color: #003861;
-}
-
 #social-wall-view {
     position: absolute;
     top: 0;

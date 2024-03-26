@@ -16,22 +16,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
-   CSS styling examples for the Vaadin app.
-
-   Visit https://vaadin.com/docs/styling/application-theme/ for more information.
-*/
-
-/* Example: CSS class name to center align the content . */
-.centered-content {
-  margin: 0 auto;
-  max-width: 250px;
+:root {
+    background-color: #000000;
 }
 
-/* Example: the style is applied only to the textfields which have the `bordered` class name. */
-vaadin-text-field.bordered::part(input-field) {
-  box-shadow: inset 0 0 0 1px var(--lumo-contrast-30pct);
-  background-color: var(--lumo-base-color);
+:root, h3, a, a:visited {
+    color: #014f7a;
 }
 
+h2 {
+    color: #003861;
+}
 
+a {
+    text-decoration: underline;
+}
