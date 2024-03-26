@@ -62,6 +62,9 @@ public final class ConferenceAPI {
                 final Iterator<String> roomKeys = rooms.keys();
                 while (roomKeys.hasNext()) {
                     final String room = roomKeys.next();
+                    if (room.startsWith("info°center")) {
+                        continue;
+                    }
                     final JSONArray slots = rooms.getJSONArray(room);
                     for (int slotCounter = 0; slotCounter < slots.length(); slotCounter++) {
                         final JSONObject slot = slots.getJSONObject(slotCounter);
