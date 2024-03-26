@@ -31,7 +31,7 @@ public final class SocialService {
 
     public SocialService() {
         final MastodonAPI mastodonAPI = new MastodonAPI("mastodon.social");
-        posts = mastodonAPI.getPosts("java");
+        posts = mastodonAPI.getPosts("javaland");
     }
 
     public List<Post> getPosts() {
