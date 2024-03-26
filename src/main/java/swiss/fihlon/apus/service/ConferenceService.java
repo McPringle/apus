@@ -65,7 +65,9 @@ public final class ConferenceService {
         for (final Map.Entry<String, List<Session>> entry : sessionsPerRoom.entrySet()) {
             nextSessions.add(entry.getValue().getFirst());
         }
-        return nextSessions;
+        return nextSessions.stream()
+                .sorted()
+                .toList();
     }
 
     private List<Session> generateSampleData() {
