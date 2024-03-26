@@ -17,6 +17,11 @@
  */
 
 .post-view {
-    background-color: #84ddee;
+    border: 1px solid #007e89;
     border-radius: 5px;
+    width: 100%;
+}
+
+.post-view > div {
+    padding: 5px;
 }

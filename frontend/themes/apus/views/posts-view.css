@@ -16,3 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#posts {
+    background-color: #84ddee;
+    border-radius: 5px;
+    width: 500px;
+}

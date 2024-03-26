@@ -18,6 +18,7 @@
 package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.jetbrains.annotations.NotNull;
 import swiss.fihlon.apus.service.SocialService;
@@ -28,6 +29,7 @@ public final class PostsView extends VerticalLayout {
 
     public PostsView(@NotNull final SocialService socialService) {
         setId("posts");
+        add(new H3("Posts with #JavaLand"));
         for (final Post post : socialService.getPosts()) {
             add(new PostView(post));
         }

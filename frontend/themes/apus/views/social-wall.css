@@ -23,3 +23,7 @@
 #social-wall {
     background-color: #007e89;
 }
+
+#social-wall-container {
+    width: 100%;
+}

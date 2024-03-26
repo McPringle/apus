@@ -39,9 +39,12 @@ public class SocialWall extends VerticalLayout {
                       @NotNull final SocialService socialService) {
         setId("social-wall");
         setSizeFull();
-        add(new HorizontalLayout(
-                new SessionsView(conferenceService),
-                new PostsView(socialService)));
+
+        final var sessionsView = new SessionsView(conferenceService);
+        final var postsView = new PostsView(socialService);
+        final var layout = new HorizontalLayout(sessionsView, postsView);
+        layout.setId("social-wall-container");
+        add(layout);
         add(new Div("Footer"));
     }
 
