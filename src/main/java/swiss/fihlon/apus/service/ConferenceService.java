@@ -17,8 +17,6 @@
  */
 package swiss.fihlon.apus.service;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.conference.Session;
 
@@ -81,8 +79,7 @@ public final class ConferenceService {
 
         LocalDateTime startDate = LocalDateTime.now()
                 .truncatedTo(ChronoUnit.SECONDS)
-                .withSecond(0)
-                .minusMinutes(5);
+                .withSecond(0);
         while (startDate.getMinute() % 5 != 0) {
             startDate = startDate.minusMinutes(1);
         }
@@ -98,6 +95,9 @@ public final class ConferenceService {
                 final String title = "Test Session #" + index;
                 final String speaker = "Speaker #" + (counter + 1);
                 sampleData.add(new Session(id, startDate, endDate, room, title, speaker));
+                if (sampleData.size() >= sampleDataSize) {
+                    break;
+                }
             }
             startDate = startDate.plusMinutes(sampleDuration);
         }

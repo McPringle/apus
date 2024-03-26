@@ -26,8 +26,11 @@ class ConferenceServiceTest {
     @Test
     void displaySampleData() {
         final ConferenceService conferenceService = new ConferenceService();
-        assertEquals(5, conferenceService.getRunningSessions().size());
-        assertEquals(5, conferenceService.getNextSessions().size());
-        assertEquals(90, conferenceService.getFutureSessions().size());
+        final var runningSessions = conferenceService.getRunningSessions();
+        assertEquals(15, runningSessions.size());
+        final var nextSessions = conferenceService.getNextSessions();
+        assertEquals(15, nextSessions.size());
+        final var futureSessions = conferenceService.getFutureSessions();
+        assertEquals(85, futureSessions.size());
     }
 }
