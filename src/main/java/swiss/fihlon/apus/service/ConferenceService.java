@@ -17,6 +17,7 @@
  */
 package swiss.fihlon.apus.service;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.conference.Session;
 
@@ -33,25 +34,43 @@ import static java.util.stream.Collectors.groupingBy;
 @Service
 public final class ConferenceService {
 
-    private final List<Session> sessions;
+    private List<Session> sessions;
 
     public ConferenceService() {
-        sessions = generateSampleData();
+        updateSessions();
+    }
+
+    @Scheduled(fixedRate = 300_000) // every five minutes
+    private void scheduler() {
+        updateSessions();
+    }
+
+    private void updateSessions() {
+        final var newSessions = generateSampleData().stream()
+                .sorted()
+                .toList();
+        synchronized (this) {
+            sessions = newSessions;
+        }
+    }
+
+    public List<Session> getAllSessions() {
+        synchronized (this) {
+            return List.copyOf(sessions);
+        }
     }
 
     public List<Session> getRunningSessions() {
         final LocalDateTime now = LocalDateTime.now();
-        return sessions.stream()
+        return getAllSessions().stream()
                 .filter(session -> session.startDate().isBefore(now) && session.endDate().isAfter(now))
-                .sorted()
                 .toList();
     }
 
     public List<Session> getFutureSessions() {
         final LocalDateTime now = LocalDateTime.now();
-        return sessions.stream()
+        return getAllSessions().stream()
                 .filter(session -> session.startDate().isAfter(now))
-                .sorted()
                 .toList();
     }
 
@@ -70,6 +89,7 @@ public final class ConferenceService {
                 .toList();
     }
 
+    @SuppressWarnings("java:S125")
     private List<Session> generateSampleData() {
         final int sampleDataSize = 100;
         final int sampleSessionParallel = 15;
