@@ -21,23 +21,40 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.service.ConferenceService;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Component
 @CssImport(value = "./themes/apus/views/conference-view.css")
 public final class ConferenceView extends Div {
 
     private static final int MAX_SESSIONS_IN_VIEW = 15;
 
+    private final transient ConferenceService conferenceService;
+    private final Div sessionContainer = new Div();
+
     public ConferenceView(@NotNull final ConferenceService conferenceService) {
+        this.conferenceService = conferenceService;
         setId("conference-view");
-        final var sessionContainer = new Div();
+        add(new H2("Agenda"));
+        add(sessionContainer);
+        updateConferenceSessions();
+    }
+
+    @Scheduled(fixedRate = 60_000)
+    private void scheduler() {
+        getUI().ifPresent(ui -> ui.access(this::updateConferenceSessions));
+    }
+
+    private void updateConferenceSessions() {
+        sessionContainer.removeAll();
         var sessionCounter = new AtomicInteger(0);
 
         final var runningSessions = conferenceService.getRunningSessions();
-        add(new H2("Agenda"));
         for (final Session session : runningSessions) {
             final var sessionView = new SessionView(session);
             sessionView.addClassName("running-session");
@@ -60,8 +77,5 @@ public final class ConferenceView extends Div {
                 }
             }
         }
-
-        add(sessionContainer);
     }
-
 }

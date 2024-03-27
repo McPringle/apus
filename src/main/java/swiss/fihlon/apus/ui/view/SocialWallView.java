@@ -21,17 +21,16 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.Route;
 import org.jetbrains.annotations.NotNull;
-import swiss.fihlon.apus.service.ConferenceService;
 import swiss.fihlon.apus.service.SocialService;
 
 @Route("")
 @CssImport(value = "./themes/apus/views/social-wall-view.css")
 public final class SocialWallView extends Div {
 
-    public SocialWallView(@NotNull final ConferenceService conferenceService,
+    public SocialWallView(@NotNull final ConferenceView conferenceview,
                           @NotNull final SocialService socialService) {
         setId("social-wall-view");
-        add(new ConferenceView(conferenceService), new SocialView(socialService));
+        add(conferenceview, new SocialView(socialService));
     }
 
 }
