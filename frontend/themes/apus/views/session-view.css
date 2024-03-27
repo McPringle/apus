@@ -17,7 +17,6 @@
  */
 
 .session-view {
-    background-color: #21ccdd;
     border-radius: 5px;
     display: inline-block;
     width: 400px;
@@ -32,4 +31,12 @@
 .session-view h3 {
     font-size: 18px;
     margin-bottom: 10px;
+}
+
+.running-session {
+    background-color: #62d7e3;
+}
+
+.next-session {
+    background-color: #9bf4ff;
 }

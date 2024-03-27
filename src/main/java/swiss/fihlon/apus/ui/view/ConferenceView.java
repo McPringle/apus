@@ -24,17 +24,43 @@ import org.jetbrains.annotations.NotNull;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.service.ConferenceService;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 @CssImport(value = "./themes/apus/views/conference-view.css")
 public final class ConferenceView extends Div {
 
+    private static final int MAX_SESSIONS_IN_VIEW = 15;
+
     public ConferenceView(@NotNull final ConferenceService conferenceService) {
         setId("conference-view");
-        final var sessions = conferenceService.getRunningSessions();
-        add(new H2(String.format("Agenda (%d)", sessions.size())));
         final var sessionContainer = new Div();
-        for (final Session session : sessions) {
-            sessionContainer.add(new SessionView(session));
+        var sessionCounter = new AtomicInteger(0);
+
+        final var runningSessions = conferenceService.getRunningSessions();
+        add(new H2("Agenda"));
+        for (final Session session : runningSessions) {
+            final var sessionView = new SessionView(session);
+            sessionView.addClassName("running-session");
+            sessionContainer.add(sessionView);
+            if (sessionCounter.incrementAndGet() >= MAX_SESSIONS_IN_VIEW) {
+                break;
+            }
         }
+
+        // There is space for 15 sessions on the screen, 5 rows with 3 sessions each.
+        // Fill up free space with next sessions.
+        if (sessionCounter.get() < MAX_SESSIONS_IN_VIEW) {
+            final var nextSessions = conferenceService.getNextSessions();
+            for (final Session session : nextSessions) {
+                final var sessionView = new SessionView(session);
+                sessionView.addClassName("next-session");
+                sessionContainer.add(sessionView);
+                if (sessionCounter.incrementAndGet() >= MAX_SESSIONS_IN_VIEW) {
+                    break;
+                }
+            }
+        }
+
         add(sessionContainer);
     }
 
