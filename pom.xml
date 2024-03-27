@@ -8,7 +8,7 @@
     <name>Apus</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <description>A social wall to display posts at conferences with additional features. </description>
+    <description>A social wall to display posts at conferences with additional features.</description>
     <inceptionYear>2021</inceptionYear>
 
     <licenses>
