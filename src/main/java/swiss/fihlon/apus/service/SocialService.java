@@ -17,6 +17,7 @@
  */
 package swiss.fihlon.apus.service;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.social.Message;
 import swiss.fihlon.apus.social.mastodon.MastodonAPI;
@@ -27,15 +28,26 @@ import java.util.List;
 @Service
 public final class SocialService {
 
-    private final List<Message> messages;
+    private final MastodonAPI mastodonAPI;
+    private List<Message> messages;
 
     public SocialService() {
-        final MastodonAPI mastodonAPI = new MastodonAPI("mastodon.social");
+        mastodonAPI = new MastodonAPI("ijug.social");
+        updateMessages();
+    }
+
+    @Scheduled(fixedRate = 60_000)
+    private void scheduler() {
+        updateMessages();
+    }
+
+    private void updateMessages() {
         messages = mastodonAPI.getMessages("javaland");
     }
 
-    public List<Message> getMessages() {
-        return Collections.unmodifiableList(messages);
+    public List<Message> getMessages(final int limit) {
+        final int toIndex = limit > 0 && limit < messages.size() ? limit : messages.size() - 1;
+        return Collections.unmodifiableList(limit == 0 ? messages : messages.subList(0, toIndex));
     }
 
 }

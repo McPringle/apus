@@ -21,20 +21,35 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import swiss.fihlon.apus.service.SocialService;
 import swiss.fihlon.apus.social.Message;
 
+@Component
 @CssImport(value = "./themes/apus/views/social-view.css")
 public final class SocialView extends Div {
 
+    private final transient SocialService socialService;
+    private final Div messageContainer = new Div();
+
     public SocialView(@NotNull final SocialService socialService) {
+        this.socialService = socialService;
         setId("social-view");
         add(new H2("#JavaLand on Mastodon"));
-        final var messageContainer = new Div();
-        for (final Message message : socialService.getMessages()) {
-            messageContainer.add(new MessageView(message));
-        }
         add(messageContainer);
+        updateMessages();
     }
 
+    @Scheduled(fixedRate = 60_000)
+    private void scheduler() {
+        getUI().ifPresent(ui -> ui.access(this::updateMessages));
+    }
+
+    private void updateMessages() {
+        messageContainer.removeAll();
+        for (final Message message : socialService.getMessages(30)) {
+            messageContainer.add(new MessageView(message));
+        }
+    }
 }
