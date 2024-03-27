@@ -62,7 +62,7 @@ public final class ConferenceAPI {
                 final Iterator<String> roomKeys = rooms.keys();
                 while (roomKeys.hasNext()) {
                     final String room = roomKeys.next();
-                    if (room.startsWith("info°center") || room.startsWith("ring°kartbahn")) {
+                    if (room.contains("info°center") || room.contains("ring°kartbahn") || room.contains("ring°boulevard")) {
                         continue;
                     }
                     final JSONArray slots = rooms.getJSONArray(room);
