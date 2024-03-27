@@ -17,10 +17,13 @@
  */
 package swiss.fihlon.apus.service;
 
-import org.springframework.scheduling.annotation.Scheduled;
+import jakarta.annotation.PreDestroy;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.conference.Session;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -28,21 +31,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ScheduledFuture;
 
 import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public final class ConferenceService {
 
+    private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(5);
+
+    private final ScheduledFuture<?> updateScheduler;
     private List<Session> sessions;
 
-    public ConferenceService() {
+    public ConferenceService(@NotNull final TaskScheduler taskScheduler) {
         updateSessions();
+        updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, UPDATE_FREQUENCY);
     }
 
-    @Scheduled(fixedRate = 300_000) // every five minutes
-    private void scheduler() {
-        updateSessions();
+    @PreDestroy
+    public void stopUpdateScheduler() {
+        updateScheduler.cancel(true);
     }
 
     private void updateSessions() {

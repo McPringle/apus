@@ -17,32 +17,40 @@
  */
 package swiss.fihlon.apus.service;
 
-import org.springframework.scheduling.annotation.Scheduled;
+import jakarta.annotation.PreDestroy;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.social.Message;
 import swiss.fihlon.apus.social.mastodon.MastodonAPI;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ScheduledFuture;
 
 @Service
 public final class SocialService {
 
-    private final MastodonAPI mastodonAPI;
-    private List<Message> messages;
+    private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
 
-    public SocialService() {
+    private final ScheduledFuture<?> updateScheduler;
+    private final MastodonAPI mastodonAPI;
+    private List<Message> messages = List.of();
+
+    public SocialService(@NotNull final TaskScheduler taskScheduler) {
         mastodonAPI = new MastodonAPI("ijug.social");
         updateMessages();
+        updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateMessages, UPDATE_FREQUENCY);
     }
 
-    @Scheduled(fixedRate = 60_000)
-    private void scheduler() {
-        updateMessages();
+    @PreDestroy
+    public void stopUpdateScheduler() {
+        updateScheduler.cancel(true);
     }
 
     private void updateMessages() {
-        final var newMessages = mastodonAPI.getMessages("hackergarten");
+        final var newMessages = mastodonAPI.getMessages("duke");
         synchronized (this) {
             messages = newMessages;
         }
@@ -50,8 +58,11 @@ public final class SocialService {
 
     public List<Message> getMessages(final int limit) {
         synchronized (this) {
-            final int toIndex = limit > 0 && limit < messages.size() ? limit : messages.size() - 1;
-            return Collections.unmodifiableList(limit == 0 ? messages : messages.subList(0, toIndex));
+            if (limit <= 0 || messages.isEmpty()) {
+                return Collections.unmodifiableList(messages);
+            }
+            final int toIndex = limit < messages.size() ? limit : messages.size() - 1;
+            return Collections.unmodifiableList(messages.subList(0, toIndex));
         }
     }
 

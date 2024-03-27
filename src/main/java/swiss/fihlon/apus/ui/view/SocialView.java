@@ -21,28 +21,35 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 import swiss.fihlon.apus.service.SocialService;
 import swiss.fihlon.apus.social.Message;
+
+import java.time.Duration;
+import java.util.concurrent.ScheduledFuture;
 
 @Component
 @CssImport(value = "./themes/apus/views/social-view.css")
 public final class SocialView extends Div {
 
+    private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
+
     private final transient SocialService socialService;
     private final Div messageContainer = new Div();
 
-    public SocialView(@NotNull final SocialService socialService) {
+    public SocialView(@NotNull final SocialService socialService,
+                      @NotNull final TaskScheduler taskScheduler) {
         this.socialService = socialService;
         setId("social-view");
         add(new H2("#JavaLand on Mastodon"));
         add(messageContainer);
         updateMessages();
+        final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, UPDATE_FREQUENCY);
+        addDetachListener(event -> updateScheduler.cancel(true));
     }
 
-    @Scheduled(fixedRate = 60_000)
-    private void scheduler() {
+    private void updateScheduler() {
         getUI().ifPresent(ui -> ui.access(this::updateMessages));
     }
 

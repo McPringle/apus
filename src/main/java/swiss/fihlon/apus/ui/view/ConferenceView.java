@@ -21,11 +21,13 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.service.ConferenceService;
 
+import java.time.Duration;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
@@ -33,27 +35,34 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class ConferenceView extends Div {
 
     private static final int MAX_SESSIONS_IN_VIEW = 15;
+    private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
 
     private final transient ConferenceService conferenceService;
     private final Div sessionContainer = new Div();
 
-    public ConferenceView(@NotNull final ConferenceService conferenceService) {
+    public ConferenceView(@NotNull final ConferenceService conferenceService,
+                          @NotNull final TaskScheduler taskScheduler) {
         this.conferenceService = conferenceService;
         setId("conference-view");
         add(new H2("Agenda"));
         add(sessionContainer);
         updateConferenceSessions();
+        final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, UPDATE_FREQUENCY);
+        addDetachListener(event -> updateScheduler.cancel(true));
     }
 
-    @Scheduled(fixedRate = 60_000)
-    private void scheduler() {
+    private void updateScheduler() {
         getUI().ifPresent(ui -> ui.access(this::updateConferenceSessions));
     }
 
     private void updateConferenceSessions() {
         sessionContainer.removeAll();
         var sessionCounter = new AtomicInteger(0);
+        addRunningSessions(sessionCounter);
+        addNextSessions(sessionCounter);
+    }
 
+    private void addRunningSessions(@NotNull final AtomicInteger sessionCounter) {
         final var runningSessions = conferenceService.getRunningSessions();
         for (final Session session : runningSessions) {
             final var sessionView = new SessionView(session);
@@ -63,7 +72,9 @@ public final class ConferenceView extends Div {
                 break;
             }
         }
+    }
 
+    private void addNextSessions(@NotNull final AtomicInteger sessionCounter) {
         // There is space for 15 sessions on the screen, 5 rows with 3 sessions each.
         // Fill up free space with next sessions.
         if (sessionCounter.get() < MAX_SESSIONS_IN_VIEW) {

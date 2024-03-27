@@ -18,6 +18,7 @@
 package swiss.fihlon.apus.service;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.scheduling.support.NoOpTaskScheduler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,7 +26,7 @@ class ConferenceServiceTest {
 
     @Test
     void displaySampleData() {
-        final ConferenceService conferenceService = new ConferenceService();
+        final ConferenceService conferenceService = new ConferenceService(new NoOpTaskScheduler());
         final var runningSessions = conferenceService.getRunningSessions();
         assertEquals(15, runningSessions.size());
         final var nextSessions = conferenceService.getNextSessions();
