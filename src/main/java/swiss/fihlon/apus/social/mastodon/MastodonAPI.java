@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import social.bigbone.MastodonClient;
 import social.bigbone.api.Pageable;
 import social.bigbone.api.entity.Account;
+import social.bigbone.api.entity.MediaAttachment;
 import social.bigbone.api.entity.Status;
 import social.bigbone.api.exception.BigBoneRequestException;
 import swiss.fihlon.apus.social.Message;
@@ -28,6 +29,7 @@ import swiss.fihlon.apus.social.Message;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 import static social.bigbone.api.method.TimelineMethods.StatusOrigin.LOCAL_AND_REMOTE;
@@ -56,15 +58,27 @@ public final class MastodonAPI {
     }
 
     private Message convertToMessage(@NotNull final Status status) {
+        final String id = status.getId();
         final Account account = status.getAccount();
         final Instant instant = status.getCreatedAt().mostPreciseInstantOrNull();
         final LocalDateTime date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-        return new Message(
-                status.getId(),
-                date,
-                account.getDisplayName(),
-                account.getAvatar(),
-                status.getContent());
+        final String author = account == null ? "" : account.getDisplayName();
+        final String avatar = account == null ? "" : account.getAvatar();
+        final String html = status.getContent() + convertToImages(status.getMediaAttachments());
+
+        return new Message(id, date, author, avatar, html);
+    }
+
+    private String convertToImages(@NotNull final List<MediaAttachment> mediaAttachments) {
+        final List<String> images = new ArrayList<>();
+
+        for (final MediaAttachment mediaAttachment : mediaAttachments) {
+            if (MediaAttachment.MediaType.IMAGE.equals(mediaAttachment.getType())) {
+                images.add("<img src=\"" + mediaAttachment.getUrl() + "\" />");
+            }
+        }
+
+        return String.join("", images);
     }
 
 }

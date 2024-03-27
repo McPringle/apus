@@ -26,6 +26,11 @@
     padding: 10px;
 }
 
+.message-view img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
 .message-view .invisible {
     display: none;
 }
