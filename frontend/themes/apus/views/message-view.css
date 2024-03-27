@@ -25,3 +25,7 @@
     margin-bottom: 10px;
     padding: 10px;
 }
+
+.message-view .invisible {
+    display: none;
+}
