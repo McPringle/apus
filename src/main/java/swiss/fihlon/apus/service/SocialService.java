@@ -42,12 +42,17 @@ public final class SocialService {
     }
 
     private void updateMessages() {
-        messages = mastodonAPI.getMessages("javaland");
+        final var newMessages = mastodonAPI.getMessages("hackergarten");
+        synchronized (this) {
+            messages = newMessages;
+        }
     }
 
     public List<Message> getMessages(final int limit) {
-        final int toIndex = limit > 0 && limit < messages.size() ? limit : messages.size() - 1;
-        return Collections.unmodifiableList(limit == 0 ? messages : messages.subList(0, toIndex));
+        synchronized (this) {
+            final int toIndex = limit > 0 && limit < messages.size() ? limit : messages.size() - 1;
+            return Collections.unmodifiableList(limit == 0 ? messages : messages.subList(0, toIndex));
+        }
     }
 
 }
