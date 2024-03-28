@@ -72,6 +72,8 @@ public final class ConferenceAPI {
                         if (!"lecture".equalsIgnoreCase(type)) {
                             continue;
                         }
+                        final String language = slot.getString("language");
+                        final String title = getTitle(slot, language);
                         final LocalTime startTime = LocalTime.parse(slot.getString("start"));
                         final Duration duration = parseDuration(slot.getString("duration"));
                         final JSONArray persons = slot.getJSONArray("persons");
@@ -86,7 +88,7 @@ public final class ConferenceAPI {
                                 LocalDateTime.of(date, startTime),
                                 LocalDateTime.of(date, startTime).plus(duration),
                                 room,
-                                slot.getString("title"),
+                                title,
                                 String.join(", ", speakers));
                         sessions.add(session);
                     }
@@ -96,6 +98,20 @@ public final class ConferenceAPI {
             throw new SessionImportException(e);
         }
         return sessions;
+    }
+
+    private String getTitle(@NotNull final JSONObject slot, @NotNull final String defaultLanguage) throws JSONException {
+        for (final String language : List.of(defaultLanguage, "de", "en")) {
+            try {
+                final String title = slot.getJSONObject("title").getString(language);
+                if (title != null && !title.isBlank()) {
+                    return title;
+                }
+            } catch (final JSONException e) {
+                // skip and try next language
+            }
+        }
+        throw new JSONException(String.format("No title with language 'de' or 'en' for session '%s'", slot.getString("id")));
     }
 
     private Duration parseDuration(@NotNull final String duration) {
