@@ -33,6 +33,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -56,7 +58,11 @@ public final class ConferenceAPI {
             final JSONArray days = conference.getJSONArray("days");
             for (int dayCounter = 0; dayCounter < days.length(); dayCounter++) {
                 final JSONObject day = days.getJSONObject(dayCounter);
-                final LocalDate date = LocalDate.parse(day.getString("date"));
+
+                // modify session date to today so we have live test data
+                final Period daysBetween = LocalDate.now().until(LocalDate.of(2024, Month.APRIL, 9));
+                final LocalDate date = LocalDate.parse(day.getString("date")).minus(daysBetween);
+
                 final JSONObject rooms = day.getJSONObject("rooms");
                 @SuppressWarnings("unchecked")
                 final Iterator<String> roomKeys = rooms.keys();

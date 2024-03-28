@@ -18,23 +18,20 @@
 package swiss.fihlon.apus.service;
 
 import jakarta.annotation.PreDestroy;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.conference.Session;
+import swiss.fihlon.apus.conference.doag.ConferenceAPI;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ScheduledFuture;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -42,6 +39,7 @@ import static java.util.stream.Collectors.groupingBy;
 @Service
 public final class ConferenceService {
 
+    public static final String CONFERENCE_API_LOCATION = "https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.773/";
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(5);
 
     private final ScheduledFuture<?> updateScheduler;
@@ -59,7 +57,7 @@ public final class ConferenceService {
     }
 
     private void updateSessions() {
-        final var newSessions = generateSampleData().stream()
+        final var newSessions = new ConferenceAPI(CONFERENCE_API_LOCATION).getSessions().stream()
                 .sorted()
                 .toList();
         final var newRooms = newSessions.stream()
@@ -124,41 +122,4 @@ public final class ConferenceService {
         }
         return roomsWithSessions;
     }
-
-    @SuppressWarnings("java:S125")
-    private List<Session> generateSampleData() {
-        final int sampleDataSize = 100;
-        final int sampleSessionParallel = 15;
-        final int sampleDuration = 10;
-
-        final List<Session> sampleData = new ArrayList<>(sampleDataSize);
-
-        LocalDateTime startDate = LocalDateTime.now()
-                .truncatedTo(ChronoUnit.SECONDS)
-                .withSecond(0);
-        while (startDate.getMinute() % 5 != 0) {
-            startDate = startDate.minusMinutes(1);
-        }
-
-        while (sampleData.size() < sampleDataSize) {
-            for (int counter = 0; counter < sampleSessionParallel; counter++) {
-                final int index = sampleData.size();
-                final String id = UUID.randomUUID().toString();
-                final LocalDateTime endDate = startDate.plusMinutes(sampleDuration);
-                final String room = String.valueOf((char) ('A' + counter));
-                final String random = RandomStringUtils.random(RandomUtils.nextInt(1, 150), "abcd efghi jklmn opqrst uvwxyz ");
-                final String title = random + " Test Session #" + index;
-                //final String title = "Test Session #" + index;
-                final String speaker = "Speaker #" + (counter + 1);
-                sampleData.add(new Session(id, startDate, endDate, room, title, speaker));
-                if (sampleData.size() >= sampleDataSize) {
-                    break;
-                }
-            }
-            startDate = startDate.plusMinutes(sampleDuration);
-        }
-
-        return sampleData;
-    }
-
 }
