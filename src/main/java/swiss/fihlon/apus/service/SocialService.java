@@ -50,7 +50,7 @@ public final class SocialService {
     }
 
     private void updateMessages() {
-        final var newMessages = mastodonAPI.getMessages("duke");
+        final var newMessages = mastodonAPI.getMessages("javaland");
         synchronized (this) {
             messages = newMessages;
         }
