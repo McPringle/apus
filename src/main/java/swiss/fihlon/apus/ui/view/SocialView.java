@@ -44,6 +44,7 @@ public final class SocialView extends Div {
         setId("social-view");
         add(new H2("#JavaLand on Mastodon"));
         add(messageContainer);
+        messageContainer.addClassName("masonry");
         updateMessages();
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, UPDATE_FREQUENCY);
         addDetachListener(event -> updateScheduler.cancel(true));

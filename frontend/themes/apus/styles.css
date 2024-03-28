@@ -16,6 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+@import url('./masonry.css');
+
 :root {
     background-color: #000000;
 }

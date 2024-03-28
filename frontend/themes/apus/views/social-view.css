@@ -21,9 +21,10 @@
     position: absolute;
     top: 0;
     left: 1300px;
-    width: 620px;
-    height: 1080px;
+    width: 600px;
+    height: 1060px;
     overflow: clip;
+    padding: 10px;
 }
 
 #social-view h2 {

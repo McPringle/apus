@@ -18,14 +18,12 @@
 
 .message-view {
     background-color: #84ddee;
-    border-radius: 5px;
-    display: inline-block;
-    width: 580px;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    padding: 10px;
+    border-radius: var(--lumo-border-radius-s);
+    padding: var(--lumo-space-m);
 }
+.masonry .message-view {
 
+}
 .message-view img {
     max-height: 200px;
     max-width: 100%;
