@@ -42,7 +42,7 @@ public final class SessionView extends Div {
             final String timeUnit = timeLeft == 1 ? "minute" : "minutes";
             add(new Div("⌛ " + String.format("%d %s left", timeLeft, timeUnit)));
         } else {
-            add(new Div("⌚ " + session.startDate().toLocalTime()));
+            add(new Div("⌚ " + session.startDate().toLocalTime() + " - " + session.endDate().toLocalTime()));
         }
     }
 
