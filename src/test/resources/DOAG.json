@@ -13,7 +13,10 @@
                 "id": 1,
                 "start": "09:45",
                 "duration": "00:15",
-                "title": "Lorem ipsum dolor sit amet",
+                "language": "de",
+                "title": {
+                  "de": "Lorem ipsum dolor sit amet"
+                },
                 "type": "lecture",
                 "persons": [
                   {
@@ -28,7 +31,10 @@
                 "id": 2,
                 "start": "10:00",
                 "duration": "00:30",
-                "title": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat",
+                "language": "en",
+                "title": {
+                  "en": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat"
+                },
                 "type": "lecture",
                 "persons": [
                   {
@@ -50,7 +56,10 @@
                 "id": 3,
                 "start": "19:00",
                 "duration": "00:45",
-                "title": "Ut wisi enim ad minim veniam",
+                "language": "de",
+                "title": {
+                  "en": "Ut wisi enim ad minim veniam"
+                },
                 "type": "lecture",
                 "persons": [
                   {
@@ -64,7 +73,10 @@
                 "id": 4,
                 "start": "11:00",
                 "duration": "00:45",
-                "title": "Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum",
+                "language": "en",
+                "title": {
+                  "de": "Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum"
+                },
                 "type": "lecture",
                 "persons": [
                   {
@@ -83,7 +95,10 @@
                 "id": 5,
                 "start": "19:00",
                 "duration": "00:45",
-                "title": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat",
+                "language": "DE",
+                "title": {
+                  "de": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat"
+                },
                 "type": "lecture",
                 "persons": [
                   {
@@ -100,7 +115,10 @@
                 "id": 6,
                 "start": "11:00",
                 "duration": "00:105",
-                "title": "At vero eos et accusam et justo duo dolores et ea rebum",
+                "language": "EN",
+                "title": {
+                  "en": "At vero eos et accusam et justo duo dolores et ea rebum"
+                },
                 "type": "lecture",
                 "persons": [
                   {
@@ -120,7 +138,10 @@
                 "id": 7,
                 "start": "10:00",
                 "duration": "00:165",
-                "title": "Consetetur sadipscing elitr",
+                "language": "fr",
+                "title": {
+                  "en": "Consetetur sadipscing elitr"
+                },
                 "type": "lecture",
                 "persons": [
                   {
@@ -133,7 +154,10 @@
                 "id": 8,
                 "start": "13:00",
                 "duration": "00:105",
-                "title": "Consetetur sadipscing elitr",
+                "language": "",
+                "title": {
+                  "de": "Consetetur sadipscing elitr"
+                },
                 "type": "lecture",
                 "persons": [
                   {

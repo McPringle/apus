@@ -27,11 +27,8 @@ class ConferenceServiceTest {
     @Test
     void displaySampleData() {
         final ConferenceService conferenceService = new ConferenceService(new NoOpTaskScheduler());
-        final var runningSessions = conferenceService.getRunningSessions();
-        assertEquals(15, runningSessions.size());
-        final var nextSessions = conferenceService.getNextSessions();
-        assertEquals(15, nextSessions.size());
-        final var futureSessions = conferenceService.getFutureSessions();
-        assertEquals(85, futureSessions.size());
+        assertEquals(12, conferenceService.getRoomsWithSessions().size());
+        assertEquals(159, conferenceService.getAllSessions().size());
+        // TODO inject test data instead of relying on an external API
     }
 }
