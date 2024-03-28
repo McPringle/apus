@@ -42,7 +42,7 @@ public final class SocialView extends Div {
                       @NotNull final TaskScheduler taskScheduler) {
         this.socialService = socialService;
         setId("social-view");
-        add(new H2("#JavaLand on Mastodon"));
+        add(new H2("Post with #JavaLand on Mastodon"));
         add(messageContainer);
         messageContainer.addClassName("masonry");
         updateMessages();
