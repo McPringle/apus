@@ -21,7 +21,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 1300px;
+    width: 870px;
     height: 1080px;
     overflow: clip;
 }
@@ -46,51 +46,51 @@
 }
 
 #session-2 {
-    top: 57px;
-    left: 860px;
-}
-
-#session-3 {
-    top: 261px;
+    top: 227px;
     left: 0;
 }
 
-#session-4 {
-    top: 261px;
+#session-3 {
+    top: 227px;
     left: 430px;
 }
 
+#session-4 {
+    top: 397px;
+    left: 0;
+}
+
 #session-5 {
-    top: 261px;
-    left: 860px;
+    top: 397px;
+    left: 430px;
 }
 
 #session-6 {
-    top: 465px;
+    top: 567px;
     left: 0;
 }
 
 #session-7 {
-    top: 465px;
+    top: 567px;
     left: 430px;
 }
 
 #session-8 {
-    top: 465px;
-    left: 860px;
-}
-
-#session-9 {
-    top: 669px;
+    top: 737px;
     left: 0;
 }
 
-#session-10 {
-    top: 669px;
+#session-9 {
+    top: 737px;
     left: 430px;
 }
 
+#session-10 {
+    top: 907px;
+    left: 0;
+}
+
 #session-11 {
-    top: 669px;
-    left: 860px;
+    top: 907px;
+    left: 430px;
 }
