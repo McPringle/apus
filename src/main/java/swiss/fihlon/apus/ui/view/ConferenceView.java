@@ -66,6 +66,7 @@ public final class ConferenceView extends Div {
         final var runningSessions = conferenceService.getRunningSessions();
         for (final Session session : runningSessions) {
             final var sessionView = new SessionView(session);
+            sessionView.setId("session-" + sessionCounter.get());
             sessionView.addClassName("running-session");
             sessionContainer.add(sessionView);
             if (sessionCounter.incrementAndGet() >= MAX_SESSIONS_IN_VIEW) {
@@ -81,6 +82,7 @@ public final class ConferenceView extends Div {
             final var nextSessions = conferenceService.getNextSessions();
             for (final Session session : nextSessions) {
                 final var sessionView = new SessionView(session);
+                sessionView.setId("session-" + sessionCounter.get());
                 sessionView.addClassName("next-session");
                 sessionContainer.add(sessionView);
                 if (sessionCounter.incrementAndGet() >= MAX_SESSIONS_IN_VIEW) {
