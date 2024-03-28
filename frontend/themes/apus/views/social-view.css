@@ -18,6 +18,7 @@
 
 #social-view {
     background-color: #1aa3b1;
+    border-radius: var(--lumo-border-radius-l);
     position: absolute;
     top: 0;
     left: 870px;
