@@ -28,6 +28,7 @@ import swiss.fihlon.apus.conference.Session;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +87,10 @@ public final class ConferenceService {
 
     public List<Session> getNextSessions() {
         final LocalDate today = LocalDate.now();
+        final LocalTime oneHour = LocalTime.now().plusHours(1);
         final var sessionsPerRoom = getFutureSessions().stream()
                 .filter(session -> session.startDate().toLocalDate().isEqual(today))
+                .filter(session -> session.startDate().toLocalTime().isBefore(oneHour))
                 .collect(groupingBy(Session::room));
 
         final List<Session> nextSessions = new ArrayList<>(sessionsPerRoom.keySet().size());
