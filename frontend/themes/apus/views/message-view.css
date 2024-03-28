@@ -23,7 +23,6 @@
 }
 
 .message-view img {
-    max-height: 200px;
     max-width: 100%;
     border-radius: var(--lumo-border-radius-s);
 }
