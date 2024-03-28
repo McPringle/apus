@@ -16,27 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-.session-view {
-    border-radius: 5px;
-    display: inline-block;
-    width: 400px;
-    height: 174px;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    padding: 10px;
-    overflow: clip;
-    font-size: 16px;
+.card.running-session {
+    --shadow-color-1: var(--lumo-primary-color-50pct);
+    --shadow-color-2: var(--lumo-primary-color-10pct);
 }
-
-.session-view h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.running-session {
-    background-color: #62d7e3;
-}
-
-.next-session {
-    background-color: #9bf4ff;
+.card.next-session {
+    --shadow-color-1: var(--lumo-success-color-50pct);
+    --shadow-color-2: var(--lumo-success-color-10pct);
 }

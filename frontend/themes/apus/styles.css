@@ -17,19 +17,29 @@
  */
 
 @import url('./masonry.css');
+@import url('./views/conference-view.css');
+@import url('./views/message-view.css');
+@import url('./views/session-view.css');
+@import url('./views/social-view.css');
+@import url('./views/social-wall-view.css');
 
-:root {
-    background-color: #000000;
+html,
+html[theme] {
+    background: var(--lumo-shade-10pct);
+    word-break: break-all;
 }
 
-:root, h3, a, a:visited {
-    color: #014f7a;
+.card {
+    background: var(--lumo-base-color);
+    margin: var(--lumo-space-s) var(--lumo-space-s);
+    border-radius: var(--lumo-border-radius-l);
+    --shadow-color-1: var(--lumo-shade-20pct);
+    --shadow-color-2: var(--lumo-shade-40pct);
+    box-shadow: 0 2px 6px -1px var(--shadow-color-1), 0 8px 24px -4px var(--shadow-color-2);
+    overflow: hidden;
 }
-
-h2 {
-    color: #003861;
-}
-
-a {
-    text-decoration: underline;
+.card-footer {
+    background-color: var(--lumo-shade-5pct);
+    color: var(--lumo-secondary-text-color);
+    padding: var(--lumo-space-s);
 }

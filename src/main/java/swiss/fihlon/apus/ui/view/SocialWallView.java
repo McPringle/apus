@@ -29,12 +29,11 @@ import swiss.fihlon.apus.service.SocialService;
 @CssImport(value = "./themes/apus/views/social-wall-view.css")
 public final class SocialWallView extends Div {
 
-    public SocialWallView(@NotNull final ConferenceService conferenceService,
-                          @NotNull final SocialService socialService,
-                          @NotNull final TaskScheduler taskScheduler) {
+    public SocialWallView(@NotNull final ConferenceView conferenceView,
+                          @NotNull final SocialView socialView) {
         setId("social-wall-view");
-        add(new ConferenceView(conferenceService, taskScheduler),
-                new SocialView(socialService, taskScheduler));
+        add(conferenceView,
+                socialView);
     }
 
 }

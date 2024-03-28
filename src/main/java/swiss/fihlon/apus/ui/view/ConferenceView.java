@@ -20,7 +20,9 @@ package swiss.fihlon.apus.ui.view;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 import swiss.fihlon.apus.conference.Session;
@@ -31,7 +33,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
-@CssImport(value = "./themes/apus/views/conference-view.css")
+@Scope("prototype")
 public final class ConferenceView extends Div {
 
     private static final int MAX_SESSIONS_IN_VIEW = 15;
@@ -46,6 +48,7 @@ public final class ConferenceView extends Div {
         setId("conference-view");
         add(new H2("Agenda"));
         add(sessionContainer);
+        sessionContainer.addClassName("conference-grid");
         updateConferenceSessions();
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, UPDATE_FREQUENCY);
         addDetachListener(event -> updateScheduler.cancel(true));

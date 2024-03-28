@@ -21,6 +21,7 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 import swiss.fihlon.apus.service.SocialService;
@@ -30,7 +31,7 @@ import java.time.Duration;
 import java.util.concurrent.ScheduledFuture;
 
 @Component
-@CssImport(value = "./themes/apus/views/social-view.css")
+@Scope("prototype")
 public final class SocialView extends Div {
 
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);

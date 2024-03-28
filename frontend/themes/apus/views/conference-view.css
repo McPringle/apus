@@ -16,96 +16,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+.conference-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-gap: var(--lumo-space-m);
+    width: 98%;
+}
 #conference-view {
-    background-color: #007e89;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1300px;
-    height: 1080px;
-    overflow: clip;
+    min-width: 1200px;
 }
 
-#conference-view h2 {
-    font-size: 30px;
-    margin: 10px;
-}
-
-.session-view {
-    position: absolute;
-}
-
-#session-0 {
-    top: 57px;
-    left: 0;
-}
-
-#session-1 {
-    top: 57px;
-    left: 430px;
-}
-
-#session-2 {
-    top: 57px;
-    left: 860px;
-}
-
-#session-3 {
-    top: 261px;
-    left: 0;
-}
-
-#session-4 {
-    top: 261px;
-    left: 430px;
-}
-
-#session-5 {
-    top: 261px;
-    left: 860px;
-}
-
-#session-6 {
-    top: 465px;
-    left: 0;
-}
-
-#session-7 {
-    top: 465px;
-    left: 430px;
-}
-
-#session-8 {
-    top: 465px;
-    left: 860px;
-}
-
-#session-9 {
-    top: 669px;
-    left: 0;
-}
-
-#session-10 {
-    top: 669px;
-    left: 430px;
-}
-
-#session-11 {
-    top: 669px;
-    left: 860px;
-}
-
-#session-12 {
-    top: 873px;
-    left: 0;
-}
-
-#session-13 {
-    top: 873px;
-    left: 430px;
-}
-
-#session-14 {
-    top: 873px;
-    left: 860px;
-}

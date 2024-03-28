@@ -23,11 +23,11 @@ import com.vaadin.flow.component.html.Div;
 import org.jetbrains.annotations.NotNull;
 import swiss.fihlon.apus.social.Message;
 
-@CssImport(value = "./themes/apus/views/message-view.css")
 public final class MessageView extends Div {
 
     public MessageView(@NotNull final Message message) {
         addClassName("message-view");
+        addClassName("card");
         add(new Html("<div>" + message.html() + "</div>"));
     }
 
