@@ -27,6 +27,9 @@ import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.service.ConferenceService;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -34,7 +37,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @CssImport(value = "./themes/apus/views/conference-view.css")
 public final class ConferenceView extends Div {
 
-    private static final int MAX_SESSIONS_IN_VIEW = 15;
+    private static final int MAX_ROOMS_IN_VIEW = 12;
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
 
     private final transient ConferenceService conferenceService;
@@ -57,36 +60,20 @@ public final class ConferenceView extends Div {
 
     private void updateConferenceSessions() {
         sessionContainer.removeAll();
-        var sessionCounter = new AtomicInteger(0);
-        addRunningSessions(sessionCounter);
-        addNextSessions(sessionCounter);
-    }
-
-    private void addRunningSessions(@NotNull final AtomicInteger sessionCounter) {
-        final var runningSessions = conferenceService.getRunningSessions();
-        for (final Session session : runningSessions) {
-            final var sessionView = new SessionView(session);
-            sessionView.setId("session-" + sessionCounter.get());
-            sessionView.addClassName("running-session");
-            sessionContainer.add(sessionView);
-            if (sessionCounter.incrementAndGet() >= MAX_SESSIONS_IN_VIEW) {
+        final var sessionCounter = new AtomicInteger(0);
+        final var today = LocalDate.now();
+        for (final Map.Entry<String, List<Session>> stringListEntry : conferenceService.getRoomsWithSessions().entrySet()) {
+            if (sessionCounter.get() >= MAX_ROOMS_IN_VIEW) {
+                // TODO log error
                 break;
             }
-        }
-    }
-
-    private void addNextSessions(@NotNull final AtomicInteger sessionCounter) {
-        // There is space for 15 sessions on the screen, 5 rows with 3 sessions each.
-        // Fill up free space with next sessions.
-        if (sessionCounter.get() < MAX_SESSIONS_IN_VIEW) {
-            final var nextSessions = conferenceService.getNextSessions();
-            for (final Session session : nextSessions) {
-                final var sessionView = new SessionView(session);
-                sessionView.setId("session-" + sessionCounter.get());
-                sessionView.addClassName("next-session");
-                sessionContainer.add(sessionView);
-                if (sessionCounter.incrementAndGet() >= MAX_SESSIONS_IN_VIEW) {
-                    break;
+            final List<Session> sessions = stringListEntry.getValue();
+            if (!sessions.isEmpty()) {
+                final Session session = sessions.getFirst();
+                if (session.startDate().toLocalDate().isEqual(today)) {
+                    final var sessionView = new SessionView(session);
+                    sessionView.setId("session-" + sessionCounter.getAndIncrement());
+                    sessionContainer.add(sessionView);
                 }
             }
         }

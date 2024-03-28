@@ -31,6 +31,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -45,6 +46,7 @@ public final class ConferenceService {
 
     private final ScheduledFuture<?> updateScheduler;
     private List<Session> sessions;
+    private List<String> rooms;
 
     public ConferenceService(@NotNull final TaskScheduler taskScheduler) {
         updateSessions();
@@ -60,8 +62,14 @@ public final class ConferenceService {
         final var newSessions = generateSampleData().stream()
                 .sorted()
                 .toList();
+        final var newRooms = newSessions.stream()
+                .map(Session::room)
+                .distinct()
+                .sorted()
+                .toList();
         synchronized (this) {
             sessions = newSessions;
+            rooms = newRooms;
         }
     }
 
@@ -100,6 +108,21 @@ public final class ConferenceService {
         return nextSessions.stream()
                 .sorted()
                 .toList();
+    }
+
+    public Map<String, List<Session>> getRoomsWithSessions() {
+        final LocalDateTime now = LocalDateTime.now();
+        final Map<String, List<Session>> roomsWithSessions = HashMap.newHashMap(rooms.size());
+        for (final String room : rooms) {
+            roomsWithSessions.put(room, new ArrayList<>());
+        }
+        final List<Session> runningAndNextSessions = sessions.stream()
+                .filter(session -> session.endDate().isAfter(now))
+                .toList();
+        for (final Session session : runningAndNextSessions) {
+            roomsWithSessions.get(session.room()).add(session);
+        }
+        return roomsWithSessions;
     }
 
     @SuppressWarnings("java:S125")
