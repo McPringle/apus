@@ -23,6 +23,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.doag.ConferenceAPI;
+import swiss.fihlon.apus.configuration.Configuration;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -35,14 +36,16 @@ import java.util.concurrent.ScheduledFuture;
 @Service
 public final class ConferenceService {
 
-    public static final String CONFERENCE_API_LOCATION = "https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.773/";
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(5);
 
+    private final Configuration configuration;
     private final ScheduledFuture<?> updateScheduler;
     private List<Session> sessions;
     private List<String> rooms;
 
-    public ConferenceService(@NotNull final TaskScheduler taskScheduler) {
+    public ConferenceService(@NotNull final TaskScheduler taskScheduler,
+                             @NotNull final Configuration configuration) {
+        this.configuration = configuration;
         updateSessions();
         updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, UPDATE_FREQUENCY);
     }
@@ -53,7 +56,7 @@ public final class ConferenceService {
     }
 
     private void updateSessions() {
-        final var newSessions = new ConferenceAPI(CONFERENCE_API_LOCATION).getSessions().stream()
+        final var newSessions = new ConferenceAPI(configuration).getSessions().stream()
                 .sorted()
                 .toList();
         final var newRooms = newSessions.stream()

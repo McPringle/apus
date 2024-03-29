@@ -23,6 +23,7 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.SessionImportException;
+import swiss.fihlon.apus.configuration.Configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,10 +42,12 @@ import java.util.List;
 
 public final class ConferenceAPI {
 
+    public static final String CONFERENCE_API_LOCATION = "https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/";
+
     private final String location;
 
-    public ConferenceAPI(@NotNull final String location) {
-        this.location = location;
+    public ConferenceAPI(@NotNull final Configuration configuration) {
+        this.location = String.format(CONFERENCE_API_LOCATION, configuration.getDoag().eventId());
     }
 
     public List<Session> getSessions() {

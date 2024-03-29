@@ -1,6 +1,11 @@
 {
   "properties" : [
     {
+      "name" : "apus.doag.eventId",
+      "type" : "java.lang.String",
+      "description" : "The ID of the DOAG event to read the conference agenda."
+    },
+    {
       "name" : "apus.mastodon.instance",
       "type" : "java.lang.String",
       "description" : "The Mastodon instance used to read the posts from."

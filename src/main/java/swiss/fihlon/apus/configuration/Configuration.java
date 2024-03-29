@@ -27,14 +27,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @SuppressWarnings("checkstyle:DesignForExtension") // Spring configurations can be subclassed by the Spring Framework
 public class Configuration {
 
-    /**
-     * Version information of Apus.
-     */
     private String version;
-
-    /**
-     * Mastodon configuration.
-     */
+    private DOAG doag;
     private Mastodon mastodon;
 
     public String getVersion() {
@@ -43,6 +37,14 @@ public class Configuration {
 
     public void setVersion(@NotNull final String version) {
         this.version = version;
+    }
+
+    public DOAG getDoag() {
+        return doag;
+    }
+
+    public void setDoag(@NotNull final DOAG doag) {
+        this.doag = doag;
     }
 
     public Mastodon getMastodon() {

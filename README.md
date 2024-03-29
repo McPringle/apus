@@ -68,10 +68,11 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 
 *Apus* can be started without any specific configuration. All configuration options have working default values. To modify these default values just specify environment variables with the following names:
 
-| Variable          | Default         | Description                                        |
-|-------------------|-----------------|----------------------------------------------------|
-| MASTODON_INSTANCE | mastodon.social | The Mastodon instance used to read the posts from. |
-| MASTODON_HASHTAG  | java            | The hashtag for the mastodon wall.                 |
+| Variable          | Default         | Description                                             |
+|-------------------|-----------------|---------------------------------------------------------|
+| DOAG_EVENT_ID     | 0               | The ID of the DOAG event to read the conference agenda. |
+| MASTODON_INSTANCE | mastodon.social | The Mastodon instance used to read the posts from.      |
+| MASTODON_HASHTAG  | java            | The hashtag for the mastodon wall.                      |
 
 The environment variables will override the default values.
 
