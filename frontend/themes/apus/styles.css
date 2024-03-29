@@ -36,6 +36,7 @@ html[theme] {
     --social-color: var(--body-color);*/
 
     background: var(--body-color);
+
 }
 
 .card {

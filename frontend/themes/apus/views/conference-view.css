@@ -17,11 +17,13 @@
  */
 
 .conference-grid {
+    --row-height: 160px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: repeat(4, 180px);
     grid-gap: var(--lumo-space-m);
     width: 98%;
+    height: 1000px;
 }
 #conference-view {
     min-width: 1200px;
