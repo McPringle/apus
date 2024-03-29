@@ -25,12 +25,21 @@
 
 html,
 html[theme] {
-    background: var(--lumo-shade-10pct);
     word-break: break-all;
+    --card-color: #84ddee;
+    --card-footer-color: var(--lumo-shade-5pct);
+    --body-color: #007e89;
+    --social-color: #1aa3b1;
+/*    --card-color: var(--lumo-base-color);
+    --card-footer-color: var(--lumo-shade-5pct);
+    --body-color: var(--lumo-shade-10pct);
+    --social-color: var(--body-color);*/
+
+    background: var(--body-color);
 }
 
 .card {
-    background: var(--lumo-base-color);
+    background: var(--card-color);
     margin: var(--lumo-space-s) var(--lumo-space-s);
     border-radius: var(--lumo-border-radius-l);
     --shadow-color-1: var(--lumo-shade-20pct);
@@ -39,7 +48,7 @@ html[theme] {
     overflow: hidden;
 }
 .card-footer {
-    background-color: var(--lumo-shade-5pct);
+    background-color: var(--card-footer-color);
     color: var(--lumo-secondary-text-color);
     padding: var(--lumo-space-s);
 }

@@ -35,22 +35,22 @@ public final class SessionView extends VerticalLayout {
         addClassName("session-view");
         addClassName("card");
         addAndExpand(new VerticalLayout(new H3(session.title())));
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.addClassName("card-footer");
-        horizontalLayout.setWidthFull();
-        horizontalLayout.add(new Div("\uD83D\uDC64 " + session.speaker()));
-        horizontalLayout.add(new Div("\uD83D\uDCCD " + String.format("Room %s", session.room())));
+        VerticalLayout layout = new VerticalLayout();
+        layout.addClassName("card-footer");
+        layout.setWidthFull();
+        layout.add(new Div("\uD83D\uDC64 " + session.speaker()));
+        layout.add(new Div("\uD83D\uDCCD " + String.format("Room %s", session.room())));
 
         final var now = LocalDateTime.now();
         if (session.startDate().isBefore(now) && session.endDate().isAfter(now)) { // running session
             final Duration duration = Duration.between(LocalDateTime.now(), session.endDate());
             final long timeLeft = Math.round(duration.getSeconds() / 60f);
             final String timeUnit = timeLeft == 1 ? "minute" : "minutes";
-            horizontalLayout.add(new Div("⌛ " + String.format("%d %s left", timeLeft, timeUnit)));
+            layout.add(new Div("⌛ " + String.format("%d %s left", timeLeft, timeUnit)));
         } else {
-            horizontalLayout.add(new Div("⌚ " + session.startDate().toLocalTime() + " - " + session.endDate().toLocalTime()));
+            layout.add(new Div("⌚ " + session.startDate().toLocalTime() + " - " + session.endDate().toLocalTime()));
         }
-        add(horizontalLayout);
+        add(layout);
     }
 
 }
