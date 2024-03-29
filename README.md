@@ -76,8 +76,8 @@ You can find our Matrix channel here: [@project-apus:ijug.eu](https://matrix.to/
 
 We use the corresponding GitHub function for discussions. The discussions held here are long-lived and divided into categories for the sake of clarity. One important category, for example, is that for questions and answers.
 
-Click here to go to the discussions on GitHub: https://github.com/McPringle/apus/discussions  
-Questions and answers have their own category: https://github.com/McPringle/apus/discussions/categories/q-a
+Discussions on GitHub: https://github.com/McPringle/apus/discussions  
+Questions and Answers: https://github.com/McPringle/apus/discussions/categories/q-a
 
 ## Copyright and License
 
