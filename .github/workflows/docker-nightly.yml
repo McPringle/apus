@@ -1,0 +1,19 @@
+name: Docker Nightly
+
+on:
+  # This can be used to automatically publish nightlies at UTC nighttime
+  schedule:
+    - cron: '0 1 * * *' # run at 1 AM UTC
+  # This can be used to allow manually triggering nightlies from the web interface
+  workflow_dispatch:
+
+jobs:
+  docker:
+    if: github.repository_owner == 'McPringle'
+    runs-on: ubuntu-latest
+    name: Docker Nightly
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build with Docker
+        run: docker build -t mcpringle/apus:nightly .
