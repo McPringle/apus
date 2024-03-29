@@ -43,7 +43,7 @@ public final class SocialService {
     public SocialService(@NotNull final TaskScheduler taskScheduler,
                          @NotNull final Configuration configuration) {
         hashtag = configuration.getMastodon().hashtag();
-        mastodonAPI = new MastodonAPI("ijug.social");
+        mastodonAPI = new MastodonAPI(configuration.getMastodon().instance());
         updateMessages();
         updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateMessages, UPDATE_FREQUENCY);
     }

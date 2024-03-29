@@ -17,4 +17,4 @@
  */
 package swiss.fihlon.apus.configuration;
 
-public record Mastodon(String hashtag) { }
+public record Mastodon(String instance, String hashtag) { }

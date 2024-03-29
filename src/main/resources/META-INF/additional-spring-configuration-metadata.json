@@ -1,8 +1,13 @@
 {
-  "properties": [
+  "properties" : [
     {
-      "name": "apus.mastodon.hashtag",
-      "type": "java.lang.String",
-      "description": "The hashtag for the mastodon wall."
-  }
-] }
+      "name" : "apus.mastodon.instance",
+      "type" : "java.lang.String",
+      "description" : "The Mastodon instance used to read the posts from."
+    },
+    {
+      "name" : "apus.mastodon.hashtag",
+      "type" : "java.lang.String",
+      "description" : "The hashtag for the Mastodon wall."
+    }
+  ] }
