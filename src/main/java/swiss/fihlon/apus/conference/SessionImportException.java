@@ -20,7 +20,9 @@ package swiss.fihlon.apus.conference;
 import org.jetbrains.annotations.NotNull;
 
 public class SessionImportException extends RuntimeException {
-    public SessionImportException(@NotNull final Exception e) {
-        super(e);
+
+    public SessionImportException(@NotNull final String message, @NotNull final Exception e) {
+        super(message, e);
     }
+
 }

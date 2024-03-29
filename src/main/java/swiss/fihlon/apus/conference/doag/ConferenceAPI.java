@@ -18,9 +18,9 @@
 package swiss.fihlon.apus.conference.doag;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.SessionImportException;
 import swiss.fihlon.apus.configuration.Configuration;
@@ -52,6 +52,7 @@ public final class ConferenceAPI {
 
     public List<Session> getSessions() {
         final ArrayList<Session> sessions = new ArrayList<>();
+        int lastSlotId = 0;
         try {
             final String json = getJSON();
             final JSONObject jsonObject = new JSONObject(json);
@@ -77,11 +78,12 @@ public final class ConferenceAPI {
                     final JSONArray slots = rooms.getJSONArray(room);
                     for (int slotCounter = 0; slotCounter < slots.length(); slotCounter++) {
                         final JSONObject slot = slots.getJSONObject(slotCounter);
+                        lastSlotId = slot.getInt("id");
                         final String type = slot.getString("type");
                         if (!"lecture".equalsIgnoreCase(type)) {
                             continue;
                         }
-                        final String language = slot.getString("language");
+                        final String language = getLanguage(slot);
                         final String title = getTitle(slot, language);
                         final LocalTime startTime = LocalTime.parse(slot.getString("start"));
                         final Duration duration = parseDuration(slot.getString("duration"));
@@ -104,9 +106,17 @@ public final class ConferenceAPI {
                 }
             }
         } catch (IOException | URISyntaxException | JSONException e) {
-            throw new SessionImportException(e);
+            throw new SessionImportException(String.format("Error parsing slot %d: %s", lastSlotId, e.getMessage()), e);
         }
         return sessions;
+    }
+
+    private String getLanguage(@NotNull final JSONObject slot) {
+        try {
+            return slot.getJSONArray("language").getString(0);
+        } catch (final JSONException e) {
+            return "de";
+        }
     }
 
     private String getTitle(@NotNull final JSONObject slot, @NotNull final String defaultLanguage) throws JSONException {
