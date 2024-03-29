@@ -64,6 +64,21 @@ Do not worry if the debugger breaks at a `SilentExitException`. This is a Spring
 After the server has started, you can view it at http://localhost:8080/ in your browser.
 You can now also attach breakpoints in code for debugging purposes, by clicking next to a line number in any source file.
 
+## Communication
+
+### Matrix Chat
+
+There is a channel at Matrix for quick and easy communication. This is publicly accessible for everyone. For developers as well as users. The communication in this chat is to be regarded as short-lived and has no documentary character.
+
+You can find our Matrix channel here: [@project-apus:ijug.eu](https://matrix.to/#/%23project-apus:ijug.eu)
+
+### GitHub Discussions
+
+We use the corresponding GitHub function for discussions. The discussions held here are long-lived and divided into categories for the sake of clarity. One important category, for example, is that for questions and answers.
+
+Click here to go to the discussions on GitHub: https://github.com/McPringle/apus/discussions  
+Questions and answers have their own category: https://github.com/McPringle/apus/discussions/categories/q-a
+
 ## Copyright and License
 
 [AGPL License](https://www.gnu.org/licenses/agpl-3.0.de.html)
