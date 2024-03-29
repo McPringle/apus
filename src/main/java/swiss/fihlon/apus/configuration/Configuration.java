@@ -28,9 +28,22 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 public class Configuration {
 
     /**
+     * Version information of Apus.
+     */
+    private String version;
+
+    /**
      * Mastodon configuration.
      */
     private Mastodon mastodon;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(@NotNull final String version) {
+        this.version = version;
+    }
 
     public Mastodon getMastodon() {
         return mastodon;
