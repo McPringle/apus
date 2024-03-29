@@ -25,16 +25,12 @@ import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.doag.ConferenceAPI;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
-
-import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public final class ConferenceService {
@@ -75,37 +71,6 @@ public final class ConferenceService {
         synchronized (this) {
             return List.copyOf(sessions);
         }
-    }
-
-    public List<Session> getRunningSessions() {
-        final LocalDateTime now = LocalDateTime.now();
-        return getAllSessions().stream()
-                .filter(session -> session.startDate().isBefore(now) && session.endDate().isAfter(now))
-                .toList();
-    }
-
-    public List<Session> getFutureSessions() {
-        final LocalDateTime now = LocalDateTime.now();
-        return getAllSessions().stream()
-                .filter(session -> session.startDate().isAfter(now))
-                .toList();
-    }
-
-    public List<Session> getNextSessions() {
-        final LocalDate today = LocalDate.now();
-        final LocalTime oneHour = LocalTime.now().plusHours(1);
-        final var sessionsPerRoom = getFutureSessions().stream()
-                .filter(session -> session.startDate().toLocalDate().isEqual(today))
-                .filter(session -> session.startDate().toLocalTime().isBefore(oneHour))
-                .collect(groupingBy(Session::room));
-
-        final List<Session> nextSessions = new ArrayList<>(sessionsPerRoom.keySet().size());
-        for (final Map.Entry<String, List<Session>> entry : sessionsPerRoom.entrySet()) {
-            nextSessions.add(entry.getValue().getFirst());
-        }
-        return nextSessions.stream()
-                .sorted()
-                .toList();
     }
 
     public Map<String, List<Session>> getRoomsWithSessions() {
