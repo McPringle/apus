@@ -18,7 +18,6 @@
 
 #conference-view {
     background-color: #007e89;
-    border-radius: var(--lumo-border-radius-l);
     position: absolute;
     top: 0;
     left: 0;
