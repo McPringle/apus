@@ -64,6 +64,16 @@ Do not worry if the debugger breaks at a `SilentExitException`. This is a Spring
 After the server has started, you can view it at http://localhost:8080/ in your browser.
 You can now also attach breakpoints in code for debugging purposes, by clicking next to a line number in any source file.
 
+## Configuration
+
+*Apus* can be started without any specific configuration. All configuration options have working default values. To modify these default values just specify environment variables with the following names:
+
+| Variable | Default | Description                         |
+|----------|---------|-------------------------------------|
+| MASTODON_HASHTAG | java | The hashtag for the mastodon wall.  |
+
+The environment variables will override the default values.
+
 ## Communication
 
 ### Matrix Chat

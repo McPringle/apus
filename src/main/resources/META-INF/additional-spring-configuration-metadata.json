@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "apus.mastodon.hashtag",
+      "type": "java.lang.String",
+      "description": "The hashtag for the mastodon wall."
+  }
+] }

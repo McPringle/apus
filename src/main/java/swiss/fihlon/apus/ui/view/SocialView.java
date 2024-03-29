@@ -23,6 +23,7 @@ import com.vaadin.flow.component.html.H2;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
+import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.service.SocialService;
 import swiss.fihlon.apus.social.Message;
 
@@ -39,10 +40,11 @@ public final class SocialView extends Div {
     private final Div messageContainer = new Div();
 
     public SocialView(@NotNull final SocialService socialService,
-                      @NotNull final TaskScheduler taskScheduler) {
+                      @NotNull final TaskScheduler taskScheduler,
+                      @NotNull final Configuration configuration) {
         this.socialService = socialService;
         setId("social-view");
-        add(new H2("Post with #JavaLand on Mastodon"));
+        add(new H2(String.format("Post with #%s on Mastodon", configuration.getMastodon().hashtag())));
         add(messageContainer);
         messageContainer.addClassName("masonry");
         updateMessages();

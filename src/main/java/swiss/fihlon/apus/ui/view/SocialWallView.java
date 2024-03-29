@@ -22,6 +22,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.Route;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
+import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.service.ConferenceService;
 import swiss.fihlon.apus.service.SocialService;
 
@@ -31,10 +32,11 @@ public final class SocialWallView extends Div {
 
     public SocialWallView(@NotNull final ConferenceService conferenceService,
                           @NotNull final SocialService socialService,
-                          @NotNull final TaskScheduler taskScheduler) {
+                          @NotNull final TaskScheduler taskScheduler,
+                          @NotNull final Configuration configuration) {
         setId("social-wall-view");
         add(new ConferenceView(conferenceService, taskScheduler),
-                new SocialView(socialService, taskScheduler));
+                new SocialView(socialService, taskScheduler, configuration));
     }
 
 }

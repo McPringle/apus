@@ -21,6 +21,7 @@ import jakarta.annotation.PreDestroy;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
+import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.social.Message;
 import swiss.fihlon.apus.social.mastodon.MastodonAPI;
 
@@ -36,9 +37,12 @@ public final class SocialService {
 
     private final ScheduledFuture<?> updateScheduler;
     private final MastodonAPI mastodonAPI;
+    private final String hashtag;
     private List<Message> messages = List.of();
 
-    public SocialService(@NotNull final TaskScheduler taskScheduler) {
+    public SocialService(@NotNull final TaskScheduler taskScheduler,
+                         @NotNull final Configuration configuration) {
+        hashtag = configuration.getMastodon().hashtag();
         mastodonAPI = new MastodonAPI("ijug.social");
         updateMessages();
         updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateMessages, UPDATE_FREQUENCY);
@@ -50,7 +54,7 @@ public final class SocialService {
     }
 
     private void updateMessages() {
-        final var newMessages = mastodonAPI.getMessages("javaland");
+        final var newMessages = mastodonAPI.getMessages(hashtag);
         synchronized (this) {
             messages = newMessages;
         }
