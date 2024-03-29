@@ -27,9 +27,9 @@ import swiss.fihlon.apus.conference.doag.ConferenceAPI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
@@ -75,7 +75,7 @@ public final class ConferenceService {
 
     public Map<String, List<Session>> getRoomsWithSessions() {
         final LocalDateTime now = LocalDateTime.now();
-        final Map<String, List<Session>> roomsWithSessions = HashMap.newHashMap(rooms.size());
+        final Map<String, List<Session>> roomsWithSessions = new TreeMap<>();
         for (final String room : rooms) {
             roomsWithSessions.put(room, new ArrayList<>());
         }
