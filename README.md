@@ -39,11 +39,28 @@ See:
 | Show sponsor information  | planned |
 | Use event based styling   | planned |
 
+## Build
+
+### Maven
+
+*Apus* uses [Maven](https://maven.apache.org/) to build the project. Please use standard Maven commands to build what you need:
+
+| Command          | What it does                                                      |
+|------------------|-------------------------------------------------------------------|
+| `./mvnw`         | compile and run the app                                           |
+| `./mvnw clean`   | cleanup generated files and build artefacts                       |
+| `./mvnw compile` | compile the code without running the tests                        |
+| `./mvnw test`    | compile and run all tests                                         |
+| `./mvnw package` | compile, test, and create a JAR file to run it with Java directly |
+| `./mvnw verify`  | compile, test, package, and run analysis tools                    |
+
+There is *no need* to run the `install` or `deploy` tasks. They will just run longer, produce unnecessary output, burn energy, and occupy your disk space. [Don't just blindly run mvn clean install...](https://www.andreaseisele.com/posts/mvn-clean-install/)
+
 ## Running and debugging
 
 ### Running from the command line.
 
-To run from the command line, use `mvn` and open http://localhost:8080 in your browser.
+To run from the command line, run `./mvnw` and open http://localhost:8080 in your browser.
 
 ### Running and debugging in Intellij IDEA
 
