@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.SessionImportException;
+import swiss.fihlon.apus.conference.Speaker;
 import swiss.fihlon.apus.configuration.Configuration;
 
 import java.io.IOException;
@@ -68,7 +69,6 @@ public final class ConferenceAPI {
                 final LocalDate date = LocalDate.parse(day.getString("date")).minus(daysBetween);
 
                 final JSONObject rooms = day.getJSONObject("rooms");
-                @SuppressWarnings("unchecked")
                 final Iterator<String> roomKeys = rooms.keys();
                 while (roomKeys.hasNext()) {
                     final String room = roomKeys.next();
@@ -100,7 +100,7 @@ public final class ConferenceAPI {
                                 LocalDateTime.of(date, startTime).plus(duration),
                                 room,
                                 title,
-                                String.join(", ", speakers));
+                                speakers.stream().map(Speaker::new).toList());
                         sessions.add(session);
                     }
                 }

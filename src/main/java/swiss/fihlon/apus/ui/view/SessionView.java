@@ -26,22 +26,25 @@ import com.vaadin.flow.component.html.H3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import swiss.fihlon.apus.conference.Session;
+import swiss.fihlon.apus.conference.Speaker;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @CssImport(value = "./themes/apus/views/session-view.css")
 public final class SessionView extends Div {
 
     public SessionView(@NotNull final String room) {
-        this(room, null, null, null, null);
+        this(room, null, List.of(), null, null);
     }
 
     public SessionView(@NotNull final Session session) {
         this(
                 session.room(),
                 session.title(),
-                session.speaker(),
+                session.speakers(),
                 session.startDate().toLocalTime(),
                 session.endDate().toLocalTime()
         );
@@ -49,12 +52,15 @@ public final class SessionView extends Div {
 
     public SessionView(@NotNull final String room,
                        @Nullable final String title,
-                       @Nullable final String speaker,
+                       @NotNull final List<Speaker> speakers,
                        @Nullable final LocalTime startTime,
                        @Nullable final LocalTime endTime) {
         addClassName("session-view");
         add(new H3(new Text(title == null ? "CLOSED" : title)));
-        add(new Div(speaker == null ? nbsp() : new Text(String.format("\uD83D\uDC64 %s", speaker))));
+        add(new Div(speakers.isEmpty() ? nbsp() : new Text(String.format("\uD83D\uDC64 %s",
+                speakers.stream()
+                        .map(Speaker::fullName)
+                        .collect(Collectors.joining(", "))))));
         add(new Div(new Text(String.format("\uD83D\uDCCD %s", room))));
 
         final var now = LocalTime.now();
