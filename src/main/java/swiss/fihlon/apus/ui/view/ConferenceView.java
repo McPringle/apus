@@ -41,6 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @CssImport(value = "./themes/apus/views/conference-view.css")
 public final class ConferenceView extends Div {
 
+    public static final String LABEL_THEME = "badge";
     private static final int MAX_ROOMS_IN_VIEW = 12;
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
 
@@ -83,11 +84,11 @@ public final class ConferenceView extends Div {
     @NotNull
     private static Component createLegend() {
         final Component runningSession = new Span("running session");
-        runningSession.getElement().getThemeList().add("badge");
+        runningSession.getElement().getThemeList().add(LABEL_THEME);
         runningSession.addClassName("running-session");
 
         final Component nextSession = new Span("next session");
-        nextSession.getElement().getThemeList().add("badge");
+        nextSession.getElement().getThemeList().add(LABEL_THEME);
         nextSession.addClassName("next-session");
 
         final Component legend = new Span(runningSession, nextSession);
