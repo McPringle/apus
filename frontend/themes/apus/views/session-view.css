@@ -44,3 +44,7 @@
 .empty-session {
     opacity: 0.5;
 }
+
+.empty-session h3 {
+    text-transform: uppercase;
+}

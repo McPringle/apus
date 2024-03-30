@@ -59,7 +59,7 @@ public final class ConferenceView extends Div {
     @Override
     protected void onAttach(@NotNull final AttachEvent attachEvent) {
         setId("conference-view");
-        add(new H2(String.format("Rooms & Sessions (%s)",
+        add(new H2(String.format(getTranslation("conference.heading"),
                 LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()))));
         add(createLegend());
         add(sessionContainer);
@@ -79,8 +79,7 @@ public final class ConferenceView extends Div {
         final var roomsWithSessions = conferenceService.getRoomsWithSessions().entrySet();
         for (final Map.Entry<String, List<Session>> roomWithSession : roomsWithSessions) {
             if (roomCounter.get() >= MAX_ROOMS_IN_VIEW) {
-                Notification.show(String.format("Too many rooms (%d) to display, no more space left on screen!",
-                        roomsWithSessions.size()));
+                Notification.show(String.format(getTranslation("conference.error.rooms"), roomsWithSessions.size()));
                 break;
             }
             final SessionView sessionView = createSessionView(roomWithSession, today, roomCounter);
@@ -89,16 +88,16 @@ public final class ConferenceView extends Div {
     }
 
     @NotNull
-    private static Component createLegend() {
-        final Component runningSession = new Span("running session");
+    private Component createLegend() {
+        final Component runningSession = new Span(getTranslation("conference.legend.running-session"));
         runningSession.getElement().getThemeList().add(LABEL_THEME);
         runningSession.addClassName("running-session");
 
-        final Component nextSession = new Span("next session");
+        final Component nextSession = new Span(getTranslation("conference.legend.next-session"));
         nextSession.getElement().getThemeList().add(LABEL_THEME);
         nextSession.addClassName("next-session");
 
-        final Component emptySession = new Span("room closed");
+        final Component emptySession = new Span(getTranslation("conference.legend.empty-session"));
         emptySession.getElement().getThemeList().add(LABEL_THEME);
         emptySession.addClassName("empty-session");
 

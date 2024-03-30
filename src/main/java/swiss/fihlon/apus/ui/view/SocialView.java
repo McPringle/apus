@@ -53,7 +53,7 @@ public final class SocialView extends Div {
     @Override
     protected void onAttach(@NotNull final AttachEvent attachEvent) {
         setId("social-view");
-        add(new H2(String.format("Posts with #%s on Mastodon", configuration.getMastodon().hashtag())));
+        add(new H2(String.format(getTranslation("social.heading"), configuration.getMastodon().hashtag())));
         add(messageContainer);
         messageContainer.addClassName("masonry");
         updateMessages();

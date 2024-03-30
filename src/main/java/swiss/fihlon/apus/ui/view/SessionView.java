@@ -80,7 +80,7 @@ public final class SessionView extends Div {
 
     @NotNull
     private Component createTitleComponent() {
-         return new H3(new Text(title == null ? "CLOSED" : title));
+         return new H3(new Text(title == null ? getTranslation("conference.session.closed") : title));
     }
     @NotNull
     private Component createSpeakersComponent() {
@@ -111,8 +111,8 @@ public final class SessionView extends Div {
         } else if (startTime.isBefore(now) && endTime.isAfter(now)) { // running session
             final Duration duration = Duration.between(now, endTime);
             final long timeLeft = Math.round(duration.getSeconds() / 60f);
-            final String timeUnit = timeLeft == 1 ? "minute" : "minutes";
-            timeComponent.add(new Text(String.format("⌛ %d %s left", timeLeft, timeUnit)));
+            final String timeText = getTranslation(timeLeft == 1 ? "conference.session.countdown.singular" : "conference.session.countdown.plural");
+            timeComponent.add(new Text("⌛ " + String.format(timeText, timeLeft)));
             addClassName("running-session");
         } else { // next session
             timeComponent.add(new Text(String.format("⌚ %s - %s", startTime, endTime)));
