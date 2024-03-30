@@ -29,7 +29,9 @@ import swiss.fihlon.apus.service.ConferenceService;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,7 +50,8 @@ public final class ConferenceView extends Div {
                           @NotNull final TaskScheduler taskScheduler) {
         this.conferenceService = conferenceService;
         setId("conference-view");
-        add(new H2("Rooms & Sessions"));
+        add(new H2(String.format("Rooms & Sessions (%s)",
+                LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()))));
         add(sessionContainer);
         updateConferenceSessions();
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, UPDATE_FREQUENCY);
