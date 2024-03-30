@@ -17,35 +17,65 @@
  */
 package swiss.fihlon.apus.ui.view;
 
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Html;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import swiss.fihlon.apus.conference.Session;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @CssImport(value = "./themes/apus/views/session-view.css")
 public final class SessionView extends Div {
 
-    public SessionView(@NotNull final Session session) {
-        addClassName("session-view");
-        add(new H3(session.title()));
-        add(new Div(String.format("\uD83D\uDC64 %s", session.speaker())));
-        add(new Div(String.format("\uD83D\uDCCD %s", session.room())));
+    public SessionView(@NotNull final String room) {
+        this(room, null, null, null, null);
+    }
 
-        final var now = LocalDateTime.now();
-        if (session.startDate().isBefore(now) && session.endDate().isAfter(now)) { // running session
-            final Duration duration = Duration.between(LocalDateTime.now(), session.endDate());
+    public SessionView(@NotNull final Session session) {
+        this(
+                session.room(),
+                session.title(),
+                session.speaker(),
+                session.startDate().toLocalTime(),
+                session.endDate().toLocalTime()
+        );
+    }
+
+    public SessionView(@NotNull final String room,
+                       @Nullable final String title,
+                       @Nullable final String speaker,
+                       @Nullable final LocalTime startTime,
+                       @Nullable final LocalTime endTime) {
+        addClassName("session-view");
+        add(new H3(new Text(title == null ? "CLOSED" : title)));
+        add(new Div(speaker == null ? nbsp() : new Text(String.format("\uD83D\uDC64 %s", speaker))));
+        add(new Div(new Text(String.format("\uD83D\uDCCD %s", room))));
+
+        final var now = LocalTime.now();
+        if (startTime == null || endTime == null) { // empty session
+            add(new Div(nbsp()));
+            addClassName("empty-session");
+        } else if (startTime.isBefore(now) && endTime.isAfter(now)) { // running session
+            final Duration duration = Duration.between(now, endTime);
             final long timeLeft = Math.round(duration.getSeconds() / 60f);
             final String timeUnit = timeLeft == 1 ? "minute" : "minutes";
-            add(new Div(String.format("⌛ %d %s left", timeLeft, timeUnit)));
+            add(new Div(new Text(String.format("⌛ %d %s left", timeLeft, timeUnit))));
             addClassName("running-session");
-        } else {
-            add(new Div(String.format("⌚ %s - %s", session.startDate().toLocalTime(), session.endDate().toLocalTime())));
+        } else { // next session
+            add(new Div(new Text(String.format("⌚ %s - %s", startTime, endTime))));
             addClassName("next-session");
         }
+    }
+
+    @NotNull
+    private static Component nbsp() {
+        return new Html("<span>&nbsp;</span>");
     }
 
 }

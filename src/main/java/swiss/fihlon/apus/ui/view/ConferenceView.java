@@ -61,22 +61,34 @@ public final class ConferenceView extends Div {
 
     private void updateConferenceSessions() {
         sessionContainer.removeAll();
-        final var sessionCounter = new AtomicInteger(0);
         final var today = LocalDate.now();
-        for (final Map.Entry<String, List<Session>> stringListEntry : conferenceService.getRoomsWithSessions().entrySet()) {
-            if (sessionCounter.get() >= MAX_ROOMS_IN_VIEW) {
-                Notification.show("Too many rooms to display, no more space left on screen!");
+        final var roomCounter = new AtomicInteger(0);
+        final var roomsWithSessions = conferenceService.getRoomsWithSessions().entrySet();
+        for (final Map.Entry<String, List<Session>> roomWithSession : roomsWithSessions) {
+            if (roomCounter.get() >= MAX_ROOMS_IN_VIEW) {
+                Notification.show(String.format("Too many rooms (%d) to display, no more space left on screen!",
+                        roomsWithSessions.size()));
                 break;
             }
-            final List<Session> sessions = stringListEntry.getValue();
-            if (!sessions.isEmpty()) {
-                final Session session = sessions.getFirst();
-                if (session.startDate().toLocalDate().isEqual(today)) {
-                    final var sessionView = new SessionView(session);
-                    sessionView.setId("session-" + sessionCounter.getAndIncrement());
-                    sessionContainer.add(sessionView);
-                }
-            }
+            final SessionView sessionView = createSessionView(roomWithSession, today, roomCounter);
+            sessionContainer.add(sessionView);
         }
+    }
+
+    @NotNull
+    private static SessionView createSessionView(@NotNull final Map.Entry<String, List<Session>> roomWithSession,
+                                                 @NotNull final LocalDate today,
+                                                 @NotNull final AtomicInteger roomCounter) {
+        final String room = roomWithSession.getKey();
+        final List<Session> sessions = roomWithSession.getValue();
+        final Session session = sessions.isEmpty() ? null : sessions.getFirst();
+        final SessionView sessionView;
+        if (session != null && session.startDate().toLocalDate().isEqual(today)) {
+            sessionView = new SessionView(session);
+        } else {
+            sessionView = new SessionView(room);
+        }
+        sessionView.setId("session-" + roomCounter.getAndIncrement());
+        return sessionView;
     }
 }

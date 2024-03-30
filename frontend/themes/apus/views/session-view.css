@@ -37,6 +37,10 @@
     background-color: #9bf4ff;
 }
 
-.next-session {
+.next-session, .empty-session {
     background-color: #62d7e3;
+}
+
+.empty-session {
+    opacity: 0.5;
 }
