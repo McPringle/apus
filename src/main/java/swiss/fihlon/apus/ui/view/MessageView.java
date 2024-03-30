@@ -17,6 +17,7 @@
  */
 package swiss.fihlon.apus.ui.view;
 
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
@@ -26,9 +27,15 @@ import swiss.fihlon.apus.social.Message;
 @CssImport(value = "./themes/apus/views/message-view.css")
 public final class MessageView extends Div {
 
+    private final transient Message message;
+
     public MessageView(@NotNull final Message message) {
+        this.message = message;
+    }
+
+    @Override
+    protected void onAttach(@NotNull final AttachEvent attachEvent) {
         addClassName("message-view");
         add(new Html("<div>" + message.html() + "</div>"));
     }
-
 }

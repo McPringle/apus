@@ -17,6 +17,7 @@
  */
 package swiss.fihlon.apus.ui.view;
 
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
@@ -46,11 +47,17 @@ public final class ConferenceView extends Div {
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
 
     private final transient ConferenceService conferenceService;
+    private final transient TaskScheduler taskScheduler;
     private final Div sessionContainer = new Div();
 
     public ConferenceView(@NotNull final ConferenceService conferenceService,
                           @NotNull final TaskScheduler taskScheduler) {
         this.conferenceService = conferenceService;
+        this.taskScheduler = taskScheduler;
+    }
+
+    @Override
+    protected void onAttach(@NotNull final AttachEvent attachEvent) {
         setId("conference-view");
         add(new H2(String.format("Rooms & Sessions (%s)",
                 LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()))));

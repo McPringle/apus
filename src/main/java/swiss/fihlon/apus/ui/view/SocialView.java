@@ -17,6 +17,7 @@
  */
 package swiss.fihlon.apus.ui.view;
 
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -37,12 +38,20 @@ public final class SocialView extends Div {
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
 
     private final transient SocialService socialService;
+    private final transient TaskScheduler taskScheduler;
+    private final transient Configuration configuration;
     private final Div messageContainer = new Div();
 
     public SocialView(@NotNull final SocialService socialService,
                       @NotNull final TaskScheduler taskScheduler,
                       @NotNull final Configuration configuration) {
         this.socialService = socialService;
+        this.taskScheduler = taskScheduler;
+        this.configuration = configuration;
+    }
+
+    @Override
+    protected void onAttach(@NotNull final AttachEvent attachEvent) {
         setId("social-view");
         add(new H2(String.format("Posts with #%s on Mastodon", configuration.getMastodon().hashtag())));
         add(messageContainer);

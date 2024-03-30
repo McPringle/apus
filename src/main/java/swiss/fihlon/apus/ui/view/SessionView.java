@@ -17,6 +17,7 @@
  */
 package swiss.fihlon.apus.ui.view;
 
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Text;
@@ -35,6 +36,12 @@ import java.util.stream.Collectors;
 
 @CssImport(value = "./themes/apus/views/session-view.css")
 public final class SessionView extends Div {
+
+    private final String room;
+    private final String title;
+    private final transient List<Speaker> speakers;
+    private final LocalTime startTime;
+    private final LocalTime endTime;
 
     public SessionView(@NotNull final String room) {
         this(room, null, List.of(), null, null);
@@ -55,16 +62,28 @@ public final class SessionView extends Div {
                        @NotNull final List<Speaker> speakers,
                        @Nullable final LocalTime startTime,
                        @Nullable final LocalTime endTime) {
-        addClassName("session-view");
+        this.room = room;
+        this.title = title;
+        this.speakers = speakers;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 
-        add(new H3(new Text(title == null ? "CLOSED" : title)));
-        add(createSpeakersComponent(speakers));
-        add(createRoomComponent(room));
-        add(createTimeComponent(startTime, endTime));
+    @Override
+    protected void onAttach(@NotNull final AttachEvent attachEvent) {
+        addClassName("session-view");
+        add(createTitleComponent());
+        add(createSpeakersComponent());
+        add(createRoomComponent());
+        add(createTimeComponent());
     }
 
     @NotNull
-    private static Component createSpeakersComponent(@NotNull final List<Speaker> speakers) {
+    private Component createTitleComponent() {
+         return new H3(new Text(title == null ? "CLOSED" : title));
+    }
+    @NotNull
+    private Component createSpeakersComponent() {
         final var speakersComponent = new Div();
         if (speakers.isEmpty()) {
             speakersComponent.add(nbsp());
@@ -78,13 +97,12 @@ public final class SessionView extends Div {
     }
 
     @NotNull
-    private static Component createRoomComponent(@NotNull final String room) {
+    private Component createRoomComponent() {
         return new Div(new Text(String.format("\uD83D\uDCCD %s", room)));
     }
 
     @NotNull
-    private Component createTimeComponent(@Nullable final LocalTime startTime,
-                                          @Nullable final LocalTime endTime) {
+    private Component createTimeComponent() {
         final var timeComponent = new Div();
         final var now = LocalTime.now();
         if (startTime == null || endTime == null) { // empty session
