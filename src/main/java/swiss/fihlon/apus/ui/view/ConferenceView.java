@@ -20,6 +20,7 @@ package swiss.fihlon.apus.ui.view;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.notification.Notification;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
@@ -64,7 +65,7 @@ public final class ConferenceView extends Div {
         final var today = LocalDate.now();
         for (final Map.Entry<String, List<Session>> stringListEntry : conferenceService.getRoomsWithSessions().entrySet()) {
             if (sessionCounter.get() >= MAX_ROOMS_IN_VIEW) {
-                // TODO log error
+                Notification.show("Too many rooms to display, no more space left on screen!");
                 break;
             }
             final List<Session> sessions = stringListEntry.getValue();
