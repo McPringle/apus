@@ -27,8 +27,19 @@
 }
 
 #conference-view h2 {
+    float: left;
     font-size: 30px;
     margin: 10px;
+}
+
+#conference-view .legend {
+    float: right;
+    padding: 13px 10px 0 0;
+}
+
+#conference-view .legend > span {
+    color: #003861;
+    margin-left: var(--lumo-space-s);
 }
 
 .session-view {

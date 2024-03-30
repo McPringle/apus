@@ -17,13 +17,14 @@
  */
 package swiss.fihlon.apus.ui.view;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.stereotype.Component;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.service.ConferenceService;
 
@@ -36,7 +37,7 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Component
+@org.springframework.stereotype.Component
 @CssImport(value = "./themes/apus/views/conference-view.css")
 public final class ConferenceView extends Div {
 
@@ -52,6 +53,7 @@ public final class ConferenceView extends Div {
         setId("conference-view");
         add(new H2(String.format("Rooms & Sessions (%s)",
                 LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()))));
+        add(createLegend());
         add(sessionContainer);
         updateConferenceSessions();
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, UPDATE_FREQUENCY);
@@ -76,6 +78,21 @@ public final class ConferenceView extends Div {
             final SessionView sessionView = createSessionView(roomWithSession, today, roomCounter);
             sessionContainer.add(sessionView);
         }
+    }
+
+    @NotNull
+    private static Component createLegend() {
+        final Component runningSession = new Span("running session");
+        runningSession.getElement().getThemeList().add("badge");
+        runningSession.addClassName("running-session");
+
+        final Component nextSession = new Span("next session");
+        nextSession.getElement().getThemeList().add("badge");
+        nextSession.addClassName("next-session");
+
+        final Component legend = new Span(runningSession, nextSession);
+        legend.addClassName("legend");
+        return legend;
     }
 
     @NotNull
