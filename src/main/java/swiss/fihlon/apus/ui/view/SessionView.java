@@ -56,27 +56,51 @@ public final class SessionView extends Div {
                        @Nullable final LocalTime startTime,
                        @Nullable final LocalTime endTime) {
         addClassName("session-view");
-        add(new H3(new Text(title == null ? "CLOSED" : title)));
-        add(new Div(speakers.isEmpty() ? nbsp() : new Text(String.format("\uD83D\uDC64 %s",
-                speakers.stream()
-                        .map(Speaker::fullName)
-                        .collect(Collectors.joining(", "))))));
-        add(new Div(new Text(String.format("\uD83D\uDCCD %s", room))));
 
+        add(new H3(new Text(title == null ? "CLOSED" : title)));
+        add(createSpeakersComponent(speakers));
+        add(createRoomComponent(room));
+        add(createTimeComponent(startTime, endTime));
+    }
+
+    @NotNull
+    private static Component createSpeakersComponent(@NotNull final List<Speaker> speakers) {
+        final var speakersComponent = new Div();
+        if (speakers.isEmpty()) {
+            speakersComponent.add(nbsp());
+        } else {
+            final var joinedSpeakers = speakers.stream()
+                    .map(Speaker::fullName)
+                    .collect(Collectors.joining(", "));
+            speakersComponent.add(new Text(String.format("\uD83D\uDC64 %s", joinedSpeakers)));
+        }
+        return speakersComponent;
+    }
+
+    @NotNull
+    private static Component createRoomComponent(@NotNull final String room) {
+        return new Div(new Text(String.format("\uD83D\uDCCD %s", room)));
+    }
+
+    @NotNull
+    private Component createTimeComponent(@Nullable final LocalTime startTime,
+                                          @Nullable final LocalTime endTime) {
+        final var timeComponent = new Div();
         final var now = LocalTime.now();
         if (startTime == null || endTime == null) { // empty session
-            add(new Div(nbsp()));
+            timeComponent.add(nbsp());
             addClassName("empty-session");
         } else if (startTime.isBefore(now) && endTime.isAfter(now)) { // running session
             final Duration duration = Duration.between(now, endTime);
             final long timeLeft = Math.round(duration.getSeconds() / 60f);
             final String timeUnit = timeLeft == 1 ? "minute" : "minutes";
-            add(new Div(new Text(String.format("⌛ %d %s left", timeLeft, timeUnit))));
+            timeComponent.add(new Text(String.format("⌛ %d %s left", timeLeft, timeUnit)));
             addClassName("running-session");
         } else { // next session
-            add(new Div(new Text(String.format("⌚ %s - %s", startTime, endTime))));
+            timeComponent.add(new Text(String.format("⌚ %s - %s", startTime, endTime)));
             addClassName("next-session");
         }
+        return timeComponent;
     }
 
     @NotNull
