@@ -91,7 +91,11 @@ public final class ConferenceView extends Div {
         nextSession.getElement().getThemeList().add(LABEL_THEME);
         nextSession.addClassName("next-session");
 
-        final Component legend = new Span(runningSession, nextSession);
+        final Component emptySession = new Span("room closed");
+        emptySession.getElement().getThemeList().add(LABEL_THEME);
+        emptySession.addClassName("empty-session");
+
+        final Component legend = new Span(runningSession, nextSession, emptySession);
         legend.addClassName("legend");
         return legend;
     }
