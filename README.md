@@ -56,6 +56,16 @@ See:
 
 There is *no need* to run the `install` or `deploy` tasks. They will just run longer, produce unnecessary output, burn energy, and occupy your disk space. [Don't just blindly run mvn clean install...](https://www.andreaseisele.com/posts/mvn-clean-install/)
 
+### Docker
+
+*Apus* comes with a complete dockerized self-contained build. You don't need to have Maven or Java installed, [Docker](https://www.docker.com/) is enough. The Docker build file contains everything needed, just start a standard Docker build with the following command:
+
+```shell
+docker build -t apus .
+```
+
+This might run for a while and will produce a Docker image tagged `apus` on your local system.
+
 ## Running and debugging
 
 ### Running from the command line.
