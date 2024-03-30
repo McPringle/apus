@@ -47,7 +47,7 @@ public final class ConferenceView extends Div {
                           @NotNull final TaskScheduler taskScheduler) {
         this.conferenceService = conferenceService;
         setId("conference-view");
-        add(new H2("Agenda"));
+        add(new H2("Rooms & Sessions"));
         add(sessionContainer);
         updateConferenceSessions();
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, UPDATE_FREQUENCY);
