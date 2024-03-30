@@ -15,21 +15,21 @@ See:
 
 ### Show posts from Social Media
 
-| Platform                    | Status           |
-|-----------------------------|------------------|
-| Bluesky                     | planned          |
-| Instagram                   | planned          |
-| Mastodon                    | work in progress |
-| Twitter                     | planned          |
+| Platform                    | Status  |
+|-----------------------------|---------|
+| Bluesky                     | planned |
+| Instagram                   | planned |
+| Mastodon                    | DONE    |
+| Twitter                     | planned |
 
 ### Show event agenda
 
-| Event              | Status           |
-|--------------------|------------------|
-| BaselOne           | planned          |
-| CyberLand          | work in progress |
-| JavaLand           | work in progress |
-| Voxxed Days Zürich | planned          |
+| Event              | Status  |
+|--------------------|---------|
+| BaselOne           | planned |
+| CyberLand          | DONE    |
+| JavaLand           | DONE    |
+| Voxxed Days Zürich | planned |
 
 ### And more
 
