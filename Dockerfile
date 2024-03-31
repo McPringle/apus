@@ -31,5 +31,4 @@ RUN useradd -m apus
 USER apus
 EXPOSE 8080
 CMD java -jar /usr/app/app.jar
-HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --start-interval=10s --retries=3 \
-    CMD curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1
+HEALTHCHECK CMD curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1
