@@ -33,6 +33,7 @@
 
 .message-view header .author-container {
     display: inline-block;
+    line-height: var(--lumo-line-height-s);
     margin-left: var(--lumo-space-s);
 }
 
