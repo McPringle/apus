@@ -23,11 +23,14 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import org.jetbrains.annotations.NotNull;
+import org.jsoup.Jsoup;
 import swiss.fihlon.apus.social.Message;
 
 @CssImport(value = "./themes/apus/views/message-view.css")
 public final class MessageView extends Div {
 
+    private static final int MAX_LENGTH = 500;
+    private static final String TRUNC_INDICATOR = " […]";
     private final transient Message message;
 
     public MessageView(@NotNull final Message message) {
@@ -37,9 +40,17 @@ public final class MessageView extends Div {
     @Override
     protected void onAttach(@NotNull final AttachEvent attachEvent) {
         addClassName("message-view");
-        add(new Html("<div>" + message.html() + "</div>"));
+        final String messageText = Jsoup.parse(message.html()).text();
+        add(new Html(String.format("<div>%s</div>",
+                messageText.length() > MAX_LENGTH ? truncateMessageText(messageText) : message.html()
+        )));
         for (final String image : message.images()) {
             add(new Image(image, image));
         }
+    }
+
+    @NotNull
+    private String truncateMessageText(@NotNull final String messageText) {
+        return "<p>" + messageText.substring(0, MAX_LENGTH) + TRUNC_INDICATOR + "</p>";
     }
 }
