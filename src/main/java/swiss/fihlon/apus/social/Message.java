@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record Message(@NotNull String id, @NotNull LocalDateTime date,
-                      @NotNull String author, @NotNull String avatar,
+                      @NotNull String author, @NotNull String avatar, @NotNull String profile,
                       @NotNull String html, @NotNull List<String> images,
                       boolean isReply, boolean isSensitive)
         implements Comparable<Message> {

@@ -31,6 +31,15 @@
     display: none;
 }
 
+.message-view header .author-container {
+    display: inline-block;
+    margin-left: var(--lumo-space-s);
+}
+
+.message-view header .author {
+    font-weight: bold;
+}
+
 .message-view .datetime {
     font-size: var(--lumo-font-size-xs);
     font-style: italic;

@@ -69,13 +69,20 @@ public final class MastodonAPI {
         final LocalDateTime date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         final String author = account == null ? "" : account.getDisplayName();
         final String avatar = account == null ? "" : account.getAvatar();
+        final String profile = account == null ? "" : getProfile(account);
         final String html = status.getContent();
         final List<String> images = getImages(status.getMediaAttachments());
         final String inReplyToId = status.getInReplyToId();
         final boolean isReply = inReplyToId != null && !inReplyToId.isBlank();
         final boolean isSensitive = status.isSensitive();
 
-        return new Message(id, date, author, avatar, html, images, isReply, isSensitive);
+        return new Message(id, date, author, avatar, profile, html, images, isReply, isSensitive);
+    }
+
+    @NotNull
+    private String getProfile(@NotNull final Account account) {
+        final var profile = account.getAcct();
+        return profile.contains("@") ? profile : profile.concat("@").concat(instance);
     }
 
     private List<String> getImages(@NotNull final List<MediaAttachment> mediaAttachments) {

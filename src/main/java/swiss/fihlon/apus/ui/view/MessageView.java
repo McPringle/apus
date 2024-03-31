@@ -21,8 +21,11 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Footer;
+import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Image;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
@@ -37,9 +40,21 @@ public final class MessageView extends Div {
 
     public MessageView(@NotNull final Message message) {
         addClassName("message-view");
+        add(createHeaderComponent(message));
         add(createTextComponent(message));
         add(createImageComponents(message));
         add(createDateTimeComponent(message));
+    }
+
+    @NotNull Component createHeaderComponent(@NotNull final Message message) {
+        final var avatar = new Avatar(message.author(), message.avatar());
+        final var author = new Div(new Text(message.author()));
+        author.addClassName("author");
+        final var profile = new Div(new Text(message.profile()));
+        profile.addClassName("profile");
+        final var authorContainer = new Div(author, profile);
+        authorContainer.addClassName("author-container");
+        return new Header(avatar, authorContainer);
     }
 
     @NotNull
@@ -64,7 +79,7 @@ public final class MessageView extends Div {
 
     @NotNull
     private Component createDateTimeComponent(@NotNull final Message message) {
-        final var dateTimeComponent = new Div();
+        final var dateTimeComponent = new Footer();
         dateTimeComponent.addClassName("datetime");
         final var prettyTime = new PrettyTime(UI.getCurrent().getLocale());
         dateTimeComponent.add(new Text(prettyTime.format(message.date())));
