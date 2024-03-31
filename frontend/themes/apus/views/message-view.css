@@ -33,5 +33,6 @@
 
 .message-view .datetime {
     font-size: var(--lumo-font-size-xs);
+    font-style: italic;
     text-align: right;
 }
