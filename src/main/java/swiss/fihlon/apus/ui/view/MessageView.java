@@ -22,14 +22,23 @@ import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.ocpsoft.prettytime.PrettyTime;
+import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.service.SocialService;
 import swiss.fihlon.apus.social.Message;
 
 @CssImport(value = "./themes/apus/views/message-view.css")
@@ -37,8 +46,15 @@ public final class MessageView extends Div {
 
     private static final int MAX_LENGTH = 500;
     private static final String TRUNC_INDICATOR = " […]";
+    private final transient SocialService socialService;
+    private final transient Configuration configuration;
 
-    public MessageView(@NotNull final Message message) {
+    public MessageView(@NotNull final Message message,
+                       @NotNull final SocialService socialService,
+                       @NotNull final Configuration configuration) {
+        this.socialService = socialService;
+        this.configuration = configuration;
+        setId("message-" + message.id());
         addClassName("message-view");
         add(createHeaderComponent(message));
         add(createTextComponent(message));
@@ -47,7 +63,7 @@ public final class MessageView extends Div {
     }
 
     @NotNull Component createHeaderComponent(@NotNull final Message message) {
-        final var avatar = new Avatar(message.author(), message.avatar());
+        final var avatar = createAvatarComponent(message);
         final var author = new Div(new Text(message.author()));
         author.addClassName("author");
         final var profile = new Div(new Text(message.profile()));
@@ -55,6 +71,73 @@ public final class MessageView extends Div {
         final var authorContainer = new Div(author, profile);
         authorContainer.addClassName("author-container");
         return new Header(avatar, authorContainer);
+    }
+
+    private Component createAvatarComponent(@NotNull final Message message) {
+        final var avatar = new Avatar(message.author(), message.avatar());
+        if (!configuration.getAdmin().password().isBlank()) {
+            final var menu = new ContextMenu();
+            menu.addItem("Hide", event -> confirmHideMessage(message));
+            menu.setTarget(avatar);
+        }
+        return avatar;
+    }
+
+    private void confirmHideMessage(@NotNull final Message message) {
+        final var dialog = new ConfirmDialog();
+        dialog.setHeader("Confirm hide message");
+        dialog.setText(String.format("Do you really want to hide the message from %s posted at %s?", message.author(), message.date()));
+        dialog.setCloseOnEsc(true);
+
+        dialog.setCancelable(true);
+        dialog.addCancelListener(event -> dialog.close());
+
+        dialog.setConfirmText("Hide");
+        dialog.addConfirmListener(event -> {
+            dialog.close();
+            authorizeHideMessage(message);
+        });
+
+        dialog.open();
+    }
+
+    private void authorizeHideMessage(@NotNull final Message message) {
+        final Dialog dialog = new Dialog();
+        dialog.setHeaderTitle("Authorize hide message");
+        dialog.setCloseOnEsc(true);
+        dialog.setCloseOnOutsideClick(true);
+
+        final PasswordField passwordField = new PasswordField();
+        passwordField.setPlaceholder("password");
+        passwordField.setRequired(true);
+        passwordField.setValueChangeMode(ValueChangeMode.EAGER);
+
+        final Button hideButton = new Button("Hide", event -> {
+            dialog.close();
+            hideMessage(message, passwordField.getValue());
+        });
+        hideButton.setEnabled(false);
+        hideButton.setDisableOnClick(true);
+
+        final Button cancelButton = new Button("Cancel", event -> dialog.close());
+        cancelButton.setDisableOnClick(true);
+        dialog.getFooter().add(hideButton, cancelButton);
+
+        passwordField.addKeyDownListener(event -> hideButton.setEnabled(!passwordField.isEmpty()));
+        dialog.add(passwordField);
+
+        dialog.open();
+        passwordField.focus();
+    }
+
+    private void hideMessage(@NotNull final Message message, @NotNull final String password) {
+        if (password.equals(configuration.getAdmin().password())) {
+            socialService.hideMessage(message);
+            removeFromParent();
+            Notification.show("The message was hidden as requested.");
+        } else {
+            Notification.show("You are not authorized to hide messages!");
+        }
     }
 
     @NotNull

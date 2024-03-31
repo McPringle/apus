@@ -35,12 +35,14 @@ public final class SocialView extends Div {
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
 
     private final transient SocialService socialService;
+    private final transient Configuration configuration;
     private final Div messageContainer = new Div();
 
     public SocialView(@NotNull final SocialService socialService,
                       @NotNull final TaskScheduler taskScheduler,
                       @NotNull final Configuration configuration) {
         this.socialService = socialService;
+        this.configuration = configuration;
 
         setId("social-view");
         add(new H2(getTranslation("social.heading", configuration.getMastodon().hashtag())));
@@ -58,7 +60,7 @@ public final class SocialView extends Div {
     private void updateMessages() {
         messageContainer.removeAll();
         for (final Message message : socialService.getMessages(30)) {
-            messageContainer.add(new MessageView(message));
+            messageContainer.add(new MessageView(message, socialService, configuration));
         }
     }
 }

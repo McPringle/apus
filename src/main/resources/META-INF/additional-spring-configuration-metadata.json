@@ -29,5 +29,10 @@
       "name": "apus.filter.words",
       "type": "java.lang.String",
       "description": "Hide social media messages which contain these words."
+    },
+    {
+      "name": "apus.admin.password",
+      "type": "java.lang.String",
+      "description": "The password to get admin access (empty = disabled)."
     }
   ] }

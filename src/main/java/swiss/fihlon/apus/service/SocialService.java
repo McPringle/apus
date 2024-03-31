@@ -20,6 +20,8 @@ package swiss.fihlon.apus.service;
 import jakarta.annotation.PreDestroy;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.configuration.Configuration;
@@ -27,9 +29,12 @@ import swiss.fihlon.apus.social.Message;
 import swiss.fihlon.apus.social.mastodon.MastodonAPI;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
@@ -37,6 +42,7 @@ public final class SocialService {
 
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
     private static final Locale DEFAULT_LOCALE = Locale.getDefault();
+    private static final Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
 
     private final ScheduledFuture<?> updateScheduler;
     private final MastodonAPI mastodonAPI;
@@ -44,6 +50,7 @@ public final class SocialService {
     private final boolean filterReplies;
     private final boolean filterSensitive;
     private final List<String> filterWords;
+    private final Set<String> manuallyHiddenId = new HashSet<>();
     private List<Message> messages = List.of();
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
@@ -66,12 +73,13 @@ public final class SocialService {
 
     private void updateMessages() {
         final var newMessages = mastodonAPI.getMessages(hashtag).stream()
+                .filter(message -> !manuallyHiddenId.contains(message.id()))
                 .filter(message -> !filterSensitive || !message.isSensitive())
                 .filter(message -> !filterReplies || !message.isReply())
                 .filter(this::checkWordFilter)
                 .toList();
         synchronized (this) {
-            messages = newMessages;
+            messages = new ArrayList<>(newMessages);
         }
     }
 
@@ -95,4 +103,10 @@ public final class SocialService {
         }
     }
 
+    public void hideMessage(@NotNull final Message message) {
+        LOGGER.warn("Hiding message (id={}, profile={}, author={})",
+                message.id(), message.profile(), message.author());
+        messages.remove(message);
+        manuallyHiddenId.add(message.id());
+    }
 }

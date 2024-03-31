@@ -97,6 +97,7 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 
 | Variable          | Default                            | Description                                                     |
 |-------------------|------------------------------------|-----------------------------------------------------------------|
+| ADMIN_PASSWORD    |                                    | The password to get admin access (empty = disabled).            |
 | DOAG_EVENT_ID     | 0                                  | The ID of the DOAG event to read the conference agenda.         |
 | FILTER_REPLIES    | true                               | Hide social media messages which are replies.                   |
 | FILTER_SENSITIVE  | true                               | Hide social media messages which contain sensitive information. |

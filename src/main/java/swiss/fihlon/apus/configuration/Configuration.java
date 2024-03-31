@@ -28,6 +28,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 public class Configuration {
 
     private String version;
+    private Admin admin;
     private DOAG doag;
     private Mastodon mastodon;
     private Filter filter;
@@ -37,6 +38,14 @@ public class Configuration {
 
     public void setVersion(@NotNull final String version) {
         this.version = version;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(@NotNull final Admin admin) {
+        this.admin = admin;
     }
 
     public DOAG getDoag() {
