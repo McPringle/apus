@@ -18,6 +18,8 @@
 package swiss.fihlon.apus.social.mastodon;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import social.bigbone.MastodonClient;
 import social.bigbone.api.Pageable;
 import social.bigbone.api.entity.Account;
@@ -36,6 +38,8 @@ import static social.bigbone.api.method.TimelineMethods.StatusOrigin.LOCAL_AND_R
 
 public final class MastodonAPI {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MastodonAPI.class);
+
     private final String instance;
 
     public MastodonAPI(@NotNull final String instance) {
@@ -52,9 +56,10 @@ public final class MastodonAPI {
                     .toList()
                     .reversed();
         } catch (final BigBoneRequestException e) {
-            // TODO
+            LOGGER.error("Unable to load statuses with hashtag '{}' from Mastodon instance '{}': {}",
+                    hashtag, instance, e.getMessage());
+            return List.of();
         }
-        return List.of();
     }
 
     private Message convertToMessage(@NotNull final Status status) {
