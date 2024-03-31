@@ -60,7 +60,7 @@ public final class MastodonAPI {
     private Message convertToMessage(@NotNull final Status status) {
         final String id = status.getId();
         final Account account = status.getAccount();
-        final Instant instant = status.getCreatedAt().mostPreciseInstantOrNull();
+        final Instant instant = status.getCreatedAt().mostPreciseOrFallback(Instant.MIN);
         final LocalDateTime date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         final String author = account == null ? "" : account.getDisplayName();
         final String avatar = account == null ? "" : account.getAvatar();
