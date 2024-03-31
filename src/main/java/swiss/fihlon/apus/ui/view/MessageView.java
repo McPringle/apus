@@ -17,12 +17,16 @@
  */
 package swiss.fihlon.apus.ui.view;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
+import org.ocpsoft.prettytime.PrettyTime;
 import swiss.fihlon.apus.social.Message;
 
 @CssImport(value = "./themes/apus/views/message-view.css")
@@ -40,10 +44,20 @@ public final class MessageView extends Div {
         for (final String image : message.images()) {
             add(new Image(image, image));
         }
+        add(createDateTimeComponent(message));
     }
 
     @NotNull
     private String truncateMessageText(@NotNull final String messageText) {
         return "<p>" + messageText.substring(0, MAX_LENGTH) + TRUNC_INDICATOR + "</p>";
+    }
+
+    @NotNull
+    private Component createDateTimeComponent(@NotNull final Message message) {
+        final var dateTimeComponent = new Div();
+        dateTimeComponent.addClassName("datetime");
+        final var prettyTime = new PrettyTime(UI.getCurrent().getLocale());
+        dateTimeComponent.add(new Text(prettyTime.format(message.date())));
+        return dateTimeComponent;
     }
 }

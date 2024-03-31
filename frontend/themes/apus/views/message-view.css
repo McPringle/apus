@@ -30,3 +30,8 @@
 .message-view .invisible {
     display: none;
 }
+
+.message-view .datetime {
+    font-size: var(--lumo-font-size-xs);
+    text-align: right;
+}
