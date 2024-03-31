@@ -71,8 +71,9 @@ public final class MastodonAPI {
         final String avatar = account == null ? "" : account.getAvatar();
         final String html = status.getContent();
         final List<String> images = getImages(status.getMediaAttachments());
+        final boolean sensitive = status.isSensitive();
 
-        return new Message(id, date, author, avatar, html, images);
+        return new Message(id, date, author, avatar, html, images, sensitive);
     }
 
     private List<String> getImages(@NotNull final List<MediaAttachment> mediaAttachments) {

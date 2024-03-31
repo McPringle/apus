@@ -24,7 +24,8 @@ import java.util.List;
 
 public record Message(@NotNull String id, @NotNull LocalDateTime date,
                       @NotNull String author, @NotNull String avatar,
-                      @NotNull String html, @NotNull List<String> images)
+                      @NotNull String html, @NotNull List<String> images,
+                      boolean isSensitive)
         implements Comparable<Message> {
     @Override
     public int compareTo(@NotNull final Message other) {

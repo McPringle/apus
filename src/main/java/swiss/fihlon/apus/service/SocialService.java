@@ -54,7 +54,9 @@ public final class SocialService {
     }
 
     private void updateMessages() {
-        final var newMessages = mastodonAPI.getMessages(hashtag);
+        final var newMessages = mastodonAPI.getMessages(hashtag).stream()
+                .filter(message -> !message.isSensitive())
+                .toList();
         synchronized (this) {
             messages = newMessages;
         }
