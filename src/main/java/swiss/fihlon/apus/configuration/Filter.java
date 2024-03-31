@@ -15,21 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.social;
+package swiss.fihlon.apus.configuration;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-public record Message(@NotNull String id, @NotNull LocalDateTime date,
-                      @NotNull String author, @NotNull String avatar,
-                      @NotNull String html, @NotNull List<String> images,
-                      boolean isReply, boolean isSensitive)
-        implements Comparable<Message> {
-    @Override
-    public int compareTo(@NotNull final Message other) {
-        final int dateCompareResult = date.compareTo(other.date);
-        return dateCompareResult == 0 ? id.compareTo(other.id) : dateCompareResult;
-    }
-}
+public record Filter(boolean replies) { }

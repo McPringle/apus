@@ -30,7 +30,7 @@ public class Configuration {
     private String version;
     private DOAG doag;
     private Mastodon mastodon;
-
+    private Filter filter;
     public String getVersion() {
         return version;
     }
@@ -53,5 +53,13 @@ public class Configuration {
 
     public void setMastodon(@NotNull final Mastodon mastodon) {
         this.mastodon = mastodon;
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(@NotNull final Filter filter) {
+        this.filter = filter;
     }
 }

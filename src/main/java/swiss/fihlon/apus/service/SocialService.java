@@ -38,12 +38,14 @@ public final class SocialService {
     private final ScheduledFuture<?> updateScheduler;
     private final MastodonAPI mastodonAPI;
     private final String hashtag;
+    private final boolean filterReplies;
     private List<Message> messages = List.of();
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
                          @NotNull final Configuration configuration) {
-        hashtag = configuration.getMastodon().hashtag();
         mastodonAPI = new MastodonAPI(configuration.getMastodon().instance());
+        hashtag = configuration.getMastodon().hashtag();
+        filterReplies = configuration.getFilter().replies();
         updateMessages();
         updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateMessages, UPDATE_FREQUENCY);
     }
@@ -56,6 +58,7 @@ public final class SocialService {
     private void updateMessages() {
         final var newMessages = mastodonAPI.getMessages(hashtag).stream()
                 .filter(message -> !message.isSensitive())
+                .filter(message -> !filterReplies || !message.isReply())
                 .toList();
         synchronized (this) {
             messages = newMessages;
