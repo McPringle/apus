@@ -19,6 +19,7 @@ package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -33,7 +34,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -60,7 +60,7 @@ public final class ConferenceView extends Div {
     protected void onAttach(@NotNull final AttachEvent attachEvent) {
         setId("conference-view");
         add(new H2(String.format(getTranslation("conference.heading"),
-                LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()))));
+                LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale()))));
         add(createLegend());
         add(sessionContainer);
         updateConferenceSessions();
