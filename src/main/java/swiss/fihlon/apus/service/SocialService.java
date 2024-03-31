@@ -19,6 +19,7 @@ package swiss.fihlon.apus.service;
 
 import jakarta.annotation.PreDestroy;
 import org.jetbrains.annotations.NotNull;
+import org.jsoup.Jsoup;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.configuration.Configuration;
@@ -28,18 +29,21 @@ import swiss.fihlon.apus.social.mastodon.MastodonAPI;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
 public final class SocialService {
 
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
+    private static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
     private final ScheduledFuture<?> updateScheduler;
     private final MastodonAPI mastodonAPI;
     private final String hashtag;
     private final boolean filterReplies;
     private final boolean filterSensitive;
+    private final List<String> filterWords;
     private List<Message> messages = List.of();
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
@@ -48,6 +52,9 @@ public final class SocialService {
         hashtag = configuration.getMastodon().hashtag();
         filterReplies = configuration.getFilter().replies();
         filterSensitive = configuration.getFilter().sensitive();
+        filterWords = configuration.getFilter().words().stream()
+                .map(filterWord -> filterWord.toLowerCase(DEFAULT_LOCALE).trim())
+                .toList();
         updateMessages();
         updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateMessages, UPDATE_FREQUENCY);
     }
@@ -61,10 +68,21 @@ public final class SocialService {
         final var newMessages = mastodonAPI.getMessages(hashtag).stream()
                 .filter(message -> !filterSensitive || !message.isSensitive())
                 .filter(message -> !filterReplies || !message.isReply())
+                .filter(this::checkWordFilter)
                 .toList();
         synchronized (this) {
             messages = newMessages;
         }
+    }
+
+    private boolean checkWordFilter(@NotNull final Message message) {
+        final String messageText = Jsoup.parse(message.html()).text().toLowerCase(DEFAULT_LOCALE);
+        for (final String filterWord : filterWords) {
+            if (messageText.contains(filterWord)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public List<Message> getMessages(final int limit) {

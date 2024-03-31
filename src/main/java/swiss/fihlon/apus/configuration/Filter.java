@@ -17,4 +17,8 @@
  */
 package swiss.fihlon.apus.configuration;
 
-public record Filter(boolean replies, boolean sensitive) { }
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+public record Filter(boolean replies, boolean sensitive, @NotNull List<String> words) { }
