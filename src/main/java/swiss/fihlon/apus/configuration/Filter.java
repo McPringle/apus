@@ -17,4 +17,4 @@
  */
 package swiss.fihlon.apus.configuration;
 
-public record Filter(boolean replies) { }
+public record Filter(boolean replies, boolean sensitive) { }

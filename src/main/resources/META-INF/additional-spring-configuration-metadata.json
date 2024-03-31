@@ -19,5 +19,10 @@
       "name": "apus.filter.replies",
       "type": "java.lang.Boolean",
       "description": "Hide social media messages which are replies."
+    },
+    {
+      "name": "apus.filter.sensitive",
+      "type": "java.lang.Boolean",
+      "description": "Hide social media messages which contain sensitive information."
     }
   ] }
