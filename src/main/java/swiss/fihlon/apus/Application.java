@@ -19,6 +19,7 @@ package swiss.fihlon.apus;
 
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 import org.springframework.boot.SpringApplication;
@@ -35,6 +36,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @Push
+@PageTitle("Apus – Social Media Wall with Conference Agenda")
 @PWA(name = "Apus", shortName = "Apus")
 @Theme("apus")
 @SuppressWarnings({"FinalClass", "HideUtilityClassConstructor"})
