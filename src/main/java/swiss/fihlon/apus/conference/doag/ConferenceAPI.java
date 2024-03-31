@@ -21,6 +21,9 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import swiss.fihlon.apus.conference.Language;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.SessionImportException;
 import swiss.fihlon.apus.conference.Speaker;
@@ -43,6 +46,7 @@ import java.util.List;
 
 public final class ConferenceAPI {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(ConferenceAPI.class);
     public static final String CONFERENCE_API_LOCATION = "https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/";
 
     private final String location;
@@ -83,8 +87,8 @@ public final class ConferenceAPI {
                         if (!"lecture".equalsIgnoreCase(type)) {
                             continue;
                         }
-                        final String language = getLanguage(slot);
-                        final String title = getTitle(slot, language);
+                        final Language language = getLanguage(slot);
+                        final String title = getTitle(slot, language.getLanguageCode());
                         final LocalTime startTime = LocalTime.parse(slot.getString("start"));
                         final Duration duration = parseDuration(slot.getString("duration"));
                         final JSONArray persons = slot.getJSONArray("persons");
@@ -100,7 +104,8 @@ public final class ConferenceAPI {
                                 LocalDateTime.of(date, startTime).plus(duration),
                                 room,
                                 title,
-                                speakers.stream().map(Speaker::new).toList());
+                                speakers.stream().map(Speaker::new).toList(),
+                                language);
                         sessions.add(session);
                     }
                 }
@@ -111,12 +116,15 @@ public final class ConferenceAPI {
         return sessions;
     }
 
-    private String getLanguage(@NotNull final JSONObject slot) {
+    private Language getLanguage(@NotNull final JSONObject slot) {
+        String languageCode = "de";
         try {
-            return slot.getJSONArray("language").getString(0);
+            languageCode = slot.getJSONArray("language").getString(0);
         } catch (final JSONException e) {
-            return "de";
+            LOGGER.error("Error reading language from slot '{}': {}",
+                    slot.getInt("id"), e.getMessage());
         }
+        return Language.languageWithCode(languageCode);
     }
 
     private String getTitle(@NotNull final JSONObject slot, @NotNull final String defaultLanguage) throws JSONException {

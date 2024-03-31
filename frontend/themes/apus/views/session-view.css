@@ -28,11 +28,6 @@
     font-size: 16px;
 }
 
-.session-view h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
 .running-session {
     background-color: #9bf4ff;
 }
@@ -45,6 +40,24 @@
     opacity: 0.5;
 }
 
-.empty-session h3 {
+.empty-session .title h3 {
     text-transform: uppercase;
+}
+
+.session-view .title {
+    content: "";
+    clear: both;
+    display: table;
+    width: 400px;
+}
+
+.session-view .title h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    float: left;
+    width: 376px;
+}
+
+.session-view .title .language {
+    float: right;
 }

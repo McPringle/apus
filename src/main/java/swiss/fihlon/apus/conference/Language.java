@@ -19,19 +19,35 @@ package swiss.fihlon.apus.conference;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDateTime;
-import java.util.List;
+public enum Language {
 
-public record Session(@NotNull String id, @NotNull LocalDateTime startDate, @NotNull LocalDateTime endDate,
-                      @NotNull String room, @NotNull String title, @NotNull List<Speaker> speakers,
-                      @NotNull Language language)
-        implements Comparable<Session> {
-    @Override
-    public int compareTo(@NotNull final Session other) {
-        final var dateCompareResult = startDate.compareTo(other.startDate);
-        if (dateCompareResult == 0) {
-            return room.compareTo(other.room);
+    DE("de", "\uD83C\uDDE9\uD83C\uDDEA"),
+    EN("en", "\uD83C\uDDEC\uD83C\uDDE7");
+
+    private final String languageCode;
+    private final String flagEmoji;
+
+    public static Language languageWithCode(@NotNull final String languageCode) {
+        for (final Language language : values()) {
+            if (language.languageCode.equals(languageCode)) {
+                return language;
+            }
         }
-        return dateCompareResult;
+        throw new IllegalArgumentException(String.format("No language constant with language code '%s'!", languageCode));
+    }
+
+    Language(@NotNull final String languageCode, @NotNull final String flagEmoji) {
+        this.languageCode = languageCode;
+        this.flagEmoji = flagEmoji;
+    }
+
+    @NotNull
+    public String getLanguageCode() {
+        return languageCode;
+    }
+
+    @NotNull
+    public String getFlagEmoji() {
+        return flagEmoji;
     }
 }

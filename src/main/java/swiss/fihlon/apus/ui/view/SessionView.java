@@ -24,8 +24,10 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Span;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import swiss.fihlon.apus.conference.Language;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.Speaker;
 
@@ -42,9 +44,10 @@ public final class SessionView extends Div {
     private final transient List<Speaker> speakers;
     private final LocalTime startTime;
     private final LocalTime endTime;
+    private final Language language;
 
     public SessionView(@NotNull final String room) {
-        this(room, null, List.of(), null, null);
+        this(room, null, List.of(), null, null, null);
     }
 
     public SessionView(@NotNull final Session session) {
@@ -53,7 +56,8 @@ public final class SessionView extends Div {
                 session.title(),
                 session.speakers(),
                 session.startDate().toLocalTime(),
-                session.endDate().toLocalTime()
+                session.endDate().toLocalTime(),
+                session.language()
         );
     }
 
@@ -61,12 +65,14 @@ public final class SessionView extends Div {
                        @Nullable final String title,
                        @NotNull final List<Speaker> speakers,
                        @Nullable final LocalTime startTime,
-                       @Nullable final LocalTime endTime) {
+                       @Nullable final LocalTime endTime,
+                       @Nullable final Language language) {
         this.room = room;
         this.title = title;
         this.speakers = speakers;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.language = language;
     }
 
     @Override
@@ -80,8 +86,23 @@ public final class SessionView extends Div {
 
     @NotNull
     private Component createTitleComponent() {
-         return new H3(new Text(title == null ? getTranslation("conference.session.closed") : title));
+        final var titleComponent = new Div();
+        titleComponent.addClassName("title");
+        titleComponent.add(new H3(new Text(title == null ? getTranslation("conference.session.closed") : title)));
+        titleComponent.add(createLanguageComponent());
+        return titleComponent;
     }
+
+    @NotNull
+    private Component createLanguageComponent() {
+        final var languageComponent = new Span();
+        languageComponent.addClassName("language");
+        if (language != null) {
+            languageComponent.add(language.getFlagEmoji());
+        }
+        return languageComponent;
+    }
+
     @NotNull
     private Component createSpeakersComponent() {
         final var speakersComponent = new Div();
