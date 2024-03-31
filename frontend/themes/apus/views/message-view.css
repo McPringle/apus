@@ -19,7 +19,7 @@
 .message-view {
     background-color: #84ddee;
     border-radius: var(--lumo-border-radius-s);
-    padding: var(--lumo-space-m);
+    padding: var(--lumo-space-s);
 }
 
 .message-view img {
