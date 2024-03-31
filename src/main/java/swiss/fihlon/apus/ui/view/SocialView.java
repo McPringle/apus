@@ -43,7 +43,7 @@ public final class SocialView extends Div {
         this.socialService = socialService;
 
         setId("social-view");
-        add(new H2(String.format(getTranslation("social.heading"), configuration.getMastodon().hashtag())));
+        add(new H2(getTranslation("social.heading", configuration.getMastodon().hashtag())));
         add(messageContainer);
         messageContainer.addClassName("masonry");
         updateMessages();

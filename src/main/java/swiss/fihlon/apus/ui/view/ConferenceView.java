@@ -52,7 +52,7 @@ public final class ConferenceView extends Div {
                           @NotNull final TaskScheduler taskScheduler) {
         this.conferenceService = conferenceService;
         setId("conference-view");
-        add(new H2(String.format(getTranslation("conference.heading"),
+        add(new H2(getTranslation("conference.heading",
                 LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale()))));
         add(createLegend());
         add(sessionContainer);
