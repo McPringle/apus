@@ -17,13 +17,11 @@
  */
 package swiss.fihlon.apus.ui.view;
 
-import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.stereotype.Component;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.service.SocialService;
 import swiss.fihlon.apus.social.Message;
@@ -31,27 +29,19 @@ import swiss.fihlon.apus.social.Message;
 import java.time.Duration;
 import java.util.concurrent.ScheduledFuture;
 
-@Component
 @CssImport(value = "./themes/apus/views/social-view.css")
 public final class SocialView extends Div {
 
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
 
     private final transient SocialService socialService;
-    private final transient TaskScheduler taskScheduler;
-    private final transient Configuration configuration;
     private final Div messageContainer = new Div();
 
     public SocialView(@NotNull final SocialService socialService,
                       @NotNull final TaskScheduler taskScheduler,
                       @NotNull final Configuration configuration) {
         this.socialService = socialService;
-        this.taskScheduler = taskScheduler;
-        this.configuration = configuration;
-    }
 
-    @Override
-    protected void onAttach(@NotNull final AttachEvent attachEvent) {
         setId("social-view");
         add(new H2(String.format(getTranslation("social.heading"), configuration.getMastodon().hashtag())));
         add(messageContainer);

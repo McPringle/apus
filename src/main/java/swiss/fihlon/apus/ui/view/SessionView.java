@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.ui.view;
 
-import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Text;
@@ -74,10 +73,7 @@ public final class SessionView extends Div {
         this.startTime = startTime;
         this.endTime = endTime;
         this.language = language;
-    }
 
-    @Override
-    protected void onAttach(@NotNull final AttachEvent attachEvent) {
         addClassName("session-view");
         add(createTitleComponent());
         add(createSpeakersComponent());

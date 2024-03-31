@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.ui.view;
 
-import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -39,7 +38,6 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@org.springframework.stereotype.Component
 @CssImport(value = "./themes/apus/views/conference-view.css")
 public final class ConferenceView extends Div {
 
@@ -48,17 +46,11 @@ public final class ConferenceView extends Div {
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
 
     private final transient ConferenceService conferenceService;
-    private final transient TaskScheduler taskScheduler;
     private final Div sessionContainer = new Div();
 
     public ConferenceView(@NotNull final ConferenceService conferenceService,
                           @NotNull final TaskScheduler taskScheduler) {
         this.conferenceService = conferenceService;
-        this.taskScheduler = taskScheduler;
-    }
-
-    @Override
-    protected void onAttach(@NotNull final AttachEvent attachEvent) {
         setId("conference-view");
         add(new H2(String.format(getTranslation("conference.heading"),
                 LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale()))));
