@@ -37,19 +37,29 @@ public final class MessageView extends Div {
 
     public MessageView(@NotNull final Message message) {
         addClassName("message-view");
-        final String messageText = Jsoup.parse(message.html()).text();
-        add(new Html(String.format("<div>%s</div>",
-                messageText.length() > MAX_LENGTH ? truncateMessageText(messageText) : message.html()
-        )));
-        for (final String image : message.images()) {
-            add(new Image(image, image));
-        }
+        add(createTextComponent(message));
+        add(createImageComponents(message));
         add(createDateTimeComponent(message));
+    }
+
+    @NotNull
+    private Component createTextComponent(@NotNull final Message message) {
+        final String messageText = Jsoup.parse(message.html()).text();
+        return new Html(String.format("<div>%s</div>",
+                messageText.length() > MAX_LENGTH ? truncateMessageText(messageText) : message.html()
+        ));
     }
 
     @NotNull
     private String truncateMessageText(@NotNull final String messageText) {
         return "<p>" + messageText.substring(0, MAX_LENGTH) + TRUNC_INDICATOR + "</p>";
+    }
+
+    @NotNull
+    private Component[] createImageComponents(@NotNull final Message message) {
+        return message.images().stream()
+                .map(image -> new Image(image, image))
+                .toArray(Image[]::new);
     }
 
     @NotNull
