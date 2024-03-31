@@ -21,6 +21,7 @@ import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Image;
 import org.jetbrains.annotations.NotNull;
 import swiss.fihlon.apus.social.Message;
 
@@ -37,5 +38,8 @@ public final class MessageView extends Div {
     protected void onAttach(@NotNull final AttachEvent attachEvent) {
         addClassName("message-view");
         add(new Html("<div>" + message.html() + "</div>"));
+        for (final String image : message.images()) {
+            add(new Image(image, image));
+        }
     }
 }

@@ -20,11 +20,15 @@ package swiss.fihlon.apus.social;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-public record Message(String id, LocalDateTime date, String author, String avatar, String html)
+public record Message(@NotNull String id, @NotNull LocalDateTime date,
+                      @NotNull String author, @NotNull String avatar,
+                      @NotNull String html, @NotNull List<String> images)
         implements Comparable<Message> {
     @Override
     public int compareTo(@NotNull final Message other) {
-        return date.compareTo(other.date);
+        final int dateCompareResult = date.compareTo(other.date);
+        return dateCompareResult == 0 ? id.compareTo(other.id) : dateCompareResult;
     }
 }

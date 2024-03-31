@@ -64,21 +64,20 @@ public final class MastodonAPI {
         final LocalDateTime date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         final String author = account == null ? "" : account.getDisplayName();
         final String avatar = account == null ? "" : account.getAvatar();
-        final String html = status.getContent() + convertToImages(status.getMediaAttachments());
+        final String html = status.getContent();
+        final List<String> images = getImages(status.getMediaAttachments());
 
-        return new Message(id, date, author, avatar, html);
+        return new Message(id, date, author, avatar, html, images);
     }
 
-    private String convertToImages(@NotNull final List<MediaAttachment> mediaAttachments) {
+    private List<String> getImages(@NotNull final List<MediaAttachment> mediaAttachments) {
         final List<String> images = new ArrayList<>();
-
         for (final MediaAttachment mediaAttachment : mediaAttachments) {
             if (MediaAttachment.MediaType.IMAGE.equals(mediaAttachment.getType())) {
-                images.add("<img src=\"" + mediaAttachment.getUrl() + "\" />");
+                images.add(mediaAttachment.getUrl());
             }
         }
-
-        return String.join("", images);
+        return images;
     }
 
 }
