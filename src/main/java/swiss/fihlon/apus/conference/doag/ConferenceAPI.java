@@ -50,13 +50,17 @@ public final class ConferenceAPI {
     public static final Logger LOGGER = LoggerFactory.getLogger(ConferenceAPI.class);
     public static final String CONFERENCE_API_LOCATION = "https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/";
 
-    private final String location;
+    private final int eventId;
 
     public ConferenceAPI(@NotNull final Configuration configuration) {
-        this.location = String.format(CONFERENCE_API_LOCATION, configuration.getDoag().eventId());
+        this.eventId = configuration.getDoag().eventId();
     }
 
     public List<Session> getSessions() {
+        if (eventId == 0) {
+            return List.of();
+        }
+
         final ArrayList<Session> sessions = new ArrayList<>();
         int lastSlotId = 0;
         try {
@@ -148,6 +152,7 @@ public final class ConferenceAPI {
     }
 
     private String getJSON() throws IOException, URISyntaxException {
+        final var location = String.format(CONFERENCE_API_LOCATION, eventId);
         try (InputStream in = new URI(location).toURL().openStream()) {
             return new String(in.readAllBytes(), StandardCharsets.UTF_8);
         }

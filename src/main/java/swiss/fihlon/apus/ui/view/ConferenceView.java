@@ -70,6 +70,9 @@ public final class ConferenceView extends Div {
         final var today = LocalDate.now();
         final var roomCounter = new AtomicInteger(0);
         final var roomsWithSessions = conferenceService.getRoomsWithSessions().entrySet();
+        if (roomsWithSessions.isEmpty()) {
+            Notification.show(getTranslation("conference.error.nosessions"));
+        }
         for (final Map.Entry<Room, List<Session>> roomWithSession : roomsWithSessions) {
             if (roomCounter.get() >= MAX_ROOMS_IN_VIEW) {
                 Notification.show(String.format(getTranslation("conference.error.rooms"), roomsWithSessions.size()));
