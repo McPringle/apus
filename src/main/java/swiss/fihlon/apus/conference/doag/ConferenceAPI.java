@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import swiss.fihlon.apus.conference.Language;
+import swiss.fihlon.apus.conference.Room;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.SessionImportException;
 import swiss.fihlon.apus.conference.Speaker;
@@ -75,11 +76,11 @@ public final class ConferenceAPI {
                 final JSONObject rooms = day.getJSONObject("rooms");
                 final Iterator<String> roomKeys = rooms.keys();
                 while (roomKeys.hasNext()) {
-                    final String room = roomKeys.next();
-                    if (room.contains("info°center") || room.contains("ring°kartbahn") || room.contains("ring°boulevard")) {
+                    final String roomName = roomKeys.next();
+                    if (roomName.contains("info°center") || roomName.contains("ring°kartbahn") || roomName.contains("ring°boulevard")) {
                         continue;
                     }
-                    final JSONArray slots = rooms.getJSONArray(room);
+                    final JSONArray slots = rooms.getJSONArray(roomName);
                     for (int slotCounter = 0; slotCounter < slots.length(); slotCounter++) {
                         final JSONObject slot = slots.getJSONObject(slotCounter);
                         lastSlotId = slot.getInt("id");
@@ -102,7 +103,7 @@ public final class ConferenceAPI {
                                 String.format("%s:%d", acronym, slot.getInt("id")),
                                 LocalDateTime.of(date, startTime),
                                 LocalDateTime.of(date, startTime).plus(duration),
-                                room,
+                                new Room(roomName),
                                 title,
                                 speakers.stream().map(Speaker::new).toList(),
                                 language);

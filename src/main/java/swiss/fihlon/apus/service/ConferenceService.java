@@ -21,6 +21,7 @@ import jakarta.annotation.PreDestroy;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
+import swiss.fihlon.apus.conference.Room;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.doag.ConferenceAPI;
 import swiss.fihlon.apus.configuration.Configuration;
@@ -41,7 +42,7 @@ public final class ConferenceService {
     private final Configuration configuration;
     private final ScheduledFuture<?> updateScheduler;
     private List<Session> sessions;
-    private List<String> rooms;
+    private List<Room> rooms;
 
     public ConferenceService(@NotNull final TaskScheduler taskScheduler,
                              @NotNull final Configuration configuration) {
@@ -76,10 +77,10 @@ public final class ConferenceService {
         }
     }
 
-    public Map<String, List<Session>> getRoomsWithSessions() {
+    public Map<Room, List<Session>> getRoomsWithSessions() {
         final LocalDateTime now = LocalDateTime.now();
-        final Map<String, List<Session>> roomsWithSessions = new TreeMap<>();
-        for (final String room : rooms) {
+        final Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
+        for (final Room room : rooms) {
             roomsWithSessions.put(room, new ArrayList<>());
         }
         final List<Session> runningAndNextSessions = sessions.stream()

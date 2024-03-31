@@ -27,6 +27,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
+import swiss.fihlon.apus.conference.Room;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.service.ConferenceService;
 
@@ -77,7 +78,7 @@ public final class ConferenceView extends Div {
         final var today = LocalDate.now();
         final var roomCounter = new AtomicInteger(0);
         final var roomsWithSessions = conferenceService.getRoomsWithSessions().entrySet();
-        for (final Map.Entry<String, List<Session>> roomWithSession : roomsWithSessions) {
+        for (final Map.Entry<Room, List<Session>> roomWithSession : roomsWithSessions) {
             if (roomCounter.get() >= MAX_ROOMS_IN_VIEW) {
                 Notification.show(String.format(getTranslation("conference.error.rooms"), roomsWithSessions.size()));
                 break;
@@ -107,10 +108,10 @@ public final class ConferenceView extends Div {
     }
 
     @NotNull
-    private static SessionView createSessionView(@NotNull final Map.Entry<String, List<Session>> roomWithSession,
+    private static SessionView createSessionView(@NotNull final Map.Entry<Room, List<Session>> roomWithSession,
                                                  @NotNull final LocalDate today,
                                                  @NotNull final AtomicInteger roomCounter) {
-        final String room = roomWithSession.getKey();
+        final Room room = roomWithSession.getKey();
         final List<Session> sessions = roomWithSession.getValue();
         final Session session = sessions.isEmpty() ? null : sessions.getFirst();
         final SessionView sessionView;

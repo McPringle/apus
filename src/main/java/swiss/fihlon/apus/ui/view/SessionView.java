@@ -28,6 +28,7 @@ import com.vaadin.flow.component.html.Span;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import swiss.fihlon.apus.conference.Language;
+import swiss.fihlon.apus.conference.Room;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.Speaker;
 
@@ -39,14 +40,14 @@ import java.util.stream.Collectors;
 @CssImport(value = "./themes/apus/views/session-view.css")
 public final class SessionView extends Div {
 
-    private final String room;
+    private final transient Room room;
     private final String title;
     private final transient List<Speaker> speakers;
     private final LocalTime startTime;
     private final LocalTime endTime;
     private final Language language;
 
-    public SessionView(@NotNull final String room) {
+    public SessionView(@NotNull final Room room) {
         this(room, null, List.of(), null, null, null);
     }
 
@@ -61,7 +62,7 @@ public final class SessionView extends Div {
         );
     }
 
-    public SessionView(@NotNull final String room,
+    public SessionView(@NotNull final Room room,
                        @Nullable final String title,
                        @NotNull final List<Speaker> speakers,
                        @Nullable final LocalTime startTime,
@@ -119,7 +120,7 @@ public final class SessionView extends Div {
 
     @NotNull
     private Component createRoomComponent() {
-        return new Div(new Text(String.format("\uD83D\uDCCD %s", room)));
+        return new Div(new Text(String.format("\uD83D\uDCCD %s", room.name())));
     }
 
     @NotNull
