@@ -108,6 +108,14 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 
 The environment variables will override the default values.
 
+### Configuration Files
+
+All configuration files are completely optional and stores in an `.apus` subdirectory of the home directory of the user running *Apus*.
+
+| File               | Description                                              |
+|--------------------|----------------------------------------------------------|
+| `hiddenMessageIds` | This file contains IDs of hidden messages, one per line. |
+
 ## Communication
 
 ### Matrix Chat
