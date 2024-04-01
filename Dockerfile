@@ -28,6 +28,7 @@ RUN ./mvnw clean package -DskipTests -Dcheckstyle.skip -Pproduction
 FROM eclipse-temurin:21
 COPY --from=build /usr/src/app/target/*.jar /usr/app/app.jar
 RUN useradd -m apus
+RUN mkdir /home/apus/.apus
 USER apus
 EXPOSE 8080
 CMD java -jar /usr/app/app.jar
