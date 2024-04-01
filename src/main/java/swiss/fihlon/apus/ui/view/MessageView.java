@@ -77,7 +77,7 @@ public final class MessageView extends Div {
         final var avatar = new Avatar(message.author(), message.avatar());
         if (!configuration.getAdmin().password().isBlank()) {
             final var menu = new ContextMenu();
-            menu.addItem("Hide", event -> confirmHideMessage(message));
+            menu.addItem(getTranslation("social.message.contextmenu.hide"), event -> confirmHideMessage(message));
             menu.setTarget(avatar);
         }
         return avatar;
@@ -85,14 +85,14 @@ public final class MessageView extends Div {
 
     private void confirmHideMessage(@NotNull final Message message) {
         final var dialog = new ConfirmDialog();
-        dialog.setHeader("Confirm hide message");
-        dialog.setText(String.format("Do you really want to hide the message from %s posted at %s?", message.author(), message.date()));
+        dialog.setHeader(getTranslation("social.message.dialog.hide.confirm.title"));
+        dialog.setText(getTranslation("social.message.dialog.hide.confirm.text", message.author(), message.date()));
         dialog.setCloseOnEsc(true);
 
         dialog.setCancelable(true);
-        dialog.addCancelListener(event -> dialog.close());
+        dialog.setCancelButton(getTranslation("social.message.dialog.hide.confirm.cancel"), event -> dialog.close());
 
-        dialog.setConfirmText("Hide");
+        dialog.setConfirmText(getTranslation("social.message.dialog.hide.confirm.button"));
         dialog.addConfirmListener(event -> {
             dialog.close();
             authorizeHideMessage(message);
@@ -103,23 +103,23 @@ public final class MessageView extends Div {
 
     private void authorizeHideMessage(@NotNull final Message message) {
         final Dialog dialog = new Dialog();
-        dialog.setHeaderTitle("Authorize hide message");
+        dialog.setHeaderTitle(getTranslation("social.message.dialog.hide.authorize.title"));
         dialog.setCloseOnEsc(true);
         dialog.setCloseOnOutsideClick(true);
 
         final PasswordField passwordField = new PasswordField();
-        passwordField.setPlaceholder("password");
+        passwordField.setPlaceholder(getTranslation("social.message.dialog.hide.authorize.password"));
         passwordField.setRequired(true);
         passwordField.setValueChangeMode(ValueChangeMode.EAGER);
 
-        final Button hideButton = new Button("Hide", event -> {
+        final Button hideButton = new Button(getTranslation("social.message.dialog.hide.authorize.button"), event -> {
             dialog.close();
             hideMessage(message, passwordField.getValue());
         });
         hideButton.setEnabled(false);
         hideButton.setDisableOnClick(true);
 
-        final Button cancelButton = new Button("Cancel", event -> dialog.close());
+        final Button cancelButton = new Button(getTranslation("social.message.dialog.hide.authorize.cancel"), event -> dialog.close());
         cancelButton.setDisableOnClick(true);
         dialog.getFooter().add(hideButton, cancelButton);
 
@@ -134,9 +134,9 @@ public final class MessageView extends Div {
         if (password.equals(configuration.getAdmin().password())) {
             socialService.hideMessage(message);
             removeFromParent();
-            Notification.show("The message was hidden as requested.");
+            Notification.show(getTranslation("social.message.notification.hide.success"));
         } else {
-            Notification.show("You are not authorized to hide messages!");
+            Notification.show(getTranslation("social.message.notification.hide.rejected"));
         }
     }
 
