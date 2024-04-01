@@ -58,13 +58,7 @@ There is *no need* to run the `install` or `deploy` tasks. They will just run lo
 
 ### Docker
 
-*Apus* comes with a complete dockerized self-contained build. You don't need to have Maven or Java installed, [Docker](https://www.docker.com/) is enough. The Docker build file contains everything needed, just start a standard Docker build with the following command:
-
-```shell
-docker build -t apus .
-```
-
-This might run for a while and will produce a Docker image tagged `apus` on your local system.
+*Apus* comes with a complete dockerized build for production use. It is not recommended to use the self-contained build for development purposes. Please take a look at the section about [Production Build](#production-build) below.
 
 ## Running and debugging
 
@@ -115,6 +109,60 @@ All configuration files are completely optional and stores in an `.apus` subdire
 | File               | Description                                              |
 |--------------------|----------------------------------------------------------|
 | `hiddenMessageIds` | This file contains IDs of hidden messages, one per line. |
+
+## Production
+
+### Production Build
+
+#### Maven
+
+You can use [Maven](https://maven.apache.org/) to build *Apus* for production. Just specify the `production` profile. Example:
+
+```shell
+./mvnw clean package -Pproduction
+```
+
+#### Docker
+
+To create a production build for *Apus* it is highly recommended to use [Docker](https://www.docker.com/) or [Podman](https://podman.io/). *Apus* comes with a complete dockerized self-contained build. You don't need to have Maven or Java installed, [Docker](https://www.docker.com/) or [Podman](https://podman.io/) is enough. The Docker build file contains everything needed, just start a standard Docker build with the following command:
+
+```shell
+docker build -t apus .
+```
+
+This might run for a while and will produce a Docker image tagged `apus` on your local system.
+
+### Run in Production
+
+It is highly recommended to use [Docker](https://www.docker.com/) or [Podman](https://podman.io/) to run *Apus* in production. Use the following command line as an example:
+
+```shell
+docker run \
+    --name apus \
+    -p 80:8080 \
+    -v $HOME/.apus:/home/apus/.apus \
+    -e ADMIN_PASSWORD=sEcrEt \
+    -e DOAG_EVENT_ID=0 \
+    -e MASTODON_INSTANCE=mastodon.social \
+    -e MASTODON_HASHTAG=java \
+    -e TZ=CET \
+    -d \
+    --rm \
+    mcpringle/apus
+```
+
+Short explanation, consult the Docker or Podman documentation for more information about all available options for running an image.
+
+| Option         | Explanation                                  |
+|----------------|----------------------------------------------|
+| --name apus    | Specify the name for the running instance.   |
+| -p 80:8080     | Make *Apus* available on host port 80        |
+| -e KEY=value   | Configure *Apus* using environment variable. |
+| -d             | Run *Apus* in daemon mode (background).      |
+| --rm           | Remove the container when stopping *Apus*.   |
+| mcpringle/apus | The Docker image to be started.              |
+
+Modify this command according your needs and consult the [configuration section](#configuration) above for more information about how to configure *Apus*. The Docker image of *Apus* will be pulled from [Docker Hub](https://hub.docker.com/) automatically when not available locally.
 
 ## Communication
 
