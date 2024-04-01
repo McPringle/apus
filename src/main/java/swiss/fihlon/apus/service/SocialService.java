@@ -28,6 +28,9 @@ import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.social.Message;
 import swiss.fihlon.apus.social.mastodon.MastodonAPI;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,6 +65,7 @@ public final class SocialService {
         filterWords = configuration.getFilter().words().stream()
                 .map(filterWord -> filterWord.toLowerCase(DEFAULT_LOCALE).trim())
                 .toList();
+        loadHiddenMessageIds();
         updateMessages();
         updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateMessages, UPDATE_FREQUENCY);
     }
@@ -108,5 +112,36 @@ public final class SocialService {
                 message.id(), message.profile(), message.author());
         messages.remove(message);
         manuallyHiddenId.add(message.id());
+        saveHiddenMessageIds();
+    }
+
+    private Path getHiddenMessagesFilePath() {
+        final Path configDir = Path.of(System.getProperty("user.home"),".apus");
+        if (!configDir.toFile().exists()) {
+            try {
+                Files.createDirectories(configDir);
+            } catch (final IOException e) {
+                LOGGER.error("Unable to create configuration directory {}: {}", configDir, e.getMessage());
+            }
+        }
+        return configDir.resolve("hiddenMessageIds");
+    }
+
+    private void saveHiddenMessageIds() {
+        final var filePath = getHiddenMessagesFilePath();
+        try {
+            Files.writeString(filePath, String.join("\n", manuallyHiddenId));
+        } catch (final IOException e) {
+            LOGGER.error("Unable to save hidden message IDs to file '{}': {}", filePath, e.getMessage());
+        }
+    }
+
+    private void loadHiddenMessageIds() {
+        final var filePath = getHiddenMessagesFilePath();
+        try {
+            manuallyHiddenId.addAll(Files.readAllLines(filePath));
+        } catch (IOException e) {
+            LOGGER.error("Unable to load hidden message IDs from file '{}': {}", filePath, e.getMessage());
+        }
     }
 }
