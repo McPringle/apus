@@ -23,6 +23,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -118,9 +119,11 @@ public final class MessageView extends Div {
         });
         hideButton.setEnabled(false);
         hideButton.setDisableOnClick(true);
+        hideButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         final Button cancelButton = new Button(getTranslation("social.message.dialog.hide.authorize.cancel"), event -> dialog.close());
         cancelButton.setDisableOnClick(true);
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         dialog.getFooter().add(hideButton, cancelButton);
 
         passwordField.addKeyDownListener(event -> hideButton.setEnabled(!passwordField.isEmpty()));
