@@ -116,7 +116,7 @@ public final class SocialService {
     }
 
     private Path getHiddenMessagesFilePath() {
-        final Path configDir = Path.of(System.getProperty("user.home"),".apus");
+        final Path configDir = Path.of(System.getProperty("user.home"), ".apus");
         if (!configDir.toFile().exists()) {
             try {
                 Files.createDirectories(configDir);
