@@ -137,7 +137,7 @@ public final class MessageView extends Div {
         if (password.equals(configuration.getAdmin().password())) {
             socialService.hideMessage(message);
             removeFromParent();
-            Notification.show(getTranslation("social.message.notification.hide.success"));
+            Notification.show(getTranslation("social.message.notification.hide.success", message.author()));
         } else {
             Notification.show(getTranslation("social.message.notification.hide.rejected"));
         }
