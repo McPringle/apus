@@ -138,10 +138,14 @@ public final class SocialService {
 
     private void loadHiddenMessageIds() {
         final var filePath = getHiddenMessagesFilePath();
-        try {
-            manuallyHiddenId.addAll(Files.readAllLines(filePath));
-        } catch (IOException e) {
-            LOGGER.error("Unable to load hidden message IDs from file '{}': {}", filePath, e.getMessage());
+        if (filePath.toFile().exists()) {
+            try {
+                manuallyHiddenId.addAll(Files.readAllLines(filePath));
+            } catch (IOException e) {
+                LOGGER.error("Unable to load hidden message IDs from file '{}': {}", filePath, e.getMessage());
+            }
+        } else {
+            LOGGER.info("No previously saved hidden message IDs found.");
         }
     }
 }
