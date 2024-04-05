@@ -26,6 +26,7 @@ import social.bigbone.api.entity.Account;
 import social.bigbone.api.entity.MediaAttachment;
 import social.bigbone.api.entity.Status;
 import social.bigbone.api.exception.BigBoneRequestException;
+import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.social.Message;
 
 import java.time.Instant;
@@ -41,12 +42,17 @@ public final class MastodonAPI {
     private static final Logger LOGGER = LoggerFactory.getLogger(MastodonAPI.class);
 
     private final String instance;
+    private final String hashtag;
+    private final int imageLimit;
 
-    public MastodonAPI(@NotNull final String instance) {
-        this.instance = instance;
+    public MastodonAPI(@NotNull final Configuration configuration) {
+        final var mastodonConfig = configuration.getMastodon();
+        this.instance = mastodonConfig.instance();
+        this.hashtag = mastodonConfig.hashtag();
+        this.imageLimit = mastodonConfig.imageLimit();
     }
 
-    public List<Message> getMessages(@NotNull final String hashtag) {
+    public List<Message> getMessages() {
         try {
             final MastodonClient client = new MastodonClient.Builder(instance).build();
             final Pageable<Status> statuses = client.timelines().getTagTimeline(hashtag, LOCAL_AND_REMOTE).execute();
@@ -88,7 +94,8 @@ public final class MastodonAPI {
     private List<String> getImages(@NotNull final List<MediaAttachment> mediaAttachments) {
         final List<String> images = new ArrayList<>();
         for (final MediaAttachment mediaAttachment : mediaAttachments) {
-            if (MediaAttachment.MediaType.IMAGE.equals(mediaAttachment.getType())) {
+            if (images.size() < imageLimit
+                    && MediaAttachment.MediaType.IMAGE.equals(mediaAttachment.getType())) {
                 images.add(mediaAttachment.getUrl());
             }
         }

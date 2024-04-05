@@ -49,7 +49,6 @@ public final class SocialService {
 
     private final ScheduledFuture<?> updateScheduler;
     private final MastodonAPI mastodonAPI;
-    private final String hashtag;
     private final boolean filterReplies;
     private final boolean filterSensitive;
     private final List<String> filterWords;
@@ -58,8 +57,7 @@ public final class SocialService {
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
                          @NotNull final Configuration configuration) {
-        mastodonAPI = new MastodonAPI(configuration.getMastodon().instance());
-        hashtag = configuration.getMastodon().hashtag();
+        mastodonAPI = new MastodonAPI(configuration);
         filterReplies = configuration.getFilter().replies();
         filterSensitive = configuration.getFilter().sensitive();
         filterWords = configuration.getFilter().words().stream()
@@ -76,7 +74,7 @@ public final class SocialService {
     }
 
     private void updateMessages() {
-        final var newMessages = mastodonAPI.getMessages(hashtag).stream()
+        final var newMessages = mastodonAPI.getMessages().stream()
                 .filter(message -> !manuallyHiddenId.contains(message.id()))
                 .filter(message -> !filterSensitive || !message.isSensitive())
                 .filter(message -> !filterReplies || !message.isReply())

@@ -18,18 +18,29 @@
 package swiss.fihlon.apus.social.mastodon;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.Mastodon;
 import swiss.fihlon.apus.social.Message;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 class MastodonAPITest {
 
+    @Mock
+    private Configuration configuration;
+
     @Test
     void getMessages() {
-        final MastodonAPI mastodonAPI = new MastodonAPI("mastodon.social");
-        final List<Message> messages = mastodonAPI.getMessages("java");
+        when(configuration.getMastodon()).thenReturn(
+                new Mastodon("mastodon.social", "java", 0));
+
+        final MastodonAPI mastodonAPI = new MastodonAPI(configuration);
+        final List<Message> messages = mastodonAPI.getMessages();
+
         assertNotNull(messages);
     }
 }

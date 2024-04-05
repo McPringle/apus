@@ -16,6 +16,11 @@
       "description": "The hashtag for the Mastodon wall."
     },
     {
+      "name": "apus.mastodon.imageLimit",
+      "type": "java.lang.Integer",
+      "description": "Limit number of images per post."
+    },
+    {
       "name": "apus.filter.replies",
       "type": "java.lang.Boolean",
       "description": "Hide social media messages which are replies."
