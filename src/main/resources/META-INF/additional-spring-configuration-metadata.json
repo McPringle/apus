@@ -2,7 +2,7 @@
   "properties": [
     {
       "name": "apus.doag.eventId",
-      "type": "java.lang.String",
+      "type": "java.lang.Integer",
       "description": "The ID of the DOAG event to read the conference agenda."
     },
     {
