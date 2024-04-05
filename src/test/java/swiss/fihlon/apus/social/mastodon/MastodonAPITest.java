@@ -18,7 +18,9 @@
 package swiss.fihlon.apus.social.mastodon;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.configuration.Mastodon;
 import swiss.fihlon.apus.social.Message;
@@ -28,6 +30,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class MastodonAPITest {
 
     @Mock
