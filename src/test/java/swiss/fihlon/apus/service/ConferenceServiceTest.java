@@ -17,6 +17,7 @@
  */
 package swiss.fihlon.apus.service;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -35,6 +36,7 @@ class ConferenceServiceTest {
     private Configuration configuration;
 
     @Test
+    @Disabled // TODO inject test data instead of relying on an external API
     void displaySampleData() {
 
         when(configuration.getDoag()).thenReturn(new DOAG(773));
@@ -42,6 +44,5 @@ class ConferenceServiceTest {
         final ConferenceService conferenceService = new ConferenceService(new NoOpTaskScheduler(), configuration);
         assertEquals(12, conferenceService.getRoomsWithSessions().size());
         assertEquals(159, conferenceService.getAllSessions().size());
-        // TODO inject test data instead of relying on an external API
     }
 }
