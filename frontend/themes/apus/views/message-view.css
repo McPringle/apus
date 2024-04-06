@@ -24,7 +24,7 @@
 
 .message-view img {
     max-width: 100%;
-    max-height: var(--masonry-brick-width);
+    max-height: 242px;
     border-radius: var(--lumo-border-radius-s);
 }
 
