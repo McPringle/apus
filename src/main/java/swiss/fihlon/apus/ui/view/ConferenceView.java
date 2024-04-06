@@ -31,6 +31,7 @@ import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.service.ConferenceService;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
@@ -58,8 +59,7 @@ public final class ConferenceView extends Div {
                 LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale()))));
         add(createLegend());
         add(sessionContainer);
-        updateConferenceSessions();
-        final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, UPDATE_FREQUENCY);
+        final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, Instant.now(), UPDATE_FREQUENCY);
         addDetachListener(event -> updateScheduler.cancel(true));
     }
 

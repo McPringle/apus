@@ -27,6 +27,7 @@ import swiss.fihlon.apus.service.SocialService;
 import swiss.fihlon.apus.social.Message;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.ScheduledFuture;
 
 @CssImport(value = "./themes/apus/views/social-view.css")
@@ -48,8 +49,7 @@ public final class SocialView extends Div {
         add(new H2(getTranslation("social.heading", configuration.getMastodon().hashtag())));
         add(messageContainer);
         messageContainer.addClassName("masonry");
-        updateMessages();
-        final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, UPDATE_FREQUENCY);
+        final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, Instant.now(), UPDATE_FREQUENCY);
         addDetachListener(event -> updateScheduler.cancel(true));
     }
 
