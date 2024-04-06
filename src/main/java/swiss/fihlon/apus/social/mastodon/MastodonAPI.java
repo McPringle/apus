@@ -25,7 +25,6 @@ import social.bigbone.api.Pageable;
 import social.bigbone.api.entity.Account;
 import social.bigbone.api.entity.MediaAttachment;
 import social.bigbone.api.entity.Status;
-import social.bigbone.api.exception.BigBoneRequestException;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.social.Message;
 
@@ -61,7 +60,7 @@ public final class MastodonAPI {
                     .sorted()
                     .toList()
                     .reversed();
-        } catch (final BigBoneRequestException e) {
+        } catch (final Exception e) {
             LOGGER.error("Unable to load statuses with hashtag '{}' from Mastodon instance '{}': {}",
                     hashtag, instance, e.getMessage());
             return List.of();
