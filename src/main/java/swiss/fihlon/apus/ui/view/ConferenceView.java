@@ -32,6 +32,7 @@ import swiss.fihlon.apus.service.ConferenceService;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ public final class ConferenceView extends Div {
     public static final String LABEL_THEME = "badge";
     private static final int MAX_ROOMS_IN_VIEW = 12;
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
+    private static final Duration TIME_LIMIT_NEXT_SESSION = Duration.ofHours(1);
 
     private final transient ConferenceService conferenceService;
     private final Div sessionContainer = new Div();
@@ -106,11 +108,14 @@ public final class ConferenceView extends Div {
     private static SessionView createSessionView(@NotNull final Map.Entry<Room, List<Session>> roomWithSession,
                                                  @NotNull final LocalDate today,
                                                  @NotNull final AtomicInteger roomCounter) {
+        final LocalDateTime timeLimitNextSession = LocalDateTime.now().plus(TIME_LIMIT_NEXT_SESSION);
         final Room room = roomWithSession.getKey();
         final List<Session> sessions = roomWithSession.getValue();
         final Session session = sessions.isEmpty() ? null : sessions.getFirst();
         final SessionView sessionView;
-        if (session != null && session.startDate().toLocalDate().isEqual(today)) {
+        if (session != null
+                && session.startDate().toLocalDate().isEqual(today)
+                && session.startDate().isBefore(timeLimitNextSession)) {
             sessionView = new SessionView(session);
         } else {
             sessionView = new SessionView(room);
