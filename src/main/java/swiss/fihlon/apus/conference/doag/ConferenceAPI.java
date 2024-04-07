@@ -64,6 +64,7 @@ public final class ConferenceAPI {
         final ArrayList<Session> sessions = new ArrayList<>();
         int lastSlotId = 0;
         try {
+            LOGGER.info("Starting download of sessions for event ID {}", eventId);
             final String json = getJSON();
             final JSONObject jsonObject = new JSONObject(json);
             final JSONObject schedule = jsonObject.getJSONObject("schedule");
@@ -115,6 +116,7 @@ public final class ConferenceAPI {
                     }
                 }
             }
+            LOGGER.info("Successfully loaded {} sessions for event ID {}", sessions.size(), eventId);
         } catch (IOException | URISyntaxException | JSONException e) {
             throw new SessionImportException(String.format("Error parsing slot %d: %s", lastSlotId, e.getMessage()), e);
         }

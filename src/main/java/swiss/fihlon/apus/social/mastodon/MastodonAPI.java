@@ -53,13 +53,16 @@ public final class MastodonAPI {
 
     public List<Message> getMessages() {
         try {
+            LOGGER.info("Starting download of messages with hashtag '{}' from instance '{}'", hashtag, instance);
             final MastodonClient client = new MastodonClient.Builder(instance).build();
             final Pageable<Status> statuses = client.timelines().getTagTimeline(hashtag, LOCAL_AND_REMOTE).execute();
-            return statuses.getPart().stream()
+            final List<Message> messages = statuses.getPart().stream()
                     .map(this::convertToMessage)
                     .sorted()
                     .toList()
                     .reversed();
+            LOGGER.info("Successfully downloaded {} messages with hashtag '{}' from instance '{}'", messages.size(), hashtag, instance);
+            return messages;
         } catch (final Exception e) {
             LOGGER.error("Unable to load statuses with hashtag '{}' from Mastodon instance '{}': {}",
                     hashtag, instance, e.getMessage());
