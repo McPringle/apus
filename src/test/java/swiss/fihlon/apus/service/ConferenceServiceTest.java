@@ -43,6 +43,5 @@ class ConferenceServiceTest {
 
         final ConferenceService conferenceService = new ConferenceService(new NoOpTaskScheduler(), configuration);
         assertEquals(12, conferenceService.getRoomsWithSessions().size());
-        assertEquals(159, conferenceService.getAllSessions().size());
     }
 }

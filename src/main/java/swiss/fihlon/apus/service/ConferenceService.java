@@ -19,10 +19,13 @@ package swiss.fihlon.apus.service;
 
 import jakarta.annotation.PreDestroy;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.conference.Room;
 import swiss.fihlon.apus.conference.Session;
+import swiss.fihlon.apus.conference.SessionImportException;
 import swiss.fihlon.apus.conference.doag.ConferenceAPI;
 import swiss.fihlon.apus.configuration.Configuration;
 
@@ -38,11 +41,11 @@ import java.util.concurrent.ScheduledFuture;
 public final class ConferenceService {
 
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(5);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConferenceService.class);
 
     private final Configuration configuration;
     private final ScheduledFuture<?> updateScheduler;
-    private List<Session> sessions;
-    private List<Room> rooms;
+    private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
 
     public ConferenceService(@NotNull final TaskScheduler taskScheduler,
                              @NotNull final Configuration configuration) {
@@ -57,38 +60,40 @@ public final class ConferenceService {
     }
 
     private void updateSessions() {
-        final var newSessions = new ConferenceAPI(configuration).getSessions().stream()
-                .sorted()
-                .toList();
-        final var newRooms = newSessions.stream()
-                .map(Session::room)
-                .distinct()
-                .sorted()
-                .toList();
-        synchronized (this) {
-            sessions = newSessions;
-            rooms = newRooms;
-        }
-    }
+        try {
+            final var sessions = new ConferenceAPI(configuration).getSessions().stream()
+                    .sorted()
+                    .toList();
 
-    public List<Session> getAllSessions() {
-        synchronized (this) {
-            return List.copyOf(sessions);
+            final var rooms = sessions.stream()
+                    .map(Session::room)
+                    .distinct()
+                    .sorted()
+                    .toList();
+
+            final LocalDateTime now = LocalDateTime.now();
+            final Map<Room, List<Session>> newRoomsWithSessions = new TreeMap<>();
+            for (final Room room : rooms) {
+                newRoomsWithSessions.put(room, new ArrayList<>());
+            }
+            final List<Session> runningAndNextSessions = sessions.stream()
+                    .filter(session -> session.endDate().isAfter(now))
+                    .toList();
+            for (final Session session : runningAndNextSessions) {
+                newRoomsWithSessions.get(session.room()).add(session);
+            }
+
+            synchronized (this) {
+                roomsWithSessions = newRoomsWithSessions;
+            }
+        } catch (final SessionImportException e) {
+            LOGGER.error("Failed to import sessions: {}", e.getMessage());
         }
     }
 
     public Map<Room, List<Session>> getRoomsWithSessions() {
-        final LocalDateTime now = LocalDateTime.now();
-        final Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
-        for (final Room room : rooms) {
-            roomsWithSessions.put(room, new ArrayList<>());
+        synchronized (this) {
+            return new TreeMap<>(roomsWithSessions);
         }
-        final List<Session> runningAndNextSessions = sessions.stream()
-                .filter(session -> session.endDate().isAfter(now))
-                .toList();
-        for (final Session session : runningAndNextSessions) {
-            roomsWithSessions.get(session.room()).add(session);
-        }
-        return roomsWithSessions;
     }
 }
