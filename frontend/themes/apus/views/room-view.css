@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-.session-view {
+.room-view {
     border-radius: var(--lumo-border-radius-s);
     display: inline-block;
     width: 400px;
@@ -32,32 +32,32 @@
     background-color: #9bf4ff;
 }
 
-.next-session, .empty-session {
+.next-session, .empty-room {
     background-color: #62d7e3;
 }
 
-.empty-session {
+.empty-room {
     opacity: 0.5;
 }
 
-.empty-session .title h3 {
+.empty-room .title h3 {
     text-transform: uppercase;
 }
 
-.session-view .title {
+.room-view .title {
     content: "";
     clear: both;
     display: table;
     width: 400px;
 }
 
-.session-view .title h3 {
+.room-view .title h3 {
     font-size: 18px;
     margin-bottom: 10px;
     float: left;
     width: 376px;
 }
 
-.session-view .title .language {
+.room-view .title .language {
     float: right;
 }

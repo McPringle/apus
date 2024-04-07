@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import swiss.fihlon.apus.conference.Language;
 import swiss.fihlon.apus.conference.Room;
+import swiss.fihlon.apus.conference.RoomStyle;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.Speaker;
 
@@ -36,8 +37,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CssImport(value = "./themes/apus/views/session-view.css")
-public final class SessionView extends Div {
+@CssImport(value = "./themes/apus/views/room-view.css")
+public final class RoomView extends Div {
 
     private final transient Room room;
     private final String title;
@@ -46,11 +47,13 @@ public final class SessionView extends Div {
     private final LocalTime endTime;
     private final Language language;
 
-    public SessionView(@NotNull final Room room) {
+    private RoomStyle roomStyle = RoomStyle.NONE;
+
+    public RoomView(@NotNull final Room room) {
         this(room, null, List.of(), null, null, null);
     }
 
-    public SessionView(@NotNull final Session session) {
+    public RoomView(@NotNull final Session session) {
         this(
                 session.room(),
                 session.title(),
@@ -61,12 +64,12 @@ public final class SessionView extends Div {
         );
     }
 
-    public SessionView(@NotNull final Room room,
-                       @Nullable final String title,
-                       @NotNull final List<Speaker> speakers,
-                       @Nullable final LocalTime startTime,
-                       @Nullable final LocalTime endTime,
-                       @Nullable final Language language) {
+    public RoomView(@NotNull final Room room,
+                    @Nullable final String title,
+                    @NotNull final List<Speaker> speakers,
+                    @Nullable final LocalTime startTime,
+                    @Nullable final LocalTime endTime,
+                    @Nullable final Language language) {
         this.room = room;
         this.title = title;
         this.speakers = speakers;
@@ -74,18 +77,19 @@ public final class SessionView extends Div {
         this.endTime = endTime;
         this.language = language;
 
-        addClassName("session-view");
+        addClassName("room-view");
         add(createTitleComponent());
         add(createSpeakersComponent());
         add(createRoomComponent());
         add(createTimeComponent());
+        addClassName(roomStyle.getCssStyle());
     }
 
     @NotNull
     private Component createTitleComponent() {
         final var titleComponent = new Div();
         titleComponent.addClassName("title");
-        titleComponent.add(new H3(new Text(title == null ? getTranslation("conference.session.closed") : title)));
+        titleComponent.add(new H3(new Text(title == null ? getTranslation("conference.room.empty") : title)));
         titleComponent.add(createLanguageComponent());
         return titleComponent;
     }
@@ -125,17 +129,17 @@ public final class SessionView extends Div {
         final var now = LocalTime.now();
         if (startTime == null || endTime == null) { // empty session
             timeComponent.add(nbsp());
-            addClassName("empty-session");
+            roomStyle = RoomStyle.EMPTY;
         } else if (startTime.isBefore(now) && endTime.isAfter(now)) { // running session
             final Duration duration = Duration.between(now, endTime);
             final long timeLeft = Math.round(duration.getSeconds() / 60f);
             timeComponent.add(new Text("⌛ " + getTranslation(timeLeft == 1
                             ? "conference.session.countdown.singular" : "conference.session.countdown.plural",
                             timeLeft)));
-            addClassName("running-session");
+            roomStyle = RoomStyle.RUNNING;
         } else { // next session
             timeComponent.add(new Text(String.format("⌚ %s - %s", startTime, endTime)));
-            addClassName("next-session");
+            roomStyle = RoomStyle.NEXT;
         }
         return timeComponent;
     }
@@ -145,4 +149,8 @@ public final class SessionView extends Div {
         return new Html("<span>&nbsp;</span>");
     }
 
+    @NotNull
+    public RoomStyle getRoomStyle() {
+        return roomStyle;
+    }
 }

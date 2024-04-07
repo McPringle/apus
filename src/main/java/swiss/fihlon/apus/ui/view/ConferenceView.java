@@ -27,6 +27,7 @@ import com.vaadin.flow.component.notification.Notification;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.conference.Room;
+import swiss.fihlon.apus.conference.RoomStyle;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.service.ConferenceService;
 
@@ -35,8 +36,10 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -49,7 +52,8 @@ public final class ConferenceView extends Div {
     private static final Duration TIME_LIMIT_NEXT_SESSION = Duration.ofHours(1);
 
     private final transient ConferenceService conferenceService;
-    private final Div sessionContainer = new Div();
+    private final Div roomContainer = new Div();
+    private final Span legend = new Span();
 
     public ConferenceView(@NotNull final ConferenceService conferenceService,
                           @NotNull final TaskScheduler taskScheduler) {
@@ -58,8 +62,9 @@ public final class ConferenceView extends Div {
         add(new H2(getTranslation("conference.heading",
                 LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale()))));
         add(createLegend());
-        add(sessionContainer);
-        final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, Instant.now(), UPDATE_FREQUENCY);
+        add(roomContainer);
+        final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(
+                this::updateScheduler, Instant.now().plusSeconds(10), UPDATE_FREQUENCY);
         addDetachListener(event -> updateScheduler.cancel(true));
     }
 
@@ -68,59 +73,68 @@ public final class ConferenceView extends Div {
     }
 
     private void updateConferenceSessions() {
-        sessionContainer.removeAll();
+        roomContainer.removeAll();
         final var today = LocalDate.now();
         final var roomCounter = new AtomicInteger(0);
         final var roomsWithSessions = conferenceService.getRoomsWithSessions().entrySet();
         if (roomsWithSessions.isEmpty()) {
             Notification.show(getTranslation("conference.error.nosessions"));
         }
+        final var roomStylesInUse = new HashSet<RoomStyle>();
         for (final Map.Entry<Room, List<Session>> roomWithSession : roomsWithSessions) {
             if (roomCounter.get() >= MAX_ROOMS_IN_VIEW) {
                 Notification.show(String.format(getTranslation("conference.error.rooms"), roomsWithSessions.size()));
                 break;
             }
-            final SessionView sessionView = createSessionView(roomWithSession, today, roomCounter);
-            sessionContainer.add(sessionView);
+            final RoomView roomView = createRoomView(roomWithSession, today, roomCounter);
+            roomStylesInUse.add(roomView.getRoomStyle());
+            roomContainer.add(roomView);
         }
+        updateLegend(roomStylesInUse);
     }
 
     @NotNull
     private Component createLegend() {
-        final Component runningSession = new Span(getTranslation("conference.legend.running-session"));
-        runningSession.getElement().getThemeList().add(LABEL_THEME);
-        runningSession.addClassName("running-session");
-
-        final Component nextSession = new Span(getTranslation("conference.legend.next-session"));
-        nextSession.getElement().getThemeList().add(LABEL_THEME);
-        nextSession.addClassName("next-session");
-
-        final Component emptySession = new Span(getTranslation("conference.legend.empty-session"));
-        emptySession.getElement().getThemeList().add(LABEL_THEME);
-        emptySession.addClassName("empty-session");
-
-        final Component legend = new Span(runningSession, nextSession, emptySession);
         legend.addClassName("legend");
         return legend;
     }
 
+    /**
+     * Important implementation detail:
+     * The loop iterates over the enum, not the used values, so the order of the
+     * items in the legend are predictable (based on the order of the enum values).
+     *
+     * @param roomStylesInUse a <code>Set</code> of all <code>RoomStyle</code>s in use
+     */
+    private void updateLegend(@NotNull final Set<RoomStyle> roomStylesInUse) {
+        legend.removeAll();
+        for (final RoomStyle roomStyle : RoomStyle.values()) {
+            if (roomStylesInUse.contains(roomStyle)) {
+                final Component legendItem = new Span(getTranslation(roomStyle.getTranslationKey()));
+                legendItem.getElement().getThemeList().add(LABEL_THEME);
+                legendItem.addClassName(roomStyle.getCssStyle());
+                legend.add(legendItem);
+            }
+        }
+    }
+
     @NotNull
-    private static SessionView createSessionView(@NotNull final Map.Entry<Room, List<Session>> roomWithSession,
-                                                 @NotNull final LocalDate today,
-                                                 @NotNull final AtomicInteger roomCounter) {
+    private static RoomView createRoomView(@NotNull final Map.Entry<Room, List<Session>> roomWithSession,
+                                              @NotNull final LocalDate today,
+                                              @NotNull final AtomicInteger roomCounter) {
         final LocalDateTime timeLimitNextSession = LocalDateTime.now().plus(TIME_LIMIT_NEXT_SESSION);
         final Room room = roomWithSession.getKey();
         final List<Session> sessions = roomWithSession.getValue();
         final Session session = sessions.isEmpty() ? null : sessions.getFirst();
-        final SessionView sessionView;
+        final RoomView roomView;
         if (session != null
                 && session.startDate().toLocalDate().isEqual(today)
                 && session.startDate().isBefore(timeLimitNextSession)) {
-            sessionView = new SessionView(session);
+            roomView = new RoomView(session);
         } else {
-            sessionView = new SessionView(room);
+            roomView = new RoomView(room);
         }
-        sessionView.setId("session-" + roomCounter.getAndIncrement());
-        return sessionView;
+        roomView.setId("room-" + roomCounter.getAndIncrement());
+        return roomView;
     }
 }

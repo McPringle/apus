@@ -49,7 +49,8 @@ public final class SocialView extends Div {
         add(new H2(getTranslation("social.heading", configuration.getMastodon().hashtag())));
         add(messageContainer);
         messageContainer.addClassName("masonry");
-        final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateScheduler, Instant.now(), UPDATE_FREQUENCY);
+        final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(
+                this::updateScheduler, Instant.now().plusSeconds(10), UPDATE_FREQUENCY);
         addDetachListener(event -> updateScheduler.cancel(true));
     }
 
