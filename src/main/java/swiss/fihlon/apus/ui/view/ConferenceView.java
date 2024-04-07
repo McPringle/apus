@@ -64,7 +64,7 @@ public final class ConferenceView extends Div {
         add(createLegend());
         add(roomContainer);
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(
-                this::updateScheduler, Instant.now().plusSeconds(10), UPDATE_FREQUENCY);
+                this::updateScheduler, Instant.now().plusSeconds(1), UPDATE_FREQUENCY);
         addDetachListener(event -> updateScheduler.cancel(true));
     }
 
