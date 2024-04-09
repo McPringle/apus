@@ -33,7 +33,7 @@ import java.util.concurrent.ScheduledFuture;
 @CssImport(value = "./themes/apus/views/social-view.css")
 public final class SocialView extends Div {
 
-    private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
+    private static final Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
 
     private final transient SocialService socialService;
     private final transient Configuration configuration;

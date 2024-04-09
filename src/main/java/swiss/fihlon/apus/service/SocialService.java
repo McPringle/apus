@@ -43,7 +43,7 @@ import java.util.concurrent.ScheduledFuture;
 @Service
 public final class SocialService {
 
-    private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
+    private static final Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
     private static final Locale DEFAULT_LOCALE = Locale.getDefault();
     private static final Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
 
