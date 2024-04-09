@@ -52,6 +52,7 @@ public final class ConferenceView extends Div {
     private static final Duration TIME_LIMIT_NEXT_SESSION = Duration.ofHours(1);
 
     private final transient ConferenceService conferenceService;
+    private final H2 title = createTitle();
     private final Div roomContainer = new Div();
     private final Span legend = new Span();
 
@@ -59,8 +60,7 @@ public final class ConferenceView extends Div {
                           @NotNull final TaskScheduler taskScheduler) {
         this.conferenceService = conferenceService;
         setId("conference-view");
-        add(new H2(getTranslation("conference.heading",
-                LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale()))));
+        add(title);
         add(createLegend());
         add(roomContainer);
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(
@@ -91,6 +91,19 @@ public final class ConferenceView extends Div {
             roomContainer.add(roomView);
         }
         updateLegend(roomStylesInUse);
+        updateTitle();
+    }
+
+    @NotNull
+    private H2 createTitle() {
+        return new H2(getTranslation("conference.heading",
+                LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale())));
+    }
+
+    private void updateTitle() {
+        title.setText(getTranslation("conference.heading",
+                LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale())));
+
     }
 
     @NotNull
