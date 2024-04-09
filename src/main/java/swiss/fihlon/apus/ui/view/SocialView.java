@@ -133,7 +133,7 @@ public final class SocialView extends Div {
             if (adminModeEnabled) {
                 final var messageMenu = new ContextMenu();
                 messageMenu.addItem(getTranslation("social.message.contextmenu.hide.message"), event -> hideMessage(message));
-                messageMenu.addItem(getTranslation("social.message.contextmenu.hide.profile"), event -> blockProfile(message));
+                messageMenu.addItem(getTranslation("social.message.contextmenu.block.profile"), event -> blockProfile(message));
                 messageMenu.setTarget(messageView);
             }
             messageContainer.add(messageView);
@@ -148,7 +148,7 @@ public final class SocialView extends Div {
 
     private void blockProfile(@NotNull final Message message) {
         socialService.hideProfile(message);
-        Notification.show(getTranslation("social.message.contextmenu.hide.profile.done"));
+        Notification.show(getTranslation("social.message.contextmenu.block.profile.done"));
         updateMessages();
     }
 }

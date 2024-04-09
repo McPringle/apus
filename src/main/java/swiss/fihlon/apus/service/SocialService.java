@@ -52,8 +52,8 @@ public final class SocialService {
     private final boolean filterReplies;
     private final boolean filterSensitive;
     private final List<String> filterWords;
-    private final Set<String> manuallyHiddenId = new HashSet<>();
-    private final Set<String> manuallyHiddenProfile = new HashSet<>();
+    private final Set<String> hiddenMessages = new HashSet<>();
+    private final Set<String> blockedProfiles = new HashSet<>();
     private List<Message> messages = List.of();
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
@@ -65,7 +65,7 @@ public final class SocialService {
                 .map(filterWord -> filterWord.toLowerCase(DEFAULT_LOCALE).trim())
                 .toList();
         loadHiddenMessageIds();
-        loadHiddenProfiles();
+        loadBlockedProfiles();
         updateMessages();
         updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateMessages, UPDATE_FREQUENCY);
     }
@@ -77,8 +77,8 @@ public final class SocialService {
 
     private void updateMessages() {
         final var newMessages = mastodonAPI.getMessages().stream()
-                .filter(message -> !manuallyHiddenId.contains(message.id()))
-                .filter(message -> !manuallyHiddenProfile.contains(message.profile()))
+                .filter(message -> !hiddenMessages.contains(message.id()))
+                .filter(message -> !blockedProfiles.contains(message.profile()))
                 .filter(message -> !filterSensitive || !message.isSensitive())
                 .filter(message -> !filterReplies || !message.isReply())
                 .filter(this::checkWordFilter)
@@ -112,7 +112,7 @@ public final class SocialService {
         LOGGER.warn("Hiding message (id={}, profile={}, author={})",
                 message.id(), message.profile(), message.author());
         messages.remove(message);
-        manuallyHiddenId.add(message.id());
+        hiddenMessages.add(message.id());
         saveHiddenMessageIds();
     }
 
@@ -120,8 +120,8 @@ public final class SocialService {
         LOGGER.warn("Hide profile (id={}, profile={}, author={})",
                 message.id(), message.profile(), message.author());
         messages.remove(message);
-        manuallyHiddenProfile.add(message.profile());
-        saveHiddenProfiles();
+        blockedProfiles.add(message.profile());
+        saveBlockedProfiles();
     }
 
     private Path getConfigDir() {
@@ -137,46 +137,46 @@ public final class SocialService {
     }
 
     private void saveHiddenMessageIds() {
-        final var filePath = getConfigDir().resolve("hiddenMessageIds");
+        final var filePath = getConfigDir().resolve("hiddenMessages");
         try {
-            Files.writeString(filePath, String.join("\n", manuallyHiddenId));
+            Files.writeString(filePath, String.join("\n", hiddenMessages));
         } catch (final IOException e) {
-            LOGGER.error("Unable to save hidden message IDs to file '{}': {}", filePath, e.getMessage());
+            LOGGER.error("Unable to save hidden messages to file '{}': {}", filePath, e.getMessage());
         }
     }
 
-    private void saveHiddenProfiles() {
-        final var filePath = getConfigDir().resolve("hiddenProfiles");
+    private void saveBlockedProfiles() {
+        final var filePath = getConfigDir().resolve("blockedProfiles");
         try {
-            Files.writeString(filePath, String.join("\n", manuallyHiddenProfile));
+            Files.writeString(filePath, String.join("\n", blockedProfiles));
         } catch (final IOException e) {
-            LOGGER.error("Unable to save hidden profiles to file '{}': {}", filePath, e.getMessage());
+            LOGGER.error("Unable to save blocked profiles to file '{}': {}", filePath, e.getMessage());
         }
     }
 
     private void loadHiddenMessageIds() {
-        final var filePath = getConfigDir().resolve("hiddenMessageIds");
+        final var filePath = getConfigDir().resolve("hiddenMessages");
         if (filePath.toFile().exists()) {
             try {
-                manuallyHiddenId.addAll(Files.readAllLines(filePath));
+                hiddenMessages.addAll(Files.readAllLines(filePath));
             } catch (IOException e) {
-                LOGGER.error("Unable to load hidden message IDs from file '{}': {}", filePath, e.getMessage());
+                LOGGER.error("Unable to load hidden messages from file '{}': {}", filePath, e.getMessage());
             }
         } else {
-            LOGGER.info("No previously saved hidden message IDs found.");
+            LOGGER.info("No previously saved hidden messages found.");
         }
     }
 
-    private void loadHiddenProfiles() {
-        final var filePath = getConfigDir().resolve("hiddenProfiles");
+    private void loadBlockedProfiles() {
+        final var filePath = getConfigDir().resolve("blockedProfiles");
         if (filePath.toFile().exists()) {
             try {
-                manuallyHiddenProfile.addAll(Files.readAllLines(filePath));
+                blockedProfiles.addAll(Files.readAllLines(filePath));
             } catch (IOException e) {
-                LOGGER.error("Unable to load hidden profiles from file '{}': {}", filePath, e.getMessage());
+                LOGGER.error("Unable to load blocked profiles from file '{}': {}", filePath, e.getMessage());
             }
         } else {
-            LOGGER.info("No previously saved hidden profiles found.");
+            LOGGER.info("No previously saved blocked profiles found.");
         }
     }
 }
