@@ -60,7 +60,7 @@ public final class SocialView extends Div {
 
     private void updateMessages() {
         messageContainer.removeAll();
-        for (final Message message : socialService.getMessages(30)) {
+        for (final Message message : socialService.getMessages(50)) {
             messageContainer.add(new MessageView(message, socialService, configuration));
         }
     }
