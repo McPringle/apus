@@ -22,24 +22,14 @@ import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
-import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.textfield.PasswordField;
-import com.vaadin.flow.data.value.ValueChangeMode;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.ocpsoft.prettytime.PrettyTime;
-import swiss.fihlon.apus.configuration.Configuration;
-import swiss.fihlon.apus.service.SocialService;
 import swiss.fihlon.apus.social.Message;
 
 @CssImport(value = "./themes/apus/views/message-view.css")
@@ -47,14 +37,8 @@ public final class MessageView extends Div {
 
     private static final int MAX_LENGTH = 500;
     private static final String TRUNC_INDICATOR = " […]";
-    private final transient SocialService socialService;
-    private final transient Configuration configuration;
 
-    public MessageView(@NotNull final Message message,
-                       @NotNull final SocialService socialService,
-                       @NotNull final Configuration configuration) {
-        this.socialService = socialService;
-        this.configuration = configuration;
+    public MessageView(@NotNull final Message message) {
         setId("message-" + message.id());
         addClassName("message-view");
         add(createHeaderComponent(message));
@@ -75,132 +59,7 @@ public final class MessageView extends Div {
     }
 
     private Component createAvatarComponent(@NotNull final Message message) {
-        final var avatar = new Avatar(message.author(), message.avatar());
-        if (!configuration.getAdmin().password().isBlank()) {
-            final var menu = new ContextMenu();
-            menu.addItem(getTranslation("social.message.contextmenu.hide.message"), event -> confirmHideMessage(message));
-            menu.addItem(getTranslation("social.message.contextmenu.hide.profile"), event -> confirmHideProfile(message));
-            menu.setTarget(avatar);
-        }
-        return avatar;
-    }
-
-    private void confirmHideMessage(@NotNull final Message message) {
-        final var dialog = new ConfirmDialog();
-        dialog.setHeader(getTranslation("social.message.dialog.hide.message.confirm.title"));
-        dialog.setText(getTranslation("social.message.dialog.hide.message.confirm.text", message.author(), message.date()));
-        dialog.setCloseOnEsc(true);
-
-        dialog.setCancelable(true);
-        dialog.setCancelButton(getTranslation("social.message.dialog.hide.message.confirm.cancel"), event -> dialog.close());
-
-        dialog.setConfirmText(getTranslation("social.message.dialog.hide.message.confirm.button"));
-        dialog.addConfirmListener(event -> {
-            dialog.close();
-            authorizeHideMessage(message);
-        });
-
-        dialog.open();
-    }
-
-    private void authorizeHideMessage(@NotNull final Message message) {
-        final Dialog dialog = new Dialog();
-        dialog.setHeaderTitle(getTranslation("social.message.dialog.hide.message.authorize.title"));
-        dialog.setCloseOnEsc(true);
-        dialog.setCloseOnOutsideClick(true);
-
-        final PasswordField passwordField = new PasswordField();
-        passwordField.setPlaceholder(getTranslation("social.message.dialog.hide.message.authorize.password"));
-        passwordField.setRequired(true);
-        passwordField.setValueChangeMode(ValueChangeMode.EAGER);
-
-        final Button hideButton = new Button(getTranslation("social.message.dialog.hide.message.authorize.button"), event -> {
-            dialog.close();
-            hideMessage(message, passwordField.getValue());
-        });
-        hideButton.setEnabled(false);
-        hideButton.setDisableOnClick(true);
-        hideButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        final Button cancelButton = new Button(getTranslation("social.message.dialog.hide.message.authorize.cancel"), event -> dialog.close());
-        cancelButton.setDisableOnClick(true);
-        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-        dialog.getFooter().add(hideButton, cancelButton);
-
-        passwordField.addKeyDownListener(event -> hideButton.setEnabled(!passwordField.isEmpty()));
-        dialog.add(passwordField);
-
-        dialog.open();
-        passwordField.focus();
-    }
-
-    private void hideMessage(@NotNull final Message message, @NotNull final String password) {
-        if (password.equals(configuration.getAdmin().password())) {
-            socialService.hideMessage(message);
-            removeFromParent();
-            Notification.show(getTranslation("social.message.notification.hide.message.success", message.author()));
-        } else {
-            Notification.show(getTranslation("social.message.notification.hide.message.rejected"));
-        }
-    }
-
-    private void confirmHideProfile(@NotNull final Message message) {
-        final var dialog = new ConfirmDialog();
-        dialog.setHeader(getTranslation("social.message.dialog.hide.profile.confirm.title"));
-        dialog.setText(getTranslation("social.message.dialog.hide.profile.confirm.text", message.profile(), message.author()));
-        dialog.setCloseOnEsc(true);
-
-        dialog.setCancelable(true);
-        dialog.setCancelButton(getTranslation("social.message.dialog.hide.profile.confirm.cancel"), event -> dialog.close());
-
-        dialog.setConfirmText(getTranslation("social.message.dialog.hide.profile.confirm.button"));
-        dialog.addConfirmListener(event -> {
-            dialog.close();
-            authorizeHideProfile(message);
-        });
-
-        dialog.open();
-    }
-
-    private void authorizeHideProfile(@NotNull final Message message) {
-        final Dialog dialog = new Dialog();
-        dialog.setHeaderTitle(getTranslation("social.message.dialog.hide.profile.authorize.title"));
-        dialog.setCloseOnEsc(true);
-        dialog.setCloseOnOutsideClick(true);
-
-        final PasswordField passwordField = new PasswordField();
-        passwordField.setPlaceholder(getTranslation("social.message.dialog.hide.profile.authorize.password"));
-        passwordField.setRequired(true);
-        passwordField.setValueChangeMode(ValueChangeMode.EAGER);
-
-        final Button hideButton = new Button(getTranslation("social.message.dialog.hide.profile.authorize.button"), event -> {
-            dialog.close();
-            hideProfile(message, passwordField.getValue());
-        });
-        hideButton.setEnabled(false);
-        hideButton.setDisableOnClick(true);
-        hideButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        final Button cancelButton = new Button(getTranslation("social.message.dialog.hide.profile.authorize.cancel"), event -> dialog.close());
-        cancelButton.setDisableOnClick(true);
-        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-        dialog.getFooter().add(hideButton, cancelButton);
-
-        passwordField.addKeyDownListener(event -> hideButton.setEnabled(!passwordField.isEmpty()));
-        dialog.add(passwordField);
-
-        dialog.open();
-        passwordField.focus();
-    }
-
-    private void hideProfile(@NotNull final Message message, @NotNull final String password) {
-        if (password.equals(configuration.getAdmin().password())) {
-            socialService.hideProfile(message);
-            removeFromParent();
-            Notification.show(getTranslation("social.message.notification.hide.profile.success", message.profile(), message.author()));
-        } else {
-            Notification.show(getTranslation("social.message.notification.hide.profile.rejected"));
-        }
+        return new Avatar(message.author(), message.avatar());
     }
 
     @NotNull
