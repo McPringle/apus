@@ -105,10 +105,11 @@ The environment variables will override the default values.
 
 ### Configuration Files
 
-All configuration files are completely optional and stores in an `.apus` subdirectory of the home directory of the user running *Apus*.
+All configuration files are completely optional and stored in an `.apus` subdirectory of the home directory of the user running *Apus*.
 
 | File               | Description                                              |
 |--------------------|----------------------------------------------------------|
+| `blockedProfiles`  | This file contains blocked profiles, one per line.       |
 | `hiddenMessageIds` | This file contains IDs of hidden messages, one per line. |
 
 ## Production
