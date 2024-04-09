@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import social.bigbone.MastodonClient;
 import social.bigbone.api.Pageable;
+import social.bigbone.api.Range;
 import social.bigbone.api.entity.Account;
 import social.bigbone.api.entity.MediaAttachment;
 import social.bigbone.api.entity.Status;
@@ -55,7 +56,8 @@ public final class MastodonAPI {
         try {
             LOGGER.info("Starting download of messages with hashtag '{}' from instance '{}'", hashtag, instance);
             final MastodonClient client = new MastodonClient.Builder(instance).build();
-            final Pageable<Status> statuses = client.timelines().getTagTimeline(hashtag, LOCAL_AND_REMOTE).execute();
+            final Range range = new Range(null, null, null, 100);
+            final Pageable<Status> statuses = client.timelines().getTagTimeline(hashtag, LOCAL_AND_REMOTE, range).execute();
             final List<Message> messages = statuses.getPart().stream()
                     .map(this::convertToMessage)
                     .sorted()
