@@ -78,7 +78,8 @@ public final class MessageView extends Div {
         final var avatar = new Avatar(message.author(), message.avatar());
         if (!configuration.getAdmin().password().isBlank()) {
             final var menu = new ContextMenu();
-            menu.addItem(getTranslation("social.message.contextmenu.hide"), event -> confirmHideMessage(message));
+            menu.addItem(getTranslation("social.message.contextmenu.hide.message"), event -> confirmHideMessage(message));
+            menu.addItem(getTranslation("social.message.contextmenu.hide.profile"), event -> confirmHideProfile(message));
             menu.setTarget(avatar);
         }
         return avatar;
@@ -86,14 +87,14 @@ public final class MessageView extends Div {
 
     private void confirmHideMessage(@NotNull final Message message) {
         final var dialog = new ConfirmDialog();
-        dialog.setHeader(getTranslation("social.message.dialog.hide.confirm.title"));
-        dialog.setText(getTranslation("social.message.dialog.hide.confirm.text", message.author(), message.date()));
+        dialog.setHeader(getTranslation("social.message.dialog.hide.message.confirm.title"));
+        dialog.setText(getTranslation("social.message.dialog.hide.message.confirm.text", message.author(), message.date()));
         dialog.setCloseOnEsc(true);
 
         dialog.setCancelable(true);
-        dialog.setCancelButton(getTranslation("social.message.dialog.hide.confirm.cancel"), event -> dialog.close());
+        dialog.setCancelButton(getTranslation("social.message.dialog.hide.message.confirm.cancel"), event -> dialog.close());
 
-        dialog.setConfirmText(getTranslation("social.message.dialog.hide.confirm.button"));
+        dialog.setConfirmText(getTranslation("social.message.dialog.hide.message.confirm.button"));
         dialog.addConfirmListener(event -> {
             dialog.close();
             authorizeHideMessage(message);
@@ -104,16 +105,16 @@ public final class MessageView extends Div {
 
     private void authorizeHideMessage(@NotNull final Message message) {
         final Dialog dialog = new Dialog();
-        dialog.setHeaderTitle(getTranslation("social.message.dialog.hide.authorize.title"));
+        dialog.setHeaderTitle(getTranslation("social.message.dialog.hide.message.authorize.title"));
         dialog.setCloseOnEsc(true);
         dialog.setCloseOnOutsideClick(true);
 
         final PasswordField passwordField = new PasswordField();
-        passwordField.setPlaceholder(getTranslation("social.message.dialog.hide.authorize.password"));
+        passwordField.setPlaceholder(getTranslation("social.message.dialog.hide.message.authorize.password"));
         passwordField.setRequired(true);
         passwordField.setValueChangeMode(ValueChangeMode.EAGER);
 
-        final Button hideButton = new Button(getTranslation("social.message.dialog.hide.authorize.button"), event -> {
+        final Button hideButton = new Button(getTranslation("social.message.dialog.hide.message.authorize.button"), event -> {
             dialog.close();
             hideMessage(message, passwordField.getValue());
         });
@@ -121,7 +122,7 @@ public final class MessageView extends Div {
         hideButton.setDisableOnClick(true);
         hideButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        final Button cancelButton = new Button(getTranslation("social.message.dialog.hide.authorize.cancel"), event -> dialog.close());
+        final Button cancelButton = new Button(getTranslation("social.message.dialog.hide.message.authorize.cancel"), event -> dialog.close());
         cancelButton.setDisableOnClick(true);
         cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         dialog.getFooter().add(hideButton, cancelButton);
@@ -137,9 +138,68 @@ public final class MessageView extends Div {
         if (password.equals(configuration.getAdmin().password())) {
             socialService.hideMessage(message);
             removeFromParent();
-            Notification.show(getTranslation("social.message.notification.hide.success", message.author()));
+            Notification.show(getTranslation("social.message.notification.hide.message.success", message.author()));
         } else {
-            Notification.show(getTranslation("social.message.notification.hide.rejected"));
+            Notification.show(getTranslation("social.message.notification.hide.message.rejected"));
+        }
+    }
+
+    private void confirmHideProfile(@NotNull final Message message) {
+        final var dialog = new ConfirmDialog();
+        dialog.setHeader(getTranslation("social.message.dialog.hide.profile.confirm.title"));
+        dialog.setText(getTranslation("social.message.dialog.hide.profile.confirm.text", message.profile(), message.author()));
+        dialog.setCloseOnEsc(true);
+
+        dialog.setCancelable(true);
+        dialog.setCancelButton(getTranslation("social.message.dialog.hide.profile.confirm.cancel"), event -> dialog.close());
+
+        dialog.setConfirmText(getTranslation("social.message.dialog.hide.profile.confirm.button"));
+        dialog.addConfirmListener(event -> {
+            dialog.close();
+            authorizeHideProfile(message);
+        });
+
+        dialog.open();
+    }
+
+    private void authorizeHideProfile(@NotNull final Message message) {
+        final Dialog dialog = new Dialog();
+        dialog.setHeaderTitle(getTranslation("social.message.dialog.hide.profile.authorize.title"));
+        dialog.setCloseOnEsc(true);
+        dialog.setCloseOnOutsideClick(true);
+
+        final PasswordField passwordField = new PasswordField();
+        passwordField.setPlaceholder(getTranslation("social.message.dialog.hide.profile.authorize.password"));
+        passwordField.setRequired(true);
+        passwordField.setValueChangeMode(ValueChangeMode.EAGER);
+
+        final Button hideButton = new Button(getTranslation("social.message.dialog.hide.profile.authorize.button"), event -> {
+            dialog.close();
+            hideProfile(message, passwordField.getValue());
+        });
+        hideButton.setEnabled(false);
+        hideButton.setDisableOnClick(true);
+        hideButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        final Button cancelButton = new Button(getTranslation("social.message.dialog.hide.profile.authorize.cancel"), event -> dialog.close());
+        cancelButton.setDisableOnClick(true);
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        dialog.getFooter().add(hideButton, cancelButton);
+
+        passwordField.addKeyDownListener(event -> hideButton.setEnabled(!passwordField.isEmpty()));
+        dialog.add(passwordField);
+
+        dialog.open();
+        passwordField.focus();
+    }
+
+    private void hideProfile(@NotNull final Message message, @NotNull final String password) {
+        if (password.equals(configuration.getAdmin().password())) {
+            socialService.hideProfile(message);
+            removeFromParent();
+            Notification.show(getTranslation("social.message.notification.hide.profile.success", message.profile(), message.author()));
+        } else {
+            Notification.show(getTranslation("social.message.notification.hide.profile.rejected"));
         }
     }
 

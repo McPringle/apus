@@ -53,6 +53,7 @@ public final class SocialService {
     private final boolean filterSensitive;
     private final List<String> filterWords;
     private final Set<String> manuallyHiddenId = new HashSet<>();
+    private final Set<String> manuallyHiddenProfile = new HashSet<>();
     private List<Message> messages = List.of();
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
@@ -64,6 +65,7 @@ public final class SocialService {
                 .map(filterWord -> filterWord.toLowerCase(DEFAULT_LOCALE).trim())
                 .toList();
         loadHiddenMessageIds();
+        loadHiddenProfiles();
         updateMessages();
         updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateMessages, UPDATE_FREQUENCY);
     }
@@ -76,6 +78,7 @@ public final class SocialService {
     private void updateMessages() {
         final var newMessages = mastodonAPI.getMessages().stream()
                 .filter(message -> !manuallyHiddenId.contains(message.id()))
+                .filter(message -> !manuallyHiddenProfile.contains(message.profile()))
                 .filter(message -> !filterSensitive || !message.isSensitive())
                 .filter(message -> !filterReplies || !message.isReply())
                 .filter(this::checkWordFilter)
@@ -113,7 +116,15 @@ public final class SocialService {
         saveHiddenMessageIds();
     }
 
-    private Path getHiddenMessagesFilePath() {
+    public void hideProfile(@NotNull final Message message) {
+        LOGGER.warn("Hide profile (id={}, profile={}, author={})",
+                message.id(), message.profile(), message.author());
+        messages.remove(message);
+        manuallyHiddenProfile.add(message.profile());
+        saveHiddenProfiles();
+    }
+
+    private Path getConfigDir() {
         final Path configDir = Path.of(System.getProperty("user.home"), ".apus");
         if (!configDir.toFile().exists()) {
             try {
@@ -122,11 +133,11 @@ public final class SocialService {
                 LOGGER.error("Unable to create configuration directory {}: {}", configDir, e.getMessage());
             }
         }
-        return configDir.resolve("hiddenMessageIds");
+        return configDir;
     }
 
     private void saveHiddenMessageIds() {
-        final var filePath = getHiddenMessagesFilePath();
+        final var filePath = getConfigDir().resolve("hiddenMessageIds");
         try {
             Files.writeString(filePath, String.join("\n", manuallyHiddenId));
         } catch (final IOException e) {
@@ -134,8 +145,17 @@ public final class SocialService {
         }
     }
 
+    private void saveHiddenProfiles() {
+        final var filePath = getConfigDir().resolve("hiddenProfiles");
+        try {
+            Files.writeString(filePath, String.join("\n", manuallyHiddenProfile));
+        } catch (final IOException e) {
+            LOGGER.error("Unable to save hidden profiles to file '{}': {}", filePath, e.getMessage());
+        }
+    }
+
     private void loadHiddenMessageIds() {
-        final var filePath = getHiddenMessagesFilePath();
+        final var filePath = getConfigDir().resolve("hiddenMessageIds");
         if (filePath.toFile().exists()) {
             try {
                 manuallyHiddenId.addAll(Files.readAllLines(filePath));
@@ -144,6 +164,19 @@ public final class SocialService {
             }
         } else {
             LOGGER.info("No previously saved hidden message IDs found.");
+        }
+    }
+
+    private void loadHiddenProfiles() {
+        final var filePath = getConfigDir().resolve("hiddenProfiles");
+        if (filePath.toFile().exists()) {
+            try {
+                manuallyHiddenProfile.addAll(Files.readAllLines(filePath));
+            } catch (IOException e) {
+                LOGGER.error("Unable to load hidden profiles from file '{}': {}", filePath, e.getMessage());
+            }
+        } else {
+            LOGGER.info("No previously saved hidden profiles found.");
         }
     }
 }
