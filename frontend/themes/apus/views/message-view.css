@@ -24,6 +24,7 @@
 
 .message-view img {
     max-width: 100%;
+    max-height: 430px;
     border-radius: var(--lumo-border-radius-s);
 }
 
