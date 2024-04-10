@@ -66,7 +66,7 @@ public final class MessageView extends Div {
     private Component createTextComponent(@NotNull final Message message) {
         final String messageText = Jsoup.parse(message.html()).text();
         return new Html(String.format("<div>%s</div>",
-                messageText.length() > MAX_LENGTH ? truncateMessageText(messageText) : message.html()
+                messageText.length() > MAX_LENGTH ? truncateMessageText(messageText) : messageText
         ));
     }
 
