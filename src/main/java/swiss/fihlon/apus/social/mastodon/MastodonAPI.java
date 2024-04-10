@@ -43,12 +43,14 @@ public final class MastodonAPI {
 
     private final String instance;
     private final String hashtag;
+    private final boolean imagesEnabled;
     private final int imageLimit;
 
     public MastodonAPI(@NotNull final Configuration configuration) {
         final var mastodonConfig = configuration.getMastodon();
         this.instance = mastodonConfig.instance();
         this.hashtag = mastodonConfig.hashtag();
+        this.imagesEnabled = mastodonConfig.imagesEnabled();
         this.imageLimit = mastodonConfig.imageLimit();
     }
 
@@ -81,7 +83,7 @@ public final class MastodonAPI {
         final String avatar = account == null ? "" : account.getAvatar();
         final String profile = account == null ? "" : getProfile(account);
         final String html = status.getContent();
-        final List<String> images = getImages(status.getMediaAttachments());
+        final List<String> images = imagesEnabled ? getImages(status.getMediaAttachments()) : List.of();
         final String inReplyToId = status.getInReplyToId();
         final boolean isReply = inReplyToId != null && !inReplyToId.isBlank();
         final boolean isSensitive = status.isSensitive();

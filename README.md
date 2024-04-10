@@ -89,17 +89,18 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 
 *Apus* can be started without any specific configuration. All configuration options have working default values. To modify these default values just specify environment variables with the following names:
 
-| Variable             | Default                            | Description                                                     |
-|----------------------|------------------------------------|-----------------------------------------------------------------|
-| ADMIN_PASSWORD       |                                    | The password to get admin access (empty = disabled).            |
-| DOAG_EVENT_ID        | 0                                  | The ID of the DOAG event to read the conference agenda.         |
-| FILTER_REPLIES       | true                               | Hide social media messages which are replies.                   |
-| FILTER_SENSITIVE     | true                               | Hide social media messages which contain sensitive information. |
-| FILTER_WORDS         | fuck you, motherfucker, cocksucker | Hide social media messages which contain these words.           |
-| MASTODON_INSTANCE    | mastodon.social                    | The Mastodon instance used to read the posts from.              |
-| MASTODON_HASHTAG     | java                               | The hashtag for the mastodon wall.                              |
-| MASTODON_IMAGE_LIMIT | 1                                  | Limit number of images per post.                                |
-| TZ                   | UTC                                | The timezone used for date and time calculations.               |
+| Variable                | Default                            | Description                                                     |
+|-------------------------|------------------------------------|-----------------------------------------------------------------|
+| ADMIN_PASSWORD          |                                    | The password to get admin access (empty = disabled).            |
+| DOAG_EVENT_ID           | 0                                  | The ID of the DOAG event to read the conference agenda.         |
+| FILTER_REPLIES          | true                               | Hide social media messages which are replies.                   |
+| FILTER_SENSITIVE        | true                               | Hide social media messages which contain sensitive information. |
+| FILTER_WORDS            | fuck you, motherfucker, cocksucker | Hide social media messages which contain these words.           |
+| MASTODON_INSTANCE       | mastodon.social                    | The Mastodon instance used to read the posts from.              |
+| MASTODON_HASHTAG        | java                               | The hashtag for the mastodon wall.                              |
+| MASTODON_IMAGES_ENABLED | true                               | Enable or disable images in mastodon posts.                     |
+| MASTODON_IMAGE_LIMIT    | 1                                  | Limit number of images per post.                                |
+| TZ                      | UTC                                | The timezone used for date and time calculations.               |
 
 The environment variables will override the default values.
 

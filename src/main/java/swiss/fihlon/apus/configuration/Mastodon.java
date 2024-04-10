@@ -17,4 +17,4 @@
  */
 package swiss.fihlon.apus.configuration;
 
-public record Mastodon(String instance, String hashtag, int imageLimit) { }
+public record Mastodon(String instance, String hashtag, boolean imagesEnabled, int imageLimit) { }
