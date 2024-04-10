@@ -9,7 +9,7 @@ For questions and support requests, please use
 
 ## Version 1
 
-**Release date: work in progress 🚧**
+**Release date: 2024-04-10**
 
 ### Features
 
