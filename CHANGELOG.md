@@ -15,3 +15,11 @@ For questions and support requests, please use
 
 * Display agenda of DOAG events (JavaLand, CyberLand, CloudLand, etc.)
 * Display posts of Mastodon containing a configurable hashtag
+* Display images from Mastodon posts (configurable)
+* Filter sensitive Mastodon posts
+* Filter Mastodon replies
+* Filter Mastodon posts by words
+* Hide single Mastodon posts
+* Block Mastodon profiles
+* English and German translation
+* Dynamic updates of Agenda and Mastodon posts
