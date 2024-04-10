@@ -39,7 +39,7 @@ class MastodonAPITest {
     @Test
     void getMessages() {
         when(configuration.getMastodon()).thenReturn(
-                new Mastodon("mastodon.social", "java", 0));
+                new Mastodon("mastodon.social", "java", true, 0));
 
         final MastodonAPI mastodonAPI = new MastodonAPI(configuration);
         final List<Message> messages = mastodonAPI.getMessages();
