@@ -28,15 +28,20 @@ import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Image;
 import org.jetbrains.annotations.NotNull;
-import org.jsoup.Jsoup;
 import org.ocpsoft.prettytime.PrettyTime;
+import org.owasp.html.HtmlPolicyBuilder;
+import org.owasp.html.PolicyFactory;
 import swiss.fihlon.apus.social.Message;
 
 @CssImport(value = "./themes/apus/views/message-view.css")
 public final class MessageView extends Div {
 
-    private static final int MAX_LENGTH = 500;
-    private static final String TRUNC_INDICATOR = " […]";
+    private static final PolicyFactory POLICY_FACTORY = new HtmlPolicyBuilder()
+            .allowElements("p", "br", "a", "b", "i", "u", "em", "strong", "mark", "code", "img")
+            .allowUrlProtocols("https")
+            .allowAttributes("href").onElements("a")
+            .allowAttributes("src").onElements("img")
+            .toFactory();
 
     public MessageView(@NotNull final Message message) {
         setId("message-" + message.id());
@@ -64,15 +69,9 @@ public final class MessageView extends Div {
 
     @NotNull
     private Component createTextComponent(@NotNull final Message message) {
-        final String messageText = Jsoup.parse(message.html()).text();
-        return new Html(String.format("<div>%s</div>",
-                messageText.length() > MAX_LENGTH ? truncateMessageText(messageText) : messageText
-        ));
-    }
-
-    @NotNull
-    private String truncateMessageText(@NotNull final String messageText) {
-        return "<p>" + messageText.substring(0, MAX_LENGTH) + TRUNC_INDICATOR + "</p>";
+        final String unsafeHtml = message.html();
+        final String saveHtml = POLICY_FACTORY.sanitize(unsafeHtml);
+        return new Html(String.format("<div class=\"content\">%s</div>", saveHtml));
     }
 
     @NotNull
