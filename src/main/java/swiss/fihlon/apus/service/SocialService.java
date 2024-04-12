@@ -49,6 +49,7 @@ public final class SocialService {
 
     private final ScheduledFuture<?> updateScheduler;
     private final MastodonAPI mastodonAPI;
+    private final int filterLength;
     private final boolean filterReplies;
     private final boolean filterSensitive;
     private final List<String> filterWords;
@@ -59,6 +60,7 @@ public final class SocialService {
     public SocialService(@NotNull final TaskScheduler taskScheduler,
                          @NotNull final Configuration configuration) {
         mastodonAPI = new MastodonAPI(configuration);
+        filterLength = configuration.getFilter().length();
         filterReplies = configuration.getFilter().replies();
         filterSensitive = configuration.getFilter().sensitive();
         filterWords = configuration.getFilter().words().stream()
@@ -81,6 +83,7 @@ public final class SocialService {
                 .filter(message -> !blockedProfiles.contains(message.profile()))
                 .filter(message -> !filterSensitive || !message.isSensitive())
                 .filter(message -> !filterReplies || !message.isReply())
+                .filter(message -> filterLength <= 0 || Jsoup.parse(message.html()).text().length() <= filterLength)
                 .filter(this::checkWordFilter)
                 .toList();
         synchronized (this) {

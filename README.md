@@ -93,6 +93,7 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 |-------------------------|------------------------------------|-----------------------------------------------------------------|
 | ADMIN_PASSWORD          |                                    | The password to get admin access (empty = disabled).            |
 | DOAG_EVENT_ID           | 0                                  | The ID of the DOAG event to read the conference agenda.         |
+| FILTER_LENGTH           | 500                                | Hide social media messages which exceed this length (0=off).    |
 | FILTER_REPLIES          | true                               | Hide social media messages which are replies.                   |
 | FILTER_SENSITIVE        | true                               | Hide social media messages which contain sensitive information. |
 | FILTER_WORDS            | fuck you, motherfucker, cocksucker | Hide social media messages which contain these words.           |

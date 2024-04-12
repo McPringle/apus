@@ -26,6 +26,11 @@
       "description": "Limit number of images per post."
     },
     {
+      "name": "apus.filter.length",
+      "type": "java.lang.Integer",
+      "description": "Hide social media messages which exceed this length."
+    },
+    {
       "name": "apus.filter.replies",
       "type": "java.lang.Boolean",
       "description": "Hide social media messages which are replies."
