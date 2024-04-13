@@ -22,9 +22,15 @@ import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import swiss.fihlon.apus.util.PasswordUtil;
 
 /**
  * The entry point of the Spring Boot application.
@@ -39,11 +45,22 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @PageTitle("Apus – Social Media Wall with Conference Agenda")
 @PWA(name = "Apus", shortName = "Apus")
 @Theme("apus")
-@SuppressWarnings({"FinalClass", "HideUtilityClassConstructor"})
+@SuppressWarnings({"FinalClass", "HideUtilityClassConstructor", "RegexpSingleline"})
 public class Application implements AppShellConfigurator {
 
-    public static void main(final String[] args) {
-        SpringApplication.run(Application.class, args);
+    private static final Option HASH_PASSWORD_OPTION = new Option("p", "password", true, "Password to hash");
+
+    public static void main(@NotNull final String[] args) throws ParseException {
+        final var options = new Options();
+        options.addOption(HASH_PASSWORD_OPTION);
+
+        final var cmd = new DefaultParser().parse(options, args);
+        if (cmd.hasOption(HASH_PASSWORD_OPTION)) {
+            final var password = cmd.getOptionValue(HASH_PASSWORD_OPTION);
+            System.out.println(PasswordUtil.hashPassword(password));
+        } else {
+            SpringApplication.run(Application.class, args);
+        }
     }
 
 }

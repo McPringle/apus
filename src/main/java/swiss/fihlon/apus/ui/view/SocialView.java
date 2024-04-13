@@ -33,6 +33,7 @@ import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.service.SocialService;
 import swiss.fihlon.apus.social.Message;
+import swiss.fihlon.apus.util.PasswordUtil;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -112,7 +113,7 @@ public final class SocialView extends Div {
     }
 
     private void handleLogin(@NotNull final String password) {
-        if (configuration.getAdmin().password().equals(password)) {
+        if (PasswordUtil.matches(password, configuration.getAdmin().password())) {
             adminModeEnabled = true;
             contextMenu.setTarget(null);
             updateMessages();
