@@ -29,19 +29,11 @@ import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Image;
 import org.jetbrains.annotations.NotNull;
 import org.ocpsoft.prettytime.PrettyTime;
-import org.owasp.html.HtmlPolicyBuilder;
-import org.owasp.html.PolicyFactory;
 import swiss.fihlon.apus.social.Message;
+import swiss.fihlon.apus.util.HtmlUtil;
 
 @CssImport(value = "./themes/apus/views/message-view.css")
 public final class MessageView extends Div {
-
-    private static final PolicyFactory POLICY_FACTORY = new HtmlPolicyBuilder()
-            .allowElements("p", "br", "a", "b", "i", "u", "em", "strong", "mark", "code", "img")
-            .allowUrlProtocols("https")
-            .allowAttributes("href").onElements("a")
-            .allowAttributes("src").onElements("img")
-            .toFactory();
 
     public MessageView(@NotNull final Message message) {
         setId("message-" + message.id());
@@ -70,7 +62,7 @@ public final class MessageView extends Div {
     @NotNull
     private Component createTextComponent(@NotNull final Message message) {
         final String unsafeHtml = message.html();
-        final String saveHtml = POLICY_FACTORY.sanitize(unsafeHtml);
+        final String saveHtml = HtmlUtil.sanitize(unsafeHtml);
         return new Html(String.format("<div class=\"content\">%s</div>", saveHtml));
     }
 

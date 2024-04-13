@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.social.Message;
 import swiss.fihlon.apus.social.mastodon.MastodonAPI;
+import swiss.fihlon.apus.util.HtmlUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -83,7 +84,7 @@ public final class SocialService {
                 .filter(message -> !blockedProfiles.contains(message.profile()))
                 .filter(message -> !filterSensitive || !message.isSensitive())
                 .filter(message -> !filterReplies || !message.isReply())
-                .filter(message -> filterLength <= 0 || Jsoup.parse(message.html()).text().length() <= filterLength)
+                .filter(message -> filterLength <= 0 || HtmlUtil.extractText(message.html()).length() <= filterLength)
                 .filter(this::checkWordFilter)
                 .toList();
         synchronized (this) {
