@@ -91,7 +91,7 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 
 | Variable                | Default                            | Description                                                     |
 |-------------------------|------------------------------------|-----------------------------------------------------------------|
-| ADMIN_PASSWORD          |                                    | The password to get admin access (empty = disabled).            |
+| ADMIN_PASSWORD          |                                    | The hashed password to get admin access (empty = disabled).     |
 | DOAG_EVENT_ID           | 0                                  | The ID of the DOAG event to read the conference agenda.         |
 | FILTER_LENGTH           | 500                                | Hide social media messages which exceed this length (0=off).    |
 | FILTER_REPLIES          | true                               | Hide social media messages which are replies.                   |
@@ -104,6 +104,16 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 | TZ                      | UTC                                | The timezone used for date and time calculations.               |
 
 The environment variables will override the default values.
+
+### Create Hashed Password
+
+For security reasons the password is not stored in cleartext. *Apus* requires the password to be hashed using [bcrypt](https://en.wikipedia.org/wiki/Bcrypt). Of course, *Apus* can do this for you. Start the JAR file providing the parameter `-p` followed by the password you want to create a hash for. The output will show you two lines of code. The first line contains the hashed password and the second line contains the same hashed password, but with the dollar signs escaped ready to copy and paste it into a `docker-compose.yaml`. Example:
+
+```
+java -jar target/apus-1.jar -p 12345
+Hashed password for environment variable: $2a$10$nybQbl/iY8SRJkfHJVncS.L5.OC3KJ6VRBYVAID7qnUqwylmn/BtK
+Hashed password for Docker Compose file: $$2a$$10$$nybQbl/iY8SRJkfHJVncS.L5.OC3KJ6VRBYVAID7qnUqwylmn/BtK
+```
 
 ### Configuration Files
 
