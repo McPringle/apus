@@ -56,7 +56,9 @@ public class Application implements AppShellConfigurator {
         final var cmd = new DefaultParser().parse(options, args);
         if (cmd.hasOption(HASH_PASSWORD_OPTION)) {
             final var password = cmd.getOptionValue(HASH_PASSWORD_OPTION);
-            System.out.println(PasswordUtil.hashPassword(password));
+            final var hashedPassword = PasswordUtil.hashPassword(password);
+            System.out.println("Hashed password for environment variable: " + hashedPassword);
+            System.out.println("Hashed password for Docker Compose file: " + hashedPassword.replace("$", "$$"));
         } else {
             SpringApplication.run(Application.class, args);
         }
