@@ -23,8 +23,8 @@ import com.vaadin.flow.router.Route;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.configuration.Configuration;
-import swiss.fihlon.apus.service.ConferenceService;
-import swiss.fihlon.apus.service.SocialService;
+import swiss.fihlon.apus.plugin.conference.ConferenceService;
+import swiss.fihlon.apus.plugin.social.SocialService;
 
 @Route("")
 @CssImport(value = "./themes/apus/views/social-wall-view.css")

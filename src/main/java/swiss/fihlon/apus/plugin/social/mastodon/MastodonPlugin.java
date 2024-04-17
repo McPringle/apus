@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.social.mastodon;
+package swiss.fihlon.apus.plugin.social.mastodon;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -27,6 +27,7 @@ import social.bigbone.api.entity.Account;
 import social.bigbone.api.entity.MediaAttachment;
 import social.bigbone.api.entity.Status;
 import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.plugin.social.SocialPlugin;
 import swiss.fihlon.apus.social.Message;
 
 import java.time.Instant;
@@ -37,16 +38,16 @@ import java.util.List;
 
 import static social.bigbone.api.method.TimelineMethods.StatusOrigin.LOCAL_AND_REMOTE;
 
-public final class MastodonAPI {
+public final class MastodonPlugin implements SocialPlugin {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MastodonAPI.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MastodonPlugin.class);
 
     private final String instance;
     private final String hashtag;
     private final boolean imagesEnabled;
     private final int imageLimit;
 
-    public MastodonAPI(@NotNull final Configuration configuration) {
+    public MastodonPlugin(@NotNull final Configuration configuration) {
         final var mastodonConfig = configuration.getMastodon();
         this.instance = mastodonConfig.instance();
         this.hashtag = mastodonConfig.hashtag();

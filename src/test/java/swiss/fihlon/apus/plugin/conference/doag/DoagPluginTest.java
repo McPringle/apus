@@ -15,12 +15,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.conference.doag;
+package swiss.fihlon.apus.plugin.conference.doag;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-class ConferenceAPITest {
+class DoagPluginTest {
 
     @Test
     @Disabled // TODO make the ConferenceAPI testable

@@ -29,7 +29,7 @@ import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.conference.Room;
 import swiss.fihlon.apus.conference.RoomStyle;
 import swiss.fihlon.apus.conference.Session;
-import swiss.fihlon.apus.service.ConferenceService;
+import swiss.fihlon.apus.plugin.conference.ConferenceService;
 
 import java.time.Duration;
 import java.time.Instant;

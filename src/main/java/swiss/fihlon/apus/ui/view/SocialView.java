@@ -31,7 +31,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.configuration.Configuration;
-import swiss.fihlon.apus.service.SocialService;
+import swiss.fihlon.apus.plugin.social.SocialService;
 import swiss.fihlon.apus.social.Message;
 import swiss.fihlon.apus.util.PasswordUtil;
 

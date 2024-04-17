@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.social.mastodon;
+package swiss.fihlon.apus.plugin.social.mastodon;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class MastodonAPITest {
+class MastodonPluginTest {
 
     @Mock
     private Configuration configuration;
@@ -41,8 +41,8 @@ class MastodonAPITest {
         when(configuration.getMastodon()).thenReturn(
                 new Mastodon("mastodon.social", "java", true, 0));
 
-        final MastodonAPI mastodonAPI = new MastodonAPI(configuration);
-        final List<Message> messages = mastodonAPI.getMessages();
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(configuration);
+        final List<Message> messages = mastodonPlugin.getMessages();
 
         assertNotNull(messages);
     }

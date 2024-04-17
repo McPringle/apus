@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.service;
+package swiss.fihlon.apus.plugin.conference;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

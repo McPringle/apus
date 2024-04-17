@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.service;
+package swiss.fihlon.apus.plugin.conference;
 
 import jakarta.annotation.PreDestroy;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.conference.Room;
 import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.SessionImportException;
-import swiss.fihlon.apus.conference.doag.ConferenceAPI;
+import swiss.fihlon.apus.plugin.conference.doag.DoagPlugin;
 import swiss.fihlon.apus.configuration.Configuration;
 
 import java.time.Duration;
@@ -61,7 +61,7 @@ public final class ConferenceService {
 
     private void updateSessions() {
         try {
-            final var sessions = new ConferenceAPI(configuration).getSessions().stream()
+            final var sessions = new DoagPlugin(configuration).getSessions().stream()
                     .sorted()
                     .toList();
 

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.conference.doag;
+package swiss.fihlon.apus.plugin.conference.doag;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -29,6 +29,7 @@ import swiss.fihlon.apus.conference.Session;
 import swiss.fihlon.apus.conference.SessionImportException;
 import swiss.fihlon.apus.conference.Speaker;
 import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.plugin.conference.ConferencePlugin;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,18 +44,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public final class ConferenceAPI {
+public final class DoagPlugin implements ConferencePlugin {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(ConferenceAPI.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(DoagPlugin.class);
     public static final String CONFERENCE_API_LOCATION = "https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/";
 
     private final int eventId;
 
-    public ConferenceAPI(@NotNull final Configuration configuration) {
+    public DoagPlugin(@NotNull final Configuration configuration) {
         this.eventId = configuration.getDoag().eventId();
     }
 
-    public List<Session> getSessions() {
+    @NotNull public List<Session> getSessions() {
         if (eventId == 0) {
             return List.of();
         }

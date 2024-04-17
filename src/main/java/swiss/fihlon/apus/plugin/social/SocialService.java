@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.service;
+package swiss.fihlon.apus.plugin.social;
 
 import jakarta.annotation.PreDestroy;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +25,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.plugin.social.mastodon.MastodonPlugin;
 import swiss.fihlon.apus.social.Message;
-import swiss.fihlon.apus.social.mastodon.MastodonAPI;
 import swiss.fihlon.apus.util.HtmlUtil;
 
 import java.io.IOException;
@@ -49,7 +49,7 @@ public final class SocialService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
 
     private final ScheduledFuture<?> updateScheduler;
-    private final MastodonAPI mastodonAPI;
+    private final MastodonPlugin mastodonPlugin;
     private final int filterLength;
     private final boolean filterReplies;
     private final boolean filterSensitive;
@@ -60,7 +60,7 @@ public final class SocialService {
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
                          @NotNull final Configuration configuration) {
-        mastodonAPI = new MastodonAPI(configuration);
+        mastodonPlugin = new MastodonPlugin(configuration);
         filterLength = configuration.getFilter().length();
         filterReplies = configuration.getFilter().replies();
         filterSensitive = configuration.getFilter().sensitive();
@@ -79,7 +79,7 @@ public final class SocialService {
     }
 
     private void updateMessages() {
-        final var newMessages = mastodonAPI.getMessages().stream()
+        final var newMessages = mastodonPlugin.getMessages().stream()
                 .filter(message -> !hiddenMessages.contains(message.id()))
                 .filter(message -> !blockedProfiles.contains(message.profile()))
                 .filter(message -> !filterSensitive || !message.isSensitive())
