@@ -1,0 +1,46 @@
+{
+  "projectName": "apus",
+  "projectOwner": "McPringle",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "gitmoji",
+  "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#contributors)",
+  "contributors": [
+    {
+      "login": "McPringle",
+      "name": "Marcus Fihlon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1254039?v=4",
+      "profile": "https://github.com/McPringle",
+      "contributions": [
+        "projectManagement",
+        "ideas",
+        "code"
+      ]
+    },
+    {
+      "login": "jcgueriaud1",
+      "name": "Jean-Christophe Gueriaud",
+      "avatar_url": "https://avatars.githubusercontent.com/u/51313578?v=4",
+      "profile": "https://github.com/jcgueriaud1",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "myyxl",
+      "name": "Marlon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22593897?v=4",
+      "profile": "https://github.com/myyxl",
+      "contributions": [
+        "bug"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "linkToUsage": false
+}
