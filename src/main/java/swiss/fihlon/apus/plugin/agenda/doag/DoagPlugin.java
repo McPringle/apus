@@ -62,14 +62,9 @@ public final class DoagPlugin implements AgendaPlugin {
 
     @Override
     @NotNull public List<Session> getSessions() {
-        if (eventId == 0) {
-            return List.of();
-        }
-
         final ArrayList<Session> sessions = new ArrayList<>();
         int lastSlotId = 0;
         try {
-            LOGGER.info("Starting download of sessions for event ID {}", eventId);
             final String json = getJSON();
             final JSONObject jsonObject = new JSONObject(json);
             final JSONObject schedule = jsonObject.getJSONObject("schedule");
@@ -95,25 +90,7 @@ public final class DoagPlugin implements AgendaPlugin {
                         if (!"lecture".equalsIgnoreCase(type)) {
                             continue;
                         }
-                        final Language language = getLanguage(slot);
-                        final String title = getTitle(slot, language.getLanguageCode());
-                        final LocalTime startTime = LocalTime.parse(slot.getString("start"));
-                        final Duration duration = parseDuration(slot.getString("duration"));
-                        final JSONArray persons = slot.getJSONArray("persons");
-                        final ArrayList<String> speakers = new ArrayList<>(persons.length());
-                        for (int personCounter = 0; personCounter < persons.length(); personCounter++) {
-                            final JSONObject person = persons.getJSONObject(personCounter);
-                            final String publicName = person.getString("public_name");
-                            speakers.add(publicName);
-                        }
-                        final Session session = new Session(
-                                String.format("%s:%d", acronym, slot.getInt("id")),
-                                LocalDateTime.of(date, startTime),
-                                LocalDateTime.of(date, startTime).plus(duration),
-                                new Room(roomName),
-                                title,
-                                speakers.stream().map(Speaker::new).toList(),
-                                language);
+                        final Session session = createSession(slot, acronym, date, roomName);
                         sessions.add(session);
                     }
                 }
@@ -123,6 +100,31 @@ public final class DoagPlugin implements AgendaPlugin {
             throw new SessionImportException(String.format("Error parsing slot %d: %s", lastSlotId, e.getMessage()), e);
         }
         return sessions;
+    }
+
+    private @NotNull Session createSession(@NotNull final JSONObject slot,
+                                           @NotNull final String acronym,
+                                           @NotNull final LocalDate date,
+                                           @NotNull final String roomName) {
+        final Language language = getLanguage(slot);
+        final String title = getTitle(slot, language.getLanguageCode());
+        final LocalTime startTime = LocalTime.parse(slot.getString("start"));
+        final Duration duration = parseDuration(slot.getString("duration"));
+        final JSONArray persons = slot.getJSONArray("persons");
+        final ArrayList<String> speakers = new ArrayList<>(persons.length());
+        for (int personCounter = 0; personCounter < persons.length(); personCounter++) {
+            final JSONObject person = persons.getJSONObject(personCounter);
+            final String publicName = person.getString("public_name");
+            speakers.add(publicName);
+        }
+        return new Session(
+                String.format("%s:%d", acronym, slot.getInt("id")),
+                LocalDateTime.of(date, startTime),
+                LocalDateTime.of(date, startTime).plus(duration),
+                new Room(roomName),
+                title,
+                speakers.stream().map(Speaker::new).toList(),
+                language);
     }
 
     private Language getLanguage(@NotNull final JSONObject slot) {
@@ -156,9 +158,12 @@ public final class DoagPlugin implements AgendaPlugin {
     }
 
     private String getJSON() throws IOException, URISyntaxException {
+        LOGGER.info("Starting download of JSON for event ID {}", eventId);
         final var location = String.format(CONFERENCE_API_LOCATION, eventId);
-        try (InputStream in = new URI(location).toURL().openStream()) {
-            return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+        try (final InputStream in = new URI(location).toURL().openStream()) {
+            final String json = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+            LOGGER.info("Successfully downloaded JSON for event ID {}", eventId);
+            return json;
         }
     }
 }
