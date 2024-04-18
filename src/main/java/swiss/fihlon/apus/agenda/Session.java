@@ -15,20 +15,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.plugin.conference.doag;
+package swiss.fihlon.apus.agenda;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.jetbrains.annotations.NotNull;
 
-class DoagPluginTest {
+import java.time.LocalDateTime;
+import java.util.List;
 
-    @Test
-    @Disabled // TODO make the ConferenceAPI testable
-    void importViaHttps() {
-//        final String location = "file:src/test/resources/DOAG.json";
-//        final ConferenceAPI conferenceAPI = new ConferenceAPI(location);
-//        final List<Session> sessions = conferenceAPI.getSessions();
-//        assertEquals(8, sessions.size());
+public record Session(@NotNull String id, @NotNull LocalDateTime startDate, @NotNull LocalDateTime endDate,
+                      @NotNull Room room, @NotNull String title, @NotNull List<Speaker> speakers,
+                      @NotNull Language language)
+        implements Comparable<Session> {
+    @Override
+    public int compareTo(@NotNull final Session other) {
+        final var dateCompareResult = startDate.compareTo(other.startDate);
+        if (dateCompareResult == 0) {
+            return room.compareTo(other.room);
+        }
+        return dateCompareResult;
     }
-
 }

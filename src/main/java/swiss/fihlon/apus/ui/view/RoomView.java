@@ -26,11 +26,11 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import swiss.fihlon.apus.conference.Language;
-import swiss.fihlon.apus.conference.Room;
-import swiss.fihlon.apus.conference.RoomStyle;
-import swiss.fihlon.apus.conference.Session;
-import swiss.fihlon.apus.conference.Speaker;
+import swiss.fihlon.apus.agenda.Language;
+import swiss.fihlon.apus.agenda.Room;
+import swiss.fihlon.apus.agenda.RoomStyle;
+import swiss.fihlon.apus.agenda.Session;
+import swiss.fihlon.apus.agenda.Speaker;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -134,7 +134,7 @@ public final class RoomView extends Div {
             final Duration duration = Duration.between(now, endTime);
             final long timeLeft = Math.round(duration.getSeconds() / 60f);
             timeComponent.add(new Text("⌛ " + getTranslation(timeLeft == 1
-                            ? "conference.session.countdown.singular" : "conference.session.countdown.plural",
+                            ? "agenda.session.countdown.singular" : "agenda.session.countdown.plural",
                             timeLeft)));
             roomStyle = RoomStyle.RUNNING;
         } else { // next session

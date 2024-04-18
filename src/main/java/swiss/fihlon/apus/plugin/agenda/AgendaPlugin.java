@@ -15,30 +15,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.conference;
+package swiss.fihlon.apus.plugin.agenda;
 
 import org.jetbrains.annotations.NotNull;
+import swiss.fihlon.apus.agenda.Session;
 
-public enum RoomStyle {
+import java.util.List;
 
-    NONE("", ""),
-    RUNNING("running-session", "conference.legend.running-session"),
-    NEXT("next-session", "conference.legend.next-session"),
-    EMPTY("empty-room", "conference.legend.empty-room");
+public interface AgendaPlugin {
 
-    private final String cssStyle;
-    private final String translationKey;
+    boolean isEnabled();
 
-    RoomStyle(@NotNull final String cssStyle, @NotNull final String translationKey) {
-        this.cssStyle = cssStyle;
-        this.translationKey = translationKey;
-    }
+    @NotNull List<Session> getSessions();
 
-    public String getCssStyle() {
-        return cssStyle;
-    }
-
-    public String getTranslationKey() {
-        return translationKey;
-    }
 }

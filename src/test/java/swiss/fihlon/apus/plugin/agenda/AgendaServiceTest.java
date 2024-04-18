@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.plugin.conference;
+package swiss.fihlon.apus.plugin.agenda;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -24,13 +24,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.scheduling.support.NoOpTaskScheduler;
 import swiss.fihlon.apus.configuration.Configuration;
-import swiss.fihlon.apus.plugin.conference.doag.DoagConfig;
+import swiss.fihlon.apus.plugin.agenda.doag.DoagConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ConferenceServiceTest {
+class AgendaServiceTest {
 
     @Mock
     private Configuration configuration;
@@ -41,7 +41,7 @@ class ConferenceServiceTest {
 
         when(configuration.getDoag()).thenReturn(new DoagConfig(773));
 
-        final ConferenceService conferenceService = new ConferenceService(new NoOpTaskScheduler(), configuration);
-        assertEquals(12, conferenceService.getRoomsWithSessions().size());
+        final AgendaService agendaService = new AgendaService(new NoOpTaskScheduler(), configuration);
+        assertEquals(12, agendaService.getRoomsWithSessions().size());
     }
 }

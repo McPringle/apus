@@ -15,6 +15,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.plugin.conference.doag;
+package swiss.fihlon.apus.plugin.agenda.doag;
 
-public record DoagConfig(int eventId) { }
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+class DoagPluginTest {
+
+    @Test
+    @Disabled // TODO make the ConferenceAPI testable
+    void importViaHttps() {
+//        final String location = "file:src/test/resources/DOAG.json";
+//        final ConferenceAPI conferenceAPI = new ConferenceAPI(location);
+//        final List<Session> sessions = conferenceAPI.getSessions();
+//        assertEquals(8, sessions.size());
+    }
+
+}

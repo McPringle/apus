@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.plugin.conference;
+package swiss.fihlon.apus.plugin.agenda;
 
 import jakarta.annotation.PreDestroy;
 import org.jetbrains.annotations.NotNull;
@@ -23,10 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
-import swiss.fihlon.apus.conference.Room;
-import swiss.fihlon.apus.conference.Session;
-import swiss.fihlon.apus.conference.SessionImportException;
-import swiss.fihlon.apus.plugin.conference.doag.DoagPlugin;
+import swiss.fihlon.apus.agenda.Room;
+import swiss.fihlon.apus.agenda.Session;
+import swiss.fihlon.apus.agenda.SessionImportException;
+import swiss.fihlon.apus.plugin.agenda.doag.DoagPlugin;
 import swiss.fihlon.apus.configuration.Configuration;
 
 import java.time.Duration;
@@ -38,23 +38,23 @@ import java.util.TreeMap;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
-public final class ConferenceService {
+public final class AgendaService {
 
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(5);
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConferenceService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AgendaService.class);
 
-    private final ConferencePlugin conferencePlugin;
+    private final AgendaPlugin agendaPlugin;
     private final ScheduledFuture<?> updateScheduler;
     private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
 
-    public ConferenceService(@NotNull final TaskScheduler taskScheduler,
-                             @NotNull final Configuration configuration) {
-        conferencePlugin = new DoagPlugin(configuration);
-        if (conferencePlugin.isEnabled()) {
+    public AgendaService(@NotNull final TaskScheduler taskScheduler,
+                         @NotNull final Configuration configuration) {
+        agendaPlugin = new DoagPlugin(configuration);
+        if (agendaPlugin.isEnabled()) {
             updateSessions();
             updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, UPDATE_FREQUENCY);
         } else {
-            LOGGER.warn("No conference plugin is enabled. No agenda will be displayed.");
+            LOGGER.warn("No event plugin is enabled. No agenda will be displayed.");
             updateScheduler = null;
         }
     }
@@ -66,7 +66,7 @@ public final class ConferenceService {
 
     private void updateSessions() {
         try {
-            final var sessions = conferencePlugin.getSessions().stream()
+            final var sessions = agendaPlugin.getSessions().stream()
                     .sorted()
                     .toList();
 

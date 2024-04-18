@@ -26,10 +26,10 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
-import swiss.fihlon.apus.conference.Room;
-import swiss.fihlon.apus.conference.RoomStyle;
-import swiss.fihlon.apus.conference.Session;
-import swiss.fihlon.apus.plugin.conference.ConferenceService;
+import swiss.fihlon.apus.agenda.Room;
+import swiss.fihlon.apus.agenda.RoomStyle;
+import swiss.fihlon.apus.agenda.Session;
+import swiss.fihlon.apus.plugin.agenda.AgendaService;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -43,23 +43,23 @@ import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@CssImport(value = "./themes/apus/views/conference-view.css")
-public final class ConferenceView extends Div {
+@CssImport(value = "./themes/apus/views/agenda-view.css")
+public final class AgendaView extends Div {
 
     public static final String LABEL_THEME = "badge";
     private static final int MAX_ROOMS_IN_VIEW = 12;
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
     private static final Duration TIME_LIMIT_NEXT_SESSION = Duration.ofHours(1);
 
-    private final transient ConferenceService conferenceService;
+    private final transient AgendaService agendaService;
     private final H2 title = createTitle();
     private final Div roomContainer = new Div();
     private final Span legend = new Span();
 
-    public ConferenceView(@NotNull final ConferenceService conferenceService,
-                          @NotNull final TaskScheduler taskScheduler) {
-        this.conferenceService = conferenceService;
-        setId("conference-view");
+    public AgendaView(@NotNull final AgendaService agendaService,
+                      @NotNull final TaskScheduler taskScheduler) {
+        this.agendaService = agendaService;
+        setId("agenda-view");
         add(title);
         add(createLegend());
         add(roomContainer);
@@ -76,14 +76,14 @@ public final class ConferenceView extends Div {
         roomContainer.removeAll();
         final var today = LocalDate.now();
         final var roomCounter = new AtomicInteger(0);
-        final var roomsWithSessions = conferenceService.getRoomsWithSessions().entrySet();
+        final var roomsWithSessions = agendaService.getRoomsWithSessions().entrySet();
         if (roomsWithSessions.isEmpty()) {
-            Notification.show(getTranslation("conference.error.nosessions"));
+            Notification.show(getTranslation("agenda.error.nosessions"));
         }
         final var roomStylesInUse = new HashSet<RoomStyle>();
         for (final Map.Entry<Room, List<Session>> roomWithSession : roomsWithSessions) {
             if (roomCounter.get() >= MAX_ROOMS_IN_VIEW) {
-                Notification.show(String.format(getTranslation("conference.error.rooms"), roomsWithSessions.size()));
+                Notification.show(String.format(getTranslation("agenda.error.rooms"), roomsWithSessions.size()));
                 break;
             }
             final RoomView roomView = createRoomView(roomWithSession, today, roomCounter);
@@ -96,12 +96,12 @@ public final class ConferenceView extends Div {
 
     @NotNull
     private H2 createTitle() {
-        return new H2(getTranslation("conference.heading",
+        return new H2(getTranslation("agenda.heading",
                 LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale())));
     }
 
     private void updateTitle() {
-        title.setText(getTranslation("conference.heading",
+        title.setText(getTranslation("agenda.heading",
                 LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale())));
 
     }
