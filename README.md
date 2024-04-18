@@ -178,6 +178,32 @@ Short explanation, consult the Docker or Podman documentation for more informati
 
 Modify this command according your needs and consult the [configuration section](#configuration) above for more information about how to configure *Apus*. The Docker image of *Apus* will be pulled from [Docker Hub](https://hub.docker.com/) automatically when not available locally.
 
+## Plugin Support
+
+### Conference Plugins
+
+*Apus* uses a simple plugin technology to import the agenda of various events. Plugins are currently available for the following events:
+
+| Plugin       | Supported Events                             |
+|--------------|----------------------------------------------|
+| `DoagPlugin` | CloudLand, CyberLand, JavaLand, KI Navigator |
+
+Plugins for other events are planned. Everyone is welcome to contribute a plugin themselves. The implementation is very simple. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.conference`. The implementation is carried out in this package. The corresponding class must implement the interface `ConferencePlugin`.
+
+If the implementation requires a configuration, the package `swiss.fihlon.apus.configuration` must be extended accordingly. Default settings belong in the file `application.properties` and the corresponding schema is stored in `additional-spring-configuration-metadata.json`. Of course, `README.md` must also be adapted.
+
+### Social Plugins
+
+*Apus* uses a simple plugin technology to import posts from various social media services. Plugins are currently available for the following services:
+
+| Plugin           | Supported Services |
+|------------------|--------------------|
+| `MastodonPlugin` | Mastodon           |
+
+Plugins for other social services are planned. Everyone is welcome to contribute a plugin themselves. The implementation is very simple. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.social`. The implementation is carried out in this package. The corresponding class must implement the interface `SocialPlugin`.
+
+If the implementation requires a configuration, the package `swiss.fihlon.apus.configuration` must be extended accordingly. Default settings belong in the file `application.properties` and the corresponding schema is stored in `additional-spring-configuration-metadata.json`. Of course, `README.md` must also be adapted.
+
 ## Communication
 
 ### Matrix Chat
