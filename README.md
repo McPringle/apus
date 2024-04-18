@@ -188,9 +188,7 @@ Modify this command according your needs and consult the [configuration section]
 |--------------|----------------------------------------------|
 | `DoagPlugin` | CloudLand, CyberLand, JavaLand, KI Navigator |
 
-Plugins for other events are planned. Everyone is welcome to contribute a plugin themselves. The implementation is very simple. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.conference`. The implementation is carried out in this package. The corresponding class must implement the interface `ConferencePlugin`.
-
-If the implementation requires a configuration, the package `swiss.fihlon.apus.configuration` must be extended accordingly. Default settings belong in the file `application.properties` and the corresponding schema is stored in `additional-spring-configuration-metadata.json`. Of course, `README.md` must also be adapted.
+Plugins for other events are planned.
 
 ### Social Plugins
 
@@ -200,9 +198,13 @@ If the implementation requires a configuration, the package `swiss.fihlon.apus.c
 |------------------|--------------------|
 | `MastodonPlugin` | Mastodon           |
 
-Plugins for other social services are planned. Everyone is welcome to contribute a plugin themselves. The implementation is very simple. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.social`. The implementation is carried out in this package. The corresponding class must implement the interface `SocialPlugin`.
+Plugins for other social media services are planned.
 
-If the implementation requires a configuration, the package `swiss.fihlon.apus.configuration` must be extended accordingly. Default settings belong in the file `application.properties` and the corresponding schema is stored in `additional-spring-configuration-metadata.json`. Of course, `README.md` must also be adapted.
+### Plugin Development
+
+Everyone is welcome to contribute a plugin themselves. The implementation is very simple. There are two types of plugins `ConferencePlugin` and `SocialPlugin`. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.conference` or `swiss.fihlon.apus.plugin.social`, based on the plugin type. The implementation is carried out in this new package. Implement one of these two interfaces depending on the plugin type you want to contribute.
+
+If your implementation requires a configuration, the package `swiss.fihlon.apus.configuration` must be extended accordingly. Default settings belong in the file `application.properties` and the corresponding schema is stored in `additional-spring-configuration-metadata.json`. Of course, `README.md` must also be adapted.
 
 ## Communication
 
