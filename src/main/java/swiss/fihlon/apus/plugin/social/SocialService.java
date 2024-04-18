@@ -49,7 +49,7 @@ public final class SocialService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
 
     private final ScheduledFuture<?> updateScheduler;
-    private final MastodonPlugin mastodonPlugin;
+    private final SocialPlugin socialPlugin;
     private final int filterLength;
     private final boolean filterReplies;
     private final boolean filterSensitive;
@@ -60,7 +60,7 @@ public final class SocialService {
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
                          @NotNull final Configuration configuration) {
-        mastodonPlugin = new MastodonPlugin(configuration);
+        socialPlugin = new MastodonPlugin(configuration);
         filterLength = configuration.getFilter().length();
         filterReplies = configuration.getFilter().replies();
         filterSensitive = configuration.getFilter().sensitive();
@@ -69,8 +69,13 @@ public final class SocialService {
                 .toList();
         loadHiddenMessageIds();
         loadBlockedProfiles();
-        updateMessages();
-        updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateMessages, UPDATE_FREQUENCY);
+        if (socialPlugin.isEnabled()) {
+            updateMessages();
+            updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateMessages, UPDATE_FREQUENCY);
+        } else {
+            LOGGER.warn("No social plugin is enabled. No posts will be displayed.");
+            updateScheduler = null;
+        }
     }
 
     @PreDestroy
@@ -79,7 +84,7 @@ public final class SocialService {
     }
 
     private void updateMessages() {
-        final var newMessages = mastodonPlugin.getMessages().stream()
+        final var newMessages = socialPlugin.getMessages().stream()
                 .filter(message -> !hiddenMessages.contains(message.id()))
                 .filter(message -> !blockedProfiles.contains(message.profile()))
                 .filter(message -> !filterSensitive || !message.isSensitive())

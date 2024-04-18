@@ -43,15 +43,20 @@ public final class ConferenceService {
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(5);
     private static final Logger LOGGER = LoggerFactory.getLogger(ConferenceService.class);
 
-    private final Configuration configuration;
+    private final ConferencePlugin conferencePlugin;
     private final ScheduledFuture<?> updateScheduler;
     private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
 
     public ConferenceService(@NotNull final TaskScheduler taskScheduler,
                              @NotNull final Configuration configuration) {
-        this.configuration = configuration;
-        updateSessions();
-        updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, UPDATE_FREQUENCY);
+        conferencePlugin = new DoagPlugin(configuration);
+        if (conferencePlugin.isEnabled()) {
+            updateSessions();
+            updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, UPDATE_FREQUENCY);
+        } else {
+            LOGGER.warn("No conference plugin is enabled. No agenda will be displayed.");
+            updateScheduler = null;
+        }
     }
 
     @PreDestroy
@@ -61,7 +66,7 @@ public final class ConferenceService {
 
     private void updateSessions() {
         try {
-            final var sessions = new DoagPlugin(configuration).getSessions().stream()
+            final var sessions = conferencePlugin.getSessions().stream()
                     .sorted()
                     .toList();
 
