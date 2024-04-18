@@ -167,14 +167,14 @@ docker run \
 
 Short explanation, consult the Docker or Podman documentation for more information about all available options for running an image.
 
-| Option         | Explanation                                  |
-|----------------|----------------------------------------------|
-| --name apus    | Specify the name for the running instance.   |
-| -p 80:8080     | Make *Apus* available on host port 80        |
-| -e KEY=value   | Configure *Apus* using environment variable. |
-| -d             | Run *Apus* in daemon mode (background).      |
-| --rm           | Remove the container when stopping *Apus*.   |
-| mcpringle/apus | The Docker image to be started.              |
+| Option         | Explanation                                   |
+|----------------|-----------------------------------------------|
+| --name apus    | Specify the name for the running instance.    |
+| -p 80:8080     | Make *Apus* available on host port 80         |
+| -e KEY=value   | Configure *Apus* using environment variables. |
+| -d             | Run *Apus* in daemon mode (background).       |
+| --rm           | Remove the container when stopping *Apus*.    |
+| mcpringle/apus | The Docker image to be started.               |
 
 Modify this command according your needs and consult the [configuration section](#configuration) above for more information about how to configure *Apus*. The Docker image of *Apus* will be pulled from [Docker Hub](https://hub.docker.com/) automatically when not available locally.
 
@@ -202,7 +202,7 @@ Plugins for other social media services are planned.
 
 ### Plugin Development
 
-Everyone is welcome to contribute a plugin themselves. The implementation is very simple. There are two types of plugins `ConferencePlugin` and `SocialPlugin`. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.conference` or `swiss.fihlon.apus.plugin.social`, based on the plugin type. The implementation is carried out in this new package. Implement one of these two interfaces depending on the plugin type you want to contribute.
+Everyone is welcome to contribute a plugin themselves. The implementation is very simple. There are two types of plugins: `ConferencePlugin` and `SocialPlugin`. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.conference` or `swiss.fihlon.apus.plugin.social`, based on the plugin type. The implementation is carried out in this new package. Implement one of these two interfaces depending on the plugin type you want to contribute.
 
 If your implementation requires a configuration, the package `swiss.fihlon.apus.configuration` must be extended accordingly. Default settings belong in the file `application.properties` and the corresponding schema is stored in `additional-spring-configuration-metadata.json`. Of course, `README.md` must also be adapted.
 
