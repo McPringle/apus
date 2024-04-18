@@ -160,7 +160,7 @@ public final class DoagPlugin implements AgendaPlugin {
     private String getJSON() throws IOException, URISyntaxException {
         LOGGER.info("Starting download of JSON for event ID {}", eventId);
         final var location = String.format(CONFERENCE_API_LOCATION, eventId);
-        try (final InputStream in = new URI(location).toURL().openStream()) {
+        try (InputStream in = new URI(location).toURL().openStream()) {
             final String json = new String(in.readAllBytes(), StandardCharsets.UTF_8);
             LOGGER.info("Successfully downloaded JSON for event ID {}", eventId);
             return json;
