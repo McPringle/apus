@@ -16,33 +16,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-.message-view {
+.post-view {
     background-color: #84ddee;
     border-radius: var(--lumo-border-radius-s);
     padding: var(--lumo-space-s);
 }
 
-.message-view img {
+.post-view img {
     max-width: 100%;
     max-height: 430px;
     border-radius: var(--lumo-border-radius-s);
 }
 
-.message-view .invisible {
+.post-view .invisible {
     display: none;
 }
 
-.message-view header .author-container {
+.post-view header .author-container {
     display: inline-block;
     line-height: var(--lumo-line-height-s);
     margin-left: var(--lumo-space-s);
 }
 
-.message-view header .author {
+.post-view header .author {
     font-weight: bold;
 }
 
-.message-view .datetime {
+.post-view .datetime {
     font-size: var(--lumo-font-size-xs);
     font-style: italic;
     text-align: right;

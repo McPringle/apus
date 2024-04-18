@@ -28,7 +28,7 @@ import social.bigbone.api.entity.MediaAttachment;
 import social.bigbone.api.entity.Status;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.plugin.social.SocialPlugin;
-import swiss.fihlon.apus.social.Message;
+import swiss.fihlon.apus.social.Post;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -61,27 +61,27 @@ public final class MastodonPlugin implements SocialPlugin {
     }
 
     @Override
-    public List<Message> getMessages() {
+    public List<Post> getPosts() {
         try {
-            LOGGER.info("Starting download of messages with hashtag '{}' from instance '{}'", hashtag, instance);
+            LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
             final MastodonClient client = new MastodonClient.Builder(instance).build();
             final Range range = new Range(null, null, null, 100);
             final Pageable<Status> statuses = client.timelines().getTagTimeline(hashtag, LOCAL_AND_REMOTE, range).execute();
-            final List<Message> messages = statuses.getPart().stream()
-                    .map(this::convertToMessage)
+            final List<Post> posts = statuses.getPart().stream()
+                    .map(this::convertToPost)
                     .sorted()
                     .toList()
                     .reversed();
-            LOGGER.info("Successfully downloaded {} messages with hashtag '{}' from instance '{}'", messages.size(), hashtag, instance);
-            return messages;
+            LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", posts.size(), hashtag, instance);
+            return posts;
         } catch (final Exception e) {
-            LOGGER.error("Unable to load statuses with hashtag '{}' from Mastodon instance '{}': {}",
+            LOGGER.error("Unable to load posts with hashtag '{}' from Mastodon instance '{}': {}",
                     hashtag, instance, e.getMessage());
             return List.of();
         }
     }
 
-    private Message convertToMessage(@NotNull final Status status) {
+    private Post convertToPost(@NotNull final Status status) {
         final String id = status.getId();
         final Account account = status.getAccount();
         final Instant instant = status.getCreatedAt().mostPreciseOrFallback(Instant.MIN);
@@ -95,7 +95,7 @@ public final class MastodonPlugin implements SocialPlugin {
         final boolean isReply = inReplyToId != null && !inReplyToId.isBlank();
         final boolean isSensitive = status.isSensitive();
 
-        return new Message(id, date, author, avatar, profile, html, images, isReply, isSensitive);
+        return new Post(id, date, author, avatar, profile, html, images, isReply, isSensitive);
     }
 
     @NotNull

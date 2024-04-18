@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.plugin.social.SocialService;
-import swiss.fihlon.apus.social.Message;
+import swiss.fihlon.apus.social.Post;
 import swiss.fihlon.apus.util.PasswordUtil;
 
 import java.time.Duration;
@@ -46,7 +46,7 @@ public final class SocialView extends Div {
 
     private final transient SocialService socialService;
     private final transient Configuration configuration;
-    private final Div messageContainer = new Div();
+    private final Div postsContainer = new Div();
     private final ContextMenu contextMenu;
     private boolean adminModeEnabled = false;
 
@@ -58,15 +58,15 @@ public final class SocialView extends Div {
 
         setId("social-view");
         add(new H2(getTranslation("social.heading", configuration.getMastodon().hashtag())));
-        add(messageContainer);
-        messageContainer.addClassName("masonry");
+        add(postsContainer);
+        postsContainer.addClassName("masonry");
 
         if (adminModeEnabled || configuration.getAdmin().password().isBlank()) {
             contextMenu = null;
         } else {
             contextMenu = new ContextMenu();
             contextMenu.addItem(getTranslation("social.admin.login.menu"), event -> showLoginDialog());
-            contextMenu.setTarget(messageContainer);
+            contextMenu.setTarget(postsContainer);
         }
 
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(
@@ -116,7 +116,7 @@ public final class SocialView extends Div {
         if (PasswordUtil.matches(password, configuration.getAdmin().password())) {
             adminModeEnabled = true;
             contextMenu.setTarget(null);
-            updateMessages();
+            updatePosts();
             Notification.show(getTranslation("social.admin.login.successful"));
         } else {
             Notification.show(getTranslation("social.admin.login.rejected"));
@@ -124,32 +124,32 @@ public final class SocialView extends Div {
     }
 
     private void updateScheduler() {
-        getUI().ifPresent(ui -> ui.access(this::updateMessages));
+        getUI().ifPresent(ui -> ui.access(this::updatePosts));
     }
 
-    private void updateMessages() {
-        messageContainer.removeAll();
-        for (final Message message : socialService.getMessages(30)) {
-            final var messageView = new MessageView(message);
+    private void updatePosts() {
+        postsContainer.removeAll();
+        for (final Post post : socialService.getPosts(30)) {
+            final var postView = new PostView(post);
             if (adminModeEnabled) {
-                final var messageMenu = new ContextMenu();
-                messageMenu.addItem(getTranslation("social.message.contextmenu.hide.message"), event -> hideMessage(message));
-                messageMenu.addItem(getTranslation("social.message.contextmenu.block.profile"), event -> blockProfile(message));
-                messageMenu.setTarget(messageView);
+                final var postMenu = new ContextMenu();
+                postMenu.addItem(getTranslation("social.post.contextmenu.hide.post"), event -> hidePost(post));
+                postMenu.addItem(getTranslation("social.post.contextmenu.block.profile"), event -> blockProfile(post));
+                postMenu.setTarget(postView);
             }
-            messageContainer.add(messageView);
+            postsContainer.add(postView);
         }
     }
 
-    private void hideMessage(@NotNull final Message message) {
-        socialService.hideMessage(message);
-        Notification.show(getTranslation("social.message.contextmenu.hide.message.done"));
-        updateMessages();
+    private void hidePost(@NotNull final Post post) {
+        socialService.hidePost(post);
+        Notification.show(getTranslation("social.post.contextmenu.hide.post.done"));
+        updatePosts();
     }
 
-    private void blockProfile(@NotNull final Message message) {
-        socialService.hideProfile(message);
-        Notification.show(getTranslation("social.message.contextmenu.block.profile.done"));
-        updateMessages();
+    private void blockProfile(@NotNull final Post post) {
+        socialService.hideProfile(post);
+        Notification.show(getTranslation("social.post.contextmenu.block.profile.done"));
+        updatePosts();
     }
 }

@@ -26,7 +26,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.plugin.social.mastodon.MastodonPlugin;
-import swiss.fihlon.apus.social.Message;
+import swiss.fihlon.apus.social.Post;
 import swiss.fihlon.apus.util.HtmlUtil;
 
 import java.io.IOException;
@@ -54,9 +54,9 @@ public final class SocialService {
     private final boolean filterReplies;
     private final boolean filterSensitive;
     private final List<String> filterWords;
-    private final Set<String> hiddenMessages = new HashSet<>();
+    private final Set<String> hiddenPosts = new HashSet<>();
     private final Set<String> blockedProfiles = new HashSet<>();
-    private List<Message> messages = List.of();
+    private List<Post> posts = List.of();
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
                          @NotNull final Configuration configuration) {
@@ -67,11 +67,11 @@ public final class SocialService {
         filterWords = configuration.getFilter().words().stream()
                 .map(filterWord -> filterWord.toLowerCase(DEFAULT_LOCALE).trim())
                 .toList();
-        loadHiddenMessageIds();
+        loadHiddenPostIds();
         loadBlockedProfiles();
         if (socialPlugin.isEnabled()) {
-            updateMessages();
-            updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateMessages, UPDATE_FREQUENCY);
+            updatePosts();
+            updateScheduler = taskScheduler.scheduleAtFixedRate(this::updatePosts, UPDATE_FREQUENCY);
         } else {
             LOGGER.warn("No social plugin is enabled. No posts will be displayed.");
             updateScheduler = null;
@@ -83,53 +83,53 @@ public final class SocialService {
         updateScheduler.cancel(true);
     }
 
-    private void updateMessages() {
-        final var newMessages = socialPlugin.getMessages().stream()
-                .filter(message -> !hiddenMessages.contains(message.id()))
-                .filter(message -> !blockedProfiles.contains(message.profile()))
-                .filter(message -> !filterSensitive || !message.isSensitive())
-                .filter(message -> !filterReplies || !message.isReply())
-                .filter(message -> filterLength <= 0 || HtmlUtil.extractText(message.html()).length() <= filterLength)
+    private void updatePosts() {
+        final var newPosts = socialPlugin.getPosts().stream()
+                .filter(post -> !hiddenPosts.contains(post.id()))
+                .filter(post -> !blockedProfiles.contains(post.profile()))
+                .filter(post -> !filterSensitive || !post.isSensitive())
+                .filter(post -> !filterReplies || !post.isReply())
+                .filter(post -> filterLength <= 0 || HtmlUtil.extractText(post.html()).length() <= filterLength)
                 .filter(this::checkWordFilter)
                 .toList();
         synchronized (this) {
-            messages = new ArrayList<>(newMessages);
+            posts = new ArrayList<>(newPosts);
         }
     }
 
-    private boolean checkWordFilter(@NotNull final Message message) {
-        final String messageText = Jsoup.parse(message.html()).text().toLowerCase(DEFAULT_LOCALE);
+    private boolean checkWordFilter(@NotNull final Post post) {
+        final String postText = Jsoup.parse(post.html()).text().toLowerCase(DEFAULT_LOCALE);
         for (final String filterWord : filterWords) {
-            if (messageText.contains(filterWord)) {
+            if (postText.contains(filterWord)) {
                 return false;
             }
         }
         return true;
     }
 
-    public List<Message> getMessages(final int limit) {
+    public List<Post> getPosts(final int limit) {
         synchronized (this) {
-            if (limit <= 0 || messages.isEmpty()) {
-                return Collections.unmodifiableList(messages);
+            if (limit <= 0 || posts.isEmpty()) {
+                return Collections.unmodifiableList(posts);
             }
-            final int toIndex = limit < messages.size() ? limit : messages.size() - 1;
-            return Collections.unmodifiableList(messages.subList(0, toIndex));
+            final int toIndex = limit < posts.size() ? limit : posts.size() - 1;
+            return Collections.unmodifiableList(posts.subList(0, toIndex));
         }
     }
 
-    public void hideMessage(@NotNull final Message message) {
-        LOGGER.warn("Hiding message (id={}, profile={}, author={})",
-                message.id(), message.profile(), message.author());
-        messages.remove(message);
-        hiddenMessages.add(message.id());
-        saveHiddenMessageIds();
+    public void hidePost(@NotNull final Post post) {
+        LOGGER.warn("Hiding post (id={}, profile={}, author={})",
+                post.id(), post.profile(), post.author());
+        posts.remove(post);
+        hiddenPosts.add(post.id());
+        saveHiddenPostIds();
     }
 
-    public void hideProfile(@NotNull final Message message) {
+    public void hideProfile(@NotNull final Post post) {
         LOGGER.warn("Hide profile (id={}, profile={}, author={})",
-                message.id(), message.profile(), message.author());
-        messages.remove(message);
-        blockedProfiles.add(message.profile());
+                post.id(), post.profile(), post.author());
+        posts.remove(post);
+        blockedProfiles.add(post.profile());
         saveBlockedProfiles();
     }
 
@@ -145,12 +145,12 @@ public final class SocialService {
         return configDir;
     }
 
-    private void saveHiddenMessageIds() {
-        final var filePath = getConfigDir().resolve("hiddenMessages");
+    private void saveHiddenPostIds() {
+        final var filePath = getConfigDir().resolve("hiddenPosts");
         try {
-            Files.writeString(filePath, String.join("\n", hiddenMessages));
+            Files.writeString(filePath, String.join("\n", hiddenPosts));
         } catch (final IOException e) {
-            LOGGER.error("Unable to save hidden messages to file '{}': {}", filePath, e.getMessage());
+            LOGGER.error("Unable to save hidden posts to file '{}': {}", filePath, e.getMessage());
         }
     }
 
@@ -163,16 +163,16 @@ public final class SocialService {
         }
     }
 
-    private void loadHiddenMessageIds() {
-        final var filePath = getConfigDir().resolve("hiddenMessages");
+    private void loadHiddenPostIds() {
+        final var filePath = getConfigDir().resolve("hiddenPosts");
         if (filePath.toFile().exists()) {
             try {
-                hiddenMessages.addAll(Files.readAllLines(filePath));
+                hiddenPosts.addAll(Files.readAllLines(filePath));
             } catch (IOException e) {
-                LOGGER.error("Unable to load hidden messages from file '{}': {}", filePath, e.getMessage());
+                LOGGER.error("Unable to load hidden posts from file '{}': {}", filePath, e.getMessage());
             }
         } else {
-            LOGGER.info("No previously saved hidden messages found.");
+            LOGGER.info("No previously saved hidden posts found.");
         }
     }
 

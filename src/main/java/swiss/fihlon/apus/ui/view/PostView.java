@@ -29,56 +29,56 @@ import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Image;
 import org.jetbrains.annotations.NotNull;
 import org.ocpsoft.prettytime.PrettyTime;
-import swiss.fihlon.apus.social.Message;
+import swiss.fihlon.apus.social.Post;
 import swiss.fihlon.apus.util.HtmlUtil;
 
-@CssImport(value = "./themes/apus/views/message-view.css")
-public final class MessageView extends Div {
+@CssImport(value = "./themes/apus/views/post-view.css")
+public final class PostView extends Div {
 
-    public MessageView(@NotNull final Message message) {
-        setId("message-" + message.id());
-        addClassName("message-view");
-        add(createHeaderComponent(message));
-        add(createTextComponent(message));
-        add(createImageComponents(message));
-        add(createDateTimeComponent(message));
+    public PostView(@NotNull final Post post) {
+        setId("post-" + post.id());
+        addClassName("post-view");
+        add(createHeaderComponent(post));
+        add(createTextComponent(post));
+        add(createImageComponents(post));
+        add(createDateTimeComponent(post));
     }
 
-    @NotNull Component createHeaderComponent(@NotNull final Message message) {
-        final var avatar = createAvatarComponent(message);
-        final var author = new Div(new Text(message.author()));
+    @NotNull Component createHeaderComponent(@NotNull final Post post) {
+        final var avatar = createAvatarComponent(post);
+        final var author = new Div(new Text(post.author()));
         author.addClassName("author");
-        final var profile = new Div(new Text(message.profile()));
+        final var profile = new Div(new Text(post.profile()));
         profile.addClassName("profile");
         final var authorContainer = new Div(author, profile);
         authorContainer.addClassName("author-container");
         return new Header(avatar, authorContainer);
     }
 
-    private Component createAvatarComponent(@NotNull final Message message) {
-        return new Avatar(message.author(), message.avatar());
+    private Component createAvatarComponent(@NotNull final Post post) {
+        return new Avatar(post.author(), post.avatar());
     }
 
     @NotNull
-    private Component createTextComponent(@NotNull final Message message) {
-        final String unsafeHtml = message.html();
+    private Component createTextComponent(@NotNull final Post post) {
+        final String unsafeHtml = post.html();
         final String saveHtml = HtmlUtil.sanitize(unsafeHtml);
         return new Html(String.format("<div class=\"content\">%s</div>", saveHtml));
     }
 
     @NotNull
-    private Component[] createImageComponents(@NotNull final Message message) {
-        return message.images().stream()
+    private Component[] createImageComponents(@NotNull final Post post) {
+        return post.images().stream()
                 .map(image -> new Image(image, image))
                 .toArray(Image[]::new);
     }
 
     @NotNull
-    private Component createDateTimeComponent(@NotNull final Message message) {
+    private Component createDateTimeComponent(@NotNull final Post post) {
         final var dateTimeComponent = new Footer();
         dateTimeComponent.addClassName("datetime");
         final var prettyTime = new PrettyTime(UI.getCurrent().getLocale());
-        dateTimeComponent.add(new Text(prettyTime.format(message.date())));
+        dateTimeComponent.add(new Text(prettyTime.format(post.date())));
         return dateTimeComponent;
     }
 }
