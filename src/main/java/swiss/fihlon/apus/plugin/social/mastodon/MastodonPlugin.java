@@ -55,6 +55,12 @@ public final class MastodonPlugin implements SocialPlugin {
         this.imageLimit = mastodonConfig.imageLimit();
     }
 
+    @Override
+    public boolean isEnabled() {
+        return instance != null && !instance.isEmpty() && hashtag != null && !hashtag.isEmpty();
+    }
+
+    @Override
     public List<Message> getMessages() {
         try {
             LOGGER.info("Starting download of messages with hashtag '{}' from instance '{}'", hashtag, instance);

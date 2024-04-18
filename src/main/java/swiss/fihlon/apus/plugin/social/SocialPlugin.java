@@ -17,5 +17,14 @@
  */
 package swiss.fihlon.apus.plugin.social;
 
+import swiss.fihlon.apus.social.Message;
+
+import java.util.List;
+
 public interface SocialPlugin {
+
+    boolean isEnabled();
+
+    List<Message> getMessages();
+
 }

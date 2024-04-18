@@ -55,6 +55,12 @@ public final class DoagPlugin implements ConferencePlugin {
         this.eventId = configuration.getDoag().eventId();
     }
 
+    @Override
+    public boolean isEnabled() {
+        return eventId > 0;
+    }
+
+    @Override
     @NotNull public List<Session> getSessions() {
         if (eventId == 0) {
             return List.of();

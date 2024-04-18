@@ -24,6 +24,8 @@ import java.util.List;
 
 public interface ConferencePlugin {
 
+    boolean isEnabled();
+
     @NotNull List<Session> getSessions();
 
 }
