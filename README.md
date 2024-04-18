@@ -100,7 +100,7 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 | MASTODON_INSTANCE       |         | The Mastodon instance used to read the posts from (empty = disabled).  |
 | MASTODON_HASHTAG        |         | The hashtag for the mastodon wall (empty = disabled).                  |
 | MASTODON_IMAGES_ENABLED | true    | Enable or disable images in mastodon posts.                            |
-| MASTODON_IMAGE_LIMIT    | 1       | Limit number of images per post.                                       |
+| MASTODON_IMAGE_LIMIT    | 1       | Limit number of images per post (0 = no limit).                        |
 | TZ                      | UTC     | The timezone used for date and time calculations.                      |
 
 The environment variables will override the default values.
@@ -204,7 +204,7 @@ Plugins for other social media services are planned.
 
 Everyone is welcome to contribute a plugin themselves. The implementation is very simple. There are two types of plugins: `ConferencePlugin` and `SocialPlugin`. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.conference` or `swiss.fihlon.apus.plugin.social`, based on the plugin type. The implementation is carried out in this new package. Implement one of these two interfaces depending on the plugin type you want to contribute.
 
-If your implementation requires a configuration, the package `swiss.fihlon.apus.configuration` must be extended accordingly. Default settings belong in the file `application.properties` and the corresponding schema is stored in `additional-spring-configuration-metadata.json`. Of course, `README.md` must also be adapted.
+If your implementation requires a configuration, the `Configuration` class must be extended accordingly. Add a property and corresponding setters and getters in the marked sections. Implement the settings object as a `record` in your new plugin package. Take one of the existing plugins as a template. Default settings belong in the file `application.properties` and the corresponding schema is stored in `additional-spring-configuration-metadata.json`. Of course, this `README.md` must also be adapted.
 
 ## Communication
 

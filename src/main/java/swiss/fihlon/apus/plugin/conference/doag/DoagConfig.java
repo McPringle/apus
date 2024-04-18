@@ -15,8 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.configuration;
+package swiss.fihlon.apus.plugin.conference.doag;
 
-import org.jetbrains.annotations.NotNull;
-
-public record Admin(@NotNull String password) { }
+public record DoagConfig(int eventId) { }

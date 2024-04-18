@@ -15,6 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.configuration;
+package swiss.fihlon.apus.plugin.social.mastodon;
 
-public record Mastodon(String instance, String hashtag, boolean imagesEnabled, int imageLimit) { }
+public record MastodonConfig(String instance, String hashtag, boolean imagesEnabled, int imageLimit) { }

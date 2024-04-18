@@ -21,4 +21,4 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public record Filter(int length, boolean replies, boolean sensitive, @NotNull List<String> words) { }
+public record FilterConfig(int length, boolean replies, boolean sensitive, @NotNull List<String> words) { }

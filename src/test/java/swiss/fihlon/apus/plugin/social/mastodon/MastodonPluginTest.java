@@ -22,7 +22,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import swiss.fihlon.apus.configuration.Configuration;
-import swiss.fihlon.apus.configuration.Mastodon;
 import swiss.fihlon.apus.social.Message;
 
 import java.util.List;
@@ -39,7 +38,7 @@ class MastodonPluginTest {
     @Test
     void getMessages() {
         when(configuration.getMastodon()).thenReturn(
-                new Mastodon("mastodon.social", "java", true, 0));
+                new MastodonConfig("mastodon.social", "java", true, 0));
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(configuration);
         final List<Message> messages = mastodonPlugin.getMessages();

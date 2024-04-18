@@ -17,4 +17,6 @@
  */
 package swiss.fihlon.apus.configuration;
 
-public record DOAG(int eventId) { }
+import org.jetbrains.annotations.NotNull;
+
+public record AdminConfig(@NotNull String password) { }

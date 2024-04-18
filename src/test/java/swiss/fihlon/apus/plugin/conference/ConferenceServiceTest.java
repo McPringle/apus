@@ -24,7 +24,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.scheduling.support.NoOpTaskScheduler;
 import swiss.fihlon.apus.configuration.Configuration;
-import swiss.fihlon.apus.configuration.DOAG;
+import swiss.fihlon.apus.plugin.conference.doag.DoagConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -39,7 +39,7 @@ class ConferenceServiceTest {
     @Disabled // TODO inject test data instead of relying on an external API
     void displaySampleData() {
 
-        when(configuration.getDoag()).thenReturn(new DOAG(773));
+        when(configuration.getDoag()).thenReturn(new DoagConfig(773));
 
         final ConferenceService conferenceService = new ConferenceService(new NoOpTaskScheduler(), configuration);
         assertEquals(12, conferenceService.getRoomsWithSessions().size());

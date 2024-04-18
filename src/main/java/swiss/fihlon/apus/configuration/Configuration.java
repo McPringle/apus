@@ -20,6 +20,8 @@ package swiss.fihlon.apus.configuration;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import swiss.fihlon.apus.plugin.conference.doag.DoagConfig;
+import swiss.fihlon.apus.plugin.social.mastodon.MastodonConfig;
 
 @org.springframework.context.annotation.Configuration
 @ConfigurationProperties(prefix = "apus")
@@ -28,10 +30,15 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 public class Configuration {
 
     private String version;
-    private Admin admin;
-    private DOAG doag;
-    private Mastodon mastodon;
-    private Filter filter;
+    private AdminConfig admin;
+    private FilterConfig filter;
+
+    // Conference Plugin Configs
+    private DoagConfig doag;
+
+    // Social Plugin Configs
+    private MastodonConfig mastodon;
+
     public String getVersion() {
         return version;
     }
@@ -40,35 +47,44 @@ public class Configuration {
         this.version = version;
     }
 
-    public Admin getAdmin() {
+    public AdminConfig getAdmin() {
         return admin;
     }
 
-    public void setAdmin(@NotNull final Admin admin) {
+    public void setAdmin(@NotNull final AdminConfig admin) {
         this.admin = admin;
     }
 
-    public DOAG getDoag() {
-        return doag;
-    }
-
-    public void setDoag(@NotNull final DOAG doag) {
-        this.doag = doag;
-    }
-
-    public Mastodon getMastodon() {
-        return mastodon;
-    }
-
-    public void setMastodon(@NotNull final Mastodon mastodon) {
-        this.mastodon = mastodon;
-    }
-
-    public Filter getFilter() {
+    public FilterConfig getFilter() {
         return filter;
     }
 
-    public void setFilter(@NotNull final Filter filter) {
+    public void setFilter(@NotNull final FilterConfig filter) {
         this.filter = filter;
     }
+
+    ///////////////////////////////
+    // Conference Plugin Configs //
+    ///////////////////////////////
+
+    public DoagConfig getDoag() {
+        return doag;
+    }
+
+    public void setDoag(@NotNull final DoagConfig doag) {
+        this.doag = doag;
+    }
+
+    ///////////////////////////
+    // Social Plugin Configs //
+    ///////////////////////////
+
+    public MastodonConfig getMastodon() {
+        return mastodon;
+    }
+
+    public void setMastodon(@NotNull final MastodonConfig mastodon) {
+        this.mastodon = mastodon;
+    }
+
 }
