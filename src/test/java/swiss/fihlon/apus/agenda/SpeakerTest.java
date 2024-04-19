@@ -24,6 +24,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SpeakerTest {
 
     @Test
+    void compareTo() {
+        assertEquals(-1, new Speaker("Speaker 1").compareTo(new Speaker("Speaker 2")));
+        assertEquals(0, new Speaker("Speaker 1").compareTo(new Speaker("Speaker 1")));
+        assertEquals(1, new Speaker("Speaker 2").compareTo(new Speaker("Speaker 1")));
+    }
+
+    @Test
     void fullName() {
         assertEquals("Speaker 1", new Speaker("Speaker 1").fullName());
     }
