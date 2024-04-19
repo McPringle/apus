@@ -17,29 +17,23 @@
  */
 package swiss.fihlon.apus.agenda;
 
-import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 
-public enum RoomStyle {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-    // Important: When adding a new room style, modify the test accordingly!
-    NONE("", ""),
-    RUNNING("running-session", "agenda.legend.running-session"),
-    NEXT("next-session", "agenda.legend.next-session"),
-    EMPTY("empty-room", "agenda.legend.empty-room");
+class SessionImportExceptionTest {
 
-    private final String cssStyle;
-    private final String translationKey;
-
-    RoomStyle(@NotNull final String cssStyle, @NotNull final String translationKey) {
-        this.cssStyle = cssStyle;
-        this.translationKey = translationKey;
+    @Test
+    @SuppressWarnings("java:S5778")
+    void testException() {
+        final var exception = assertThrows(SessionImportException.class, () -> {
+            throw new SessionImportException("Session Import Exception", new RuntimeException("Runtime Exception"));
+        });
+        assertInstanceOf(SessionImportException.class, exception);
+        assertEquals("Session Import Exception", exception.getMessage());
+        assertEquals("Runtime Exception", exception.getCause().getMessage());
     }
 
-    public String getCssStyle() {
-        return cssStyle;
-    }
-
-    public String getTranslationKey() {
-        return translationKey;
-    }
 }

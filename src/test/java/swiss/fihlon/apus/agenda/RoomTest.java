@@ -17,29 +17,22 @@
  */
 package swiss.fihlon.apus.agenda;
 
-import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 
-public enum RoomStyle {
+import static org.junit.jupiter.api.Assertions.*;
 
-    // Important: When adding a new room style, modify the test accordingly!
-    NONE("", ""),
-    RUNNING("running-session", "agenda.legend.running-session"),
-    NEXT("next-session", "agenda.legend.next-session"),
-    EMPTY("empty-room", "agenda.legend.empty-room");
+class RoomTest {
 
-    private final String cssStyle;
-    private final String translationKey;
-
-    RoomStyle(@NotNull final String cssStyle, @NotNull final String translationKey) {
-        this.cssStyle = cssStyle;
-        this.translationKey = translationKey;
+    @Test
+    void compareTo() {
+        assertEquals(-1, new Room("A").compareTo(new Room("B")));
+        assertEquals(0, new Room("A").compareTo(new Room("A")));
+        assertEquals(1, new Room("B").compareTo(new Room("A")));
     }
 
-    public String getCssStyle() {
-        return cssStyle;
+    @Test
+    void name() {
+        assertEquals("Test", new Room("Test").name());
     }
 
-    public String getTranslationKey() {
-        return translationKey;
-    }
 }
