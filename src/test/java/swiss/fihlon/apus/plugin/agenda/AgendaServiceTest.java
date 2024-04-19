@@ -39,7 +39,7 @@ class AgendaServiceTest {
     @Disabled // TODO inject test data instead of relying on an external API
     void displaySampleData() {
 
-        when(configuration.getDoag()).thenReturn(new DoagConfig(773));
+        when(configuration.getDoag()).thenReturn(new DoagConfig(773, "file:src/test/resources/DOAG.json?eventId=%d"));
 
         final AgendaService agendaService = new AgendaService(new NoOpTaskScheduler(), configuration);
         assertEquals(12, agendaService.getRoomsWithSessions().size());

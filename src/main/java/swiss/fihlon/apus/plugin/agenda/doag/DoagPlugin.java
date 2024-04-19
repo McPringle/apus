@@ -47,12 +47,13 @@ import java.util.List;
 public final class DoagPlugin implements AgendaPlugin {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(DoagPlugin.class);
-    public static final String CONFERENCE_API_LOCATION = "https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/";
 
     private final int eventId;
+    private final String eventApi;
 
     public DoagPlugin(@NotNull final Configuration configuration) {
         this.eventId = configuration.getDoag().eventId();
+        this.eventApi = configuration.getDoag().eventApi();
     }
 
     @Override
@@ -158,8 +159,8 @@ public final class DoagPlugin implements AgendaPlugin {
     }
 
     private String getJSON() throws IOException, URISyntaxException {
-        LOGGER.info("Starting download of JSON for event ID {}", eventId);
-        final var location = String.format(CONFERENCE_API_LOCATION, eventId);
+        final var location = String.format(eventApi, eventId);
+        LOGGER.info("Starting download of JSON for event ID {} using address {}", eventId, location);
         try (InputStream in = new URI(location).toURL().openStream()) {
             final String json = new String(in.readAllBytes(), StandardCharsets.UTF_8);
             LOGGER.info("Successfully downloaded JSON for event ID {}", eventId);

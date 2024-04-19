@@ -93,6 +93,7 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 |-------------------------|---------|------------------------------------------------------------------------|
 | ADMIN_PASSWORD          |         | The hashed password to get admin access (empty = disabled).            |
 | DOAG_EVENT_ID           | 0       | The ID of the DOAG event to read the conference agenda (0 = disabled). |
+| DOAG_EVENT_API          | [1]     | The URL of the DOAG event API to read the conference agenda.           |
 | FILTER_LENGTH           | 500     | Hide social media posts which exceed this length (0 = disabled).       |
 | FILTER_REPLIES          | true    | Hide social media posts which are replies.                             |
 | FILTER_SENSITIVE        | true    | Hide social media posts which contain sensitive information.           |
@@ -103,7 +104,9 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 | MASTODON_IMAGE_LIMIT    | 1       | Limit number of images per post (0 = no limit).                        |
 | TZ                      | UTC     | The timezone used for date and time calculations.                      |
 
-The environment variables will override the default values.
+The environment variables will override the default values. Some default values might be too long to be displayed in this table. They are marked with a number in square brackets and can be looked up in the following list:
+
+1. https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/
 
 ### Create Hashed Password
 

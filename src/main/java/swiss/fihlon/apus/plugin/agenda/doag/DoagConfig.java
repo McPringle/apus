@@ -17,4 +17,4 @@
  */
 package swiss.fihlon.apus.plugin.agenda.doag;
 
-public record DoagConfig(int eventId) { }
+public record DoagConfig(int eventId, String eventApi) { }

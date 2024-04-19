@@ -36,6 +36,7 @@ class DoagConfigTest {
         final var doagConfig = configuration.getDoag();
         assertNotNull(doagConfig);
         assertEquals(-1, doagConfig.eventId());
+        assertEquals("file:src/test/resources/DOAG.json?eventId=%d", doagConfig.eventApi());
     }
 
 }
