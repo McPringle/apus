@@ -29,7 +29,7 @@ public record Post(@NotNull String id, @NotNull LocalDateTime date,
         implements Comparable<Post> {
     @Override
     public int compareTo(@NotNull final Post other) {
-        final int dateCompareResult = date.compareTo(other.date);
+        final int dateCompareResult = other.date.compareTo(date);
         return dateCompareResult == 0 ? id.compareTo(other.id) : dateCompareResult;
     }
 }

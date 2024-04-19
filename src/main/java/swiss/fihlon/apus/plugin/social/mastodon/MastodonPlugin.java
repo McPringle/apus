@@ -72,8 +72,7 @@ public final class MastodonPlugin implements SocialPlugin {
             final List<Post> posts = statuses.getPart().stream()
                     .map(this::convertToPost)
                     .sorted()
-                    .toList()
-                    .reversed();
+                    .toList();
             LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", posts.size(), hashtag, instance);
             return posts;
         } catch (final Exception e) {
