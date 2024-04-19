@@ -17,18 +17,73 @@
  */
 package swiss.fihlon.apus.plugin.agenda.doag;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import swiss.fihlon.apus.agenda.Language;
+import swiss.fihlon.apus.agenda.Room;
+import swiss.fihlon.apus.agenda.Speaker;
+import swiss.fihlon.apus.configuration.Configuration;
+
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class DoagPluginTest {
 
     @Test
-    @Disabled // TODO make the ConferenceAPI testable
-    void importViaHttps() {
-//        final String location = "file:src/test/resources/DOAG.json";
-//        final ConferenceAPI conferenceAPI = new ConferenceAPI(location);
-//        final List<Session> sessions = conferenceAPI.getSessions();
-//        assertEquals(8, sessions.size());
+    void isEnabled() {
+        final var configuration = mock(Configuration.class);
+        final var doagConfig = mock(DoagConfig.class);
+        when(configuration.getDoag()).thenReturn(doagConfig);
+        when(doagConfig.eventId()).thenReturn(1);
+
+        final var doagPlugin = new DoagPlugin(configuration);
+        assertTrue(doagPlugin.isEnabled());
     }
 
+    @Test
+    void isDisabled() {
+        final var configuration = mock(Configuration.class);
+        final var doagConfig = new DoagConfig(0, "");
+        when(configuration.getDoag()).thenReturn(doagConfig);
+
+        final var doagPlugin = new DoagPlugin(configuration);
+        assertFalse(doagPlugin.isEnabled());
+    }
+
+    @Test
+    void getSessions() {
+        final var configuration = mock(Configuration.class);
+        final var doagConfig = new DoagConfig(1, "file:src/test/resources/DOAG.json?eventId=%d");
+        when(configuration.getDoag()).thenReturn(doagConfig);
+
+        final var doagPlugin = new DoagPlugin(configuration);
+        final var sessions = doagPlugin.getSessions();
+        assertEquals(8, sessions.size());
+
+        // no loop to check order of list, sorted by time of date
+        assertEquals("BBAD:1", sessions.get(0).id());
+        assertEquals("BBAD:2", sessions.get(1).id());
+        assertEquals("BBAD:4", sessions.get(2).id());
+        assertEquals("BBAD:3", sessions.get(3).id());
+        assertEquals("BBAD:6", sessions.get(4).id());
+        assertEquals("BBAD:5", sessions.get(5).id());
+        assertEquals("BBAD:7", sessions.get(6).id());
+        assertEquals("BBAD:8", sessions.get(7).id());
+
+        // full check of session with ID "BBAD:5"
+        final var session = sessions.get(5);
+        assertEquals("BBAD:5", session.id());
+        assertEquals(LocalDateTime.of(2024, 1, 3, 19, 0), session.startDate());
+        assertEquals(LocalDateTime.of(2024, 1, 3, 19, 45), session.endDate());
+        assertEquals(new Room("Room A"), session.room());
+        assertEquals("Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat", session.title());
+        assertEquals(2, session.speakers().size());
+        assertEquals(new Speaker("Saul Goodman"), session.speakers().get(0));
+        assertEquals(new Speaker("Mike Ehrmantraut"), session.speakers().get(1));
+        assertEquals(Language.DE, session.language());
+    }
 }
