@@ -27,7 +27,7 @@ class RoomStyleTest {
     void getCssStyle() {
         for (final RoomStyle roomStyle : RoomStyle.values()) {
             assertNotNull(roomStyle.getCssStyle());
-            assertEquals(roomStyle.equals(RoomStyle.NONE), roomStyle.getCssStyle().trim().isEmpty());
+            assertEquals(roomStyle.equals(RoomStyle.NONE), roomStyle.getCssStyle().isBlank());
         }
     }
 
@@ -35,7 +35,7 @@ class RoomStyleTest {
     void getTranslationKey() {
         for (final RoomStyle roomStyle : RoomStyle.values()) {
             assertNotNull(roomStyle.getTranslationKey());
-            assertEquals(roomStyle.equals(RoomStyle.NONE), roomStyle.getTranslationKey().trim().isEmpty());
+            assertEquals(roomStyle.equals(RoomStyle.NONE), roomStyle.getTranslationKey().isBlank());
         }
     }
 

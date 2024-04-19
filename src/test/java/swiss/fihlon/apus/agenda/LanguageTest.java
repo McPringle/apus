@@ -39,7 +39,7 @@ class LanguageTest {
     void getFlagEmoji() {
         for (final Language language : Language.values()) {
             assertNotNull(language.getFlagEmoji());
-            assertFalse(language.getFlagEmoji().trim().isEmpty());
+            assertFalse(language.getFlagEmoji().isBlank());
         }
     }
 
