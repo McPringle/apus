@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.plugin.agenda.doag;
+package swiss.fihlon.apus.plugin.event.doag;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -23,13 +23,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import swiss.fihlon.apus.agenda.Language;
-import swiss.fihlon.apus.agenda.Room;
-import swiss.fihlon.apus.agenda.Session;
-import swiss.fihlon.apus.agenda.SessionImportException;
-import swiss.fihlon.apus.agenda.Speaker;
+import swiss.fihlon.apus.event.Language;
+import swiss.fihlon.apus.event.Room;
+import swiss.fihlon.apus.event.Session;
+import swiss.fihlon.apus.event.SessionImportException;
+import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.configuration.Configuration;
-import swiss.fihlon.apus.plugin.agenda.AgendaPlugin;
+import swiss.fihlon.apus.plugin.event.EventPlugin;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-public final class DoagPlugin implements AgendaPlugin {
+public final class DoagPlugin implements EventPlugin {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(DoagPlugin.class);
 

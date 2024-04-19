@@ -15,42 +15,40 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.agenda;
+package swiss.fihlon.apus.event;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LanguageTest {
+class RoomStyleTest {
 
     @Test
-    void languageWithCode() {
-        assertEquals(Language.DE, Language.languageWithCode("de"));
-        assertEquals(Language.EN, Language.languageWithCode("en"));
+    void getCssStyle() {
+        for (final RoomStyle roomStyle : RoomStyle.values()) {
+            assertNotNull(roomStyle.getCssStyle());
+            assertEquals(roomStyle.equals(RoomStyle.NONE), roomStyle.getCssStyle().isBlank());
+        }
     }
 
     @Test
-    void getLanguageCode() {
-        assertEquals("de", Language.DE.getLanguageCode());
-        assertEquals("en", Language.EN.getLanguageCode());
-    }
-
-    @Test
-    void getFlagEmoji() {
-        for (final Language language : Language.values()) {
-            assertNotNull(language.getFlagEmoji());
-            assertFalse(language.getFlagEmoji().isBlank());
+    void getTranslationKey() {
+        for (final RoomStyle roomStyle : RoomStyle.values()) {
+            assertNotNull(roomStyle.getTranslationKey());
+            assertEquals(roomStyle.equals(RoomStyle.NONE), roomStyle.getTranslationKey().isBlank());
         }
     }
 
     @Test
     void values() {
-        assertEquals(2, Language.values().length);
+        assertEquals(4, RoomStyle.values().length);
     }
 
     @Test
     void valueOf() {
-        assertEquals(Language.DE, Language.valueOf("DE"));
-        assertEquals(Language.EN, Language.valueOf("EN"));
+        assertEquals(RoomStyle.NONE, RoomStyle.valueOf("NONE"));
+        assertEquals(RoomStyle.RUNNING, RoomStyle.valueOf("RUNNING"));
+        assertEquals(RoomStyle.NEXT, RoomStyle.valueOf("NEXT"));
+        assertEquals(RoomStyle.EMPTY, RoomStyle.valueOf("EMPTY"));
     }
 }

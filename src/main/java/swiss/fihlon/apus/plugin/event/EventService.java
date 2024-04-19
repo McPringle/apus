@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.plugin.agenda;
+package swiss.fihlon.apus.plugin.event;
 
 import jakarta.annotation.PreDestroy;
 import org.jetbrains.annotations.NotNull;
@@ -23,10 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
-import swiss.fihlon.apus.agenda.Room;
-import swiss.fihlon.apus.agenda.Session;
-import swiss.fihlon.apus.agenda.SessionImportException;
-import swiss.fihlon.apus.plugin.agenda.doag.DoagPlugin;
+import swiss.fihlon.apus.event.Room;
+import swiss.fihlon.apus.event.Session;
+import swiss.fihlon.apus.event.SessionImportException;
+import swiss.fihlon.apus.plugin.event.doag.DoagPlugin;
 import swiss.fihlon.apus.configuration.Configuration;
 
 import java.time.Duration;
@@ -38,19 +38,19 @@ import java.util.TreeMap;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
-public final class AgendaService {
+public final class EventService {
 
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(5);
-    private static final Logger LOGGER = LoggerFactory.getLogger(AgendaService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
 
-    private final AgendaPlugin agendaPlugin;
+    private final EventPlugin eventPlugin;
     private final ScheduledFuture<?> updateScheduler;
     private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
 
-    public AgendaService(@NotNull final TaskScheduler taskScheduler,
-                         @NotNull final Configuration configuration) {
-        agendaPlugin = new DoagPlugin(configuration);
-        if (agendaPlugin.isEnabled()) {
+    public EventService(@NotNull final TaskScheduler taskScheduler,
+                        @NotNull final Configuration configuration) {
+        eventPlugin = new DoagPlugin(configuration);
+        if (eventPlugin.isEnabled()) {
             updateSessions();
             updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, UPDATE_FREQUENCY);
         } else {
@@ -66,7 +66,7 @@ public final class AgendaService {
 
     private void updateSessions() {
         try {
-            final var sessions = agendaPlugin.getSessions().stream()
+            final var sessions = eventPlugin.getSessions().stream()
                     .sorted()
                     .toList();
 

@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#agenda-view {
+#event-view {
     background-color: #007e89;
     position: absolute;
     top: 0;
@@ -26,18 +26,18 @@
     overflow: clip;
 }
 
-#agenda-view h2 {
+#event-view h2 {
     float: left;
     font-size: 30px;
     margin: 10px;
 }
 
-#agenda-view .legend {
+#event-view .legend {
     float: right;
     padding: 13px 10px 0 0;
 }
 
-#agenda-view .legend > span {
+#event-view .legend > span {
     color: #003861;
     margin-left: var(--lumo-space-s);
 }

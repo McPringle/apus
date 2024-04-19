@@ -30,7 +30,7 @@ class SocialWallViewTest extends KaribuTest {
     void socialWallContainsViews() {
         UI.getCurrent().navigate(SocialWallView.class);
         _assertOne(SocialWallView.class);
-        _assertOne(AgendaView.class);
+        _assertOne(EventView.class);
         _assertOne(SocialView.class);
     }
 

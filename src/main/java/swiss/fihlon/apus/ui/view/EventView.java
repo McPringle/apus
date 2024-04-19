@@ -26,10 +26,10 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
-import swiss.fihlon.apus.agenda.Room;
-import swiss.fihlon.apus.agenda.RoomStyle;
-import swiss.fihlon.apus.agenda.Session;
-import swiss.fihlon.apus.plugin.agenda.AgendaService;
+import swiss.fihlon.apus.event.Room;
+import swiss.fihlon.apus.event.RoomStyle;
+import swiss.fihlon.apus.event.Session;
+import swiss.fihlon.apus.plugin.event.EventService;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -43,23 +43,23 @@ import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@CssImport(value = "./themes/apus/views/agenda-view.css")
-public final class AgendaView extends Div {
+@CssImport(value = "./themes/apus/views/event-view.css")
+public final class EventView extends Div {
 
     public static final String LABEL_THEME = "badge";
     private static final int MAX_ROOMS_IN_VIEW = 12;
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
     private static final Duration TIME_LIMIT_NEXT_SESSION = Duration.ofHours(1);
 
-    private final transient AgendaService agendaService;
+    private final transient EventService eventService;
     private final H2 title = createTitle();
     private final Div roomContainer = new Div();
     private final Span legend = new Span();
 
-    public AgendaView(@NotNull final AgendaService agendaService,
-                      @NotNull final TaskScheduler taskScheduler) {
-        this.agendaService = agendaService;
-        setId("agenda-view");
+    public EventView(@NotNull final EventService eventService,
+                     @NotNull final TaskScheduler taskScheduler) {
+        this.eventService = eventService;
+        setId("event-view");
         add(title);
         add(createLegend());
         add(roomContainer);
@@ -76,14 +76,14 @@ public final class AgendaView extends Div {
         roomContainer.removeAll();
         final var today = LocalDate.now();
         final var roomCounter = new AtomicInteger(0);
-        final var roomsWithSessions = agendaService.getRoomsWithSessions().entrySet();
+        final var roomsWithSessions = eventService.getRoomsWithSessions().entrySet();
         if (roomsWithSessions.isEmpty()) {
-            Notification.show(getTranslation("agenda.error.nosessions"));
+            Notification.show(getTranslation("event.error.nosessions"));
         }
         final var roomStylesInUse = new HashSet<RoomStyle>();
         for (final Map.Entry<Room, List<Session>> roomWithSession : roomsWithSessions) {
             if (roomCounter.get() >= MAX_ROOMS_IN_VIEW) {
-                Notification.show(String.format(getTranslation("agenda.error.rooms"), roomsWithSessions.size()));
+                Notification.show(String.format(getTranslation("event.error.rooms"), roomsWithSessions.size()));
                 break;
             }
             final RoomView roomView = createRoomView(roomWithSession, today, roomCounter);
@@ -96,12 +96,12 @@ public final class AgendaView extends Div {
 
     @NotNull
     private H2 createTitle() {
-        return new H2(getTranslation("agenda.heading",
+        return new H2(getTranslation("event.heading",
                 LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale())));
     }
 
     private void updateTitle() {
-        title.setText(getTranslation("agenda.heading",
+        title.setText(getTranslation("event.heading",
                 LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale())));
 
     }

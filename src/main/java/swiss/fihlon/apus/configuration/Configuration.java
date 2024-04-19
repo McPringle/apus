@@ -20,7 +20,7 @@ package swiss.fihlon.apus.configuration;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import swiss.fihlon.apus.plugin.agenda.doag.DoagConfig;
+import swiss.fihlon.apus.plugin.event.doag.DoagConfig;
 import swiss.fihlon.apus.plugin.social.mastodon.MastodonConfig;
 
 @org.springframework.context.annotation.Configuration
@@ -33,7 +33,7 @@ public class Configuration {
     private AdminConfig admin;
     private FilterConfig filter;
 
-    // Agenda Plugin Configs
+    // Event Plugin Configs
     private DoagConfig doag;
 
     // Social Plugin Configs
@@ -63,9 +63,9 @@ public class Configuration {
         this.filter = filter;
     }
 
-    ///////////////////////////
-    // Agenda Plugin Configs //
-    ///////////////////////////
+    //////////////////////////
+    // Event Plugin Configs //
+    //////////////////////////
 
     public DoagConfig getDoag() {
         return doag;

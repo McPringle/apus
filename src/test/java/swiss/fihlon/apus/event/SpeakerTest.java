@@ -15,15 +15,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.agenda;
+package swiss.fihlon.apus.event;
 
-import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 
-public record Speaker(@NotNull String fullName) implements Comparable<Speaker> {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    @Override
-    public int compareTo(@NotNull final Speaker other) {
-        return fullName.compareTo(other.fullName);
+class SpeakerTest {
+
+    @Test
+    void compareTo() {
+        assertEquals(-1, new Speaker("Speaker 1").compareTo(new Speaker("Speaker 2")));
+        assertEquals(0, new Speaker("Speaker 1").compareTo(new Speaker("Speaker 1")));
+        assertEquals(1, new Speaker("Speaker 2").compareTo(new Speaker("Speaker 1")));
+    }
+
+    @Test
+    void fullName() {
+        assertEquals("Speaker 1", new Speaker("Speaker 1").fullName());
     }
 
 }

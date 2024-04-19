@@ -15,14 +15,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.agenda;
+package swiss.fihlon.apus.event;
 
 import org.jetbrains.annotations.NotNull;
 
-public class SessionImportException extends RuntimeException {
+public record Speaker(@NotNull String fullName) implements Comparable<Speaker> {
 
-    public SessionImportException(@NotNull final String message, @NotNull final Exception e) {
-        super(message, e);
+    @Override
+    public int compareTo(@NotNull final Speaker other) {
+        return fullName.compareTo(other.fullName);
     }
 
 }

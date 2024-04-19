@@ -26,11 +26,11 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import swiss.fihlon.apus.agenda.Language;
-import swiss.fihlon.apus.agenda.Room;
-import swiss.fihlon.apus.agenda.RoomStyle;
-import swiss.fihlon.apus.agenda.Session;
-import swiss.fihlon.apus.agenda.Speaker;
+import swiss.fihlon.apus.event.Language;
+import swiss.fihlon.apus.event.Room;
+import swiss.fihlon.apus.event.RoomStyle;
+import swiss.fihlon.apus.event.Session;
+import swiss.fihlon.apus.event.Speaker;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -89,7 +89,7 @@ public final class RoomView extends Div {
     private Component createTitleComponent() {
         final var titleComponent = new Div();
         titleComponent.addClassName("title");
-        titleComponent.add(new H3(new Text(title == null ? getTranslation("conference.room.empty") : title)));
+        titleComponent.add(new H3(new Text(title == null ? getTranslation("event.room.empty") : title)));
         titleComponent.add(createLanguageComponent());
         return titleComponent;
     }
@@ -134,7 +134,7 @@ public final class RoomView extends Div {
             final Duration duration = Duration.between(now, endTime);
             final long timeLeft = Math.round(duration.getSeconds() / 60f);
             timeComponent.add(new Text("⌛ " + getTranslation(timeLeft == 1
-                            ? "agenda.session.countdown.singular" : "agenda.session.countdown.plural",
+                            ? "event.session.countdown.singular" : "event.session.countdown.plural",
                             timeLeft)));
             roomStyle = RoomStyle.RUNNING;
         } else { // next session

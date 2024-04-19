@@ -41,7 +41,7 @@ import swiss.fihlon.apus.util.PasswordUtil;
 @SpringBootApplication
 @EnableScheduling
 @Push
-@PageTitle("Apus – Social Media Wall with Conference Agenda")
+@PageTitle("Apus – Social Media Wall with Event Agenda")
 @PWA(name = "Apus", shortName = "Apus")
 @Theme("apus")
 @SuppressWarnings({"FinalClass", "HideUtilityClassConstructor", "RegexpSingleline"})

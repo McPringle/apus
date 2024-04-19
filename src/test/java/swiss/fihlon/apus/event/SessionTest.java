@@ -1,4 +1,4 @@
-package swiss.fihlon.apus.agenda;
+package swiss.fihlon.apus.event;
 
 import org.junit.jupiter.api.Test;
 

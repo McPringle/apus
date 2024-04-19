@@ -15,24 +15,42 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.agenda;
+package swiss.fihlon.apus.event;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-class SpeakerTest {
+class LanguageTest {
 
     @Test
-    void compareTo() {
-        assertEquals(-1, new Speaker("Speaker 1").compareTo(new Speaker("Speaker 2")));
-        assertEquals(0, new Speaker("Speaker 1").compareTo(new Speaker("Speaker 1")));
-        assertEquals(1, new Speaker("Speaker 2").compareTo(new Speaker("Speaker 1")));
+    void languageWithCode() {
+        assertEquals(Language.DE, Language.languageWithCode("de"));
+        assertEquals(Language.EN, Language.languageWithCode("en"));
     }
 
     @Test
-    void fullName() {
-        assertEquals("Speaker 1", new Speaker("Speaker 1").fullName());
+    void getLanguageCode() {
+        assertEquals("de", Language.DE.getLanguageCode());
+        assertEquals("en", Language.EN.getLanguageCode());
     }
 
+    @Test
+    void getFlagEmoji() {
+        for (final Language language : Language.values()) {
+            assertNotNull(language.getFlagEmoji());
+            assertFalse(language.getFlagEmoji().isBlank());
+        }
+    }
+
+    @Test
+    void values() {
+        assertEquals(2, Language.values().length);
+    }
+
+    @Test
+    void valueOf() {
+        assertEquals(Language.DE, Language.valueOf("DE"));
+        assertEquals(Language.EN, Language.valueOf("EN"));
+    }
 }

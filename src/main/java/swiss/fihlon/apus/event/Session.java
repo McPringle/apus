@@ -15,6 +15,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.plugin.agenda.doag;
+package swiss.fihlon.apus.event;
 
-public record DoagConfig(int eventId, String eventApi) { }
+import org.jetbrains.annotations.NotNull;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+public record Session(@NotNull String id, @NotNull LocalDateTime startDate, @NotNull LocalDateTime endDate,
+                      @NotNull Room room, @NotNull String title, @NotNull List<Speaker> speakers,
+                      @NotNull Language language)
+        implements Comparable<Session> {
+    @Override
+    public int compareTo(@NotNull final Session other) {
+        final var dateCompareResult = startDate.compareTo(other.startDate);
+        if (dateCompareResult == 0) {
+            return room.compareTo(other.room);
+        }
+        return dateCompareResult;
+    }
+}

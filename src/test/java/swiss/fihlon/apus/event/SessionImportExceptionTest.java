@@ -15,28 +15,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.plugin.agenda.doag;
+package swiss.fihlon.apus.event;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import swiss.fihlon.apus.configuration.Configuration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
-class DoagConfigTest {
-
-    @Autowired
-    private Configuration configuration;
+class SessionImportExceptionTest {
 
     @Test
-    void testDoagConfig() {
-        final var doagConfig = configuration.getDoag();
-        assertNotNull(doagConfig);
-        assertEquals(-1, doagConfig.eventId());
-        assertEquals("file:src/test/resources/DOAG.json?eventId=%d", doagConfig.eventApi());
+    @SuppressWarnings("java:S5778")
+    void testException() {
+        final var exception = assertThrows(SessionImportException.class, () -> {
+            throw new SessionImportException("Session Import Exception", new RuntimeException("Runtime Exception"));
+        });
+        assertInstanceOf(SessionImportException.class, exception);
+        assertEquals("Session Import Exception", exception.getMessage());
+        assertEquals("Runtime Exception", exception.getCause().getMessage());
     }
 
 }

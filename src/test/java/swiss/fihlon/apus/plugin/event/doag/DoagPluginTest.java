@@ -15,12 +15,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.plugin.agenda.doag;
+package swiss.fihlon.apus.plugin.event.doag;
 
 import org.junit.jupiter.api.Test;
-import swiss.fihlon.apus.agenda.Language;
-import swiss.fihlon.apus.agenda.Room;
-import swiss.fihlon.apus.agenda.Speaker;
+import swiss.fihlon.apus.event.Language;
+import swiss.fihlon.apus.event.Room;
+import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.configuration.Configuration;
 
 import java.time.LocalDateTime;

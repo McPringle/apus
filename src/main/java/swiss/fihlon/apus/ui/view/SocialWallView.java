@@ -23,19 +23,19 @@ import com.vaadin.flow.router.Route;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.configuration.Configuration;
-import swiss.fihlon.apus.plugin.agenda.AgendaService;
+import swiss.fihlon.apus.plugin.event.EventService;
 import swiss.fihlon.apus.plugin.social.SocialService;
 
 @Route("")
 @CssImport(value = "./themes/apus/views/social-wall-view.css")
 public final class SocialWallView extends Div {
 
-    public SocialWallView(@NotNull final AgendaService agendaService,
+    public SocialWallView(@NotNull final EventService eventService,
                           @NotNull final SocialService socialService,
                           @NotNull final TaskScheduler taskScheduler,
                           @NotNull final Configuration configuration) {
         setId("social-wall-view");
-        add(new AgendaView(agendaService, taskScheduler));
+        add(new EventView(eventService, taskScheduler));
         add(new SocialView(socialService, taskScheduler, configuration));
     }
 }

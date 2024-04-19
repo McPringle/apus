@@ -15,25 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.agenda;
+package swiss.fihlon.apus.plugin.event.doag;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-class SessionImportExceptionTest {
-
-    @Test
-    @SuppressWarnings("java:S5778")
-    void testException() {
-        final var exception = assertThrows(SessionImportException.class, () -> {
-            throw new SessionImportException("Session Import Exception", new RuntimeException("Runtime Exception"));
-        });
-        assertInstanceOf(SessionImportException.class, exception);
-        assertEquals("Session Import Exception", exception.getMessage());
-        assertEquals("Runtime Exception", exception.getCause().getMessage());
-    }
-
-}
+public record DoagConfig(int eventId, String eventApi) { }

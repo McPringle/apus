@@ -15,13 +15,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.agenda;
+package swiss.fihlon.apus.event;
 
-import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Test;
 
-public record Room(@NotNull String name) implements Comparable<Room> {
-    @Override
-    public int compareTo(@NotNull final Room other) {
-        return name.compareTo(other.name);
+import static org.junit.jupiter.api.Assertions.*;
+
+class RoomTest {
+
+    @Test
+    void compareTo() {
+        assertEquals(-1, new Room("A").compareTo(new Room("B")));
+        assertEquals(0, new Room("A").compareTo(new Room("A")));
+        assertEquals(1, new Room("B").compareTo(new Room("A")));
     }
+
+    @Test
+    void name() {
+        assertEquals("Test", new Room("Test").name());
+    }
+
 }

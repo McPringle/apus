@@ -183,7 +183,7 @@ Modify this command according your needs and consult the [configuration section]
 
 ## Plugin Support
 
-### Agenda Plugins
+### Event Plugins
 
 *Apus* uses a simple plugin technology to import the agenda of various events. Plugins are currently available for the following events:
 
@@ -205,7 +205,7 @@ Plugins for other social media services are planned.
 
 ### Plugin Development
 
-Everyone is welcome to contribute a plugin themselves. The implementation is very simple. There are two types of plugins: `AgendaPlugin` and `SocialPlugin`. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.agenda` or `swiss.fihlon.apus.plugin.social`, based on the plugin type. The implementation is carried out in this new package. Implement one of these two interfaces depending on the plugin type you want to contribute.
+Everyone is welcome to contribute a plugin themselves. The implementation is very simple. There are two types of plugins: `EventPlugin` and `SocialPlugin`. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.event` or `swiss.fihlon.apus.plugin.social`, based on the plugin type. The implementation is carried out in this new package. Implement one of these two interfaces depending on the plugin type you want to contribute.
 
 If your implementation requires a configuration, the `Configuration` class must be extended accordingly. Add a property and corresponding setters and getters in the marked sections. Implement the settings object as a `record` in your new plugin package. Take one of the existing plugins as a template. Default settings belong in the file `application.properties` and the corresponding schema is stored in `additional-spring-configuration-metadata.json`. Of course, this `README.md` must also be adapted.
 

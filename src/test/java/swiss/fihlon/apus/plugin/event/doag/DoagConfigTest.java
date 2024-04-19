@@ -15,33 +15,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.plugin.agenda;
+package swiss.fihlon.apus.plugin.event.doag;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.scheduling.support.NoOpTaskScheduler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import swiss.fihlon.apus.configuration.Configuration;
-import swiss.fihlon.apus.plugin.agenda.doag.DoagConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(MockitoExtension.class)
-class AgendaServiceTest {
+@SpringBootTest
+class DoagConfigTest {
 
-    @Mock
+    @Autowired
     private Configuration configuration;
 
     @Test
-    @Disabled // TODO inject test data instead of relying on an external API
-    void displaySampleData() {
-
-        when(configuration.getDoag()).thenReturn(new DoagConfig(773, "file:src/test/resources/DOAG.json?eventId=%d"));
-
-        final AgendaService agendaService = new AgendaService(new NoOpTaskScheduler(), configuration);
-        assertEquals(12, agendaService.getRoomsWithSessions().size());
+    void testDoagConfig() {
+        final var doagConfig = configuration.getDoag();
+        assertNotNull(doagConfig);
+        assertEquals(-1, doagConfig.eventId());
+        assertEquals("file:src/test/resources/DOAG.json?eventId=%d", doagConfig.eventApi());
     }
+
 }
