@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.configuration.Configuration;
-import swiss.fihlon.apus.plugin.social.mastodon.MastodonPlugin;
 import swiss.fihlon.apus.social.Post;
 import swiss.fihlon.apus.util.HtmlUtil;
 
@@ -59,8 +58,9 @@ public final class SocialService {
     private List<Post> posts = List.of();
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
-                         @NotNull final Configuration configuration) {
-        socialPlugin = new MastodonPlugin(configuration);
+                         @NotNull final Configuration configuration,
+                         @NotNull final SocialPlugin socialPlugin) {
+        this.socialPlugin = socialPlugin;
         filterLength = configuration.getFilter().length();
         filterReplies = configuration.getFilter().replies();
         filterSensitive = configuration.getFilter().sensitive();

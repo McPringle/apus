@@ -20,6 +20,7 @@ package swiss.fihlon.apus.plugin.social.mastodon;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import social.bigbone.MastodonClient;
 import social.bigbone.api.Pageable;
 import social.bigbone.api.Range;
@@ -38,6 +39,7 @@ import java.util.List;
 
 import static social.bigbone.api.method.TimelineMethods.StatusOrigin.LOCAL_AND_REMOTE;
 
+@Service
 public final class MastodonPlugin implements SocialPlugin {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MastodonPlugin.class);
@@ -57,7 +59,7 @@ public final class MastodonPlugin implements SocialPlugin {
 
     @Override
     public boolean isEnabled() {
-        return instance != null && !instance.isEmpty() && hashtag != null && !hashtag.isEmpty();
+        return instance != null && !instance.isBlank() && hashtag != null && !hashtag.isBlank();
     }
 
     @Override

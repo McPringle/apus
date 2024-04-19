@@ -36,8 +36,8 @@ class MastodonConfigTest {
     void testMastodonConfig() {
         final var mastodonConfig = configuration.getMastodon();
         assertNotNull(mastodonConfig);
-        assertEquals("mastodon.social", mastodonConfig.instance());
-        assertEquals("java", mastodonConfig.hashtag());
+        assertEquals("localhost", mastodonConfig.instance());
+        assertEquals("foobar", mastodonConfig.hashtag());
         assertTrue(mastodonConfig.imagesEnabled());
         assertEquals(1, mastodonConfig.imageLimit());
     }

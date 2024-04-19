@@ -18,25 +18,62 @@
 package swiss.fihlon.apus.plugin.social.mastodon;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.social.Post;
 
 import java.util.List;
+import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 class MastodonPluginTest {
 
-    @Mock
-    private Configuration configuration;
+    private static Stream<Arguments> provideDisabledData() {
+        return Stream.of(
+                Arguments.of("", ""),
+                Arguments.of(" ", " "),
+                Arguments.of("", "foobar"),
+                Arguments.of(" ", "foobar"),
+                Arguments.of("localhost", ""),
+                Arguments.of("localhost", " ")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideDisabledData")
+    void isDisabled(final String instance, final String hashtag) {
+        final var configuration = mock(Configuration.class);
+        final var mastodonConfig = mock(MastodonConfig.class);
+        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+        when(mastodonConfig.instance()).thenReturn(instance);
+        when(mastodonConfig.hashtag()).thenReturn(hashtag);
+
+        final var mastodonPlugin = new MastodonPlugin(configuration);
+        assertFalse(mastodonPlugin.isEnabled());
+    }
+
+    @Test
+    void isEnabled() {
+        final var configuration = mock(Configuration.class);
+        final var mastodonConfig = mock(MastodonConfig.class);
+        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+        when(mastodonConfig.instance()).thenReturn("localhost");
+        when(mastodonConfig.hashtag()).thenReturn("foobar");
+
+        final var mastodonPlugin = new MastodonPlugin(configuration);
+        assertTrue(mastodonPlugin.isEnabled());
+    }
 
     @Test
     void getPosts() {
+        final var configuration = mock(Configuration.class);
         when(configuration.getMastodon()).thenReturn(
                 new MastodonConfig("mastodon.social", "java", true, 0));
 
