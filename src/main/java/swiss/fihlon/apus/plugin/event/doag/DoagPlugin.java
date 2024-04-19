@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
@@ -45,6 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+@Service
 public final class DoagPlugin implements EventPlugin {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(DoagPlugin.class);

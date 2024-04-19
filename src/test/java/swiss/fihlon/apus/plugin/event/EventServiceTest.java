@@ -17,31 +17,79 @@
  */
 package swiss.fihlon.apus.plugin.event;
 
-import org.junit.jupiter.api.Disabled;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.scheduling.support.NoOpTaskScheduler;
-import swiss.fihlon.apus.configuration.Configuration;
-import swiss.fihlon.apus.plugin.event.doag.DoagConfig;
+import swiss.fihlon.apus.event.Language;
+import swiss.fihlon.apus.event.Room;
+import swiss.fihlon.apus.event.Session;
+import swiss.fihlon.apus.event.Speaker;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+/*
+ * This test creates a shuffled list of sessions, which are returned by the testee, sorted by start time and grouped into rooms.
+ */
 class EventServiceTest {
 
-    @Mock
-    private Configuration configuration;
-
     @Test
-    @Disabled // TODO inject test data instead of relying on an external API
-    void displaySampleData() {
+    void getRoomsWithSessions() {
 
-        when(configuration.getDoag()).thenReturn(new DoagConfig(773, "file:src/test/resources/DOAG.json?eventId=%d"));
+        // TestEventPlugin creates a shuffled list of sessions...
+        final EventService eventService = new EventService(new NoOpTaskScheduler(), new TestEventPlugin());
 
-        final EventService eventService = new EventService(new NoOpTaskScheduler(), configuration);
-        assertEquals(12, eventService.getRoomsWithSessions().size());
+        // ...which is sorted and grouped by the EventService.
+        final var roomsWithSessions = eventService.getRoomsWithSessions();
+
+        // The result be two rooms...
+        assertEquals(2, roomsWithSessions.size());
+
+        // ... where the first room starts with session 0 ...
+        final var room0 = roomsWithSessions.get(new Room("Room 0"));
+        assertEquals(3, room0.size());
+        assertEquals("TEST0", room0.getFirst().id());
+
+        // ... and the second room starts with session -1.
+        final var room1 = roomsWithSessions.get(new Room("Room 1"));
+        assertEquals(3, room1.size());
+        assertEquals("TEST-1", room1.getFirst().id());
     }
+
+    /*
+     * This is the test data creator.
+     */
+    static final class TestEventPlugin implements EventPlugin {
+
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
+
+        @Override
+        public @NotNull List<Session> getSessions() {
+            final List<Session> sessions = new ArrayList<>();
+            for (int i = -5; i <= 5; i++) {
+                sessions.add(createSession(i, LocalDateTime.now().minusHours(i)));
+            }
+            Collections.shuffle(sessions);
+            return sessions;
+        }
+
+        private @NotNull Session createSession(final int i, @NotNull final LocalDateTime startDate) {
+            final var id = "TEST" + i;
+            final var endDate = startDate.plusHours(1);
+            final var room = new Room("Room " + (Math.abs(i) % 2));
+            final var title = "Session " + i;
+            final var speakers = List.of(new Speaker("Speaker 1"));
+            final var language = Language.EN;
+            return new Session(id, startDate, endDate, room, title, speakers, language);
+        }
+
+    }
+
 }

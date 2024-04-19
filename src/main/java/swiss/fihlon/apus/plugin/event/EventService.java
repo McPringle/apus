@@ -26,8 +26,6 @@ import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
-import swiss.fihlon.apus.plugin.event.doag.DoagPlugin;
-import swiss.fihlon.apus.configuration.Configuration;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -48,8 +46,8 @@ public final class EventService {
     private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
 
     public EventService(@NotNull final TaskScheduler taskScheduler,
-                        @NotNull final Configuration configuration) {
-        eventPlugin = new DoagPlugin(configuration);
+                        @NotNull final EventPlugin eventPlugin) {
+        this.eventPlugin = eventPlugin;
         if (eventPlugin.isEnabled()) {
             updateSessions();
             updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, UPDATE_FREQUENCY);
