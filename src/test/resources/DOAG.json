@@ -13,7 +13,9 @@
                 "id": 1,
                 "start": "09:45",
                 "duration": "00:15",
-                "language": "de",
+                "language": [
+                  "de"
+                ],
                 "title": {
                   "de": "Lorem ipsum dolor sit amet"
                 },
@@ -31,7 +33,9 @@
                 "id": 2,
                 "start": "10:00",
                 "duration": "00:30",
-                "language": "en",
+                "language": [
+                  "en"
+                ],
                 "title": {
                   "en": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat"
                 },
@@ -56,7 +60,9 @@
                 "id": 3,
                 "start": "19:00",
                 "duration": "00:45",
-                "language": "de",
+                "language": [
+                  "de"
+                ],
                 "title": {
                   "en": "Ut wisi enim ad minim veniam"
                 },
@@ -73,7 +79,9 @@
                 "id": 4,
                 "start": "11:00",
                 "duration": "00:45",
-                "language": "en",
+                "language": [
+                  "en"
+                ],
                 "title": {
                   "de": "Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum"
                 },
@@ -95,7 +103,9 @@
                 "id": 5,
                 "start": "19:00",
                 "duration": "00:45",
-                "language": "DE",
+                "language": [
+                  "DE"
+                ],
                 "title": {
                   "de": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat"
                 },
@@ -115,7 +125,9 @@
                 "id": 6,
                 "start": "11:00",
                 "duration": "00:105",
-                "language": "EN",
+                "language": [
+                  "EN"
+                ],
                 "title": {
                   "en": "At vero eos et accusam et justo duo dolores et ea rebum"
                 },
@@ -138,7 +150,8 @@
                 "id": 7,
                 "start": "10:00",
                 "duration": "00:165",
-                "language": "fr",
+                "language": [
+                ],
                 "title": {
                   "en": "Consetetur sadipscing elitr"
                 },
@@ -154,7 +167,6 @@
                 "id": 8,
                 "start": "13:00",
                 "duration": "00:105",
-                "language": "",
                 "title": {
                   "de": "Consetetur sadipscing elitr"
                 },

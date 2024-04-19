@@ -43,6 +43,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 public final class DoagPlugin implements AgendaPlugin {
 
@@ -131,7 +132,7 @@ public final class DoagPlugin implements AgendaPlugin {
     private Language getLanguage(@NotNull final JSONObject slot) {
         String languageCode = "de";
         try {
-            languageCode = slot.getJSONArray("language").getString(0);
+            languageCode = slot.getJSONArray("language").getString(0).toLowerCase(Locale.getDefault());
         } catch (final JSONException e) {
             LOGGER.error("Error reading language from slot '{}': {}",
                     slot.getInt("id"), e.getMessage());
