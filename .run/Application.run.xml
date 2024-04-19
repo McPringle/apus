@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <envs>
+      <env name="ADMIN_PASSWORD" value="$2a$10$xsztcR52UiHzSzjfZeds3uLp3Zm4q8gkFGIDohihWipm0CH0G1IOe" />
+      <env name="DOAG_EVENT_ID" value="773" />
+      <env name="MASTODON_HASHTAG" value="JavaLand" />
+      <env name="MASTODON_INSTANCE" value="ijug.social" />
+    </envs>
+    <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+    <module name="apus" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="swiss.fihlon.apus.Application" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
