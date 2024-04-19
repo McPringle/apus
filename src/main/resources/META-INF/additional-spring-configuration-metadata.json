@@ -1,6 +1,31 @@
 {
   "properties": [
     {
+      "name": "apus.admin.password",
+      "type": "java.lang.String",
+      "description": "The password to get admin access (empty = disabled)."
+    },
+    {
+      "name": "apus.filter.length",
+      "type": "java.lang.Integer",
+      "description": "Hide social media messages which exceed this length."
+    },
+    {
+      "name": "apus.filter.replies",
+      "type": "java.lang.Boolean",
+      "description": "Hide social media messages which are replies."
+    },
+    {
+      "name": "apus.filter.sensitive",
+      "type": "java.lang.Boolean",
+      "description": "Hide social media messages which contain sensitive information."
+    },
+    {
+      "name": "apus.filter.words",
+      "type": "java.lang.String",
+      "description": "Hide social media messages which contain these words."
+    },
+    {
       "name": "apus.doag.eventId",
       "type": "java.lang.Integer",
       "description": "The ID of the DOAG event to read the conference agenda."
@@ -29,30 +54,5 @@
       "name": "apus.mastodon.imageLimit",
       "type": "java.lang.Integer",
       "description": "Limit number of images per post."
-    },
-    {
-      "name": "apus.filter.length",
-      "type": "java.lang.Integer",
-      "description": "Hide social media messages which exceed this length."
-    },
-    {
-      "name": "apus.filter.replies",
-      "type": "java.lang.Boolean",
-      "description": "Hide social media messages which are replies."
-    },
-    {
-      "name": "apus.filter.sensitive",
-      "type": "java.lang.Boolean",
-      "description": "Hide social media messages which contain sensitive information."
-    },
-    {
-      "name": "apus.filter.words",
-      "type": "java.lang.String",
-      "description": "Hide social media messages which contain these words."
-    },
-    {
-      "name": "apus.admin.password",
-      "type": "java.lang.String",
-      "description": "The password to get admin access (empty = disabled)."
     }
   ] }
