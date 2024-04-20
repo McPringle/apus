@@ -52,4 +52,36 @@ class ApplicationTest {
         assertTrue(out.contains("Hashed password for Docker Compose file:"));
     }
 
+    @Test
+    void testLongPasswordOption() throws ParseException {
+        final String[] args = new String[] { "--password", "12345" };
+        Application.main(args);
+
+        final String out = outputStreamCaptor.toString();
+        assertTrue(out.contains("Hashed password for environment variable:"));
+        assertTrue(out.contains("Hashed password for Docker Compose file:"));
+    }
+
+    @Test
+    void testShortHelpOption() throws ParseException {
+        final String[] args = new String[] { "-h" };
+        Application.main(args);
+
+        final String out = outputStreamCaptor.toString();
+        assertTrue(out.startsWith("usage:"));
+        assertTrue(out.contains("Show help and exit"));
+        assertTrue(out.contains("Hash password and exit"));
+    }
+
+    @Test
+    void testLongHelpOption() throws ParseException {
+        final String[] args = new String[] { "--help" };
+        Application.main(args);
+
+        final String out = outputStreamCaptor.toString();
+        assertTrue(out.startsWith("usage:"));
+        assertTrue(out.contains("Show help and exit"));
+        assertTrue(out.contains("Hash password and exit"));
+    }
+
 }
