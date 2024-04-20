@@ -21,9 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import social.bigbone.MastodonClient;
-import social.bigbone.api.Pageable;
-import social.bigbone.api.Range;
 import social.bigbone.api.entity.Account;
 import social.bigbone.api.entity.MediaAttachment;
 import social.bigbone.api.entity.Status;
@@ -37,19 +34,20 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-import static social.bigbone.api.method.TimelineMethods.StatusOrigin.LOCAL_AND_REMOTE;
-
 @Service
 public final class MastodonPlugin implements SocialPlugin {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MastodonPlugin.class);
 
+    private final MastodonLoader mastodonLoader;
     private final String instance;
     private final String hashtag;
     private final boolean imagesEnabled;
     private final int imageLimit;
 
-    public MastodonPlugin(@NotNull final Configuration configuration) {
+    public MastodonPlugin(@NotNull final MastodonLoader mastodonLoader,
+                          @NotNull final Configuration configuration) {
+        this.mastodonLoader = mastodonLoader;
         final var mastodonConfig = configuration.getMastodon();
         this.instance = mastodonConfig.instance();
         this.hashtag = mastodonConfig.hashtag();
@@ -66,10 +64,8 @@ public final class MastodonPlugin implements SocialPlugin {
     public List<Post> getPosts() {
         try {
             LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
-            final MastodonClient client = new MastodonClient.Builder(instance).build();
-            final Range range = new Range(null, null, null, 100);
-            final Pageable<Status> statuses = client.timelines().getTagTimeline(hashtag, LOCAL_AND_REMOTE, range).execute();
-            final List<Post> posts = statuses.getPart().stream()
+            final List<Status> statuses = mastodonLoader.getStatuses(instance, hashtag);
+            final List<Post> posts = statuses.stream()
                     .map(this::convertToPost)
                     .sorted()
                     .toList();
