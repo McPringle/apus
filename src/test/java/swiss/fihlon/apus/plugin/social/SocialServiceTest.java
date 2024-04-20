@@ -83,12 +83,12 @@ class SocialServiceTest {
     }
 
     @Test
-    void hideProfile() {
+    void blockProfile() {
         final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, new TestSocialPlugin());
         final List<Post> postsBefore = socialService.getPosts(10);
         assertEquals(10, postsBefore.size());
 
-        socialService.hideProfile(postsBefore.get(5));
+        socialService.blockProfile(postsBefore.get(5));
         final List<Post> postsAfter = socialService.getPosts(10);
         assertEquals(5, postsAfter.size());
     }

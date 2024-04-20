@@ -125,8 +125,8 @@ public final class SocialService {
         saveHiddenPostIds();
     }
 
-    public void hideProfile(@NotNull final Post post) {
-        LOGGER.warn("Hide profile (id={}, profile={}, author={})",
+    public void blockProfile(@NotNull final Post post) {
+        LOGGER.warn("Block profile (id={}, profile={}, author={})",
                 post.id(), post.profile(), post.author());
         posts.removeIf(p -> p.profile().equals(post.profile()));
         blockedProfiles.add(post.profile());

@@ -148,7 +148,7 @@ public final class SocialView extends Div {
     }
 
     private void blockProfile(@NotNull final Post post) {
-        socialService.hideProfile(post);
+        socialService.blockProfile(post);
         Notification.show(getTranslation("social.post.contextmenu.block.profile.done"));
         updatePosts();
     }
