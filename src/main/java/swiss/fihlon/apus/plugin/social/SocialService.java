@@ -33,7 +33,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -111,10 +110,10 @@ public final class SocialService {
     public List<Post> getPosts(final int limit) {
         synchronized (this) {
             if (limit <= 0 || posts.isEmpty()) {
-                return Collections.unmodifiableList(posts);
+                return List.copyOf(posts);
             }
-            final int toIndex = limit < posts.size() ? limit : posts.size() - 1;
-            return Collections.unmodifiableList(posts.subList(0, toIndex));
+            final int toIndex = Math.min(limit, posts.size());
+            return List.copyOf(posts.subList(0, toIndex));
         }
     }
 
