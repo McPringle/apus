@@ -23,6 +23,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -47,11 +48,13 @@ import swiss.fihlon.apus.util.PasswordUtil;
 @SuppressWarnings({"FinalClass", "HideUtilityClassConstructor", "RegexpSingleline", "java:S106"})
 public class Application implements AppShellConfigurator {
 
-    private static final Option HASH_PASSWORD_OPTION = new Option("p", "password", true, "Password to hash");
+    private static final Option HASH_PASSWORD_OPTION = new Option("p", "password", true, "Hash password and exit");
+    private static final Option HELP_OPTION = new Option("h", "help", false, "Show help and exit");
 
     public static void main(@NotNull final String[] args) throws ParseException {
         final var options = new Options();
         options.addOption(HASH_PASSWORD_OPTION);
+        options.addOption(HELP_OPTION);
 
         final var cmd = new DefaultParser().parse(options, args);
         if (cmd.hasOption(HASH_PASSWORD_OPTION)) {
@@ -59,6 +62,9 @@ public class Application implements AppShellConfigurator {
             final var hashedPassword = PasswordUtil.hashPassword(password);
             System.out.println("Hashed password for environment variable: " + hashedPassword);
             System.out.println("Hashed password for Docker Compose file: " + hashedPassword.replace("$", "$$"));
+        } else if (cmd.hasOption(HELP_OPTION)) {
+            final var helpFormatter = new HelpFormatter();
+            helpFormatter.printHelp("java -jar apus.jar", options, true);
         } else {
             SpringApplication.run(Application.class, args);
         }
