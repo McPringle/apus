@@ -17,12 +17,18 @@
  */
 package swiss.fihlon.apus.plugin.event;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.LoggerContext;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.support.NoOpTaskScheduler;
+import swiss.fihlon.apus.MemoryAppender;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
+import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 
 import java.time.LocalDateTime;
@@ -88,6 +94,35 @@ class EventServiceTest {
             final var speakers = List.of(new Speaker("Speaker 1"));
             final var language = Language.EN;
             return new Session(id, startDate, endDate, room, title, speakers, language);
+        }
+
+    }
+
+    @Test
+    void importExceptionHandling() {
+        final MemoryAppender memoryAppender = new MemoryAppender();
+        memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
+        final Logger logger = (Logger) LoggerFactory.getLogger(EventService.class);
+        logger.addAppender(memoryAppender);
+
+        memoryAppender.start();
+        new EventService(new NoOpTaskScheduler(), new ExceptionEventPlugin());
+        memoryAppender.stop();
+
+        final int errorCount = memoryAppender.search("Failed to import sessions", Level.ERROR).size();
+        assertEquals(1, errorCount);
+    }
+
+    static final class ExceptionEventPlugin implements EventPlugin {
+
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
+
+        @Override
+        public @NotNull List<Session> getSessions() {
+            throw new SessionImportException("This is a test", new RuntimeException());
         }
 
     }

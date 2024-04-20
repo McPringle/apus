@@ -59,7 +59,14 @@ class SocialServiceTest {
     private Configuration configuration;
 
     @Test
-    void getPosts() {
+    void getPostsWithoutLimit() {
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, new TestSocialPlugin());
+        final List<Post> posts = socialService.getPosts(0);
+        assertEquals(10, posts.size());
+    }
+
+    @Test
+    void getPostsWithLimit() {
         final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, new TestSocialPlugin());
         final List<Post> posts = socialService.getPosts(5);
         assertEquals(5, posts.size());

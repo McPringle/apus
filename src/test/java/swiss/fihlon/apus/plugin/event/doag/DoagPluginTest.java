@@ -20,6 +20,7 @@ package swiss.fihlon.apus.plugin.event.doag;
 import org.junit.jupiter.api.Test;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
+import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.configuration.Configuration;
 
@@ -27,6 +28,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -85,5 +87,15 @@ class DoagPluginTest {
         assertEquals(new Speaker("Saul Goodman"), session.speakers().get(0));
         assertEquals(new Speaker("Mike Ehrmantraut"), session.speakers().get(1));
         assertEquals(Language.DE, session.language());
+    }
+
+    @Test
+    void parseExceptionHandling() {
+        final var configuration = mock(Configuration.class);
+        final var doagConfig = new DoagConfig(1, "file:src/test/resources/DOAG-broken.json?eventId=%d");
+        when(configuration.getDoag()).thenReturn(doagConfig);
+
+        final var doagPlugin = new DoagPlugin(configuration);
+        assertThrows(SessionImportException.class, doagPlugin::getSessions);
     }
 }

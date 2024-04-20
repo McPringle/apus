@@ -27,6 +27,7 @@ class LanguageTest {
     void languageWithCode() {
         assertEquals(Language.DE, Language.languageWithCode("de"));
         assertEquals(Language.EN, Language.languageWithCode("en"));
+        assertThrows(IllegalArgumentException.class, () -> Language.languageWithCode("xx"));
     }
 
     @Test
