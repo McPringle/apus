@@ -26,6 +26,8 @@ import org.springframework.scheduling.support.NoOpTaskScheduler;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.social.Post;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
@@ -98,6 +101,29 @@ class SocialServiceTest {
         socialService.blockProfile(postsBefore.get(5));
         final List<Post> postsAfter = socialService.getPosts(10);
         assertEquals(5, postsAfter.size());
+    }
+
+    @Test
+    void loadHiddenPosts() throws IOException {
+        final var filePath = getConfigDir().resolve("hiddenPosts");
+        Files.writeString(filePath, "P5\nP6");
+
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, new TestSocialPlugin());
+        final List<Post> posts = socialService.getPosts(0);
+        final List<String> ids = posts.stream().map(Post::id).distinct().toList();
+        assertFalse(ids.contains("P5"));
+        assertFalse(ids.contains("P6"));
+    }
+
+    @Test
+    void loadBlockedProfiles() throws IOException {
+        final var filePath = getConfigDir().resolve("blockedProfiles");
+        Files.writeString(filePath, "profile1@localhost");
+
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, new TestSocialPlugin());
+        final List<Post> posts = socialService.getPosts(0);
+        final List<String> profiles = posts.stream().map(Post::profile).distinct().toList();
+        assertFalse(profiles.contains("profile1@localhost"));
     }
 
     private static final class TestSocialPlugin implements SocialPlugin {
