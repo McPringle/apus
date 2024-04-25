@@ -18,7 +18,6 @@
 package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -35,7 +34,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.TextStyle;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +50,6 @@ public final class EventView extends Div {
     private static final Duration TIME_LIMIT_NEXT_SESSION = Duration.ofHours(1);
 
     private final transient EventService eventService;
-    private final H2 title = createTitle();
     private final Div roomContainer = new Div();
     private final Span legend = new Span();
 
@@ -60,7 +57,7 @@ public final class EventView extends Div {
                      @NotNull final TaskScheduler taskScheduler) {
         this.eventService = eventService;
         setId("event-view");
-        add(title);
+        add(createTitle());
         add(createLegend());
         add(roomContainer);
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(
@@ -91,19 +88,11 @@ public final class EventView extends Div {
             roomContainer.add(roomView);
         }
         updateLegend(roomStylesInUse);
-        updateTitle();
     }
 
     @NotNull
     private H2 createTitle() {
-        return new H2(getTranslation("event.heading",
-                LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale())));
-    }
-
-    private void updateTitle() {
-        title.setText(getTranslation("event.heading",
-                LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, UI.getCurrent().getLocale())));
-
+        return new H2(getTranslation("event.heading"));
     }
 
     @NotNull
