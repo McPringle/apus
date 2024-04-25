@@ -28,3 +28,9 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: mcpringle/apus:nightly
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: peterevans/dockerhub-description
