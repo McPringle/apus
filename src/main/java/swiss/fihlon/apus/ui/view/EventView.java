@@ -48,7 +48,7 @@ public final class EventView extends Div {
 
     public static final String LABEL_THEME = "badge";
     private static final int MAX_ROOMS_IN_VIEW = 12;
-    private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
+    private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(100);
     private static final Duration TIME_LIMIT_NEXT_SESSION = Duration.ofHours(1);
 
     private final transient EventService eventService;
