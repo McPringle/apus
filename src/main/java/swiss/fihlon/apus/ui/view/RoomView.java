@@ -90,15 +90,12 @@ public final class RoomView extends Div {
         final var titleComponent = new Div();
         titleComponent.addClassName("title");
         titleComponent.add(new H3(new Text(title == null ? getTranslation("event.room.empty") : title)));
-        titleComponent.add(createLanguageComponent());
+        if (language != null) {
+            final var flagComponent = new Svg(language.getSvgCode());
+            flagComponent.addClassName("language");
+            titleComponent.add(flagComponent);
+        }
         return titleComponent;
-    }
-
-    @NotNull
-    private Component createLanguageComponent() {
-        final var languageComponent = new Svg(language.getSvgCode());
-        languageComponent.addClassName("language");
-        return languageComponent;
     }
 
     @NotNull
