@@ -61,3 +61,7 @@
 .room-view .title .language {
     float: right;
 }
+
+.room-view .title .language svg {
+    height: 16px;
+}

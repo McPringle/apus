@@ -39,8 +39,8 @@ class LanguageTest {
     @Test
     void getFlagEmoji() {
         for (final Language language : Language.values()) {
-            assertNotNull(language.getFlagEmoji());
-            assertFalse(language.getFlagEmoji().isBlank());
+            assertTrue(language.getSvgCode().trim().startsWith("<svg "));
+            assertTrue(language.getSvgCode().trim().endsWith("</svg>"));
         }
     }
 

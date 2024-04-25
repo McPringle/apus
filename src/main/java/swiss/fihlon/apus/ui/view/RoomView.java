@@ -19,10 +19,12 @@ package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
+import com.vaadin.flow.component.Svg;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -96,11 +98,8 @@ public final class RoomView extends Div {
 
     @NotNull
     private Component createLanguageComponent() {
-        final var languageComponent = new Span();
+        final var languageComponent = new Svg(language.getSvgCode());
         languageComponent.addClassName("language");
-        if (language != null) {
-            languageComponent.add(language.getFlagEmoji());
-        }
         return languageComponent;
     }
 
