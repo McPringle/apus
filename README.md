@@ -11,6 +11,10 @@ See:
 * https://en.wikipedia.org/wiki/Common_swift
 * https://en.wikipedia.org/wiki/Apus_(bird)
 
+## Screenshot
+
+![Apus Screenshot](screenshot.webp)
+
 ## Features
 
 ### Show posts from Social Media
