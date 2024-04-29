@@ -47,7 +47,7 @@ class EventServiceTest {
     void getRoomsWithSessions() {
 
         // TestEventPlugin creates a shuffled list of sessions...
-        final EventService eventService = new EventService(new NoOpTaskScheduler(), new TestEventPlugin());
+        final EventService eventService = new EventService(new NoOpTaskScheduler(), List.of(new TestEventPlugin()));
 
         // ...which is sorted and grouped by the EventService.
         final var roomsWithSessions = eventService.getRoomsWithSessions();
@@ -106,7 +106,7 @@ class EventServiceTest {
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
-        new EventService(new NoOpTaskScheduler(), new ExceptionEventPlugin());
+        new EventService(new NoOpTaskScheduler(), List.of(new ExceptionEventPlugin()));
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.search("Failed to import sessions", Level.ERROR).size();

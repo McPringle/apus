@@ -41,14 +41,14 @@ public final class EventService {
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(5);
     private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
 
-    private final EventPlugin eventPlugin;
+    private final List<EventPlugin> eventPlugins;
     private final ScheduledFuture<?> updateScheduler;
     private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
 
     public EventService(@NotNull final TaskScheduler taskScheduler,
-                        @NotNull final EventPlugin eventPlugin) {
-        this.eventPlugin = eventPlugin;
-        if (eventPlugin.isEnabled()) {
+                        @NotNull final List<EventPlugin> eventPlugins) {
+        this.eventPlugins = eventPlugins;
+        if (eventPlugins.stream().anyMatch(EventPlugin::isEnabled)) {
             updateSessions();
             updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, UPDATE_FREQUENCY);
         } else {
@@ -64,7 +64,8 @@ public final class EventService {
 
     private void updateSessions() {
         try {
-            final var sessions = eventPlugin.getSessions().stream()
+            final var sessions = eventPlugins.stream().filter(EventPlugin::isEnabled)
+                    .flatMap(eventPlugin -> eventPlugin.getSessions().stream())
                     .sorted()
                     .toList();
 
