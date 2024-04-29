@@ -96,6 +96,7 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 | Variable                | Default | Description                                                            |
 |-------------------------|---------|------------------------------------------------------------------------|
 | ADMIN_PASSWORD          |         | The hashed password to get admin access (empty = disabled).            |
+| DEMO_ROOM_COUNT         | 0       | Number of rooms for the event demo plugin (0 = disabled).              |
 | DOAG_EVENT_ID           | 0       | The ID of the DOAG event to read the conference agenda (0 = disabled). |
 | DOAG_EVENT_API          | [1]     | The URL of the DOAG event API to read the conference agenda.           |
 | FILTER_LENGTH           | 500     | Hide social media posts which exceed this length (0 = disabled).       |
@@ -163,7 +164,7 @@ docker run \
     -p 80:8080 \
     -v $HOME/.apus:/home/apus/.apus \
     -e ADMIN_PASSWORD=sEcrEt \
-    -e DOAG_EVENT_ID=0 \
+    -e DEMO_ROOM_COUNT=12 \
     -e MASTODON_INSTANCE=mastodon.social \
     -e MASTODON_HASHTAG=java \
     -e TZ=CET \
@@ -193,6 +194,7 @@ Modify this command according your needs and consult the [configuration section]
 
 | Plugin       | Supported Events                             |
 |--------------|----------------------------------------------|
+| `DemoPlugin` | Creates fake session data for demo purposes. |
 | `DoagPlugin` | CloudLand, CyberLand, JavaLand, KI Navigator |
 
 Plugins for other events are planned.
