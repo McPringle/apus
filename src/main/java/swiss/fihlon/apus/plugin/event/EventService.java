@@ -64,7 +64,8 @@ public final class EventService {
 
     private void updateSessions() {
         try {
-            final var sessions = eventPlugins.stream().filter(EventPlugin::isEnabled)
+            final var sessions = eventPlugins.stream()
+                    .filter(EventPlugin::isEnabled)
                     .flatMap(eventPlugin -> eventPlugin.getSessions().stream())
                     .sorted()
                     .toList();
