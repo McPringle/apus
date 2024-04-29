@@ -97,16 +97,16 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 |-------------------------|---------|------------------------------------------------------------------------|
 | ADMIN_PASSWORD          |         | The hashed password to get admin access (empty = disabled).            |
 | DEMO_ROOM_COUNT         | 0       | Number of rooms for the event demo plugin (0 = disabled).              |
-| DOAG_EVENT_ID           | 0       | The ID of the DOAG event to read the conference agenda (0 = disabled). |
 | DOAG_EVENT_API          | [1]     | The URL of the DOAG event API to read the conference agenda.           |
+| DOAG_EVENT_ID           | 0       | The ID of the DOAG event to read the conference agenda (0 = disabled). |
 | FILTER_LENGTH           | 500     | Hide social media posts which exceed this length (0 = disabled).       |
 | FILTER_REPLIES          | true    | Hide social media posts which are replies.                             |
 | FILTER_SENSITIVE        | true    | Hide social media posts which contain sensitive information.           |
 | FILTER_WORDS            |         | Hide social media posts which contain these words.                     |
-| MASTODON_INSTANCE       |         | The Mastodon instance used to read the posts from (empty = disabled).  |
 | MASTODON_HASHTAG        |         | The hashtag for the mastodon wall (empty = disabled).                  |
-| MASTODON_IMAGES_ENABLED | true    | Enable or disable images in mastodon posts.                            |
 | MASTODON_IMAGE_LIMIT    | 1       | Limit number of images per post (0 = no limit).                        |
+| MASTODON_IMAGES_ENABLED | true    | Enable or disable images in mastodon posts.                            |
+| MASTODON_INSTANCE       |         | The Mastodon instance used to read the posts from (empty = disabled).  |
 | TZ                      | UTC     | The timezone used for date and time calculations.                      |
 
 The environment variables will override the default values. Some default values might be too long to be displayed in this table. They are marked with a number in square brackets and can be looked up in the following list:
