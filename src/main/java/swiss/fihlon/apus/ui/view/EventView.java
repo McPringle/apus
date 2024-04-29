@@ -80,7 +80,7 @@ public final class EventView extends Div {
         final var roomStylesInUse = new HashSet<RoomStyle>();
         for (final Map.Entry<Room, List<Session>> roomWithSession : roomsWithSessions) {
             if (roomCounter.get() >= MAX_ROOMS_IN_VIEW) {
-                Notification.show(String.format(getTranslation("event.error.rooms"), roomsWithSessions.size()));
+                Notification.show(String.format(getTranslation("event.error.rooms", roomsWithSessions.size())));
                 break;
             }
             final RoomView roomView = createRoomView(roomWithSession, today, roomCounter);
