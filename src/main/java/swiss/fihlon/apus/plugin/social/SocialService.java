@@ -47,7 +47,7 @@ public final class SocialService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
 
     private final ScheduledFuture<?> updateScheduler;
-    private final SocialPlugin socialPlugin;
+    private final List<SocialPlugin> socialPlugins;
     private final int filterLength;
     private final boolean filterReplies;
     private final boolean filterSensitive;
@@ -58,8 +58,8 @@ public final class SocialService {
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
                          @NotNull final Configuration configuration,
-                         @NotNull final SocialPlugin socialPlugin) {
-        this.socialPlugin = socialPlugin;
+                         @NotNull final List<SocialPlugin> socialPlugins) {
+        this.socialPlugins = socialPlugins;
         filterLength = configuration.getFilter().length();
         filterReplies = configuration.getFilter().replies();
         filterSensitive = configuration.getFilter().sensitive();
@@ -68,7 +68,7 @@ public final class SocialService {
                 .toList();
         loadHiddenPostIds();
         loadBlockedProfiles();
-        if (socialPlugin.isEnabled()) {
+        if (socialPlugins.stream().anyMatch(SocialPlugin::isEnabled)) {
             updatePosts();
             updateScheduler = taskScheduler.scheduleAtFixedRate(this::updatePosts, UPDATE_FREQUENCY);
         } else {
@@ -83,7 +83,9 @@ public final class SocialService {
     }
 
     private void updatePosts() {
-        final var newPosts = socialPlugin.getPosts().stream()
+        final var newPosts = socialPlugins.stream()
+                .filter(SocialPlugin::isEnabled)
+                .flatMap(socialPlugin -> socialPlugin.getPosts().stream())
                 .filter(post -> !hiddenPosts.contains(post.id()))
                 .filter(post -> !blockedProfiles.contains(post.profile()))
                 .filter(post -> !filterSensitive || !post.isSensitive())

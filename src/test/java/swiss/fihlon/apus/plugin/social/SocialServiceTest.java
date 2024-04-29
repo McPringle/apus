@@ -63,14 +63,14 @@ class SocialServiceTest {
 
     @Test
     void getPostsWithoutLimit() {
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, new TestSocialPlugin());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
         final List<Post> posts = socialService.getPosts(0);
         assertEquals(10, posts.size());
     }
 
     @Test
     void getPostsWithLimit() {
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, new TestSocialPlugin());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
         final List<Post> posts = socialService.getPosts(5);
         assertEquals(5, posts.size());
         assertEquals("P1", posts.get(0).id());
@@ -82,7 +82,7 @@ class SocialServiceTest {
 
     @Test
     void hidePost() {
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, new TestSocialPlugin());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
         final List<Post> postsBefore = socialService.getPosts(10);
         assertEquals(10, postsBefore.size());
 
@@ -94,7 +94,7 @@ class SocialServiceTest {
 
     @Test
     void blockProfile() {
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, new TestSocialPlugin());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
         final List<Post> postsBefore = socialService.getPosts(10);
         assertEquals(10, postsBefore.size());
 
@@ -108,7 +108,7 @@ class SocialServiceTest {
         final var filePath = getConfigDir().resolve("hiddenPosts");
         Files.writeString(filePath, "P5\nP6");
 
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, new TestSocialPlugin());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
         final List<Post> posts = socialService.getPosts(0);
         final List<String> ids = posts.stream().map(Post::id).distinct().toList();
         assertFalse(ids.contains("P5"));
@@ -120,7 +120,7 @@ class SocialServiceTest {
         final var filePath = getConfigDir().resolve("blockedProfiles");
         Files.writeString(filePath, "profile1@localhost");
 
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, new TestSocialPlugin());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
         final List<Post> posts = socialService.getPosts(0);
         final List<String> profiles = posts.stream().map(Post::profile).distinct().toList();
         assertFalse(profiles.contains("profile1@localhost"));
