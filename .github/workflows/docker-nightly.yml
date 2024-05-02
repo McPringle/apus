@@ -15,12 +15,12 @@ jobs:
     steps:
       - id: nightly-check
         name: Check for changes since last nightly
-        uses: lukecarr/nightly-check@v0.2.0
+        uses: lukecarr/nightly-check@v0.3.1
         with:
           within: 1 hrs
 
   docker:
-    if: github.repository_owner == 'McPringle' && ${{ needs.check.outputs.changes == 'true' }}
+    if: github.repository_owner == 'McPringle' && needs.check.outputs.changes == 'true'
     runs-on: ubuntu-latest
     name: Docker Nightly
     needs: check
