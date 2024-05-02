@@ -22,7 +22,7 @@ jobs:
         continue-on-error: true
         name: check latest commit is less than a day
         run: |
-          sha=$(git rev-list --after="5 minutes" ${{ github.sha }})
+          sha=$(git rev-list --after="24 hours" ${{ github.sha }})
           if test -z $sha
           then
             echo "should_run=false" >> $GITHUB_OUTPUT
