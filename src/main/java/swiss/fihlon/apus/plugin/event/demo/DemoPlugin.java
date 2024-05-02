@@ -17,7 +17,7 @@
  */
 package swiss.fihlon.apus.plugin.event.demo;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.configuration.Configuration;
