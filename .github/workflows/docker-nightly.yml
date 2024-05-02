@@ -20,9 +20,16 @@ jobs:
         run: echo ${{ github.sha }}
       - id: should_run
         continue-on-error: true
-        name: check latest commit is less than a day
         if: ${{ github.event_name == 'schedule' }}
-        run: test -z $(git rev-list  --after="5 minutes"  ${{ github.sha }}) && echo "::set-output name=should_run::false"
+        name: check latest commit is less than a day
+        run: |
+          sha=$(git rev-list --after="5 minutes" ${{ github.sha }})
+          if test -z $sha
+          then
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          else
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          fi
   docker:
     needs: check_date
     if: ${{ needs.check_date.outputs.should_run != 'false' }}
