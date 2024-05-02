@@ -8,24 +8,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    outputs:
-      changes: ${{ steps.nightly-check.outputs.changes }}
-    steps:
-      - id: nightly-check
-        name: Check for changes since last nightly
-        uses: lukecarr/nightly-check@v0.3.1
-
   docker:
-    if: github.repository_owner == 'McPringle' && needs.check.outputs.changes == 'true'
+    if: github.repository_owner == 'McPringle'
     runs-on: ubuntu-latest
     name: Docker Nightly
-    needs: check
 
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
+      - name: Check for changes
+        continue-on-error: true
+        shell: bash
+        run: 'test -n "$(git reflog main --since="24 hours")"'
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
