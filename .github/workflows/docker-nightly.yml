@@ -8,43 +8,35 @@ on:
   workflow_dispatch:
 
 jobs:
-  check_date:
-    if: github.repository_owner == 'McPringle'
+  check:
     runs-on: ubuntu-latest
-    name: Check latest commit
+    name: Check latest build
+
     outputs:
-      should_run: ${{ steps.should_run.outputs.should_run }}
+      last_build_sha: ${{ fromJson(steps.check_last_build.outputs.data).workflow_runs[0].head_sha }}
+
     steps:
-      - uses: actions/checkout@v4
-      - name: print latest_commit
-        run: echo ${{ github.sha }}
-      - id: should_run
-        continue-on-error: true
-        name: check latest commit is less than a day
-        run: |
-          sha=$(git rev-list --after="24 hours" ${{ github.sha }})
-          if test -z $sha
-          then
-            echo "should_run=false" >> $GITHUB_OUTPUT
-          else
-            echo "should_run=true" >> $GITHUB_OUTPUT
-          fi
+      - uses: octokit/request-action@v2.x
+        id: check_last_build
+        with:
+          route: GET /repos/${{github.repository}}/actions/workflows/docker-nightly.yml/runs?per_page=1&status=completed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo Last daily build: ${{ fromJson(steps.check_last_build.outputs.data).workflow_runs[0].head_sha }}"
+
   docker:
-    needs: check_date
-    if: ${{ needs.check_date.outputs.should_run != 'false' }}
+    if: needs.check.outputs.last_build_sha != github.sha
     runs-on: ubuntu-latest
-    name: Docker Nightly
+    name: Build and push Docker image
+    needs: check
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-      - name: Check for changes
-        continue-on-error: true
-        shell: bash
-        run: 'test -n "$(git reflog main --since="24 hours")"'
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: ${{ github.actor }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -52,10 +44,10 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: mcpringle/apus:nightly
+          tags: ${{ github.actor }}/apus:nightly
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v4
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: ${{ github.actor }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: mcpringle/apus
+          repository: ${{ github.actor }}/apus
