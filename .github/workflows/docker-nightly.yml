@@ -8,10 +8,22 @@ on:
   workflow_dispatch:
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      changes: ${{ steps.nightly-check.outputs.changes }}
+    steps:
+      - id: nightly-check
+        name: Check for changes since last nightly
+        uses: lukecarr/nightly-check@v0.2.0
+        with:
+          within: 1 hrs
+
   docker:
-    if: github.repository_owner == 'McPringle'
+    if: github.repository_owner == 'McPringle' && ${{ needs.check.outputs.changes == 'true' }}
     runs-on: ubuntu-latest
     name: Docker Nightly
+    needs: check
 
     steps:
       - name: Check out the repo
