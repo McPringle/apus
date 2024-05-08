@@ -188,7 +188,7 @@
         <dependency>
             <groupId>org.ocpsoft.prettytime</groupId>
             <artifactId>prettytime</artifactId>
-            <version>5.0.7.Final</version>
+            <version>5.0.8.Final</version>
         </dependency>
         <dependency>
             <groupId>social.bigbone</groupId>
