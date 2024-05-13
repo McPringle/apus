@@ -8,27 +8,44 @@ on:
   workflow_dispatch:
 
 jobs:
-  check:
+  check-build:
     runs-on: ubuntu-latest
     name: Check latest build
 
     outputs:
-      last_build_sha: ${{ fromJson(steps.check_last_build.outputs.data).workflow_runs[0].head_sha }}
+      last-build-sha: ${{ fromJson(steps.check-last-build.outputs.data).workflow_runs[0].head_sha }}
 
     steps:
       - uses: octokit/request-action@v2.x
-        id: check_last_build
+        id: check-last-build
         with:
           route: GET /repos/${{github.repository}}/actions/workflows/docker-nightly.yml/runs?per_page=1&status=completed
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo Last daily build: ${{ fromJson(steps.check_last_build.outputs.data).workflow_runs[0].head_sha }}"
+      - run: "echo Last daily build: ${{ fromJson(steps.check-last-build.outputs.data).workflow_runs[0].head_sha }}"
+
+  check-secrets:
+    runs-on: ubuntu-latest
+    name: Check secrets
+
+    outputs:
+      defined: ${{ steps.check-dockerhub-secrets.outputs.defined }}
+
+    steps:
+      - id: check-dockerhub-secrets
+        shell: bash
+        run: |
+          if [[ "${{ secrets.DOCKERHUB_USERNAME }}" != '' &&  "${{ secrets.DOCKERHUB_TOKEN }}" ]]; then
+            echo "defined=true" >> $GITHUB_OUTPUT;
+          else
+            echo "defined=false" >> $GITHUB_OUTPUT;
+          fi
 
   docker:
-    if: needs.check.outputs.last_build_sha != github.sha
+    if: needs.check-build.outputs.last-build-sha != github.sha && needs.check-secrets.outputs.defined == 'true'
     runs-on: ubuntu-latest
     name: Build and push Docker image
-    needs: check
+    needs: [check-build, check-secrets]
 
     steps:
       - name: Check out the repo
