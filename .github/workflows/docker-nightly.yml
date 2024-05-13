@@ -44,10 +44,10 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ github.actor }}/apus:nightly
+          tags: ${{ github.repository }}:nightly
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{ github.actor }}/apus
+          repository: ${{ github.repository }}
