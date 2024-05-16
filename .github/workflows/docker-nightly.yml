@@ -8,39 +8,48 @@ on:
   workflow_dispatch:
 
 jobs:
-  check_date:
-    if: github.repository_owner == 'McPringle'
+  check-build:
     runs-on: ubuntu-latest
-    name: Check latest commit
+    name: Check latest build
+
     outputs:
-      should_run: ${{ steps.should_run.outputs.should_run }}
+      last-build-sha: ${{ fromJson(steps.check-last-build.outputs.data).workflow_runs[0].head_sha }}
+
     steps:
-      - uses: actions/checkout@v4
-      - name: print latest_commit
-        run: echo ${{ github.sha }}
-      - id: should_run
-        continue-on-error: true
-        name: check latest commit is less than a day
-        run: |
-          sha=$(git rev-list --after="24 hours" ${{ github.sha }})
-          if test -z $sha
-          then
-            echo "should_run=false" >> $GITHUB_OUTPUT
-          else
-            echo "should_run=true" >> $GITHUB_OUTPUT
-          fi
-  docker:
-    needs: check_date
-    if: ${{ needs.check_date.outputs.should_run != 'false' }}
+      - uses: octokit/request-action@v2.x
+        id: check-last-build
+        with:
+          route: GET /repos/${{github.repository}}/actions/workflows/docker-nightly.yml/runs?per_page=1&status=completed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo Last daily build: ${{ fromJson(steps.check-last-build.outputs.data).workflow_runs[0].head_sha }}"
+
+  check-secrets:
     runs-on: ubuntu-latest
-    name: Docker Nightly
+    name: Check secrets
+
+    outputs:
+      defined: ${{ steps.check-dockerhub-secrets.outputs.defined }}
+
+    steps:
+      - id: check-dockerhub-secrets
+        shell: bash
+        run: |
+          if [[ "${{ secrets.DOCKERHUB_USERNAME }}" != '' &&  "${{ secrets.DOCKERHUB_TOKEN }}" ]]; then
+            echo "defined=true" >> $GITHUB_OUTPUT;
+          else
+            echo "defined=false" >> $GITHUB_OUTPUT;
+          fi
+
+  docker:
+    if: needs.check-build.outputs.last-build-sha != github.sha && needs.check-secrets.outputs.defined == 'true'
+    runs-on: ubuntu-latest
+    name: Build and push Docker image
+    needs: [check-build, check-secrets]
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-      - name: Check for changes
-        continue-on-error: true
-        shell: bash
-        run: 'test -n "$(git reflog main --since="24 hours")"'
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -52,10 +61,10 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: mcpringle/apus:nightly
+          tags: ${{ github.repository }}:nightly
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: mcpringle/apus
+          repository: ${{ github.repository }}
