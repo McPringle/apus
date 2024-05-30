@@ -30,6 +30,7 @@ import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.event.TrackInfo;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
 
 import java.io.IOException;
@@ -128,7 +129,9 @@ public final class DoagPlugin implements EventPlugin {
                 new Room(roomName),
                 title,
                 speakers.stream().map(Speaker::new).toList(),
-                language);
+                language,
+                TrackInfo.NONE
+                );
     }
 
     private Language getLanguage(@NotNull final JSONObject slot) {

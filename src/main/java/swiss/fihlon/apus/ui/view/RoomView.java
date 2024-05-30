@@ -31,6 +31,7 @@ import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.RoomStyle;
 import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.Speaker;
+import swiss.fihlon.apus.event.TrackInfo;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -46,11 +47,12 @@ public final class RoomView extends Div {
     private final LocalTime startTime;
     private final LocalTime endTime;
     private final Language language;
+    private final TrackInfo trackInfo;
 
     private RoomStyle roomStyle = RoomStyle.NONE;
 
     public RoomView(@NotNull final Room room) {
-        this(room, null, List.of(), null, null, null);
+        this(room, null, List.of(), null, null, null, null);
     }
 
     public RoomView(@NotNull final Session session) {
@@ -60,7 +62,8 @@ public final class RoomView extends Div {
                 session.speakers(),
                 session.startDate().toLocalTime(),
                 session.endDate().toLocalTime(),
-                session.language()
+                session.language(),
+                session.trackInfo()
         );
     }
 
@@ -69,13 +72,15 @@ public final class RoomView extends Div {
                     @NotNull final List<Speaker> speakers,
                     @Nullable final LocalTime startTime,
                     @Nullable final LocalTime endTime,
-                    @Nullable final Language language) {
+                    @Nullable final Language language,
+                    @Nullable final TrackInfo trackInfo) {
         this.room = room;
         this.title = title;
         this.speakers = speakers;
         this.startTime = startTime;
         this.endTime = endTime;
         this.language = language;
+        this.trackInfo = trackInfo;
 
         addClassName("room-view");
         add(createTitleComponent());
@@ -94,6 +99,11 @@ public final class RoomView extends Div {
             final var flagComponent = new Svg(language.getSvgCode());
             flagComponent.addClassName("language");
             titleComponent.add(flagComponent);
+        }
+        if (trackInfo != null) {
+            final var trackComponent = new Div(trackInfo.getSvgCode());
+            trackComponent.addClassName("trackInfo");
+            titleComponent.add(trackComponent);
         }
         return titleComponent;
     }
