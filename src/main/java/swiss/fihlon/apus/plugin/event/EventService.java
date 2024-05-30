@@ -34,23 +34,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ScheduledFuture;
+import swiss.fihlon.apus.configuration.Configuration;
 
 @Service
 public final class EventService {
 
-    private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(5);
+    private final Duration updateFrequency;
     private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
 
     private final List<EventPlugin> eventPlugins;
     private final ScheduledFuture<?> updateScheduler;
     private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
 
-    public EventService(@NotNull final TaskScheduler taskScheduler,
-                        @NotNull final List<EventPlugin> eventPlugins) {
+    public EventService(@NotNull final Configuration configuration,
+            @NotNull final TaskScheduler taskScheduler,
+            @NotNull final List<EventPlugin> eventPlugins) {
         this.eventPlugins = eventPlugins;
+        this.updateFrequency = Duration.ofMinutes(configuration.getEvent().updateFrequency());
         if (eventPlugins.stream().anyMatch(EventPlugin::isEnabled)) {
             updateSessions();
-            updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, UPDATE_FREQUENCY);
+            updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, updateFrequency);
         } else {
             LOGGER.warn("No event plugin is enabled. No agenda will be displayed.");
             updateScheduler = null;
