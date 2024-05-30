@@ -75,7 +75,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ steps.lowercase-repo.outputs.repository }}:nightly
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
+#          platforms: linux/amd64,linux/arm64
 
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v4
