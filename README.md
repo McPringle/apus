@@ -273,6 +273,10 @@ It is important to sign-off *every* commit. That is a de facto standard way to e
 
 You can find more information about why this is important and how to do it easily in a very good [blog post by Josef Andersson](https://dev.to/janderssonse/git-signoff-and-signing-like-a-champ-41f3).
 
+### AI Generated Code
+
+AI generated source code is based on real existing source code, which is copied in whole or in part into the generated code. The license of the original source code with which the AI was trained is not taken into account. It is therefore not clear which license conditions apply and how these can be complied with. For legal reasons, we therefore do not use AI-generated source code at all.
+
 ## Copyright and License
 
 [AGPL License](https://www.gnu.org/licenses/agpl-3.0.de.html)
