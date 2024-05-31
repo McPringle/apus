@@ -1,7 +1,7 @@
 # Developer Certificate of Origin
 **Version 1.0**
 
-Copyright (C) 2024 Marcus Fihlon and the individual contributors to Apus.
+Copyright (C) 2024 [Marcus Fihlon](https://github.com/McPringle) and the individual contributors to Apus.
 
 _Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed._
 
