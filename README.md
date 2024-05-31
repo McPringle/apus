@@ -99,6 +99,7 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 | DEMO_ROOM_COUNT         | 0       | Number of rooms for the event demo plugin (0 = disabled).              |
 | DOAG_EVENT_API          | [1]     | The URL of the DOAG event API to read the conference agenda.           |
 | DOAG_EVENT_ID           | 0       | The ID of the DOAG event to read the conference agenda (0 = disabled). |
+| EVENT_UPDATE_FREQUENCY  | 5       | How often (in minutes) to update event data (0 = disabled).            |
 | FILTER_LENGTH           | 500     | Hide social media posts which exceed this length (0 = disabled).       |
 | FILTER_REPLIES          | true    | Hide social media posts which are replies.                             |
 | FILTER_SENSITIVE        | true    | Hide social media posts which contain sensitive information.           |
@@ -250,6 +251,7 @@ Special thanks for all these wonderful people who had helped this project so far
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/jzfrank"><img src="https://avatars.githubusercontent.com/u/77217626?v=4?s=100" width="100px;" alt="jzfrank"/><br /><sub><b>jzfrank</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=jzfrank" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Interactiondesigner"><img src="https://avatars.githubusercontent.com/u/17220369?v=4?s=100" width="100px;" alt="Interactiondesigner"/><br /><sub><b>Interactiondesigner</b></sub></a><br /><a href="#design-Interactiondesigner" title="Design">🎨</a></td>
     </tr>
   </tbody>
 </table>

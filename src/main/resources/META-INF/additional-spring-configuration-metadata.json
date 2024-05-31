@@ -1,63 +1,68 @@
 {
-  "properties": [
+  "properties" : [
     {
-      "name": "apus.admin.password",
-      "type": "java.lang.String",
-      "description": "The password to get admin access (empty = disabled)."
+      "name" : "apus.admin.password",
+      "type" : "java.lang.String",
+      "description" : "The password to get admin access (empty = disabled)."
     },
     {
-      "name": "apus.filter.length",
-      "type": "java.lang.Integer",
-      "description": "Hide social media messages which exceed this length."
+      "name" : "apus.demo.roomCount",
+      "type" : "java.lang.String",
+      "description" : "Number of rooms for the event demo plugin."
     },
     {
-      "name": "apus.filter.replies",
-      "type": "java.lang.Boolean",
-      "description": "Hide social media messages which are replies."
+      "name" : "apus.doag.eventApi",
+      "type" : "java.lang.String",
+      "description" : "The URL of the DOAG event API to read the conference agenda."
     },
     {
-      "name": "apus.filter.sensitive",
-      "type": "java.lang.Boolean",
-      "description": "Hide social media messages which contain sensitive information."
+      "name" : "apus.doag.eventId",
+      "type" : "java.lang.Integer",
+      "description" : "The ID of the DOAG event to read the conference agenda."
     },
     {
-      "name": "apus.filter.words",
-      "type": "java.lang.String",
-      "description": "Hide social media messages which contain these words."
+      "name" : "apus.event.updateFrequency",
+      "type" : "java.lang.Integer",
+      "description" : "How often (in minutes) to update event data."
     },
     {
-      "name": "apus.demo.roomCount",
-      "type": "java.lang.String",
-      "description": "Number of rooms for the event demo plugin."
+      "name" : "apus.filter.length",
+      "type" : "java.lang.Integer",
+      "description" : "Hide social media messages which exceed this length."
     },
     {
-      "name": "apus.doag.eventId",
-      "type": "java.lang.Integer",
-      "description": "The ID of the DOAG event to read the conference agenda."
+      "name" : "apus.filter.replies",
+      "type" : "java.lang.Boolean",
+      "description" : "Hide social media messages which are replies."
     },
     {
-      "name": "apus.doag.eventApi",
-      "type": "java.lang.String",
-      "description": "The URL of the DOAG event API to read the conference agenda."
+      "name" : "apus.filter.sensitive",
+      "type" : "java.lang.Boolean",
+      "description" : "Hide social media messages which contain sensitive information."
     },
     {
-      "name": "apus.mastodon.instance",
-      "type": "java.lang.String",
-      "description": "The Mastodon instance used to read the posts from."
+      "name" : "apus.filter.words",
+      "type" : "java.lang.String",
+      "description" : "Hide social media messages which contain these words."
     },
     {
-      "name": "apus.mastodon.hashtag",
-      "type": "java.lang.String",
-      "description": "The hashtag for the Mastodon wall."
+      "name" : "apus.mastodon.hashtag",
+      "type" : "java.lang.String",
+      "description" : "The hashtag for the Mastodon wall."
     },
     {
-      "name": "apus.mastodon.imagesEnabled",
-      "type": "java.lang.Boolean",
-      "description": "Enable or disable images in mastodon posts."
+      "name" : "apus.mastodon.imageLimit",
+      "type" : "java.lang.Integer",
+      "description" : "Limit number of images per post."
     },
     {
-      "name": "apus.mastodon.imageLimit",
-      "type": "java.lang.Integer",
-      "description": "Limit number of images per post."
+      "name" : "apus.mastodon.imagesEnabled",
+      "type" : "java.lang.Boolean",
+      "description" : "Enable or disable images in mastodon posts."
+    },
+    {
+      "name" : "apus.mastodon.instance",
+      "type" : "java.lang.String",
+      "description" : "The Mastodon instance used to read the posts from."
     }
   ] }
