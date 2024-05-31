@@ -3,7 +3,7 @@
 
 Copyright (C) 2024 Marcus Fihlon and the individual contributors to Apus.
 
-_Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed._
+_Everyone is permitted to copy and distribute verbatim copies of the [license document](LICENSE.md), but changing it is not allowed._
 
 ## Developer's Certificate of Origin 1.0
 
