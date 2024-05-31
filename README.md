@@ -269,7 +269,7 @@ For your first contribution to this repository, you can take a look at the issue
 
 ### Sign-off your commits
 
-It is important to sign-off *every* commit. That is a de facto standard way to ensure that *you* have the right to submit your content and that you agree to the DCO (Developer Certificate of Origin).
+It is important to sign-off *every* commit. That is a de facto standard way to ensure that *you* have the right to submit your content and that you agree to the [DCO](DCO.md) (Developer Certificate of Origin).
 
 You can find more information about why this is important and how to do it easily in a very good [blog post by Josef Andersson](https://dev.to/janderssonse/git-signoff-and-signing-like-a-champ-41f3).
 
