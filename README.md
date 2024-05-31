@@ -235,6 +235,30 @@ We use the corresponding GitHub function for discussions. The discussions held h
 Discussions on GitHub: https://github.com/McPringle/apus/discussions  
 Questions and Answers: https://github.com/McPringle/apus/discussions/categories/q-a
 
+## Contributing
+
+### Good First Issues
+
+To find possible tasks for your first contribution to *Apus*, we tagged some of the hopefully easier to solve issues as [good first issue](https://github.com/McPringle/apus/labels/good%20first%20issue).
+
+If you prefer to meet people in real life to contribute to *Apus* together, we recommend to visit a [Hackergarten](https://www.hackergarten.net/) event. *Apus* is often selected as a contribution target in [Lucerne](https://www.meetup.com/hackergarten-luzern/), [Zurich](https://www.meetup.com/hackergarten-zurich/), and at the [JavaLand](https://www.javaland.eu/) conference.
+
+Please join our developer community using our [Matrix chat](#matrix-chat) to get support and help for contributing to *Apus*.
+
+### Sign-off your commits
+
+It is important to sign-off *every* commit. That is a de facto standard way to ensure that *you* have the right to submit your content and that you agree to the [DCO](DCO.md) (Developer Certificate of Origin).
+
+You can find more information about why this is important and how to do it easily in a very good [blog post](https://dev.to/janderssonse/git-signoff-and-signing-like-a-champ-41f3)  by Josef Andersson.
+
+### Add an emoji to your commit
+
+We love to add an emoji to the beginning of every commit message which relates to the nature of the change. You can find a searchable list of possible emojis and their meaning in the overview on the [gitmoji](https://gitmoji.dev/) website. If you prefer, you can also install one of the plugins that are available for almost all common IDEs.
+
+### AI Generated Code
+
+AI generated source code is based on real existing source code, which is copied in whole or in part into the generated code. The license of the original source code with which the AI was trained is not taken into account. It is therefore not clear which license conditions apply and how these can be complied with. For legal reasons, we therefore do not use AI-generated source code at all.
+
 ## Contributors
 
 Special thanks for all these wonderful people who had helped this project so far ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -264,30 +288,6 @@ Special thanks for all these wonderful people who had helped this project so far
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
-
-## Contributing
-
-### Good First Issues
-
-To find possible tasks for your first contribution to *Apus*, we tagged some of the hopefully easier to solve issues as [good first issue](https://github.com/McPringle/apus/labels/good%20first%20issue).
-
-If you prefer to meet people in real life to contribute to *Apus* together, we recommend to visit a [Hackergarten](https://www.hackergarten.net/) event. *Apus* is often selected as a contribution target in [Lucerne](https://www.meetup.com/hackergarten-luzern/), [Zurich](https://www.meetup.com/hackergarten-zurich/), and at the [JavaLand](https://www.javaland.eu/) conference.
-
-Please join our developer community using our [Matrix chat](#matrix-chat) to get support and help for contributing to *Apus*.
-
-### Sign-off your commits
-
-It is important to sign-off *every* commit. That is a de facto standard way to ensure that *you* have the right to submit your content and that you agree to the [DCO](DCO.md) (Developer Certificate of Origin).
-
-You can find more information about why this is important and how to do it easily in a very good [blog post](https://dev.to/janderssonse/git-signoff-and-signing-like-a-champ-41f3)  by Josef Andersson.
-
-### Add an emoji to your commit
-
-We love to add an emoji to the beginning of every commit message which relates to the nature of the change. You can find a searchable list of possible emojis and their meaning in the overview on the [gitmoji](https://gitmoji.dev/) website. If you prefer, you can also install one of the plugins that are available for almost all common IDEs.
-
-### AI Generated Code
-
-AI generated source code is based on real existing source code, which is copied in whole or in part into the generated code. The license of the original source code with which the AI was trained is not taken into account. It is therefore not clear which license conditions apply and how these can be complied with. For legal reasons, we therefore do not use AI-generated source code at all.
 
 ## Copyright and License
 
