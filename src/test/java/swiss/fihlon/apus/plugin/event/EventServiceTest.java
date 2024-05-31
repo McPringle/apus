@@ -21,7 +21,10 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.support.NoOpTaskScheduler;
 import swiss.fihlon.apus.MemoryAppender;
@@ -35,19 +38,35 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import swiss.fihlon.apus.configuration.Configuration;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /*
  * This test creates a shuffled list of sessions, which are returned by the testee, sorted by start time and grouped into rooms.
  */
+@TestInstance(Lifecycle.PER_CLASS)
 class EventServiceTest {
+
+    private Configuration configuration;
+
+    @BeforeAll
+    void beforeAll() {
+        configuration = mock(Configuration.class);
+        final var eventConfig = mock(EventConfig.class);
+        when(configuration.getEvent()).thenReturn(eventConfig);
+        when(eventConfig.updateFrequency()).thenReturn(5);
+    }
 
     @Test
     void getRoomsWithSessions() {
 
         // TestEventPlugin creates a shuffled list of sessions...
-        final EventService eventService = new EventService(new NoOpTaskScheduler(), List.of(new TestEventPlugin()));
+
+        final EventService eventService = new EventService(configuration, new NoOpTaskScheduler(),
+                List.of(new TestEventPlugin()));
 
         // ...which is sorted and grouped by the EventService.
         final var roomsWithSessions = eventService.getRoomsWithSessions();
@@ -106,7 +125,7 @@ class EventServiceTest {
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
-        new EventService(new NoOpTaskScheduler(), List.of(new ExceptionEventPlugin()));
+        new EventService(configuration, new NoOpTaskScheduler(), List.of(new ExceptionEventPlugin()));
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.search("Failed to import sessions", Level.ERROR).size();
