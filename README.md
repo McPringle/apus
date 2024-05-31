@@ -265,7 +265,9 @@ Special thanks for all these wonderful people who had helped this project so far
 
 ### Good First Issues
 
-For your first contribution to this repository, you can take a look at the issues listed here: [good first issue](https://github.com/McPringle/apus/labels/good%20first%20issue).
+To find possible tasks for your first contribution to *Apus*, we tagged some of the hopefully easier to solve issues as [good first issue](https://github.com/McPringle/apus/labels/good%20first%20issue).
+
+If you prefer to meet people in real life to contribute to *Apus* together, we recommend to visit a [Hackergarten](https://www.hackergarten.net/) event. *Apus* is often selected as a contribution target in [Lucerne](https://www.meetup.com/hackergarten-luzern/), [Zurich](https://www.meetup.com/hackergarten-zurich/), and at the [JavaLand](https://www.javaland.eu/) conference.
 
 ### Sign-off your commits
 
