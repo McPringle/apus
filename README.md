@@ -91,7 +91,11 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 
 ## Configuration
 
-*Apus* can be started without any specific configuration. All configuration options have working default values. To modify these default values just specify environment variables with the following names:
+*Apus* can be started without any specific configuration. All configuration options have working default values.
+
+### Configuration Options
+
+To modify the default configuration values, just specify environment variables with the following names:
 
 | Variable                | Default | Description                                                            |
 |-------------------------|---------|------------------------------------------------------------------------|
