@@ -245,6 +245,8 @@ Special thanks for all these wonderful people who had helped this project so far
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/myyxl"><img src="https://avatars.githubusercontent.com/u/22593897?v=4?s=100" width="100px;" alt="Marlon"/><br /><sub><b>Marlon</b></sub></a><br /><a href="https://github.com/McPringle/apus/issues?q=author%3Amyyxl" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/tlangdun"><img src="https://avatars.githubusercontent.com/u/51236478?v=4?s=100" width="100px;" alt="tlangdun"/><br /><sub><b>tlangdun</b></sub></a><br /><a href="#tool-tlangdun" title="Tools">🔧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/MarkusBarthlen"><img src="https://avatars.githubusercontent.com/u/13293680?v=4?s=100" width="100px;" alt="MarkusBarthlen"/><br /><sub><b>MarkusBarthlen</b></sub></a><br /><a href="#tool-MarkusBarthlen" title="Tools">🔧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/eins78"><img src="https://avatars.githubusercontent.com/u/134942?v=4?s=100" width="100px;" alt="Max Albrecht"/><br /><sub><b>Max Albrecht</b></sub></a><br /><a href="#infra-eins78" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/StefanMallia"><img src="https://avatars.githubusercontent.com/u/5004438?v=4?s=100" width="100px;" alt="Stefan Mallia"/><br /><sub><b>Stefan Mallia</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=StefanMallia" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

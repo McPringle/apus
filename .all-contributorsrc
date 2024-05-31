@@ -67,6 +67,15 @@
       "contributions": [
         "infra"
       ]
+    },
+    {
+      "login": "StefanMallia",
+      "name": "Stefan Mallia",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5004438?v=4",
+      "profile": "https://github.com/StefanMallia",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
