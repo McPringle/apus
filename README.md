@@ -273,6 +273,10 @@ It is important to sign-off *every* commit. That is a de facto standard way to e
 
 You can find more information about why this is important and how to do it easily in a very good [blog post](https://dev.to/janderssonse/git-signoff-and-signing-like-a-champ-41f3)  by Josef Andersson.
 
+### Add an emoji to your commit
+
+We love to add an emoji to the beginning of every commit message which relates to the nature of the change. You can find a searchable list of possible emojis and their meaning in the overview on the [gitmoji](https://gitmoji.dev/) website. If you prefer, you can also install one of the plugins that are available for almost all common IDEs.
+
 ### AI Generated Code
 
 AI generated source code is based on real existing source code, which is copied in whole or in part into the generated code. The license of the original source code with which the AI was trained is not taken into account. It is therefore not clear which license conditions apply and how these can be complied with. For legal reasons, we therefore do not use AI-generated source code at all.
