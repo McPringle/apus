@@ -3,13 +3,13 @@
 
 Copyright (C) 2024 Marcus Fihlon and the individual contributors to Apus.
 
-_Everyone is permitted to copy and distribute verbatim copies of the [license document](LICENSE.md), but changing it is not allowed._
+_Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed._
 
 ## Developer's Certificate of Origin 1.0
 
 By making a contribution to this project, I certify that:
 
-1. The contribution was created in whole or in part by me and I have the right to submit it under the open source license indicated in the file; or
+1. The contribution was created in whole or in part by me and I have the right to submit it under the open source license indicated in the [license file](LICENSE.md); or
 
 2. The contribution is based upon previous work that, to the best of my knowledge, is covered under an appropriate open source license and I have the right under that license to submit that work with modifications, whether created in whole or in part by me, under the same open source license (unless I am permitted to submit under a different license), as indicated in the file; or
 
