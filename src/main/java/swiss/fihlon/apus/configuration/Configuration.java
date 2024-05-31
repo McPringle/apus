@@ -32,17 +32,22 @@ import swiss.fihlon.apus.plugin.social.mastodon.MastodonConfig;
 @SuppressWarnings("checkstyle:DesignForExtension") // Spring configurations can be subclassed by the Spring Framework
 public class Configuration {
 
+    // Core Configs
     private String version;
     private AdminConfig admin;
+    private EventConfig event;
     private FilterConfig filter;
 
     // Event Plugin Configs
     private DemoConfig demo;
     private DoagConfig doag;
-    private EventConfig event;
 
     // Social Plugin Configs
     private MastodonConfig mastodon;
+
+    //////////////////
+    // Core Configs //
+    //////////////////
 
     public String getVersion() {
         return version;
@@ -68,6 +73,14 @@ public class Configuration {
         this.filter = filter;
     }
 
+    public EventConfig getEvent() {
+        return this.event;
+    }
+
+    public void setEvent(@NotNull final EventConfig event) {
+        this.event = event;
+    }
+
     //////////////////////////
     // Event Plugin Configs //
     //////////////////////////
@@ -86,14 +99,6 @@ public class Configuration {
 
     public void setDoag(@NotNull final DoagConfig doag) {
         this.doag = doag;
-    }
-
-    public EventConfig getEvent() {
-        return this.event;
-    }
-
-    public void setEvent(@NotNull final EventConfig event) {
-        this.event = event;
     }
 
     ///////////////////////////
