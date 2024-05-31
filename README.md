@@ -269,6 +269,8 @@ To find possible tasks for your first contribution to *Apus*, we tagged some of 
 
 If you prefer to meet people in real life to contribute to *Apus* together, we recommend to visit a [Hackergarten](https://www.hackergarten.net/) event. *Apus* is often selected as a contribution target in [Lucerne](https://www.meetup.com/hackergarten-luzern/), [Zurich](https://www.meetup.com/hackergarten-zurich/), and at the [JavaLand](https://www.javaland.eu/) conference.
 
+Please join our developer community using our [Matrix chat](#matrix-chat) to get support and help for contributing to *Apus*.
+
 ### Sign-off your commits
 
 It is important to sign-off *every* commit. That is a de facto standard way to ensure that *you* have the right to submit your content and that you agree to the [DCO](DCO.md) (Developer Certificate of Origin).
