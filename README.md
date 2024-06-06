@@ -280,6 +280,7 @@ Special thanks for all these wonderful people who had helped this project so far
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/jzfrank"><img src="https://avatars.githubusercontent.com/u/77217626?v=4?s=100" width="100px;" alt="jzfrank"/><br /><sub><b>jzfrank</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=jzfrank" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Interactiondesigner"><img src="https://avatars.githubusercontent.com/u/17220369?v=4?s=100" width="100px;" alt="Interactiondesigner"/><br /><sub><b>Interactiondesigner</b></sub></a><br /><a href="#design-Interactiondesigner" title="Design">🎨</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/1tchy"><img src="https://avatars.githubusercontent.com/u/678713?v=4?s=100" width="100px;" alt="Itchy"/><br /><sub><b>Itchy</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=1tchy" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
