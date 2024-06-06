@@ -26,9 +26,26 @@
     height: 1060px;
     overflow: clip;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 #social-view h2 {
     font-size: 30px;
     margin: 0 10px 10px 10px;
+}
+
+#social-view .posts {
+    flex: 1 1 auto;
+    overflow: hidden;
+
+    display: flex;
+    column-gap: var(--lumo-space-s);
+}
+
+#social-view .column {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--lumo-space-s);
+    justify-content: safe flex-start;
 }
