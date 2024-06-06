@@ -17,7 +17,7 @@
  */
 
 #social-view {
-    font-size: var(--lumo-font-size-s);
+    font-size: var(--lumo-font-size-m);
     background-color: #1aa3b1;
     position: absolute;
     top: 0;
@@ -36,9 +36,7 @@
 }
 
 #social-view .posts {
-    flex: 1 1 auto;
     overflow: hidden;
-
     display: flex;
     column-gap: var(--lumo-space-s);
 }
@@ -48,4 +46,5 @@
     flex-direction: column;
     row-gap: var(--lumo-space-s);
     justify-content: safe flex-start;
+    width: 33%;
 }
