@@ -44,7 +44,7 @@
 
 .room-container {
     position: absolute;
-    top: 55px;
+    top: 57px;
     display: grid;
     grid-template-columns: auto auto;
 }
