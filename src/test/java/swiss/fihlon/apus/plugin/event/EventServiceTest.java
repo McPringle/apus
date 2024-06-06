@@ -32,6 +32,7 @@ import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
+import swiss.fihlon.apus.event.Track;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -103,7 +104,8 @@ class EventServiceTest {
             final var title = "Session " + i;
             final var speakers = List.of(new Speaker("Speaker 1"));
             final var language = Language.EN;
-            return new Session(id, startDate, endDate, room, title, speakers, language);
+            final var track = Track.NONE;
+            return new Session(id, startDate, endDate, room, title, speakers, language, track);
         }
 
     }

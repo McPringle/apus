@@ -25,7 +25,7 @@ import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.Speaker;
-import swiss.fihlon.apus.event.TrackInfo;
+import swiss.fihlon.apus.event.Track;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
 
 import java.time.LocalDate;
@@ -80,7 +80,7 @@ public final class DemoPlugin implements EventPlugin {
                 final Speaker fakeSpeaker = new Speaker(faker.name().fullName());
                 final Session fakeSession = new Session(String.format("DEMO-%d-%d", hourCount, numberOfRoom),
                         startDateTime, endDateTime, fakeRoom, faker.lorem().sentence(8), List.of(fakeSpeaker),
-                        getRandomLanguage(), getRandomTrackInfo());
+                        getRandomLanguage(), getRandomTrack());
                 fakeSessions.add(fakeSession);
             }
         }
@@ -102,8 +102,8 @@ public final class DemoPlugin implements EventPlugin {
         return values.get(RANDOM.nextInt(size));
     }
 
-    private @NotNull TrackInfo getRandomTrackInfo() {
-        final var values = Arrays.asList(TrackInfo.values());
+    private @NotNull Track getRandomTrack() {
+        final var values = Arrays.asList(Track.values());
         final int size = values.size();
         return values.get(RANDOM.nextInt(size));
     }

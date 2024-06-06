@@ -31,7 +31,7 @@ import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.RoomStyle;
 import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.Speaker;
-import swiss.fihlon.apus.event.TrackInfo;
+import swiss.fihlon.apus.event.Track;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -47,7 +47,7 @@ public final class RoomView extends Div {
     private final LocalTime startTime;
     private final LocalTime endTime;
     private final Language language;
-    private final TrackInfo trackInfo;
+    private final Track track;
 
     private RoomStyle roomStyle = RoomStyle.NONE;
 
@@ -63,7 +63,7 @@ public final class RoomView extends Div {
                 session.startDate().toLocalTime(),
                 session.endDate().toLocalTime(),
                 session.language(),
-                session.trackInfo()
+                session.track()
         );
     }
 
@@ -73,14 +73,14 @@ public final class RoomView extends Div {
                     @Nullable final LocalTime startTime,
                     @Nullable final LocalTime endTime,
                     @Nullable final Language language,
-                    @Nullable final TrackInfo trackInfo) {
+                    @Nullable final Track track) {
         this.room = room;
         this.title = title;
         this.speakers = speakers;
         this.startTime = startTime;
         this.endTime = endTime;
         this.language = language;
-        this.trackInfo = trackInfo;
+        this.track = track;
 
         addClassName("room-view");
         add(createTitleComponent());
@@ -100,9 +100,9 @@ public final class RoomView extends Div {
             flagComponent.addClassName("language");
             titleComponent.add(flagComponent);
         }
-        if (trackInfo != null) {
-            final var trackComponent = new Div(trackInfo.getSvgCode());
-            trackComponent.addClassName("trackInfo");
+        if (track != null) {
+            final var trackComponent = new Svg(track.getSvgCode());
+            trackComponent.addClassName("track");
             titleComponent.add(trackComponent);
         }
         return titleComponent;
