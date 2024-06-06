@@ -113,6 +113,15 @@
       "contributions": [
         "design"
       ]
+    },
+    {
+      "login": "adpe",
+      "name": "Adrian Perez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9467708?v=4",
+      "profile": "https://adrianperez.me/",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,

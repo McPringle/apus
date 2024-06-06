@@ -282,6 +282,7 @@ Special thanks for all these wonderful people who had helped this project so far
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Interactiondesigner"><img src="https://avatars.githubusercontent.com/u/17220369?v=4?s=100" width="100px;" alt="Interactiondesigner"/><br /><sub><b>Interactiondesigner</b></sub></a><br /><a href="#design-Interactiondesigner" title="Design">🎨</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/1tchy"><img src="https://avatars.githubusercontent.com/u/678713?v=4?s=100" width="100px;" alt="Itchy"/><br /><sub><b>Itchy</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=1tchy" title="Code">💻</a> <a href="#design-1tchy" title="Design">🎨</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/lokalesnetzwerk"><img src="https://avatars.githubusercontent.com/u/35575304?v=4?s=100" width="100px;" alt="Max"/><br /><sub><b>Max</b></sub></a><br /><a href="#design-lokalesnetzwerk" title="Design">🎨</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://adrianperez.me/"><img src="https://avatars.githubusercontent.com/u/9467708?v=4?s=100" width="100px;" alt="Adrian Perez"/><br /><sub><b>Adrian Perez</b></sub></a><br /><a href="#infra-adpe" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     </tr>
   </tbody>
 </table>
