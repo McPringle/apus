@@ -60,6 +60,7 @@ public final class EventView extends Div {
         add(createTitle());
         add(createLegend());
         add(roomContainer);
+        roomContainer.addClassName("room-container");
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(
                 this::updateScheduler, Instant.now().plusSeconds(1), UPDATE_FREQUENCY);
         addDetachListener(event -> updateScheduler.cancel(true));
