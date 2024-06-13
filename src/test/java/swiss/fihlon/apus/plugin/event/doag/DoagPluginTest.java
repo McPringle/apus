@@ -38,9 +38,8 @@ class DoagPluginTest {
     @Test
     void isEnabled() {
         final var configuration = mock(Configuration.class);
-        final var doagConfig = mock(DoagConfig.class);
+        final var doagConfig = new DoagConfig(1, "");
         when(configuration.getDoag()).thenReturn(doagConfig);
-        when(doagConfig.eventId()).thenReturn(1);
 
         final var doagPlugin = new DoagPlugin(configuration);
         assertTrue(doagPlugin.isEnabled());
