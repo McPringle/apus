@@ -66,10 +66,13 @@
     height: 16px;
 }
 
-.room-view .track svg {
-    height: 48px;
+.room-view .track {
+    position: relative;
+}
+
+.room-view .track img {
     position: absolute;
     bottom: 0;
     right: 0;
-    padding: 10px;
+    width: 48px;
 }

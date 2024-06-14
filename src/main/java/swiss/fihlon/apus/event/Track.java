@@ -49,14 +49,23 @@ public enum Track {
                 <path fill="#FFFFFF" d="m14.78 8.475-.4.76q-.08.13-.16.18-.08.06-.2.06-.13 0-.27-.09l-.35-.21q-.21-.11-.48-.21-.27-.09-.64-.09-.34 0-.59.08-.26.08-.43.23-.17.14-.25.34-.08.2-.08.44 0 .31.17.51.17.21.45.35.28.15.64.26.36.11.74.24t.74.3q.36.17.64.43.28.27.45.64.17.38.17.92 0 .59-.2 1.1-.2.52-.59.9-.38.38-.94.6-.56.22-1.28.22-.41 0-.82-.09-.4-.08-.77-.23-.37-.15-.69-.36-.32-.21-.57-.46l.47-.78q.06-.08.16-.14.09-.06.2-.06.15 0 .32.13.18.12.42.27.24.15.56.27.32.13.77.13.69 0 1.07-.33.38-.33.38-.94 0-.34-.18-.56-.17-.21-.45-.36t-.64-.25q-.36-.1-.73-.22t-.73-.29q-.36-.17-.65-.44-.28-.27-.45-.67-.17-.41-.17-1 0-.48.19-.93.19-.45.55-.79.36-.35.89-.56.52-.21 1.21-.21.76 0 1.41.24.65.24 1.11.67Z"/>
             </svg>""");
 
-    private final String svgCode;
+    private static final String FILE_NAME_TEMPLATE = "icons/tracks/%s";
 
-    Track(@NotNull final String svgCode) {
-        this.svgCode = svgCode;
+    private final String trackName;
+    private final String fileName;
+
+    Track(@NotNull final String trackName, @NotNull final String fileName) {
+        this.trackName = trackName;
+        this.fileName = FILE_NAME_TEMPLATE.formatted(fileName);
     }
 
     @NotNull
-    public String getSvgCode() {
-        return svgCode;
+    public String getTrackName() {
+        return trackName;
+    }
+
+    @NotNull
+    public String getFileName() {
+        return fileName;
     }
 }

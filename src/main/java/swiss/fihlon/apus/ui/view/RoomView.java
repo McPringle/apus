@@ -24,6 +24,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Image;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import swiss.fihlon.apus.event.Language;
@@ -149,9 +150,11 @@ public final class RoomView extends Div {
     @NotNull
     private Component createTrackComponent() {
         final var trackComponent = new Div();
-        final var trackSvg = new Svg(track.getSvgCode());
-        trackSvg.addClassName("track");
-        trackComponent.add(trackSvg);
+        trackComponent.addClassName("track");
+        if (track != Track.NONE) {
+            final var trackImage = new Image(track.getFileName(), track.getTrackName());
+            trackComponent.add(trackImage);
+        }
         return trackComponent;
     }
 
