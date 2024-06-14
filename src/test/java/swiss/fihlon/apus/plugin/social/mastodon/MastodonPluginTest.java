@@ -59,10 +59,8 @@ class MastodonPluginTest {
     @MethodSource("provideDataForDisabledTest")
     void isDisabled(final String instance, final String hashtag) {
         final var configuration = mock(Configuration.class);
-        final var mastodonConfig = mock(MastodonConfig.class);
+        final var mastodonConfig = new MastodonConfig(instance, hashtag, true, 0);
         when(configuration.getMastodon()).thenReturn(mastodonConfig);
-        when(mastodonConfig.instance()).thenReturn(instance);
-        when(mastodonConfig.hashtag()).thenReturn(hashtag);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         assertFalse(mastodonPlugin.isEnabled());
@@ -71,10 +69,8 @@ class MastodonPluginTest {
     @Test
     void isEnabled() {
         final var configuration = mock(Configuration.class);
-        final var mastodonConfig = mock(MastodonConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "foobar", true, 0);
         when(configuration.getMastodon()).thenReturn(mastodonConfig);
-        when(mastodonConfig.instance()).thenReturn("localhost");
-        when(mastodonConfig.hashtag()).thenReturn("foobar");
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         assertTrue(mastodonPlugin.isEnabled());

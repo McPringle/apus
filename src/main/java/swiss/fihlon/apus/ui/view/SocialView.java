@@ -17,6 +17,7 @@
  */
 package swiss.fihlon.apus.ui.view;
 
+import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -37,6 +38,7 @@ import swiss.fihlon.apus.util.PasswordUtil;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
 @CssImport(value = "./themes/apus/views/social-view.css")
@@ -46,7 +48,7 @@ public final class SocialView extends Div {
 
     private final transient SocialService socialService;
     private final transient Configuration configuration;
-    private final Div postsContainer = new Div();
+    private final List<Div> postsColumns = List.of(new Div(), new Div(), new Div());
     private final ContextMenu contextMenu;
     private boolean adminModeEnabled = false;
 
@@ -58,15 +60,20 @@ public final class SocialView extends Div {
 
         setId("social-view");
         add(new H2(getTranslation("social.heading", configuration.getMastodon().hashtag())));
-        add(postsContainer);
-        postsContainer.addClassName("masonry");
+        var postsColumnsDiv = new Div();
+        postsColumnsDiv.addClassName("posts");
+        add(postsColumnsDiv);
+        postsColumns.forEach(postsContainer -> {
+            postsColumnsDiv.add(postsContainer);
+            postsContainer.addClassName("column");
+        });
 
         if (adminModeEnabled || configuration.getAdmin().password().isBlank()) {
             contextMenu = null;
         } else {
             contextMenu = new ContextMenu();
             contextMenu.addItem(getTranslation("social.admin.login.menu"), event -> showLoginDialog());
-            contextMenu.setTarget(postsContainer);
+            contextMenu.setTarget(postsColumnsDiv);
         }
 
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(
@@ -128,7 +135,8 @@ public final class SocialView extends Div {
     }
 
     private void updatePosts() {
-        postsContainer.removeAll();
+        postsColumns.forEach(HasComponents::removeAll);
+        int i = 0;
         for (final Post post : socialService.getPosts(30)) {
             final var postView = new PostView(post);
             if (adminModeEnabled) {
@@ -137,7 +145,7 @@ public final class SocialView extends Div {
                 postMenu.addItem(getTranslation("social.post.contextmenu.block.profile"), event -> blockProfile(post));
                 postMenu.setTarget(postView);
             }
-            postsContainer.add(postView);
+            postsColumns.get(i++ % postsColumns.size()).add(postView);
         }
     }
 

@@ -42,66 +42,10 @@
     margin-left: var(--lumo-space-s);
 }
 
-.room-view {
+.room-container {
     position: absolute;
-}
-
-#room-0 {
     top: 57px;
-    left: 0;
+    display: grid;
+    grid-template-columns: auto auto;
 }
 
-#room-1 {
-    top: 57px;
-    left: 430px;
-}
-
-#room-2 {
-    top: 227px;
-    left: 0;
-}
-
-#room-3 {
-    top: 227px;
-    left: 430px;
-}
-
-#room-4 {
-    top: 397px;
-    left: 0;
-}
-
-#room-5 {
-    top: 397px;
-    left: 430px;
-}
-
-#room-6 {
-    top: 567px;
-    left: 0;
-}
-
-#room-7 {
-    top: 567px;
-    left: 430px;
-}
-
-#room-8 {
-    top: 737px;
-    left: 0;
-}
-
-#room-9 {
-    top: 737px;
-    left: 430px;
-}
-
-#room-10 {
-    top: 907px;
-    left: 0;
-}
-
-#room-11 {
-    top: 907px;
-    left: 430px;
-}
