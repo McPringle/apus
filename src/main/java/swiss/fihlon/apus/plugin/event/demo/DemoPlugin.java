@@ -103,8 +103,12 @@ public final class DemoPlugin implements EventPlugin {
     }
 
     private @NotNull Track getRandomTrack() {
-        final var values = Arrays.asList(Track.values());
-        final int size = values.size();
-        return values.get(RANDOM.nextInt(size));
+        Track track = Track.NONE;
+        while (track == Track.NONE) {
+            final var values = Arrays.asList(Track.values());
+            final int size = values.size();
+            track = values.get(RANDOM.nextInt(size));
+        }
+        return track;
     }
 }
