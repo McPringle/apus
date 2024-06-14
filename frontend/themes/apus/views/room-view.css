@@ -65,3 +65,11 @@
 .room-view .title .language svg {
     height: 16px;
 }
+
+.room-view .track svg {
+    height: 48px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+}

@@ -24,12 +24,13 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.event.Track;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
 
 import java.io.IOException;
@@ -128,7 +129,9 @@ public final class DoagPlugin implements EventPlugin {
                 new Room(roomName),
                 title,
                 speakers.stream().map(Speaker::new).toList(),
-                language);
+                language,
+                Track.NONE
+                );
     }
 
     private Language getLanguage(@NotNull final JSONObject slot) {

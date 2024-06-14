@@ -19,7 +19,9 @@ package swiss.fihlon.apus.event;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LanguageTest {
 
@@ -37,7 +39,7 @@ class LanguageTest {
     }
 
     @Test
-    void getFlagEmoji() {
+    void getFlagIcon() {
         for (final Language language : Language.values()) {
             assertTrue(language.getSvgCode().trim().startsWith("<svg "));
             assertTrue(language.getSvgCode().trim().endsWith("</svg>"));

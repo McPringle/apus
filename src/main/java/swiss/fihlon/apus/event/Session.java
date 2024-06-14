@@ -24,8 +24,9 @@ import java.util.List;
 
 public record Session(@NotNull String id, @NotNull LocalDateTime startDate, @NotNull LocalDateTime endDate,
                       @NotNull Room room, @NotNull String title, @NotNull List<Speaker> speakers,
-                      @NotNull Language language)
+                      @NotNull Language language, @NotNull Track track)
         implements Comparable<Session> {
+
     @Override
     public int compareTo(@NotNull final Session other) {
         final var dateCompareResult = startDate.compareTo(other.startDate);

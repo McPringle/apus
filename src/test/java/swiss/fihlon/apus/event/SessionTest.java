@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SessionTest {
 
@@ -35,17 +35,17 @@ class SessionTest {
         final var roomB = new Room("Room B");
 
         final var sessionOne = new Session("S1", now, now.plusHours(1), roomA, "Session One",
-                List.of(new Speaker("Speaker 1")), Language.EN);
+                List.of(new Speaker("Speaker 1")), Language.EN, Track.NONE);
         final var sessionTwo = new Session("S2", now, now.plusHours(1), roomB, "Session Two",
-                List.of(new Speaker("Speaker 1")), Language.EN);
+                List.of(new Speaker("Speaker 1")), Language.EN, Track.NONE);
         final var sessionThree = new Session("S3", now.plusHours(1), now.plusHours(2), roomA, "Session Three",
-                List.of(new Speaker("Speaker 1")), Language.EN);
+                List.of(new Speaker("Speaker 1")), Language.EN, Track.NONE);
         final var sessionFour = new Session("S4", now.plusHours(1), now.plusHours(2), roomB, "Session Four",
-                List.of(new Speaker("Speaker 1")), Language.EN);
+                List.of(new Speaker("Speaker 1")), Language.EN, Track.NONE);
         final var sessionFive = new Session("S5", now.plusHours(2), now.plusHours(3), roomA, "Session Five",
-                List.of(new Speaker("Speaker 1")), Language.EN);
+                List.of(new Speaker("Speaker 1")), Language.EN, Track.NONE);
         final var sessionSix = new Session("S6", now.plusHours(2), now.plusHours(3), roomB, "Session Six",
-                List.of(new Speaker("Speaker 1")), Language.EN);
+                List.of(new Speaker("Speaker 1")), Language.EN, Track.NONE);
 
         final var unsortedSessions = new ArrayList<>(List.of(sessionTwo, sessionSix, sessionThree, sessionFour, sessionFive, sessionOne));
         Collections.shuffle(unsortedSessions);
@@ -68,8 +68,9 @@ class SessionTest {
         final var title = "Test Session A";
         final var speakers = List.of(new Speaker("Speaker 1"), new Speaker("Speaker 2"));
         final var language = Language.EN;
+        final var trackInfo = Track.NONE;
 
-        final Session session = new Session(id, startDate, endDate, room, title, speakers, language);
+        final Session session = new Session(id, startDate, endDate, room, title, speakers, language, trackInfo);
         assertEquals(id, session.id());
         assertEquals(startDate, session.startDate());
         assertEquals(endDate, session.endDate());
@@ -78,5 +79,6 @@ class SessionTest {
         assertEquals(speakers, session.speakers());
         assertEquals(2, session.speakers().size());
         assertEquals(language, session.language());
+        assertEquals(trackInfo, session.track());
     }
 }
