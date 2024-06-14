@@ -10,7 +10,7 @@ class TrackTest {
 
     @Test
     void values() {
-        assertEquals(5, Track.values().length);
+        assertEquals(14, Track.values().length);
     }
 
     @Test
