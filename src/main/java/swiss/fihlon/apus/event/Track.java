@@ -45,7 +45,7 @@ public enum Track {
 
     Track(@NotNull final String trackName, @NotNull final String fileName) {
         this.trackName = trackName;
-        this.fileName = FILE_NAME_TEMPLATE.formatted(fileName);
+        this.fileName = fileName.isBlank() ? "" : FILE_NAME_TEMPLATE.formatted(fileName);
     }
 
     @NotNull
