@@ -19,7 +19,6 @@ package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
-import com.vaadin.flow.component.Svg;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
@@ -100,7 +99,7 @@ public final class RoomView extends Div {
         titleComponent.addClassName("title");
         titleComponent.add(new H3(new Text(title == null ? getTranslation("event.room.empty") : title)));
         if (language != null) {
-            final var flagComponent = new Svg(language.getSvgCode());
+            final var flagComponent = new Image(language.getFlagFileName(), language.getLanguageCode());
             flagComponent.addClassName("language");
             titleComponent.add(flagComponent);
         }

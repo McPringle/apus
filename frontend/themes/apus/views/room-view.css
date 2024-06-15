@@ -58,11 +58,8 @@
     width: 376px;
 }
 
-.room-view .title .language {
+.room-view .title img.language {
     float: right;
-}
-
-.room-view .title .language svg {
     height: 16px;
 }
 
