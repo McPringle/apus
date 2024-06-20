@@ -53,7 +53,7 @@
     <properties>
         <java.version>21</java.version>
         <maven.version>3.9.7</maven.version>
-        <vaadin.version>24.4.2</vaadin.version>
+        <vaadin.version>24.4.3</vaadin.version>
     </properties>
 
     <parent>
