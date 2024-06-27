@@ -21,9 +21,11 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.plugin.event.EventConfig;
 import swiss.fihlon.apus.plugin.event.demo.DemoConfig;
 import swiss.fihlon.apus.plugin.event.doag.DoagConfig;
+import swiss.fihlon.apus.plugin.event.sessionize.SessionizeConfig;
 import swiss.fihlon.apus.plugin.social.mastodon.MastodonConfig;
 
 @org.springframework.context.annotation.Configuration
@@ -41,6 +43,7 @@ public class Configuration {
     // Event Plugin Configs
     private DemoConfig demo;
     private DoagConfig doag;
+    private SessionizeConfig sessionize;
 
     // Social Plugin Configs
     private MastodonConfig mastodon;
@@ -100,6 +103,12 @@ public class Configuration {
     public void setDoag(@NotNull final DoagConfig doag) {
         this.doag = doag;
     }
+
+    public SessionizeConfig getSessionize() {
+        return sessionize;
+    }
+
+    public void setSessionize(@NotNull final SessionizeConfig sessionize) { this.sessionize = sessionize;}
 
     ///////////////////////////
     // Social Plugin Configs //
