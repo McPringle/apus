@@ -73,3 +73,8 @@
     right: 0;
     width: 48px;
 }
+
+.room-view vaadin-icon {
+    height: 16px;
+    margin: 0 8px 3px 0;
+}
