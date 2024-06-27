@@ -24,6 +24,8 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import swiss.fihlon.apus.event.Language;
@@ -115,14 +117,20 @@ public final class RoomView extends Div {
             final var joinedSpeakers = speakers.stream()
                     .map(Speaker::fullName)
                     .collect(Collectors.joining(", "));
-            speakersComponent.add(new Text(String.format("\uD83D\uDC64 %s", joinedSpeakers)));
+            speakersComponent.add(
+                    new Icon(VaadinIcon.USER),
+                    new Text(joinedSpeakers)
+            );
         }
         return speakersComponent;
     }
 
     @NotNull
     private Component createRoomComponent() {
-        return new Div(new Text(String.format("\uD83D\uDCCD %s", room.name())));
+        return new Div(
+                new Icon(VaadinIcon.ARROW_CIRCLE_RIGHT),
+                new Text(room.name())
+        );
     }
 
     @NotNull
@@ -135,12 +143,17 @@ public final class RoomView extends Div {
         } else if (startTime.isBefore(now) && endTime.isAfter(now)) { // running session
             final Duration duration = Duration.between(now, endTime);
             final long timeLeft = Math.round(duration.getSeconds() / 60f);
-            timeComponent.add(new Text("⌛ " + getTranslation(timeLeft == 1
+            timeComponent.add(
+                    new Icon(VaadinIcon.HOURGLASS),
+                    new Text(getTranslation(timeLeft == 1
                             ? "event.session.countdown.singular" : "event.session.countdown.plural",
                             timeLeft)));
             roomStyle = RoomStyle.RUNNING;
         } else { // next session
-            timeComponent.add(new Text(String.format("⌚ %s - %s", startTime, endTime)));
+            timeComponent.add(
+                    new Icon(VaadinIcon.ALARM),
+                    new Text(String.format("%s - %s", startTime, endTime))
+            );
             roomStyle = RoomStyle.NEXT;
         }
         return timeComponent;
