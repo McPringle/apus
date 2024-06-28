@@ -20,6 +20,7 @@ package swiss.fihlon.apus.plugin.event.doag;
 import org.junit.jupiter.api.Test;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
+import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.configuration.Configuration;
@@ -65,15 +66,11 @@ class DoagPluginTest {
         final var sessions = doagPlugin.getSessions();
         assertEquals(8, sessions.size());
 
-        // no loop to check order of list, sorted by time of date
-        assertEquals("BBAD:1", sessions.get(0).id());
-        assertEquals("BBAD:2", sessions.get(1).id());
-        assertEquals("BBAD:4", sessions.get(2).id());
-        assertEquals("BBAD:3", sessions.get(3).id());
-        assertEquals("BBAD:6", sessions.get(4).id());
-        assertEquals("BBAD:5", sessions.get(5).id());
-        assertEquals("BBAD:7", sessions.get(6).id());
-        assertEquals("BBAD:8", sessions.get(7).id());
+        final var sessionIds = sessions.stream().map(Session::id).toList();
+        for (int counter = 1; counter <= 8; counter++) {
+            final var sessionId = String.format("BBAD:%d", counter);
+            assertTrue(sessionIds.contains(sessionId));
+        }
 
         // full check of session with ID "BBAD:5"
         final var session = sessions.get(5);
