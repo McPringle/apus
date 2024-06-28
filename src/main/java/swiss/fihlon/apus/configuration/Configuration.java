@@ -20,8 +20,6 @@ package swiss.fihlon.apus.configuration;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-
-import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.plugin.event.EventConfig;
 import swiss.fihlon.apus.plugin.event.demo.DemoConfig;
 import swiss.fihlon.apus.plugin.event.doag.DoagConfig;
@@ -108,7 +106,9 @@ public class Configuration {
         return sessionize;
     }
 
-    public void setSessionize(@NotNull final SessionizeConfig sessionize) { this.sessionize = sessionize;}
+    public void setSessionize(@NotNull final SessionizeConfig sessionize) {
+        this.sessionize = sessionize;
+    }
 
     ///////////////////////////
     // Social Plugin Configs //

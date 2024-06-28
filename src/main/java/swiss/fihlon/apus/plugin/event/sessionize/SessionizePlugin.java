@@ -89,7 +89,7 @@ public final class SessionizePlugin implements EventPlugin {
                 }
 
 
-                Session session = new Session(id,startDate, endDate, room, title,
+                Session session = new Session(id, startDate, endDate, room, title,
                         speakers.stream().map(Speaker::new).toList(), Language.EN, Track.NONE);
 
                 sessions.add(session);
