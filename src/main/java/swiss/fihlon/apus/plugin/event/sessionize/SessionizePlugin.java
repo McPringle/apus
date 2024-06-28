@@ -92,7 +92,7 @@ public final class SessionizePlugin implements EventPlugin {
 
 
                 Session session = new Session(
-                        id,
+                        String.format("%s:%s", eventId, sessionId),
                         startDate, endDate, room, title,
                         speakers.stream().map(Speaker::new).toList(),
                         getLanguage(singleSession),
