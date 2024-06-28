@@ -45,6 +45,10 @@ import java.util.List;
 public final class SessionizePlugin implements EventPlugin {
     public static final Logger LOGGER = LoggerFactory.getLogger(SessionizePlugin.class);
 
+    private static final int CATEGORY_ID_LANGUAGE = 68911;
+    private static final int LANGUAGE_ID_ENGLISH = 242155;
+    private static final int LANGUAGE_ID_GERMAN = 242156;
+
     private final String eventId;
     private final String eventApi;
 
@@ -87,8 +91,12 @@ public final class SessionizePlugin implements EventPlugin {
                 }
 
 
-                Session session = new Session(id, startDate, endDate, room, title,
-                        speakers.stream().map(Speaker::new).toList(), Language.EN, Track.NONE);
+                Session session = new Session(
+                        id,
+                        startDate, endDate, room, title,
+                        speakers.stream().map(Speaker::new).toList(),
+                        getLanguage(singleSession),
+                        Track.NONE);
 
                 sessions.add(session);
             }
@@ -97,5 +105,23 @@ public final class SessionizePlugin implements EventPlugin {
             throw new SessionImportException(String.format("Error parsing session %s: %s", lastSessionId, e.getMessage()), e);
         }
         return sessions;
+    }
+
+    private Language getLanguage(@NotNull final JSONObject singleSession) {
+        final JSONArray categories = singleSession.getJSONArray("categories");
+        for (int categoryCounter = 0; categoryCounter < categories.length(); categoryCounter++) {
+            final JSONObject category = categories.getJSONObject(categoryCounter);
+            if (category.getInt("id") == CATEGORY_ID_LANGUAGE) {
+                final JSONArray categoryItems = category.getJSONArray("categoryItems");
+                final JSONObject firstCategoryItem = categoryItems.getJSONObject(0);
+                final int languageId = firstCategoryItem.getInt("id");
+                switch (languageId) {
+                    case LANGUAGE_ID_ENGLISH: return Language.EN;
+                    case LANGUAGE_ID_GERMAN: return Language.DE;
+                    default: continue;
+                }
+            }
+        }
+        return Language.UNKNOWN;
     }
 }
