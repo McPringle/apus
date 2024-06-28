@@ -284,6 +284,7 @@ Special thanks for all these wonderful people who had helped this project so far
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/lokalesnetzwerk"><img src="https://avatars.githubusercontent.com/u/35575304?v=4?s=100" width="100px;" alt="Max"/><br /><sub><b>Max</b></sub></a><br /><a href="#design-lokalesnetzwerk" title="Design">🎨</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://adrianperez.me/"><img src="https://avatars.githubusercontent.com/u/9467708?v=4?s=100" width="100px;" alt="Adrian Perez"/><br /><sub><b>Adrian Perez</b></sub></a><br /><a href="#infra-adpe" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/patlecat"><img src="https://avatars.githubusercontent.com/u/422020?v=4?s=100" width="100px;" alt="patlecat"/><br /><sub><b>patlecat</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=patlecat" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/haladamateusz"><img src="https://avatars.githubusercontent.com/u/26378632?v=4?s=100" width="100px;" alt="Mateusz Halada"/><br /><sub><b>Mateusz Halada</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=haladamateusz" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
