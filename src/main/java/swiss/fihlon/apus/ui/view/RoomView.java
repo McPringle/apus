@@ -100,7 +100,7 @@ public final class RoomView extends Div {
         final var titleComponent = new Div();
         titleComponent.addClassName("title");
         titleComponent.add(new H3(new Text(title == null ? getTranslation("event.room.empty") : title)));
-        if (language != null) {
+        if (language != Language.UNKNOWN) {
             final var flagComponent = new Image(language.getFlagFileName(), language.getLanguageCode());
             flagComponent.addClassName("language");
             titleComponent.add(flagComponent);

@@ -29,6 +29,7 @@ class LanguageTest {
     void languageWithCode() {
         assertEquals(Language.DE, Language.languageWithCode("de"));
         assertEquals(Language.EN, Language.languageWithCode("en"));
+        assertEquals(Language.UNKNOWN, Language.languageWithCode(""));
         assertThrows(IllegalArgumentException.class, () -> Language.languageWithCode("xx"));
     }
 
@@ -36,23 +37,28 @@ class LanguageTest {
     void getLanguageCode() {
         assertEquals("de", Language.DE.getLanguageCode());
         assertEquals("en", Language.EN.getLanguageCode());
+        assertEquals("", Language.UNKNOWN.getLanguageCode());
     }
 
     @Test
     void getFlagIcon() {
         for (final Language language : Language.values()) {
+            if (language.equals(Language.UNKNOWN)) {
+                continue;
+            }
             assertFalse(language.getFlagFileName().isBlank());
         }
     }
 
     @Test
     void values() {
-        assertEquals(2, Language.values().length);
+        assertEquals(3, Language.values().length);
     }
 
     @Test
     void valueOf() {
         assertEquals(Language.DE, Language.valueOf("DE"));
         assertEquals(Language.EN, Language.valueOf("EN"));
+        assertEquals(Language.UNKNOWN, Language.valueOf("UNKNOWN"));
     }
 }

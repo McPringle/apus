@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 public enum Language {
 
     // Important: When adding a new language, modify the test accordingly!
+    UNKNOWN(""),
     DE("de"),
     EN("en");
 
