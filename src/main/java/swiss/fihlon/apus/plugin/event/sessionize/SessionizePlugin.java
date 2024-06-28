@@ -62,15 +62,15 @@ public final class SessionizePlugin implements EventPlugin {
     @Override
     @NotNull public List<Session> getSessions() {
         final ArrayList<Session> sessions = new ArrayList<>();
-        int lastSlotId = 0;
+        String lastSessionId = "";
         try {
             final String json = DownloadUtil.getString(String.format(eventApi, eventId));
             final JSONObject jsonObject = new JSONArray(json).getJSONObject(0);
             final JSONArray sessionizeSessions = jsonObject.getJSONArray("sessions");
             for (int counter = 0; counter < sessionizeSessions.length(); counter++) {
                 JSONObject singleSession = sessionizeSessions.getJSONObject(counter);
-
-                String id = singleSession.getString("id");
+                String sessionId = singleSession.getString("id");
+                lastSessionId = sessionId;
                 LocalDateTime startDate = LocalDateTime.parse(singleSession.getString("startsAt"));
                 if (startDate.toLocalDate().getDayOfMonth() == 16) {
                     continue;
@@ -94,7 +94,7 @@ public final class SessionizePlugin implements EventPlugin {
             }
             LOGGER.info("Successfully loaded {} sessions for event ID {}", sessions.size(), eventId);
         } catch (IOException | URISyntaxException | JSONException e) {
-            throw new SessionImportException(String.format("Error parsing slot %d: %s", lastSlotId, e.getMessage()), e);
+            throw new SessionImportException(String.format("Error parsing session %s: %s", lastSessionId, e.getMessage()), e);
         }
         return sessions;
     }
