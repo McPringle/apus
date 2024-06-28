@@ -128,7 +128,7 @@ public final class RoomView extends Div {
     @NotNull
     private Component createRoomComponent() {
         return new Div(
-                new Icon(VaadinIcon.ARROW_CIRCLE_RIGHT),
+                new Icon(VaadinIcon.LOCATION_ARROW_CIRCLE),
                 new Text(room.name())
         );
     }
