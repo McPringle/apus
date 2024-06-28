@@ -32,12 +32,10 @@ import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
+import swiss.fihlon.apus.util.DownloadUtil;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -70,7 +68,7 @@ public final class DoagPlugin implements EventPlugin {
         final ArrayList<Session> sessions = new ArrayList<>();
         int lastSlotId = 0;
         try {
-            final String json = getJSON();
+            final String json = DownloadUtil.getString(String.format(eventApi, eventId));
             final JSONObject jsonObject = new JSONObject(json);
             final JSONObject schedule = jsonObject.getJSONObject("schedule");
             final JSONObject conference = schedule.getJSONObject("conference");
@@ -162,15 +160,5 @@ public final class DoagPlugin implements EventPlugin {
     private Duration parseDuration(@NotNull final String duration) {
         final String minutes = duration.split(":")[1];
         return Duration.ofMinutes(Long.parseLong(minutes));
-    }
-
-    private String getJSON() throws IOException, URISyntaxException {
-        final var location = String.format(eventApi, eventId);
-        LOGGER.info("Starting download of JSON for event ID {} using address {}", eventId, location);
-        try (InputStream in = new URI(location).toURL().openStream()) {
-            final String json = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-            LOGGER.info("Successfully downloaded JSON for event ID {}", eventId);
-            return json;
-        }
     }
 }

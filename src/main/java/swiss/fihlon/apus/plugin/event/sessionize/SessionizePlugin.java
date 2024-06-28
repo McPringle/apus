@@ -32,12 +32,10 @@ import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
+import swiss.fihlon.apus.util.DownloadUtil;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +64,7 @@ public final class SessionizePlugin implements EventPlugin {
         final ArrayList<Session> sessions = new ArrayList<>();
         int lastSlotId = 0;
         try {
-            final String json = getJSON();
+            final String json = DownloadUtil.getString(String.format(eventApi, eventId));
             final JSONObject jsonObject = new JSONArray(json).getJSONObject(0);
             final JSONArray sessionizeSessions = jsonObject.getJSONArray("sessions");
             for (int counter = 0; counter < sessionizeSessions.length(); counter++) {
@@ -99,15 +97,5 @@ public final class SessionizePlugin implements EventPlugin {
             throw new SessionImportException(String.format("Error parsing slot %d: %s", lastSlotId, e.getMessage()), e);
         }
         return sessions;
-    }
-
-    private String getJSON() throws IOException, URISyntaxException {
-        final var location = String.format(eventApi, eventId);
-        LOGGER.info("Starting download of JSON for event ID {} using address {}", eventId, location);
-        try (InputStream in = new URI(eventApi).toURL().openStream()) {
-            final String json = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-            LOGGER.info("Successfully downloaded JSON for event ID {}", eventId);
-            return json;
-        }
     }
 }
