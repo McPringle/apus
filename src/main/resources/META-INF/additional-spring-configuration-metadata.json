@@ -64,5 +64,10 @@
       "name" : "apus.mastodon.instance",
       "type" : "java.lang.String",
       "description" : "The Mastodon instance used to read the posts from."
+    },
+    {
+      "name" : "apus.sessionize.eventId",
+      "type" : "java.lang.String",
+      "description" : "The ID of the Sessionize event to read the conference agenda."
     }
   ] }
