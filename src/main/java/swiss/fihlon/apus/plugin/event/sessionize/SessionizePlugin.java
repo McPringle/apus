@@ -115,11 +115,11 @@ public final class SessionizePlugin implements EventPlugin {
                 final JSONArray categoryItems = category.getJSONArray("categoryItems");
                 final JSONObject firstCategoryItem = categoryItems.getJSONObject(0);
                 final int languageId = firstCategoryItem.getInt("id");
-                switch (languageId) {
-                    case LANGUAGE_ID_ENGLISH: return Language.EN;
-                    case LANGUAGE_ID_GERMAN: return Language.DE;
-                    default: continue;
-                }
+                return switch (languageId) {
+                    case LANGUAGE_ID_ENGLISH -> Language.EN;
+                    case LANGUAGE_ID_GERMAN -> Language.DE;
+                    default -> throw new JSONException("Unknown language ID: " + languageId);
+                };
             }
         }
         return Language.UNKNOWN;

@@ -1,0 +1,35 @@
+[
+  {
+    "groupId": null,
+    "groupName": "All",
+    "sessions": [
+      {
+        "id": "1",
+        "title": "Lorem ipsum dolor sit amet",
+        "startsAt": "2024-01-01T09:45:00",
+        "endsAt": "2024-01-01T10:00:00",
+        "speakers": [
+          {
+            "name": "Walter White"
+          },
+          {
+            "name": "Jesse Pinkman"
+          }
+        ],
+        "categories": [
+          {
+            "id": 68911,
+            "name": "Language",
+            "categoryItems": [
+              {
+                "id": 123456,
+                "name": "Foobar"
+              }
+            ]
+          }
+        ],
+        "room": "Room A"
+      }
+    ]
+  }
+]

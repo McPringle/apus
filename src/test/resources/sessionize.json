@@ -1,0 +1,209 @@
+[
+  {
+    "groupId": null,
+    "groupName": "All",
+    "sessions": [
+      {
+        "id": "1",
+        "title": "Lorem ipsum dolor sit amet",
+        "startsAt": "2024-01-01T09:45:00",
+        "endsAt": "2024-01-01T10:00:00",
+        "speakers": [
+          {
+            "name": "Walter White"
+          },
+          {
+            "name": "Jesse Pinkman"
+          }
+        ],
+        "categories": [
+          {
+            "id": 68911,
+            "name": "Language",
+            "categoryItems": [
+              {
+                "id": 242156,
+                "name": "German"
+              }
+            ]
+          }
+        ],
+        "room": "Room A"
+      },
+      {
+        "id": "2",
+        "title": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat",
+        "startsAt": "2024-01-01T10:00:00",
+        "endsAt": "2024-01-01T10:30:00",
+        "speakers": [
+          {
+            "name": "Walter White"
+          },
+          {
+            "name": "Jesse Pinkman"
+          }
+        ],
+        "categories": [
+          {
+            "id": 68911,
+            "name": "Language",
+            "categoryItems": [
+              {
+                "id": 242155,
+                "name": "English"
+              }
+            ]
+          }
+        ],
+        "room": "Room A"
+      },
+      {
+        "id": "3",
+        "title": "Ut wisi enim ad minim veniam",
+        "startsAt": "2024-01-02T19:00:00",
+        "endsAt": "2024-01-02T19:45:00",
+        "speakers": [
+          {
+            "name": "Gustavo Fring"
+          }
+        ],
+        "categories": [
+          {
+            "id": 68911,
+            "name": "Language",
+            "categoryItems": [
+              {
+                "id": 242156,
+                "name": "German"
+              }
+            ]
+          }
+        ],
+        "room": "Room A"
+      },
+      {
+        "id": "4",
+        "title": "Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum",
+        "startsAt": "2024-01-02T11:00:00",
+        "endsAt": "2024-01-02T11:45:00",
+        "speakers": [
+          {
+            "name": "Hank Schrader"
+          }
+        ],
+        "categories": [
+          {
+            "id": 68911,
+            "name": "Language",
+            "categoryItems": [
+              {
+                "id": 242155,
+                "name": "English"
+              }
+            ]
+          }
+        ],
+        "room": "Room B"
+      },
+      {
+        "id": "5",
+        "title": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat",
+        "startsAt": "2024-01-03T19:00:00",
+        "endsAt": "2024-01-03T19:45:00",
+        "speakers": [
+          {
+            "name": "Saul Goodman"
+          },
+          {
+            "name": "Mike Ehrmantraut"
+          }
+        ],
+        "categories": [
+          {
+            "id": 68911,
+            "name": "Language",
+            "categoryItems": [
+              {
+                "id": 242156,
+                "name": "German"
+              }
+            ]
+          }
+        ],
+        "room": "Room A"
+      },
+      {
+        "id": "6",
+        "title": "At vero eos et accusam et justo duo dolores et ea rebum",
+        "startsAt": "2024-01-03T11:00:00",
+        "endsAt": "2024-01-03T12:45:00",
+        "speakers": [
+          {
+            "name": "Skyler White"
+          }
+        ],
+        "categories": [
+          {
+            "id": 68911,
+            "name": "Language",
+            "categoryItems": [
+              {
+                "id": 242155,
+                "name": "English"
+              }
+            ]
+          }
+        ],
+        "room": "Room B"
+      },
+      {
+        "id": "7",
+        "title": "Consetetur sadipscing elitr",
+        "startsAt": "2024-01-04T10:00:00",
+        "endsAt": "2024-01-04T12:45:00",
+        "speakers": [
+          {
+            "name": "Marie Schrader"
+          }
+        ],
+        "categories": [
+          {
+            "id": 68911,
+            "name": "Language",
+            "categoryItems": [
+              {
+                "id": 242155,
+                "name": "English"
+              }
+            ]
+          }
+        ],
+        "room": "Room A"
+      },
+      {
+        "id": "8",
+        "title": "Consetetur sadipscing elitr",
+        "startsAt": "2024-01-04T13:00:00",
+        "endsAt": "2024-01-04T14:45:00",
+        "speakers": [
+          {
+            "name": "Lydia Rodarte-Quayle"
+          }
+        ],
+        "categories": [
+          {
+            "id": 68911,
+            "name": "Language",
+            "categoryItems": [
+              {
+                "id": 242156,
+                "name": "German"
+              }
+            ]
+          }
+        ],
+        "room": "Room A"
+      }
+    ]
+  }
+]
