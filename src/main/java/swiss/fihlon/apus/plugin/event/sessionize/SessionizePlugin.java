@@ -52,7 +52,7 @@ public final class SessionizePlugin implements EventPlugin {
 
     public SessionizePlugin(@NotNull final Configuration configuration) {
         this.eventId = configuration.getSessionize().eventId();
-        this.eventApi = String.format("https://sessionize.com/api/v2/%s/view/Sessions", this.eventId);
+        this.eventApi = configuration.getSessionize().eventApi();
     }
 
     @Override
@@ -102,7 +102,8 @@ public final class SessionizePlugin implements EventPlugin {
     }
 
     private String getJSON() throws IOException, URISyntaxException {
-        LOGGER.info("Starting download of JSON for event ID {} using address {}", eventId, eventApi);
+        final var location = String.format(eventApi, eventId);
+        LOGGER.info("Starting download of JSON for event ID {} using address {}", eventId, location);
         try (InputStream in = new URI(eventApi).toURL().openStream()) {
             final String json = new String(in.readAllBytes(), StandardCharsets.UTF_8);
             LOGGER.info("Successfully downloaded JSON for event ID {}", eventId);
