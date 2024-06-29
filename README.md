@@ -19,29 +19,29 @@ See:
 
 ### Show posts from Social Media
 
-| Platform                    | Status  |
-|-----------------------------|---------|
-| Bluesky                     | planned |
-| Instagram                   | planned |
-| Mastodon                    | DONE    |
-| Twitter                     | planned |
+| Platform                    | Status    |
+|-----------------------------|-----------|
+| Bluesky                     | - TODO -  |
+| Instagram                   | - TODO -  |
+| Mastodon                    | SUPPORTED |
+| Twitter                     | - TODO -  |
 
 ### Show event agenda
 
-| Event              | Status  |
-|--------------------|---------|
-| BaselOne           | planned |
-| CyberLand          | DONE    |
-| JavaLand           | DONE    |
-| Voxxed Days Zürich | planned |
+| Event              | Plugin           |
+|--------------------|------------------|
+| BaselOne           | SessionizePlugin |
+| CyberLand          | DoagPlugin       |
+| JavaLand           | DoagPlugin       |
+| Voxxed Days Zürich | - TODO -         |
 
 ### And more
 
-| Feature                   | Status  |
-|---------------------------|---------|
-| Running text with updates | planned |
-| Show sponsor information  | planned |
-| Use event based styling   | planned |
+| Feature                   | Status   |
+|---------------------------|----------|
+| Running text with updates | - TODO - |
+| Show sponsor information  | - TODO - |
+| Use event based styling   | - TODO - |
 
 ## Build
 
