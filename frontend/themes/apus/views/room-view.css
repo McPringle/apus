@@ -56,6 +56,7 @@
     margin-bottom: 10px;
     float: left;
     width: 376px;
+    height: 47px;
 }
 
 .room-view .title img.language {
@@ -71,6 +72,7 @@
     position: absolute;
     bottom: 0;
     right: 0;
+    height: 48px;
     width: 48px;
 }
 
