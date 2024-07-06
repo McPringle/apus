@@ -18,43 +18,43 @@
 package swiss.fihlon.apus.event;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@SuppressWarnings("checkstyle:LineLength")
-public enum Track {
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
 
-    // Important: When adding a new track, modify the test accordingly!
-    NONE("", ""),
-    ARCHITECTURE("Architecture", "java.png"),
-    CONTAINER_CLOUD_INFRASTRUCTURE("Container, Cloud & Infrastructure", "java.png"),
-    DATA_STREAMING_AI("Data, Streaming & AI", "java.png"),
-    ENTERPRISE_JAVA("Enterprise Java", "java.png"),
-    JAVA("Core Java & JVM-Technologies", "java.png"),
-    LANGUAGES("Programming Languages", "java.png"),
-    METHODOLOGY_CULTURE("Methodology & Culture", "java.png"),
-    NEXT("What's next", "java.png"),
-    QUALITY_TESTING("Quality & Testing", "java.png"),
-    SECURITY("Security", "java.png"),
-    STUDIO("Studio", "java.png"),
-    TOOLS("Tools", "java.png"),
-    UI_UX("UI & UX", "java.png");
+public record Track(String name, String svgCode) {
 
-    private static final String FILE_NAME_TEMPLATE = "icons/tracks/%s";
+    public static final Logger LOGGER = LoggerFactory.getLogger(Track.class);
 
-    private final String trackName;
-    private final String fileName;
+    public static final Track NONE = new Track(null, null);
+    public static final Track ARCHITECTURE = defaultTrack("Architecture", "architecture.svg");
+    public static final Track CLOUD = defaultTrack("Cloud", "cloud.svg");
+    public static final Track CORE = defaultTrack("Core", "core.svg");
+    public static final Track INFRASTRUCTURE = defaultTrack("Infrastructure", "infrastructure.svg");
+    public static final Track SECURITY = defaultTrack("Security", "security.svg");
+    public static final Track TOOLS = defaultTrack("Tools", "tools.svg");
 
-    Track(@NotNull final String trackName, @NotNull final String fileName) {
-        this.trackName = trackName;
-        this.fileName = fileName.isBlank() ? "" : FILE_NAME_TEMPLATE.formatted(fileName);
-    }
+    private static final String FILE_NAME_TEMPLATE = "/icons/tracks/%s";
 
-    @NotNull
-    public String getTrackName() {
-        return trackName;
-    }
-
-    @NotNull
-    public String getFileName() {
-        return fileName;
+    private static Track defaultTrack(@NotNull final String name, @NotNull final String svgFileName) {
+        try {
+            final String fileName = FILE_NAME_TEMPLATE.formatted(svgFileName);
+            final URL url = Track.class.getResource(fileName);
+            final URI uri = Objects.requireNonNull(url).toURI();
+            final Path path = Paths.get(uri);
+            final String svgCode = Files.readString(path);
+            return new Track(name, svgCode.trim());
+        } catch (final IOException | NullPointerException | URISyntaxException e) {
+            LOGGER.error("Unable to load default track icon '{}': {}", svgFileName, e.getMessage(), e);
+        }
+        return NONE;
     }
 }

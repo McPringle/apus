@@ -109,12 +109,14 @@ public final class DemoPlugin implements EventPlugin {
     }
 
     private @NotNull Track getRandomTrack() {
-        Track track = Track.NONE;
-        while (track == Track.NONE) {
-            final var values = Arrays.asList(Track.values());
-            final int size = values.size();
-            track = values.get(RANDOM.nextInt(size));
-        }
-        return track;
+        return switch (RANDOM.nextInt(6)) {
+            case 0 -> Track.ARCHITECTURE;
+            case 1 -> Track.CLOUD;
+            case 2 -> Track.CORE;
+            case 3 -> Track.INFRASTRUCTURE;
+            case 4 -> Track.SECURITY;
+            case 5 -> Track.TOOLS;
+            default -> Track.NONE;
+        };
     }
 }

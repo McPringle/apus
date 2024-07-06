@@ -19,6 +19,7 @@ package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
+import com.vaadin.flow.component.Svg;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
@@ -49,7 +50,7 @@ public final class RoomView extends Div {
     private final LocalTime startTime;
     private final LocalTime endTime;
     private final Language language;
-    private final Track track;
+    private final transient Track track;
 
     private RoomStyle roomStyle = RoomStyle.NONE;
 
@@ -164,7 +165,7 @@ public final class RoomView extends Div {
         final var trackComponent = new Div();
         trackComponent.addClassName("track");
         if (track != Track.NONE) {
-            final var trackImage = new Image(track.getFileName(), track.getTrackName());
+            final var trackImage = new Svg(track.svgCode());
             trackComponent.add(trackImage);
         }
         return trackComponent;
