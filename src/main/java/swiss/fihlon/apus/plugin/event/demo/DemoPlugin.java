@@ -99,7 +99,13 @@ public final class DemoPlugin implements EventPlugin {
     private @NotNull Language getRandomLanguage() {
         final var values = Arrays.asList(Language.values());
         final int size = values.size();
-        return values.get(RANDOM.nextInt(size));
+
+        Language language = Language.UNKNOWN;
+        while (language == Language.UNKNOWN) {
+            language = values.get(RANDOM.nextInt(size));
+        }
+
+        return language;
     }
 
     private @NotNull Track getRandomTrack() {
