@@ -35,6 +35,7 @@ public class Configuration {
     // Core Configs
     private String version;
     private AdminConfig admin;
+    private CustomConfig custom;
     private EventConfig event;
     private FilterConfig filter;
 
@@ -56,6 +57,14 @@ public class Configuration {
 
     public void setVersion(@NotNull final String version) {
         this.version = version;
+    }
+
+    public CustomConfig getCustom() {
+        return custom;
+    }
+
+    public void setCustom(@NotNull final CustomConfig custom) {
+        this.custom = custom;
     }
 
     public AdminConfig getAdmin() {

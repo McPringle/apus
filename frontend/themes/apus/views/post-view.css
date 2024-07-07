@@ -17,7 +17,7 @@
  */
 
 .post-view {
-    background-color: #84ddee;
+    background-color: var(--social-post-background-color);
     border-radius: var(--lumo-border-radius-s);
     padding: var(--lumo-space-s);
 }

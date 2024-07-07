@@ -15,41 +15,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+package swiss.fihlon.apus.configuration;
 
-#event-view {
-    background-color: var(--event-background-color);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 870px;
-    height: 1080px;
-    overflow: clip;
-}
+import org.jetbrains.annotations.NotNull;
 
-#event-view * {
-    color: var(--event-text-color);
-}
-
-#event-view h2 {
-    float: left;
-    font-size: 30px;
-    margin: 10px;
-}
-
-#event-view .legend {
-    float: right;
-    padding: 13px 10px 0 0;
-}
-
-#event-view .legend > span {
-    color: var(--event-text-color);
-    margin-left: var(--lumo-space-s);
-}
-
-.room-container {
-    position: absolute;
-    top: 57px;
-    display: grid;
-    grid-template-columns: auto auto;
-}
-
+public record CustomConfig(@NotNull String styles) { }

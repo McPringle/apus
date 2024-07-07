@@ -29,15 +29,15 @@
 }
 
 .running-session {
-    background-color: #9bf4ff;
+    background-color: var(--event-running-session-color);
 }
 
-.next-session, .empty-room {
-    background-color: #62d7e3;
+.next-session {
+    background-color: var(--event-next-session-color);
 }
 
 .empty-room {
-    opacity: 0.5;
+    background-color: var(--event-closed-room-color);
 }
 
 .empty-room .title h3 {

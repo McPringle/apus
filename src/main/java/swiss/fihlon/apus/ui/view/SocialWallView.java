@@ -17,23 +17,47 @@
  */
 package swiss.fihlon.apus.ui.view;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.Route;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.plugin.event.EventService;
 import swiss.fihlon.apus.plugin.social.SocialService;
 
+import java.util.Arrays;
+
 @Route("")
 @CssImport(value = "./themes/apus/views/social-wall-view.css")
 public final class SocialWallView extends Div {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(SocialWallView.class);
 
     public SocialWallView(@NotNull final EventService eventService,
                           @NotNull final SocialService socialService,
                           @NotNull final TaskScheduler taskScheduler,
                           @NotNull final Configuration configuration) {
+        final String customStyles = configuration.getCustom().styles();
+        if (!customStyles.isBlank()) {
+            final var currentStyle = UI.getCurrent().getElement().getStyle();
+            Arrays.stream(customStyles.split(";"))
+                    .forEach(customStyle -> {
+                        if (!customStyle.isBlank()) {
+                            final var style = customStyle.split(":", 2);
+                            if (style.length == 2) {
+                                currentStyle.set(style[0], style[1]);
+                            } else {
+                                LOGGER.warn("Custom style has incorrect format: missing ':' (delimiter between key and value)");
+                            }
+                        } else {
+                            LOGGER.warn("Custom style has incorrect format: empty definition (nothing between ';')");
+                        }
+                    });
+        }
         setId("social-wall-view");
         add(new EventView(eventService, taskScheduler));
         add(new SocialView(socialService, taskScheduler, configuration));

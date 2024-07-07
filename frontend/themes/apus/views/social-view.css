@@ -18,7 +18,7 @@
 
 #social-view {
     font-size: var(--lumo-font-size-m);
-    background-color: #1aa3b1;
+    background-color: var(--social-background-color);
     position: absolute;
     top: 0;
     left: 870px;
@@ -28,6 +28,10 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
+}
+
+#social-view * {
+    color: var(--social-text-color);
 }
 
 #social-view h2 {

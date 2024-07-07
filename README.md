@@ -98,9 +98,10 @@ You can now also attach breakpoints in code for debugging purposes, by clicking 
 
 To modify the default configuration values, just specify environment variables with the following names:
 
-| Variable                | Default | Description                                                                  |
+| Environment Variable    | Default | Description                                                                  |
 |-------------------------|---------|------------------------------------------------------------------------------|
 | ADMIN_PASSWORD          |         | The hashed password to get admin access (empty = disabled).                  |
+| CUSTOM_STYLES           |         | Inject custom styles into the user interface (see explanations below).       |
 | DEMO_ROOM_COUNT         | 0       | Number of rooms for the event demo plugin (0 = disabled).                    |
 | DOAG_EVENT_API          | [1]     | The URL of the DOAG event API to read the conference agenda.                 |
 | DOAG_EVENT_ID           | 0       | The ID of the DOAG event to read the conference agenda (0 = disabled).       |
@@ -121,6 +122,27 @@ The environment variables will override the default values. Some default values 
 
 1. https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/
 2. https://sessionize.com/api/v2/%s/view/Sessions
+
+#### Custom Styles
+
+You can modify the styles of the user interface using CSS variables. The CSS variables must be set using the environment variable `CUSTOM_STYLES` in key and value pairs. The key is the variable to be set. Keys and values must be separated by a colon (`:`). Multiple key and value pairs are separated by a semicolon (`;`). Example:
+
+```
+--name-of-variable-one:value1;--name-of-variable-two:value2
+```
+
+The following table contains the CSS variables you can modify to change the user interface:
+
+| CSS Variable                   | Default | Description                                                        |
+|--------------------------------|---------|--------------------------------------------------------------------|
+| --event-background-color       | #007e89 | The color for the background of the event agenda.                  |
+| --event-text-color             | #003861 | The color for the text of the event agenda.                        |
+| --event-running-session-color  | #9bf4ff | The color for the background of rooms with running sessions.       |
+| --event-next-session-color     | #62d7e3 | The color for the background of rooms with sessions starting next. |
+| --event-closed-room-color      | #5da6b2 | The color for the background of closed rooms.                      |
+| --social-background-color      | #1aa3b1 | The color for the background of the social wall.                   |
+| --social-text-color            | #003861 | The color for the text of the social wall.                         |
+| --social-post-background-color | #84ddee | The color for the background of social wall posts.                 |
 
 ### Create Hashed Password
 

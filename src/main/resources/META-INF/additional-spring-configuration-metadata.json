@@ -6,6 +6,11 @@
       "description" : "The password to get admin access (empty = disabled)."
     },
     {
+      "name" : "apus.custom.styles",
+      "type" : "java.lang.String",
+      "description" : "Inject custom styles into the user interface."
+    },
+    {
       "name" : "apus.demo.roomCount",
       "type" : "java.lang.String",
       "description" : "Number of rooms for the event demo plugin."
