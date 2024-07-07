@@ -11,6 +11,26 @@ For questions and support requests, please use
 
 **Release date: work in progress 🚧**
 
+### Features
+
+* Add support for event agenda hosted on Sessionize.com (BaselOne, Java Forum Nord, etc.)
+* Add support for Java Forum Stuttgart
+* New demo event plugin to show fake data for demos and testing
+* The update frequency of the event agenda is now configurable
+* Add support for session tracks with default icons and custom SVG images
+* Theming: all colors are now configurable
+* Create hashed passwords for admin access on the command line
+
+### Bugfixes
+
+* Fixed possible XSS attack with modified Mastodon posts
+
+### Maintenance
+
+* All icons are now system independent
+* Sessions without a language will not display a language flag
+* Better use of available space for social media posts
+
 ## Version 1
 
 **Release date: 2024-04-10**
