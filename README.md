@@ -125,7 +125,7 @@ The environment variables will override the default values. Some default values 
 
 #### Custom Styles
 
-You can modify the styles of the user interface using CSS variables. The CSS variables must be set using the environment variable `CUSTOM_STYLES` in key and value pairs. The key is the variable to be set. Keys and values must be separated by a colon (`:`). Multiple key and value pairs are separated by a semicolon (`;`). Example:
+You can modify the styles of the user interface using CSS variables. The CSS variables must be set using the environment variable `CUSTOM_STYLES` in key and value pairs. The key is the variable to be set and must start with two dashes (`--`). Keys and values must be separated by a colon (`:`). Multiple key and value pairs are separated by a semicolon (`;`). Example:
 
 ```
 --name-of-variable-one:value1;--name-of-variable-two:value2
