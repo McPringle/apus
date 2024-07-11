@@ -64,13 +64,10 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     public @NotNull List<Session> getSessions() {
         final ArrayList<Session> sessions = new ArrayList<>();
 
-        final List<Room> allRooms;
         final List<Talk> allTalks;
         final Map<String, List<String>> allAssignments;
         final Map<String, Speaker> allSpeakers;
-        final Map<String, String> allTopics;
-        final Map<String, String> allIcons;
-        final Map<String, Track> allTracks;
+        final Map<String, Track> allTracks = getTracks();
 
         final Path databaseFile = downloadDatabaseFile();
         try (
@@ -78,13 +75,9 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
                 Statement statement = connection.createStatement()
             ) {
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
-
-            allRooms = getRooms(statement);
             allTalks = getTalks(statement);
             allAssignments = getAssignments(statement);
             allSpeakers = getSpeakers(statement);
-            allTopics = getTopics(statement);
-            allIcons = getIcons(statement);
         } catch (SQLException e) {
             // if the error message is "out of memory", it probably means no database file is found
             throw new SessionImportException(String.format(
@@ -99,21 +92,14 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
             }
         }
 
-        allTracks = createTracks(allTopics, allIcons);
-
-        int roomIndex = 0; // TODO use real rooms
         for (final Talk talk : allTalks) {
-            if (++roomIndex >= allRooms.size()) {
-                roomIndex = 0;
-            }
-
             final String id = String.format("JFS:%s", talk.id());
-            final Room room = allRooms.get(roomIndex);
+            final Room room = new Room(talk.room());
             final String title = talk.title();
             final List<Speaker> speakers = getSpeakersForTalk(talk, allAssignments, allSpeakers);
             final LocalDateTime startDate = getStartDate(talk);
             final LocalDateTime endDate = getEndDate(talk);
-            final Track track = allTracks.getOrDefault(talk.topic(), Track.NONE);
+            final Track track = getTrack(talk, allTracks);
 
             sessions.add(new Session(id, startDate, endDate, room, title, speakers, Language.UNKNOWN, track));
         }
@@ -124,7 +110,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     }
 
     private @NotNull Path downloadDatabaseFile() {
-        final String location = "https://mpmediasoft.de/products/JavaForumStuttgartApp/JFSData/javaforum2.db";
+        final String location = "https://www.nevernull.io/jfs/javaforum2.db";
         try {
             final Path temporaryDatabaseFile = Files.createTempFile("jfs-", ".db");
             LOGGER.info("Start downloading database from {} ...", location);
@@ -143,22 +129,6 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
                     "Error downloading database file from '%s': %s",
                     location, e.getMessage()), e);
         }
-    }
-
-    private @NotNull List<Room> getRooms(@NotNull final Statement statement) throws SQLException {
-        final ArrayList<Room> rooms = new ArrayList<>();
-
-        final ResultSet resultSet = statement.executeQuery("""
-                SELECT id
-                FROM room
-                ORDER BY id""");
-
-        while (resultSet.next()) {
-            final String id = resultSet.getString("id");
-            rooms.add(new Room(id));
-        }
-
-        return rooms;
     }
 
     private @NotNull List<Talk> getTalks(@NotNull final Statement statement) throws SQLException {
@@ -218,40 +188,6 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return speakers;
     }
 
-    private @NotNull Map<String, String> getTopics(@NotNull final Statement statement) throws SQLException {
-        final HashMap<String, String> topics = new HashMap<>();
-
-        final ResultSet resultSet = statement.executeQuery("""
-                SELECT id, icon_id
-                FROM topic""");
-
-        while (resultSet.next()) {
-            final String id = resultSet.getString("id");
-            final String iconId = resultSet.getString("icon_id");
-
-            topics.put(id, iconId);
-        }
-
-        return topics;
-    }
-
-    private @NotNull Map<String, String> getIcons(@NotNull final Statement statement) throws SQLException {
-        final HashMap<String, String> icons = new HashMap<>();
-
-        final ResultSet resultSet = statement.executeQuery("""
-                SELECT id, data
-                FROM icon""");
-
-        while (resultSet.next()) {
-            final String id = resultSet.getString("id");
-            final String data = resultSet.getString("data");
-
-            icons.put(id, data);
-        }
-
-        return icons;
-    }
-
     private @NotNull List<Speaker> getSpeakersForTalk(@NotNull final Talk talk,
                                              @NotNull final Map<String, List<String>> allAssignments,
                                              @NotNull final Map<String, Speaker> allSpeakers) {
@@ -260,18 +196,6 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
                 .toList();
     }
 
-    private @NotNull Map<String, Track> createTracks(@NotNull final Map<String, String> topics, @NotNull final Map<String, String> icons) {
-        final HashMap<String, Track> tracks = new HashMap<>();
-
-        for (final Map.Entry<String, String> topic : topics.entrySet()) {
-            final String topicId = topic.getKey();
-            final String iconId = topic.getValue();
-            final String svgCode = icons.get(iconId);
-            tracks.put(topicId, new Track(topicId, svgCode));
-        }
-
-        return tracks;
-    }
     private @NotNull LocalDateTime getStartDate(@NotNull final Talk talk) {
         final LocalTime time = LocalTime.parse(talk.timeSlot().split("-")[0].trim());
         return LocalDateTime.of(LocalDate.now(), time);
@@ -280,6 +204,25 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     private @NotNull LocalDateTime getEndDate(@NotNull final Talk talk) {
         final LocalTime time = LocalTime.parse(talk.timeSlot().split("-")[1].replace("Uhr", "").trim());
         return LocalDateTime.of(LocalDate.now(), time);
+    }
+
+    private Map<String, Track> getTracks() {
+        return Map.of(
+                "Architektur & Sicherheit", new Track(TrackIcons.ARCHITECTURE_SECURITY.getSvgCode()),
+                "Test & Betrieb", new Track(TrackIcons.BETRIEB.getSvgCode()),
+                "Microservices, Container & Cloud", new Track(TrackIcons.CLOUD.getSvgCode()),
+                "Core Java & JVM-Sprachen", new Track(TrackIcons.CORE_JAVA.getSvgCode()),
+                "Enterprise Java & Frameworks", new Track(TrackIcons.ENTERPRISE_FRAMEWORKS.getSvgCode()),
+                "Frontend-Entwicklung", new Track(TrackIcons.FRONTEND.getSvgCode()),
+                "IDE & Tools", new Track(TrackIcons.IDE_TOOLS.getSvgCode()),
+                "Methodik & Praxis", new Track(TrackIcons.METHODS_PRACTICE.getSvgCode()),
+                "Open Source & Community", new Track(TrackIcons.OPENSOURCE.getSvgCode()),
+                "Trends & neue Technologien (KI o.a.)", new Track(TrackIcons.TRENDS.getSvgCode())
+        );
+    }
+
+    private Track getTrack(@NotNull final Talk talk, @NotNull final Map<String, Track> allTracks) {
+        return allTracks.getOrDefault(talk.topic(), Track.NONE);
     }
 
 }
