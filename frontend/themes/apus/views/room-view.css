@@ -18,6 +18,7 @@
 
 .room-view {
     border-radius: var(--lumo-border-radius-s);
+    border: var(--event-room-border);
     display: inline-block;
     width: 400px;
     height: 140px;

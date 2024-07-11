@@ -19,6 +19,7 @@
 .post-view {
     background-color: var(--social-post-background-color);
     border-radius: var(--lumo-border-radius-s);
+    border: var(--social-post-border);
     padding: var(--lumo-space-s);
 }
 
