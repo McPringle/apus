@@ -30,28 +30,28 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-public record Track(String name, String svgCode) {
+public record Track(String svgCode) {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(Track.class);
 
-    public static final Track NONE = new Track(null, null);
-    public static final Track ARCHITECTURE = defaultTrack("Architecture", "architecture.svg");
-    public static final Track CLOUD = defaultTrack("Cloud", "cloud.svg");
-    public static final Track CORE = defaultTrack("Core", "core.svg");
-    public static final Track INFRASTRUCTURE = defaultTrack("Infrastructure", "infrastructure.svg");
-    public static final Track SECURITY = defaultTrack("Security", "security.svg");
-    public static final Track TOOLS = defaultTrack("Tools", "tools.svg");
+    public static final Track NONE = new Track(null);
+    public static final Track ARCHITECTURE = defaultTrack("architecture.svg");
+    public static final Track CLOUD = defaultTrack("cloud.svg");
+    public static final Track CORE = defaultTrack("core.svg");
+    public static final Track INFRASTRUCTURE = defaultTrack("infrastructure.svg");
+    public static final Track SECURITY = defaultTrack("security.svg");
+    public static final Track TOOLS = defaultTrack("tools.svg");
 
     private static final String FILE_NAME_TEMPLATE = "/icons/tracks/%s";
 
-    private static Track defaultTrack(@NotNull final String name, @NotNull final String svgFileName) {
+    private static Track defaultTrack(@NotNull final String svgFileName) {
         try {
             final String fileName = FILE_NAME_TEMPLATE.formatted(svgFileName);
             final URL url = Track.class.getResource(fileName);
             final URI uri = Objects.requireNonNull(url).toURI();
             final Path path = Paths.get(uri);
             final String svgCode = Files.readString(path);
-            return new Track(name, svgCode.trim());
+            return new Track(svgCode.trim());
         } catch (final IOException | NullPointerException | URISyntaxException e) {
             LOGGER.error("Unable to load default track icon '{}': {}", svgFileName, e.getMessage(), e);
         }
