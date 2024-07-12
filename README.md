@@ -28,13 +28,13 @@ See:
 
 ### Show event agenda
 
-| Event                | Plugin           |
-|----------------------|------------------|
-| BaselOne             | SessionizePlugin |
-| CyberLand            | DoagPlugin       |
-| Java Forum Stuttgart | - TODO -         |
-| JavaLand             | DoagPlugin       |
-| Voxxed Days Zürich   | - TODO -         |
+| Event                | Plugin                     |
+|----------------------|----------------------------|
+| BaselOne             | `SessionizePlugin`         |
+| CyberLand            | `DoagPlugin`               |
+| Java Forum Stuttgart | `JavaForumStuttgartPlugin` |
+| JavaLand             | `DoagPlugin`               |
+| Voxxed Days Zürich   | - TODO -                   |
 
 ### And more
 
