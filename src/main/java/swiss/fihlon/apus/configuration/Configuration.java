@@ -23,6 +23,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import swiss.fihlon.apus.plugin.event.EventConfig;
 import swiss.fihlon.apus.plugin.event.demo.DemoConfig;
 import swiss.fihlon.apus.plugin.event.doag.DoagConfig;
+import swiss.fihlon.apus.plugin.event.jfs.JavaForumStuttgartConfig;
 import swiss.fihlon.apus.plugin.event.sessionize.SessionizeConfig;
 import swiss.fihlon.apus.plugin.social.mastodon.MastodonConfig;
 
@@ -42,6 +43,7 @@ public class Configuration {
     // Event Plugin Configs
     private DemoConfig demo;
     private DoagConfig doag;
+    private JavaForumStuttgartConfig jfs;
     private SessionizeConfig sessionize;
 
     // Social Plugin Configs
@@ -109,6 +111,14 @@ public class Configuration {
 
     public void setDoag(@NotNull final DoagConfig doag) {
         this.doag = doag;
+    }
+
+    public JavaForumStuttgartConfig getJfs() {
+        return jfs;
+    }
+
+    public void setJfs(@NotNull final JavaForumStuttgartConfig jfs) {
+        this.jfs = jfs;
     }
 
     public SessionizeConfig getSessionize() {
