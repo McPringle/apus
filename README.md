@@ -110,6 +110,7 @@ To modify the default configuration values, just specify environment variables w
 | FILTER_REPLIES          | true    | Hide social media posts which are replies.                                   |
 | FILTER_SENSITIVE        | true    | Hide social media posts which contain sensitive information.                 |
 | FILTER_WORDS            |         | Hide social media posts which contain these words.                           |
+| JFS_DB_URL              |         | The URL of the database file for Java Forum Stuttgart.                       |
 | MASTODON_HASHTAG        |         | The hashtag for the mastodon wall (empty = disabled).                        |
 | MASTODON_IMAGE_LIMIT    | 1       | Limit number of images per post (0 = no limit).                              |
 | MASTODON_IMAGES_ENABLED | true    | Enable or disable images in mastodon posts.                                  |

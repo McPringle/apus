@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
@@ -55,9 +56,15 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(JavaForumStuttgartPlugin.class);
 
+    private final String dbUrl;
+
+    public JavaForumStuttgartPlugin(@NotNull final Configuration configuration) {
+        dbUrl = configuration.getJfs().dbUrl();
+    }
+
     @Override
     public boolean isEnabled() {
-        return false;
+        return dbUrl != null && !dbUrl.isEmpty();
     }
 
     @Override
@@ -110,11 +117,10 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     }
 
     private @NotNull Path downloadDatabaseFile() {
-        final String location = "https://www.nevernull.io/jfs/javaforum2.db";
         try {
             final Path temporaryDatabaseFile = Files.createTempFile("jfs-", ".db");
-            LOGGER.info("Start downloading database from {} ...", location);
-            final URI uri = URI.create(location);
+            LOGGER.info("Start downloading database from {} ...", dbUrl);
+            final URI uri = URI.create(dbUrl);
             final URL url = uri.toURL();
             try (
                     ReadableByteChannel rbc = Channels.newChannel(url.openStream());
@@ -127,7 +133,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         } catch (final IOException e) {
             throw new SessionImportException(String.format(
                     "Error downloading database file from '%s': %s",
-                    location, e.getMessage()), e);
+                    dbUrl, e.getMessage()), e);
         }
     }
 
