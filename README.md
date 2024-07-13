@@ -147,6 +147,23 @@ The following table contains the CSS variables you can modify to change the user
 | --social-post-background-color | #84ddee | The color for the background of social posts.                      |
 | --social-post-border           | none    | The border for the social posts.                                   |
 
+The custom styles of some events are documented below.
+
+#### Java Forum Stuttgart
+
+```
+--event-background-color:#fcb913;
+--event-text-color: #000000;
+--event-running-session-color: #fff8dd;
+--event-next-session-color: #fff8dd;
+--event-closed-room-color: #fff8dd;
+--event-room-border: 1px solid #000000;
+--social-background-color: #fff8dd;
+--social-text-color: #000000;
+--social-post-background-color: #ffffff;
+--social-post-border: 1px solid #fcb913;
+```
+
 ### Create Hashed Password
 
 For security reasons the password is not stored in cleartext. *Apus* requires the password to be hashed using [bcrypt](https://en.wikipedia.org/wiki/Bcrypt). Of course, *Apus* can do this for you. Start the JAR file providing the parameter `-p` followed by the password you want to create a hash for. The output will show you two lines of code. The first line contains the hashed password and the second line contains the same hashed password, but with the dollar signs escaped ready to copy and paste it into a `docker-compose.yaml`. Example:
