@@ -4,15 +4,15 @@
   "type": "module",
   "dependencies": {
     "@polymer/polymer": "3.5.1",
-    "@vaadin/bundles": "24.4.0",
+    "@vaadin/bundles": "24.4.2",
     "@vaadin/common-frontend": "0.0.19",
-    "@vaadin/polymer-legacy-adapter": "24.4.0",
-    "@vaadin/react-components": "24.4.0",
+    "@vaadin/polymer-legacy-adapter": "24.4.2",
+    "@vaadin/react-components": "24.4.2",
     "@vaadin/router": "1.7.5",
     "@vaadin/vaadin-development-mode-detector": "2.0.7",
-    "@vaadin/vaadin-lumo-styles": "24.4.0",
-    "@vaadin/vaadin-material-styles": "24.4.0",
-    "@vaadin/vaadin-themable-mixin": "24.4.0",
+    "@vaadin/vaadin-lumo-styles": "24.4.2",
+    "@vaadin/vaadin-material-styles": "24.4.2",
+    "@vaadin/vaadin-themable-mixin": "24.4.2",
     "@vaadin/vaadin-usage-statistics": "2.1.2",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
@@ -64,15 +64,15 @@
   "vaadin": {
     "dependencies": {
       "@polymer/polymer": "3.5.1",
-      "@vaadin/bundles": "24.4.0",
+      "@vaadin/bundles": "24.4.2",
       "@vaadin/common-frontend": "0.0.19",
-      "@vaadin/polymer-legacy-adapter": "24.4.0",
-      "@vaadin/react-components": "24.4.0",
+      "@vaadin/polymer-legacy-adapter": "24.4.2",
+      "@vaadin/react-components": "24.4.2",
       "@vaadin/router": "1.7.5",
       "@vaadin/vaadin-development-mode-detector": "2.0.7",
-      "@vaadin/vaadin-lumo-styles": "24.4.0",
-      "@vaadin/vaadin-material-styles": "24.4.0",
-      "@vaadin/vaadin-themable-mixin": "24.4.0",
+      "@vaadin/vaadin-lumo-styles": "24.4.2",
+      "@vaadin/vaadin-material-styles": "24.4.2",
+      "@vaadin/vaadin-themable-mixin": "24.4.2",
       "@vaadin/vaadin-usage-statistics": "2.1.2",
       "construct-style-sheets-polyfill": "3.1.0",
       "date-fns": "2.29.3",
@@ -101,6 +101,6 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "b8535ef1f7790973c69ed3a817c98d1ef6d023b7c848a1138a85b2a74f3c7b22"
+    "hash": "6675dc46cd06bf9429bf71d28ff0f14a59638a77ebcf6bbde12e514c5e872781"
   }
 }
