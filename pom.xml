@@ -364,6 +364,26 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>com.giovds</groupId>
+                <artifactId>outdated-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <!-- The maximum amount of inactive years allowed -->
+                    <years>1</years>
+                    <!-- Whether to fail the build if an outdated dependency is found -->
+                    <shouldFailBuild>true</shouldFailBuild>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>outdated-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
