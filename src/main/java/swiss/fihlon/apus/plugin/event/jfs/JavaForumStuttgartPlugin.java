@@ -84,7 +84,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
             allTalks = getTalks(statement);
             allAssignments = getAssignments(statement);
             allSpeakers = getSpeakers(statement);
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             // if the error message is "out of memory", it probably means no database file is found
             throw new SessionImportException(String.format(
                     "Error importing session data for Java Forum Stuttgart: %s",
