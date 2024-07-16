@@ -50,10 +50,8 @@ class SocialServiceTest {
     void cleanUp() {
         for (String fileName : List.of("hiddenPosts", "blockedProfiles")) {
             final var file = getConfigDir().resolve(fileName).toFile();
-            if (file.exists()) {
-                if (!file.delete()) {
-                    fail("Could not delete " + file);
-                }
+            if (file.exists() && !file.delete()) {
+                fail("Could not delete " + file);
             }
         }
     }
