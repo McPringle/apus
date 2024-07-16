@@ -20,6 +20,7 @@ For questions and support requests, please use
 * Add support for session tracks with default icons and custom SVG images
 * Theming: all colors are now configurable
 * Create hashed passwords for admin access on the command line
+* New config option to show/hide event room legend
 
 ### Bugfixes
 

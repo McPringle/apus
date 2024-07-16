@@ -59,7 +59,7 @@ public final class SocialWallView extends Div {
                     });
         }
         setId("social-wall-view");
-        add(new EventView(eventService, taskScheduler));
+        add(new EventView(eventService, taskScheduler, configuration));
         add(new SocialView(socialService, taskScheduler, configuration));
     }
 }

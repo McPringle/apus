@@ -105,6 +105,7 @@ To modify the default configuration values, just specify environment variables w
 | DEMO_ROOM_COUNT         | 0       | Number of rooms for the event demo plugin (0 = disabled).                    |
 | DOAG_EVENT_API          | [1]     | The URL of the DOAG event API to read the conference agenda.                 |
 | DOAG_EVENT_ID           | 0       | The ID of the DOAG event to read the conference agenda (0 = disabled).       |
+| EVENT_SHOW_LEGEND       | true    | Show (true) or hide (false) the event room legend.                           |
 | EVENT_UPDATE_FREQUENCY  | 5       | How often (in minutes) to update event data (0 = disabled).                  |
 | FILTER_LENGTH           | 500     | Hide social media posts which exceed this length (0 = disabled).             |
 | FILTER_REPLIES          | true    | Hide social media posts which are replies.                                   |

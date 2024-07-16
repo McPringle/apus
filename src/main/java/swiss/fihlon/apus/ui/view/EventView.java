@@ -25,6 +25,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
+import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.RoomStyle;
 import swiss.fihlon.apus.event.Session;
@@ -53,12 +54,18 @@ public final class EventView extends Div {
     private final Div roomContainer = new Div();
     private final Span legend = new Span();
 
+    private final boolean showLegend;
+
     public EventView(@NotNull final EventService eventService,
-                     @NotNull final TaskScheduler taskScheduler) {
+                     @NotNull final TaskScheduler taskScheduler,
+                     @NotNull final Configuration configuration) {
         this.eventService = eventService;
+        this.showLegend = configuration.getEvent().showLegend();
         setId("event-view");
         add(createTitle());
-        add(createLegend());
+        if (showLegend) {
+            add(createLegend());
+        }
         add(roomContainer);
         roomContainer.addClassName("room-container");
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(
@@ -88,7 +95,9 @@ public final class EventView extends Div {
             roomStylesInUse.add(roomView.getRoomStyle());
             roomContainer.add(roomView);
         }
-        updateLegend(roomStylesInUse);
+        if (showLegend) {
+            updateLegend(roomStylesInUse);
+        }
     }
 
     @NotNull

@@ -17,5 +17,5 @@
  */
 package swiss.fihlon.apus.plugin.event;
 
-public record EventConfig(int updateFrequency) {
+public record EventConfig(int updateFrequency, boolean showLegend) {
 }
