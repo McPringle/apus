@@ -56,7 +56,7 @@ class DemoPluginTest {
         when(configuration.getDemo()).thenReturn(demoEventConfig);
 
         final var demoEventPlugin = new DemoPlugin(configuration);
-        final var sessions = demoEventPlugin.getSessions();
+        final var sessions = demoEventPlugin.getSessions().toList();
         assertEquals(24, sessions.size());
 
         // no duplicate ids and speaker, exactly 24 entries (one room, each hour one session for 24 hours)

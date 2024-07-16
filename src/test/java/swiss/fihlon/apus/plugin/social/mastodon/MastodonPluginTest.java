@@ -83,7 +83,7 @@ class MastodonPluginTest {
                 new MastodonConfig("localhost", "foobar", true, 0));
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
-        final List<Post> posts = mastodonPlugin.getPosts();
+        final List<Post> posts = mastodonPlugin.getPosts().toList();
 
         assertNotNull(posts);
         assertEquals(5, posts.size());

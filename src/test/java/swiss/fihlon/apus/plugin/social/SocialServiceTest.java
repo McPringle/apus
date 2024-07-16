@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -132,7 +133,7 @@ class SocialServiceTest {
         }
 
         @Override
-        public List<Post> getPosts() {
+        public Stream<Post> getPosts() {
             final var now = LocalDateTime.now();
             final List<Post> posts = new ArrayList<>();
             for (int i = 10; i > 0; i--) {
@@ -140,7 +141,7 @@ class SocialServiceTest {
                         "profile" + (i % 2) + "@localhost","<p>Content of post #1</p>", List.of(), false, false));
             }
             Collections.shuffle(posts);
-            return posts;
+            return posts.stream();
         }
     }
 }

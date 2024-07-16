@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public final class MastodonPlugin implements SocialPlugin {
@@ -61,20 +62,18 @@ public final class MastodonPlugin implements SocialPlugin {
     }
 
     @Override
-    public List<Post> getPosts() {
+    public Stream<Post> getPosts() {
         try {
             LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
             final List<Status> statuses = mastodonLoader.getStatuses(instance, hashtag);
-            final List<Post> posts = statuses.stream()
+            LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", statuses.size(), hashtag, instance);
+            return statuses.stream()
                     .map(this::convertToPost)
-                    .sorted()
-                    .toList();
-            LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", posts.size(), hashtag, instance);
-            return posts;
+                    .sorted();
         } catch (final Exception e) {
             LOGGER.error("Unable to load posts with hashtag '{}' from Mastodon instance '{}': {}",
                     hashtag, instance, e.getMessage());
-            return List.of();
+            return Stream.of();
         }
     }
 

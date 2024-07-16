@@ -20,12 +20,13 @@ package swiss.fihlon.apus.plugin.event;
 import org.jetbrains.annotations.NotNull;
 import swiss.fihlon.apus.event.Session;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 public interface EventPlugin {
 
     boolean isEnabled();
 
-    @NotNull List<Session> getSessions();
+    @NotNull
+    Stream<Session> getSessions();
 
 }

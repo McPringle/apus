@@ -85,7 +85,7 @@ public final class SocialService {
     private void updatePosts() {
         final var newPosts = socialPlugins.stream()
                 .filter(SocialPlugin::isEnabled)
-                .flatMap(socialPlugin -> socialPlugin.getPosts().stream())
+                .flatMap(SocialPlugin::getPosts)
                 .filter(post -> !hiddenPosts.contains(post.id()))
                 .filter(post -> !blockedProfiles.contains(post.profile()))
                 .filter(post -> !filterSensitive || !post.isSensitive())

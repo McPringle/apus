@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 @Service
 public final class DoagPlugin implements EventPlugin {
@@ -64,7 +65,7 @@ public final class DoagPlugin implements EventPlugin {
     }
 
     @Override
-    @NotNull public List<Session> getSessions() {
+    @NotNull public Stream<Session> getSessions() {
         final ArrayList<Session> sessions = new ArrayList<>();
         int lastSlotId = 0;
         try {
@@ -102,7 +103,7 @@ public final class DoagPlugin implements EventPlugin {
         } catch (IOException | URISyntaxException | JSONException e) {
             throw new SessionImportException(String.format("Error parsing slot %d: %s", lastSlotId, e.getMessage()), e);
         }
-        return sessions;
+        return sessions.stream();
     }
 
     private @NotNull Session createSession(@NotNull final JSONObject slot,

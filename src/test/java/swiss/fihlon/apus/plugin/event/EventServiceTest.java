@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -88,13 +89,13 @@ class EventServiceTest {
         }
 
         @Override
-        public @NotNull List<Session> getSessions() {
+        public @NotNull Stream<Session> getSessions() {
             final List<Session> sessions = new ArrayList<>();
             for (int i = -5; i <= 5; i++) {
                 sessions.add(createSession(i, LocalDateTime.now().minusHours(i)));
             }
             Collections.shuffle(sessions);
-            return sessions;
+            return sessions.stream();
         }
 
         private @NotNull Session createSession(final int i, @NotNull final LocalDateTime startDate) {
@@ -133,7 +134,7 @@ class EventServiceTest {
         }
 
         @Override
-        public @NotNull List<Session> getSessions() {
+        public @NotNull Stream<Session> getSessions() {
             throw new SessionImportException("This is a test", new RuntimeException());
         }
 

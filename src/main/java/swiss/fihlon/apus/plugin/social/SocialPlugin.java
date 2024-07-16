@@ -19,12 +19,12 @@ package swiss.fihlon.apus.plugin.social;
 
 import swiss.fihlon.apus.social.Post;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 public interface SocialPlugin {
 
     boolean isEnabled();
 
-    List<Post> getPosts();
+    Stream<Post> getPosts();
 
 }

@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Stream;
 
 
 @Service
@@ -64,7 +64,7 @@ public final class SessionizePlugin implements EventPlugin {
 
 
     @Override
-    @NotNull public List<Session> getSessions() {
+    @NotNull public Stream<Session> getSessions() {
         final ArrayList<Session> sessions = new ArrayList<>();
         String lastSessionId = "";
         try {
@@ -80,7 +80,7 @@ public final class SessionizePlugin implements EventPlugin {
         } catch (IOException | URISyntaxException | JSONException e) {
             throw new SessionImportException(String.format("Error parsing session %s: %s", lastSessionId, e.getMessage()), e);
         }
-        return sessions;
+        return sessions.stream();
     }
 
     private Session getSession(@NotNull final JSONObject sessionData) {

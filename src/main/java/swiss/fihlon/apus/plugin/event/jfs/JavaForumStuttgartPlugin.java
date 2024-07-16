@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Service
 public final class JavaForumStuttgartPlugin implements EventPlugin {
@@ -68,7 +69,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     }
 
     @Override
-    public @NotNull List<Session> getSessions() {
+    public @NotNull Stream<Session> getSessions() {
         final ArrayList<Session> sessions = new ArrayList<>();
 
         final List<Talk> allTalks;
@@ -113,7 +114,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
 
         LOGGER.info("Successfully imported {} sessions for Java Forum Stuttgart", sessions.size());
 
-        return sessions;
+        return sessions.stream();
     }
 
     private @NotNull Path downloadDatabaseFile() {

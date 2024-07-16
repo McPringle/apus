@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.stream.Stream;
 
 @Service
 public final class DemoPlugin implements EventPlugin {
@@ -59,8 +60,8 @@ public final class DemoPlugin implements EventPlugin {
     }
 
     @Override
-    public @NotNull List<Session> getSessions() {
-        return List.copyOf(sessions);
+    public @NotNull Stream<Session> getSessions() {
+        return sessions.stream();
     }
 
     private @NotNull List<Session> createFakeSessions() {

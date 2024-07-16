@@ -63,7 +63,7 @@ class DoagPluginTest {
         when(configuration.getDoag()).thenReturn(doagConfig);
 
         final var doagPlugin = new DoagPlugin(configuration);
-        final var sessions = doagPlugin.getSessions();
+        final var sessions = doagPlugin.getSessions().toList();
         assertEquals(8, sessions.size());
 
         final var sessionIds = sessions.stream().map(Session::id).toList();

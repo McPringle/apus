@@ -63,7 +63,7 @@ class SessionizePluginTest {
         when(configuration.getSessionize()).thenReturn(sessionizeConfig);
 
         final var sessionizePlugin = new SessionizePlugin(configuration);
-        final var sessions = sessionizePlugin.getSessions();
+        final var sessions = sessionizePlugin.getSessions().toList();
         assertEquals(8, sessions.size());
 
         final var sessionIds = sessions.stream().map(Session::id).toList();
