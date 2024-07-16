@@ -40,13 +40,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @CssImport(value = "./themes/apus/views/event-view.css")
 public final class EventView extends Div {
 
     public static final String LABEL_THEME = "badge";
-    private static final int MAX_ROOMS_IN_VIEW = 12;
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
     private static final Duration TIME_LIMIT_NEXT_SESSION = Duration.ofHours(1);
 
@@ -80,18 +78,13 @@ public final class EventView extends Div {
     private void updateConferenceSessions() {
         roomContainer.removeAll();
         final var today = LocalDate.now();
-        final var roomCounter = new AtomicInteger(0);
         final var roomsWithSessions = eventService.getRoomsWithSessions().entrySet();
         if (roomsWithSessions.isEmpty()) {
             Notification.show(getTranslation("event.error.nosessions"));
         }
         final var roomStylesInUse = new HashSet<RoomStyle>();
         for (final Map.Entry<Room, List<Session>> roomWithSession : roomsWithSessions) {
-            if (roomCounter.get() >= MAX_ROOMS_IN_VIEW) {
-                Notification.show(String.format(getTranslation("event.error.rooms", roomsWithSessions.size())));
-                break;
-            }
-            final RoomView roomView = createRoomView(roomWithSession, today, roomCounter);
+            final RoomView roomView = createRoomView(roomWithSession, today);
             roomStylesInUse.add(roomView.getRoomStyle());
             roomContainer.add(roomView);
         }
@@ -132,8 +125,7 @@ public final class EventView extends Div {
 
     @NotNull
     private static RoomView createRoomView(@NotNull final Map.Entry<Room, List<Session>> roomWithSession,
-                                              @NotNull final LocalDate today,
-                                              @NotNull final AtomicInteger roomCounter) {
+                                              @NotNull final LocalDate today) {
         final LocalDateTime timeLimitNextSession = LocalDateTime.now().plus(TIME_LIMIT_NEXT_SESSION);
         final Room room = roomWithSession.getKey();
         final List<Session> sessions = roomWithSession.getValue();
@@ -146,7 +138,6 @@ public final class EventView extends Div {
         } else {
             roomView = new RoomView(room);
         }
-        roomView.setId("room-" + roomCounter.getAndIncrement());
         return roomView;
     }
 }
