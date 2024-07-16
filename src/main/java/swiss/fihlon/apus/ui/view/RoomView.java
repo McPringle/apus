@@ -144,11 +144,14 @@ public final class RoomView extends Div {
         } else if (startTime.isBefore(now) && endTime.isAfter(now)) { // running session
             final Duration duration = Duration.between(now, endTime);
             final long timeLeft = Math.round(duration.getSeconds() / 60f);
-            timeComponent.add(
-                    new Icon(VaadinIcon.HOURGLASS),
-                    new Text(getTranslation(timeLeft == 1
-                            ? "event.session.countdown.singular" : "event.session.countdown.plural",
-                            timeLeft)));
+            timeComponent.add(new Icon(VaadinIcon.HOURGLASS));
+            if (timeLeft == 0) {
+                timeComponent.add(new Text(getTranslation("event.session.countdown.now")));
+            } else if (timeLeft == 1) {
+                timeComponent.add(new Text(getTranslation("event.session.countdown.singular", timeLeft)));
+            } else {
+                timeComponent.add(new Text(getTranslation("event.session.countdown.plural", timeLeft)));
+            }
             roomStyle = RoomStyle.RUNNING;
         } else { // next session
             timeComponent.add(
