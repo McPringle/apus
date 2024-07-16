@@ -70,8 +70,6 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
 
     @Override
     public @NotNull Stream<Session> getSessions() {
-        final ArrayList<Session> sessions = new ArrayList<>();
-
         final List<Talk> allTalks;
         final Map<String, List<String>> allAssignments;
         final Map<String, Speaker> allSpeakers;
@@ -99,22 +97,8 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
                 LOGGER.warn("Unable to delete temporary database file: {}", databaseFile);
             }
         }
-
-        for (final Talk talk : allTalks) {
-            final String id = String.format("JFS:%s", talk.id());
-            final Room room = new Room(talk.room());
-            final String title = talk.title();
-            final List<Speaker> speakers = getSpeakersForTalk(talk, allAssignments, allSpeakers);
-            final LocalDateTime startDate = getStartDate(talk);
-            final LocalDateTime endDate = getEndDate(talk);
-            final Track track = getTrack(talk, allTracks);
-
-            sessions.add(new Session(id, startDate, endDate, room, title, speakers, Language.UNKNOWN, track));
-        }
-
-        LOGGER.info("Successfully imported {} sessions for Java Forum Stuttgart", sessions.size());
-
-        return sessions.stream();
+        LOGGER.info("Successfully imported {} sessions for Java Forum Stuttgart", allTalks.size());
+        return allTalks.stream().map(talk -> mapToSession(talk, allAssignments, allSpeakers, allTracks));
     }
 
     private @NotNull Path downloadDatabaseFile() {
@@ -193,6 +177,20 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         }
 
         return speakers;
+    }
+
+    private Session mapToSession(@NotNull final Talk talk,
+                                 @NotNull final Map<String, List<String>> allAssignments,
+                                 @NotNull final Map<String, Speaker> allSpeakers,
+                                 @NotNull final Map<String, Track> allTracks) {
+        final String id = String.format("JFS:%s", talk.id());
+        final Room room = new Room(talk.room());
+        final String title = talk.title();
+        final List<Speaker> speakers = getSpeakersForTalk(talk, allAssignments, allSpeakers);
+        final LocalDateTime startDate = getStartDate(talk);
+        final LocalDateTime endDate = getEndDate(talk);
+        final Track track = getTrack(talk, allTracks);
+        return new Session(id, startDate, endDate, room, title, speakers, Language.UNKNOWN, track);
     }
 
     private @NotNull List<Speaker> getSpeakersForTalk(@NotNull final Talk talk,
