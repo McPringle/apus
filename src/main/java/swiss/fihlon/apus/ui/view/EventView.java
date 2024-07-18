@@ -129,7 +129,11 @@ public final class EventView extends Div {
         final LocalDateTime timeLimitNextSession = LocalDateTime.now().plus(TIME_LIMIT_NEXT_SESSION);
         final Room room = roomWithSession.getKey();
         final List<Session> sessions = roomWithSession.getValue();
-        final Session session = sessions.isEmpty() ? null : sessions.getFirst();
+        final LocalDateTime now = LocalDateTime.now().withSecond(59).withNano(999);
+        final Session session = sessions.isEmpty() ? null : sessions.stream()
+                .filter(s -> s.endDate().isAfter(now))
+                .findFirst()
+                .orElse(null);
         final RoomView roomView;
         if (session != null
                 && session.startDate().toLocalDate().isEqual(today)

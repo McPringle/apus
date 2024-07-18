@@ -137,28 +137,28 @@ public final class RoomView extends Div {
     @NotNull
     private Component createTimeComponent() {
         final var timeComponent = new Div();
-        final var now = LocalTime.now();
+        final var now = LocalTime.now().withSecond(59).withNano(999);
         if (startTime == null || endTime == null) { // empty session
             timeComponent.add(nbsp());
             roomStyle = RoomStyle.EMPTY;
-        } else if (startTime.isBefore(now) && endTime.isAfter(now)) { // running session
-            final Duration duration = Duration.between(now, endTime);
-            final long timeLeft = Math.round(duration.getSeconds() / 60f);
-            timeComponent.add(new Icon(VaadinIcon.HOURGLASS));
-            if (timeLeft == 0) {
-                timeComponent.add(new Text(getTranslation("event.session.countdown.now")));
-            } else if (timeLeft == 1) {
-                timeComponent.add(new Text(getTranslation("event.session.countdown.singular", timeLeft)));
-            } else {
-                timeComponent.add(new Text(getTranslation("event.session.countdown.plural", timeLeft)));
-            }
-            roomStyle = RoomStyle.RUNNING;
-        } else { // next session
+        } else if (startTime.isAfter(now)) { // next session
             timeComponent.add(
                     new Icon(VaadinIcon.ALARM),
                     new Text(String.format("%s - %s", startTime, endTime))
             );
             roomStyle = RoomStyle.NEXT;
+        } else { // running session
+            final Duration duration = Duration.between(now, endTime);
+            final int minutesLeft = Math.round(duration.getSeconds() / 60f);
+            timeComponent.add(new Icon(VaadinIcon.HOURGLASS));
+            if (minutesLeft <= 0) {
+                timeComponent.add(new Text(getTranslation("event.session.countdown.now")));
+            } else if (minutesLeft == 1) {
+                timeComponent.add(new Text(getTranslation("event.session.countdown.one-minute")));
+            } else {
+                timeComponent.add(new Text(getTranslation("event.session.countdown.minutes", minutesLeft)));
+            }
+            roomStyle = RoomStyle.RUNNING;
         }
         return timeComponent;
     }
