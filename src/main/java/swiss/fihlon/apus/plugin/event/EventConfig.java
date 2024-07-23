@@ -17,5 +17,5 @@
  */
 package swiss.fihlon.apus.plugin.event;
 
-public record EventConfig(int updateFrequency, boolean showLegend) {
+public record EventConfig(int updateFrequency, int nextSessionTimeout, boolean showLegend) {
 }

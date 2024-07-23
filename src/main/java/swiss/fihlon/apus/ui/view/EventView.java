@@ -46,18 +46,18 @@ public final class EventView extends Div {
 
     public static final String LABEL_THEME = "badge";
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
-    private static final Duration TIME_LIMIT_NEXT_SESSION = Duration.ofHours(1);
 
     private final transient EventService eventService;
+    private final Duration nextSessionTimeout;
+    private final boolean showLegend;
     private final Div roomContainer = new Div();
     private final Span legend = new Span();
-
-    private final boolean showLegend;
 
     public EventView(@NotNull final EventService eventService,
                      @NotNull final TaskScheduler taskScheduler,
                      @NotNull final Configuration configuration) {
         this.eventService = eventService;
+        this.nextSessionTimeout = Duration.ofMinutes(configuration.getEvent().nextSessionTimeout());
         this.showLegend = configuration.getEvent().showLegend();
         setId("event-view");
         add(createTitle());
@@ -124,9 +124,9 @@ public final class EventView extends Div {
     }
 
     @NotNull
-    private static RoomView createRoomView(@NotNull final Map.Entry<Room, List<Session>> roomWithSession,
+    private RoomView createRoomView(@NotNull final Map.Entry<Room, List<Session>> roomWithSession,
                                               @NotNull final LocalDate today) {
-        final LocalDateTime timeLimitNextSession = LocalDateTime.now().plus(TIME_LIMIT_NEXT_SESSION);
+        final LocalDateTime timeLimitNextSession = LocalDateTime.now().plus(nextSessionTimeout);
         final Room room = roomWithSession.getKey();
         final List<Session> sessions = roomWithSession.getValue();
         final LocalDateTime now = LocalDateTime.now().withSecond(59).withNano(999);
