@@ -11,9 +11,11 @@ See:
 * https://en.wikipedia.org/wiki/Common_swift
 * https://en.wikipedia.org/wiki/Apus_(bird)
 
-## Screenshot
+## Screenshots
 
-![Apus Screenshot](screenshot.webp)
+![Apus Screenshot with Java Forum Stuttgart Theme](screenshot-jfs.webp)
+
+![Apus Screenshot with JavaLand Theme](screenshot-javaland.webp)
 
 ## Features
 
