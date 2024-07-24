@@ -160,10 +160,27 @@ The custom styles of some events are documented below.
 --event-next-session-color: #fff8dd;
 --event-closed-room-color: #fff8dd;
 --event-room-border: 1px solid #000000;
+
 --social-background-color: #fff8dd;
 --social-text-color: #000000;
 --social-post-background-color: #ffffff;
 --social-post-border: 1px solid #fcb913;
+```
+
+#### JavaLand
+
+```
+--event-background-color:#007e89;
+--event-text-color: #003861;
+--event-running-session-color: #9bf4ff;
+--event-next-session-color: #62d7e3;
+--event-closed-room-color: #5da6b2;
+--event-room-border: none;
+
+--social-background-color: #1aa3b1;
+--social-text-color: #003861;
+--social-post-background-color: #84ddee;
+--social-post-border: none;
 ```
 
 ### Create Hashed Password
