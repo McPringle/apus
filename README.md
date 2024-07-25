@@ -21,12 +21,14 @@ See:
 
 ### Show posts from Social Media
 
-| Platform                    | Status    |
-|-----------------------------|-----------|
-| Bluesky                     | - TODO -  |
-| Instagram                   | - TODO -  |
-| Mastodon                    | SUPPORTED |
-| Twitter                     | - TODO -  |
+| Platform  | Status    |
+|-----------|-----------|
+| Bluesky   | - TODO -  |
+| Instagram | - TODO -  |
+| LinkedIn  | - TODO -  |
+| Mastodon  | SUPPORTED |
+| Threads   | - TODO -  |
+| Twitter   | - TODO -  |
 
 ### Show event agenda
 
@@ -40,11 +42,11 @@ See:
 
 ### And more
 
-| Feature                   | Status   |
-|---------------------------|----------|
-| Running text with updates | - TODO - |
-| Show sponsor information  | - TODO - |
-| Use event based styling   | - TODO - |
+| Feature                   | Status    |
+|---------------------------|-----------|
+| Running text with updates | - TODO -  |
+| Show sponsor information  | - TODO -  |
+| Use event based styling   | SUPPORTED |
 
 ## Build
 
