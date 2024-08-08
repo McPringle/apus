@@ -278,10 +278,12 @@ Modify this command according your needs and consult the [configuration section]
 
 *Apus* uses a simple plugin technology to import the agenda of various events. Plugins are currently available for the following events:
 
-| Plugin       | Supported Events                             |
-|--------------|----------------------------------------------|
-| `DemoPlugin` | Creates fake session data for demo purposes. |
-| `DoagPlugin` | CloudLand, CyberLand, JavaLand, KI Navigator |
+| Plugin                     | Supported Events                             |
+|----------------------------|----------------------------------------------|
+| `DemoPlugin`               | Creates fake session data for demo purposes. |
+| `DoagPlugin`               | CloudLand, CyberLand, JavaLand, KI Navigator |
+| `JavaForumStuttgartPlugin` | Java Forum Stuttgart                         |
+| `SessionizePlugin`         | BaselOne, Java Forum Nord                    |
 
 Plugins for other events are planned.
 
