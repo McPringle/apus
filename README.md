@@ -174,16 +174,16 @@ The custom styles of some events are documented below.
 #### JavaLand
 
 ```
---event-background-color:#007e89;
---event-text-color: #003861;
---event-running-session-color: #9bf4ff;
---event-next-session-color: #62d7e3;
---event-closed-room-color: #5da6b2;
+--event-background-color:#000000;
+--event-text-color: #262626;
+--event-running-session-color: #79fffe;
+--event-next-session-color: #00f1ef;
+--event-closed-room-color: #00c2c1;
 --event-room-border: none;
 
---social-background-color: #1aa3b1;
---social-text-color: #003861;
---social-post-background-color: #84ddee;
+--social-background-color: #272727;
+--social-text-color: #262626;
+--social-post-background-color: #ffa8a8;
 --social-post-border: none;
 ```
 
