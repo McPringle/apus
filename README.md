@@ -13,7 +13,7 @@ See:
 
 ## Screenshots
 
-*Apus* supports localization. Some screenshots are in english, some in german.
+*Apus* supports localization. Screenshots are in different languages.
 
 ![Apus screenshot with default theme](screenshot-default.webp)
 *Apus screenshot with default theme*
