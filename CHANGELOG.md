@@ -21,16 +21,19 @@ For questions and support requests, please use
 * Theming: all colors are now configurable
 * Create hashed passwords for admin access on the command line
 * New config option to show/hide event room legend
+* Time limit for next session is now configurable
 
 ### Bugfixes
 
 * Fixed possible XSS attack with modified Mastodon posts
+* Fixed incorrect calculation of minutes remaining 
 
 ### Maintenance
 
 * All icons are now system independent
 * Sessions without a language will not display a language flag
 * Better use of available space for social media posts
+* Refactored plugin interface to use streams instead of lists
 
 ## Version 1
 
