@@ -37,7 +37,7 @@
 #social-view h2 {
     color: var(--social-title-color);
     font-size: 30px;
-    margin: 0 10px 10px 10px;
+    margin: 0 10px 10px 0;
 }
 
 #social-view .posts {
