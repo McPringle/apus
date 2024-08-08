@@ -13,9 +13,14 @@ See:
 
 ## Screenshots
 
-![Apus Screenshot with Java Forum Stuttgart Theme](screenshot-jfs.webp)
+![Apus screenshot with default theme](screenshot-default.webp)
+*Apus screenshot with default theme*
 
-![Apus Screenshot with JavaLand Theme](screenshot-javaland.webp)
+![Apus screenshot with Java Forum Stuttgart theme](screenshot-jfs.webp)
+*Apus screenshot with Java Forum Stuttgart theme*
+
+![Apus screenshot with JavaLand theme](screenshot-javaland.webp)
+*Apus screenshot with JavaLand theme*
 
 ## Features
 
