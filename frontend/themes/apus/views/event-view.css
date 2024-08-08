@@ -31,6 +31,7 @@
 }
 
 #event-view h2 {
+    color: var(--event-title-color);
     float: left;
     font-size: 30px;
     margin: 10px;

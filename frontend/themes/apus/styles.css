@@ -18,6 +18,7 @@
 
 :root {
     --event-background-color: #007e89;
+    --event-title-color: #003861;
     --event-text-color: #003861;
     --event-running-session-color: #9bf4ff;
     --event-next-session-color: #62d7e3;
@@ -25,6 +26,7 @@
     --event-room-border: none;
 
     --social-background-color: #1aa3b1;
+    --social-title-color: #003861;
     --social-text-color: #003861;
     --social-post-background-color: #84ddee;
     --social-post-border: none;

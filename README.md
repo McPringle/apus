@@ -143,12 +143,14 @@ The following table contains the CSS variables you can modify to change the user
 | CSS Variable                   | Default | Description                                                        |
 |--------------------------------|---------|--------------------------------------------------------------------|
 | --event-background-color       | #007e89 | The color for the background of the event agenda.                  |
+| --event-title-color            | #003861 | The color for the title of the event agenda.                       |
 | --event-text-color             | #003861 | The color for the text of the event agenda.                        |
 | --event-running-session-color  | #9bf4ff | The color for the background of rooms with running sessions.       |
 | --event-next-session-color     | #62d7e3 | The color for the background of rooms with sessions starting next. |
 | --event-closed-room-color      | #5da6b2 | The color for the background of closed rooms.                      |
 | --event-room-border            | none    | The border for the event room.                                     |
 | --social-background-color      | #1aa3b1 | The color for the background of the social wall.                   |
+| --social-title-color           | #003861 | The color for the title of the social wall.                        |
 | --social-text-color            | #003861 | The color for the text of the social wall.                         |
 | --social-post-background-color | #84ddee | The color for the background of social posts.                      |
 | --social-post-border           | none    | The border for the social posts.                                   |
@@ -159,6 +161,7 @@ The custom styles of some events are documented below.
 
 ```
 --event-background-color:#fcb913;
+--event-title-color: #000000;
 --event-text-color: #000000;
 --event-running-session-color: #fff8dd;
 --event-next-session-color: #fff8dd;
@@ -166,6 +169,7 @@ The custom styles of some events are documented below.
 --event-room-border: 1px solid #000000;
 
 --social-background-color: #fff8dd;
+--social-title-color: #000000;
 --social-text-color: #000000;
 --social-post-background-color: #ffffff;
 --social-post-border: 1px solid #fcb913;
@@ -175,6 +179,7 @@ The custom styles of some events are documented below.
 
 ```
 --event-background-color:#000000;
+--event-title-color: #ffffff;
 --event-text-color: #262626;
 --event-running-session-color: #79fffe;
 --event-next-session-color: #00f1ef;
@@ -182,6 +187,7 @@ The custom styles of some events are documented below.
 --event-room-border: none;
 
 --social-background-color: #272727;
+--social-title-color: #ffffff;
 --social-text-color: #262626;
 --social-post-background-color: #ffa8a8;
 --social-post-border: none;
