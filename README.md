@@ -342,7 +342,7 @@ We love to add an emoji to the beginning of every commit message which relates t
 
 ### AI Generated Code
 
-AI generated source code is based on real existing source code, which is copied in whole or in part into the generated code. The license of the original source code with which the AI was trained is not taken into account. It is therefore not clear which license conditions apply and how these can be complied with. For legal reasons, we therefore do not use AI-generated source code at all.
+AI generated source code is based on real existing source code, which is copied in whole or in part into the generated code. The license of the original source code with which the AI was trained is not taken into account. It is therefore not clear which license conditions apply and how these can be complied with. For legal reasons, we therefore do not allow AI-generated source code at all.
 
 ## Contributors
 
