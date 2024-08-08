@@ -41,6 +41,7 @@ See:
 |----------------------|----------------------------|
 | BaselOne             | `SessionizePlugin`         |
 | CyberLand            | `DoagPlugin`               |
+| Java Forum Nord      | `SessionizePlugin`         |
 | Java Forum Stuttgart | `JavaForumStuttgartPlugin` |
 | JavaLand             | `DoagPlugin`               |
 | Voxxed Days Zürich   | - TODO -                   |
