@@ -20,7 +20,7 @@ package swiss.fihlon.apus.plugin.event.jfs;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings({ "checkstyle:FileTabCharacter", "java:S2479" })
-public enum TrackIcons {
+enum TrackIcons {
 
     ARCHITECTURE_SECURITY("""
             <?xml version="1.0" encoding="utf-8"?>

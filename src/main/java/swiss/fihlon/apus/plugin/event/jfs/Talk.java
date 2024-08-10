@@ -17,4 +17,4 @@
  */
 package swiss.fihlon.apus.plugin.event.jfs;
 
-public record Talk(String id, String title, String room, String topic, String timeSlot) { }
+record Talk(String id, String title, String room, String topic, String timeSlot) { }
