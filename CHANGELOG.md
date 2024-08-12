@@ -7,6 +7,18 @@ For questions and support requests, please use
 
 ---
 
+## Version 3
+
+**Release date: work in progress 🚧**
+
+### New Features
+
+### Fixed Bugs
+
+### Maintenance Work
+
+---
+
 ## Version 2
 
 **Release date: 2024-08-12**
@@ -34,6 +46,8 @@ For questions and support requests, please use
 * Sessions without a language will not display a language flag
 * Better use of available space for social media posts
 * Refactored plugin interface to use streams instead of lists
+
+---
 
 ## Version 1
 
