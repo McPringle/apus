@@ -39,10 +39,11 @@
 
 #event-view .legend {
     float: right;
-    padding: 13px 10px 0 0;
+    padding: 13px 8px 0 0;
 }
 
 #event-view .legend > span {
+    border: var(--event-room-border);
     color: var(--event-text-color);
     margin-left: var(--lumo-space-s);
 }
