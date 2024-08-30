@@ -17,4 +17,4 @@
  */
 package swiss.fihlon.apus.configuration;
 
-public record PostConfig(int numberOfColumns) { }
+public record SocialConfig(String headline, int numberOfColumns) { }

@@ -38,7 +38,7 @@ public class Configuration {
     private AdminConfig admin;
     private CustomConfig custom;
     private EventConfig event;
-    private PostConfig post;
+    private SocialConfig social;
     private FilterConfig filter;
 
     // Event Plugin Configs
@@ -78,12 +78,12 @@ public class Configuration {
         this.admin = admin;
     }
 
-    public PostConfig getPost() {
-        return post;
+    public SocialConfig getSocial() {
+        return social;
     }
 
-    public void setPost(@NotNull final PostConfig post) {
-        this.post = post;
+    public void setSocial(@NotNull final SocialConfig social) {
+        this.social = social;
     }
 
     public FilterConfig getFilter() {

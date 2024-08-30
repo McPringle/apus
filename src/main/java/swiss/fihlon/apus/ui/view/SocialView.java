@@ -60,12 +60,16 @@ public final class SocialView extends Div {
         this.configuration = configuration;
 
         setId("social-view");
-        add(new H2(getTranslation("social.heading", configuration.getMastodon().hashtag())));
+        if (configuration.getSocial().headline().isBlank()) {
+            add(new H2(getTranslation("social.heading", configuration.getMastodon().hashtag())));
+        } else {
+            add(new H2(configuration.getSocial().headline()));
+        }
         var postsColumnsDiv = new Div();
         postsColumnsDiv.addClassName("posts");
         add(postsColumnsDiv);
 
-        final int numberOfColumns = configuration.getPost().numberOfColumns();
+        final int numberOfColumns = configuration.getSocial().numberOfColumns();
         postsColumns = new ArrayList<>(numberOfColumns);
         for (int i = 0; i < numberOfColumns; i++) {
             final var postsContainer = new Div();
