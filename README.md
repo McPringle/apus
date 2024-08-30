@@ -168,7 +168,7 @@ Default values may change in newer versions of *Apus*. The custom styles of some
 #### Java Forum Stuttgart
 
 ```
---event-background-color:#fcb913;
+--event-background-color: #fcb913;
 --event-title-color: #000000;
 --event-text-color: #000000;
 --event-running-session-color: #fff8dd;
@@ -186,7 +186,7 @@ Default values may change in newer versions of *Apus*. The custom styles of some
 #### JavaLand
 
 ```
---event-background-color:#000000;
+--event-background-color: #000000;
 --event-title-color: #ffffff;
 --event-text-color: #262626;
 --event-running-session-color: #79fffe;
