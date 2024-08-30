@@ -4,15 +4,15 @@
   "type": "module",
   "dependencies": {
     "@polymer/polymer": "3.5.1",
-    "@vaadin/bundles": "24.4.4",
+    "@vaadin/bundles": "24.4.5",
     "@vaadin/common-frontend": "0.0.19",
-    "@vaadin/polymer-legacy-adapter": "24.4.4",
-    "@vaadin/react-components": "24.4.4",
+    "@vaadin/polymer-legacy-adapter": "24.4.5",
+    "@vaadin/react-components": "24.4.5",
     "@vaadin/router": "1.7.5",
     "@vaadin/vaadin-development-mode-detector": "2.0.7",
-    "@vaadin/vaadin-lumo-styles": "24.4.4",
-    "@vaadin/vaadin-material-styles": "24.4.4",
-    "@vaadin/vaadin-themable-mixin": "24.4.4",
+    "@vaadin/vaadin-lumo-styles": "24.4.5",
+    "@vaadin/vaadin-material-styles": "24.4.5",
+    "@vaadin/vaadin-themable-mixin": "24.4.5",
     "@vaadin/vaadin-usage-statistics": "2.1.2",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
@@ -64,15 +64,15 @@
   "vaadin": {
     "dependencies": {
       "@polymer/polymer": "3.5.1",
-      "@vaadin/bundles": "24.4.4",
+      "@vaadin/bundles": "24.4.5",
       "@vaadin/common-frontend": "0.0.19",
-      "@vaadin/polymer-legacy-adapter": "24.4.4",
-      "@vaadin/react-components": "24.4.4",
+      "@vaadin/polymer-legacy-adapter": "24.4.5",
+      "@vaadin/react-components": "24.4.5",
       "@vaadin/router": "1.7.5",
       "@vaadin/vaadin-development-mode-detector": "2.0.7",
-      "@vaadin/vaadin-lumo-styles": "24.4.4",
-      "@vaadin/vaadin-material-styles": "24.4.4",
-      "@vaadin/vaadin-themable-mixin": "24.4.4",
+      "@vaadin/vaadin-lumo-styles": "24.4.5",
+      "@vaadin/vaadin-material-styles": "24.4.5",
+      "@vaadin/vaadin-themable-mixin": "24.4.5",
       "@vaadin/vaadin-usage-statistics": "2.1.2",
       "construct-style-sheets-polyfill": "3.1.0",
       "date-fns": "2.29.3",
@@ -101,6 +101,6 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "846f0ded98a235dfe005af6ac323bbfe31cd4c6ad9ac0c6d092a8d7b67f4b541"
+    "hash": "0997b94b1284de787dc3a0ff6fe1b5fdfca9e77c6b3d4eb476a991e4f8e95fa1"
   }
 }
