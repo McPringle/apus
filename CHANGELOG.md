@@ -13,6 +13,8 @@ For questions and support requests, please use
 
 ### New Features
 
+* Add a full-screen social media post view without conference agenda
+
 ### Fixed Bugs
 
 ### Maintenance Work

@@ -129,6 +129,7 @@ To modify the default configuration values, just specify environment variables w
 | MASTODON_IMAGE_LIMIT       | 1       | Limit number of images per post (0 = no limit).                              |
 | MASTODON_IMAGES_ENABLED    | true    | Enable or disable images in mastodon posts.                                  |
 | MASTODON_INSTANCE          |         | The Mastodon instance used to read the posts from (empty = disabled).        |
+| POST_COLUMNS               | 3       | How many columns to be used for social media posts.                          |
 | SESSIONIZE_EVENT_API       | [2]     | The URL of the Sessionize event API to read the conference agenda.           |
 | SESSIONIZE_EVENT_ID        | 0       | The ID of the Sessionize event to read the conference agenda (0 = disabled). |
 | TZ                         | UTC     | The timezone used for date and time calculations.                            |

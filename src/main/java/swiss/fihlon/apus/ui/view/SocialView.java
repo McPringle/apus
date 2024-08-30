@@ -38,6 +38,7 @@ import swiss.fihlon.apus.util.PasswordUtil;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
@@ -48,7 +49,7 @@ public final class SocialView extends Div {
 
     private final transient SocialService socialService;
     private final transient Configuration configuration;
-    private final List<Div> postsColumns = List.of(new Div(), new Div(), new Div());
+    private final List<Div> postsColumns;
     private final ContextMenu contextMenu;
     private boolean adminModeEnabled = false;
 
@@ -63,10 +64,15 @@ public final class SocialView extends Div {
         var postsColumnsDiv = new Div();
         postsColumnsDiv.addClassName("posts");
         add(postsColumnsDiv);
-        postsColumns.forEach(postsContainer -> {
-            postsColumnsDiv.add(postsContainer);
+
+        final int numberOfColumns = configuration.getPost().numberOfColumns();
+        postsColumns = new ArrayList<>(numberOfColumns);
+        for (int i = 0; i < numberOfColumns; i++) {
+            final var postsContainer = new Div();
+            postsColumns.add(postsContainer);
             postsContainer.addClassName("column");
-        });
+            postsColumnsDiv.add(postsContainer);
+        }
 
         if (adminModeEnabled || configuration.getAdmin().password().isBlank()) {
             contextMenu = null;

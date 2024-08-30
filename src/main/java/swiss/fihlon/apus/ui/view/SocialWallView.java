@@ -59,7 +59,11 @@ public final class SocialWallView extends Div {
                     });
         }
         setId("social-wall-view");
-        add(new EventView(eventService, taskScheduler, configuration));
+        if (eventService.isEnabled()) {
+            add(new EventView(eventService, taskScheduler, configuration));
+        } else {
+            addClassName("fullscreen-posts");
+        }
         add(new SocialView(socialService, taskScheduler, configuration));
     }
 }

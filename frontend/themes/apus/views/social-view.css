@@ -30,6 +30,11 @@
     flex-direction: column;
 }
 
+.fullscreen-posts > #social-view {
+    left: 0;
+    width: 1900px;
+}
+
 #social-view * {
     color: var(--social-text-color);
 }
@@ -51,5 +56,9 @@
     flex-direction: column;
     row-gap: var(--lumo-space-s);
     justify-content: safe flex-start;
-    width: 33%;
+    width: calc(100% / 3);
+}
+
+.fullscreen-posts > #social-view .column {
+    width: calc(100% / 6);
 }

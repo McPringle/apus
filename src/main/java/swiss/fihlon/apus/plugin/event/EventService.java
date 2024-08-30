@@ -49,7 +49,7 @@ public final class EventService {
                         @NotNull final Configuration configuration,
                         @NotNull final List<EventPlugin> eventPlugins) {
         this.eventPlugins = eventPlugins;
-        if (eventPlugins.stream().anyMatch(EventPlugin::isEnabled)) {
+        if (isEnabled()) {
             updateSessions();
             final var updateFrequency = Duration.ofMinutes(configuration.getEvent().updateFrequency());
             if (updateFrequency.isPositive()) {
@@ -108,5 +108,9 @@ public final class EventService {
         synchronized (this) {
             return new TreeMap<>(roomsWithSessions);
         }
+    }
+
+    public boolean isEnabled() {
+        return eventPlugins.stream().anyMatch(EventPlugin::isEnabled);
     }
 }

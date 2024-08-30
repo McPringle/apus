@@ -86,6 +86,11 @@
       "description": "The Mastodon instance used to read the posts from."
     },
     {
+      "name": "apus.post.numberOfColumns",
+      "type": "java.lang.String",
+      "description" : "How many columns to be used for social media posts."
+    },
+    {
       "name": "apus.sessionize.eventId",
       "type": "java.lang.String",
       "description": "The ID of the Sessionize event to read the conference agenda."
