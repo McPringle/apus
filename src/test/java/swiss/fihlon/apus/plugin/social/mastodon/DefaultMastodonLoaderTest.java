@@ -19,16 +19,16 @@ package swiss.fihlon.apus.plugin.social.mastodon;
 
 import org.junit.jupiter.api.Test;
 import social.bigbone.api.entity.Status;
-import social.bigbone.api.exception.BigBoneRequestException;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class DefaultMastodonLoaderTest {
 
     @Test
-    void getStatuses() throws BigBoneRequestException {
+    void getStatuses() throws MastodonException {
         final List<Status> statuses = new DefaultMastodonLoader().getStatuses("ijug.social", "java");
         assertNotNull(statuses);
         assertFalse(statuses.isEmpty());

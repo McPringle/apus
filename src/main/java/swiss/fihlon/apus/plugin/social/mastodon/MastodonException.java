@@ -18,10 +18,11 @@
 package swiss.fihlon.apus.plugin.social.mastodon;
 
 import org.jetbrains.annotations.NotNull;
-import social.bigbone.api.entity.Status;
 
-import java.util.List;
+public class MastodonException extends Exception {
 
-public interface MastodonLoader {
-    @NotNull List<Status> getStatuses(@NotNull String instance, @NotNull String hashtag) throws MastodonException;
+    public MastodonException(@NotNull final String message, @NotNull final Exception e) {
+        super(message, e);
+    }
+
 }

@@ -32,10 +32,14 @@ import static social.bigbone.api.method.TimelineMethods.StatusOrigin.LOCAL_AND_R
 public final class DefaultMastodonLoader implements MastodonLoader {
 
     @Override
-    @NotNull public List<Status> getStatuses(@NotNull final String instance, @NotNull final String hashtag) throws BigBoneRequestException {
+    @NotNull public List<Status> getStatuses(@NotNull final String instance, @NotNull final String hashtag) throws MastodonException {
         final MastodonClient client = new MastodonClient.Builder(instance).build();
         final Range range = new Range(null, null, null, 100);
-        return client.timelines().getTagTimeline(hashtag, LOCAL_AND_REMOTE, range).execute().getPart();
+        try {
+            return client.timelines().getTagTimeline(hashtag, LOCAL_AND_REMOTE, range).execute().getPart();
+        } catch (final BigBoneRequestException e) {
+            throw new MastodonException(String.format("Unable to load posts with hashtag '%s' from Mastodon instance '%s'", hashtag, instance), e);
+        }
     }
 
 }

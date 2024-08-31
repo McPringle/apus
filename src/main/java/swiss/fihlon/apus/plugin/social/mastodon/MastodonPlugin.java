@@ -70,9 +70,8 @@ public final class MastodonPlugin implements SocialPlugin {
             return statuses.stream()
                     .map(this::convertToPost)
                     .sorted();
-        } catch (final Exception e) {
-            LOGGER.error("Unable to load posts with hashtag '{}' from Mastodon instance '{}': {}",
-                    hashtag, instance, e.getMessage());
+        } catch (final MastodonException e) {
+            LOGGER.error(e.getMessage(), e);
             return Stream.of();
         }
     }
