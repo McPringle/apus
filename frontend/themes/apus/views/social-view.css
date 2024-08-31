@@ -22,8 +22,8 @@
     position: absolute;
     top: 0;
     left: 870px;
-    width: 1030px;
-    height: 1060px;
+    right: 0;
+    bottom: 0;
     overflow: clip;
     padding: 10px;
     display: flex;
@@ -32,7 +32,6 @@
 
 .fullscreen-posts > #social-view {
     left: 0;
-    width: 1900px;
 }
 
 #social-view * {
