@@ -21,7 +21,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 870px;
+    width: 440px;
     bottom: 0;
     overflow: clip;
 }
@@ -51,7 +51,7 @@
 .room-container {
     position: absolute;
     top: 57px;
-    display: grid;
-    grid-template-columns: auto auto;
+    display: flex;
+    flex-direction: column;
 }
 
