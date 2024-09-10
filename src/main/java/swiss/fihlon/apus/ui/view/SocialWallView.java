@@ -42,19 +42,33 @@ public final class SocialWallView extends Div {
                           @NotNull final TaskScheduler taskScheduler,
                           @NotNull final Configuration configuration) {
         setId("social-wall-view");
-        addStyles(configuration);
+        addDynamicStyles(configuration, eventService);
+        addCustomStyles(configuration);
         if (eventService.isEnabled()) {
             add(new EventView(eventService, taskScheduler, configuration));
-        } else {
-            addClassName("fullscreen-posts");
         }
         add(new SocialView(socialService, taskScheduler, configuration));
     }
 
-    private static void addStyles(@NotNull final Configuration configuration) {
+    private static void addDynamicStyles(@NotNull final Configuration configuration, @NotNull EventService eventService) {
         final var currentStyle = UI.getCurrent().getElement().getStyle();
+        currentStyle.set("--social-post-column-count", Integer.toString(configuration.getSocial().numberOfColumns()));
+        if (eventService.isEnabled()) {
+            final int roomCount = eventService.getRoomsWithSessions().size();
+            final int columnCount = Math.ceilDiv(roomCount, 6);
+            final int eventWidth = 5 + (435 * columnCount);
+            final String eventWidthCSS = eventWidth + "px";
+            currentStyle.set("--event-width", eventWidthCSS);
+            LOGGER.info("Room count of {} will lead to column count of {} and an event width of {}", roomCount, columnCount, eventWidthCSS);
+        } else {
+            currentStyle.set("--event-width", "0");
+        }
+    }
+
+    private static void addCustomStyles(@NotNull final Configuration configuration) {
         final String customStyles = configuration.getCustom().styles();
         if (!customStyles.isBlank()) {
+            final var currentStyle = UI.getCurrent().getElement().getStyle();
             Arrays.stream(customStyles.split(";"))
                     .forEach(customStyle -> {
                         if (!customStyle.isBlank()) {
@@ -69,6 +83,5 @@ public final class SocialWallView extends Div {
                         }
                     });
         }
-        currentStyle.set("--social-post-column-count", Integer.toString(configuration.getSocial().numberOfColumns()));
     }
 }

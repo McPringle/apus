@@ -21,7 +21,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 440px;
+    width: var(--event-width);
     bottom: 0;
     overflow: clip;
 }

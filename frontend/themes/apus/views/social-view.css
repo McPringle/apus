@@ -21,17 +21,13 @@
     background-color: var(--social-background-color);
     position: absolute;
     top: 0;
-    left: 440px;
+    left: var(--event-width);
     right: 0;
     bottom: 0;
     overflow: clip;
     padding: 10px;
     display: flex;
     flex-direction: column;
-}
-
-.fullscreen-posts > #social-view {
-    left: 0;
 }
 
 #social-view * {
