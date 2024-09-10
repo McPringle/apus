@@ -55,9 +55,5 @@
     flex-direction: column;
     row-gap: var(--lumo-space-s);
     justify-content: safe flex-start;
-    width: calc(100% / 5);
-}
-
-.fullscreen-posts > #social-view .column {
-    width: calc(100% / 6);
+    width: calc(100% / var(--social-post-column-count));
 }

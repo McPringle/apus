@@ -41,9 +41,20 @@ public final class SocialWallView extends Div {
                           @NotNull final SocialService socialService,
                           @NotNull final TaskScheduler taskScheduler,
                           @NotNull final Configuration configuration) {
+        setId("social-wall-view");
+        addStyles(configuration);
+        if (eventService.isEnabled()) {
+            add(new EventView(eventService, taskScheduler, configuration));
+        } else {
+            addClassName("fullscreen-posts");
+        }
+        add(new SocialView(socialService, taskScheduler, configuration));
+    }
+
+    private static void addStyles(@NotNull final Configuration configuration) {
+        final var currentStyle = UI.getCurrent().getElement().getStyle();
         final String customStyles = configuration.getCustom().styles();
         if (!customStyles.isBlank()) {
-            final var currentStyle = UI.getCurrent().getElement().getStyle();
             Arrays.stream(customStyles.split(";"))
                     .forEach(customStyle -> {
                         if (!customStyle.isBlank()) {
@@ -58,12 +69,6 @@ public final class SocialWallView extends Div {
                         }
                     });
         }
-        setId("social-wall-view");
-        if (eventService.isEnabled()) {
-            add(new EventView(eventService, taskScheduler, configuration));
-        } else {
-            addClassName("fullscreen-posts");
-        }
-        add(new SocialView(socialService, taskScheduler, configuration));
+        currentStyle.set("--social-post-column-count", Integer.toString(configuration.getSocial().numberOfColumns()));
     }
 }

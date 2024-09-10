@@ -30,6 +30,7 @@
     --social-text-color: #262626;
     --social-post-background-color: #ffffff;
     --social-post-border: 1px solid #909090;
+    --social-post-column-count: 3;
 
     background-color: #000000;
 }
