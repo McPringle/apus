@@ -51,7 +51,7 @@
 .room-container {
     position: absolute;
     top: 57px;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: var(--event-grid-template-columns);
 }
 

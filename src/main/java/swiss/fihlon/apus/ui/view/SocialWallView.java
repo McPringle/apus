@@ -56,9 +56,10 @@ public final class SocialWallView extends Div {
         if (eventService.isEnabled()) {
             final int roomCount = eventService.getRoomsWithSessions().size();
             final int columnCount = Math.ceilDiv(roomCount, 6);
-            final int eventWidth = 5 + (435 * columnCount);
+            final int eventWidth = 435 * columnCount;
             final String eventWidthCSS = eventWidth + "px";
             currentStyle.set("--event-width", eventWidthCSS);
+            currentStyle.set("--event-grid-template-columns", "auto ".repeat(columnCount));
             LOGGER.info("Room count of {} will lead to column count of {} and an event width of {}", roomCount, columnCount, eventWidthCSS);
         } else {
             currentStyle.set("--event-width", "0");
