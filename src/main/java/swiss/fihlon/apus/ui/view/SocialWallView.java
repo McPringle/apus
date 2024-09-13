@@ -50,7 +50,7 @@ public final class SocialWallView extends Div {
         add(new SocialView(socialService, taskScheduler, configuration));
     }
 
-    private static void addDynamicStyles(@NotNull final Configuration configuration, @NotNull EventService eventService) {
+    private static void addDynamicStyles(@NotNull final Configuration configuration, @NotNull final EventService eventService) {
         final var currentStyle = UI.getCurrent().getElement().getStyle();
         currentStyle.set("--social-post-column-count", Integer.toString(configuration.getSocial().numberOfColumns()));
         if (eventService.isEnabled()) {
