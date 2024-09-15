@@ -18,6 +18,9 @@ See:
 ![Apus screenshot with default theme](screenshot-default.webp)
 *Apus screenshot with default theme*
 
+![Apus screenshot with BaselOne theme](screenshot-baselone.webp)
+*Apus screenshot with BaselOne theme*
+
 ![Apus screenshot with Java Forum Stuttgart theme](screenshot-jfs.webp)
 *Apus screenshot with Java Forum Stuttgart theme*
 
@@ -181,6 +184,24 @@ The following table contains the CSS variables you can modify to change the user
 | --social-post-border           | 1px solid #909090 | The border for the social posts.                                   |
 
 Default values may change in newer versions of *Apus*. The custom styles of some events are documented below.
+
+#### BaselOne
+
+```
+--event-background-color: #9a1445;
+--event-title-color: #000000;
+--event-text-color: #000000;
+--event-running-session-color: #7248f0;
+--event-next-session-color: #7248f0;
+--event-closed-room-color: #7248f0;
+--event-room-border: 1px solid #000000;
+
+--social-background-color: #7248f0;
+--social-title-color: #000000;
+--social-text-color: #000000;
+--social-post-background-color: #ffffff;
+--social-post-border: 1px solid #000000;
+```
 
 #### Java Forum Stuttgart
 
