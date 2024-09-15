@@ -121,6 +121,7 @@ To modify the default configuration values, just specify environment variables w
 | DOAG_EVENT_API             | [1]     | The URL of the DOAG event API to read the conference agenda.                 |
 | DOAG_EVENT_ID              | 0       | The ID of the DOAG event to read the conference agenda (0 = disabled).       |
 | EVENT_DATE_ADJUST          |         | Adjust the date of the event in days, ISO-8601 formatted (empty = disabled). |
+| EVENT_IMAGE_URL            |         | The URL of the image to be shown below the event agenda (empty = no image).  |
 | EVENT_NEXT_SESSION_TIMEOUT | 60      | Number of minutes a session is shown before it starts (0 = disabled).        |
 | EVENT_SHOW_CLOSED_ROOMS    | true    | Show (true) or hide (false) closed event rooms.                              |
 | EVENT_SHOW_LEGEND          | true    | Show (true) or hide (false) the event room legend.                           |
@@ -177,6 +178,10 @@ The following table contains the CSS variables you can modify to change the user
 | --event-next-session-color     | #eeeeee           | The color for the background of rooms with sessions starting next. |
 | --event-closed-room-color      | #cccccc           | The color for the background of closed rooms.                      |
 | --event-room-border            | 1px solid #909090 | The border for the event room.                                     |
+| --event-image-position-bottom  | 10px              | The position of the optional event image relative to the bottom.   |
+| --event-image-position-left    | 10px              | The position of the optional event image relative to the left.     |
+| --event-image-width            | auto              | The width of the optional event image.                             |
+| --event-image-height           | auto              | The height of the optional event image.                            |
 | --social-background-color      | #e7eaee           | The color for the background of the social wall.                   |
 | --social-title-color           | #262626           | The color for the title of the social wall.                        |
 | --social-text-color            | #262626           | The color for the text of the social wall.                         |

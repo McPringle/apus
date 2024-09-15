@@ -21,6 +21,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import org.jetbrains.annotations.NotNull;
@@ -69,6 +70,11 @@ public final class EventView extends Div {
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(
                 this::updateScheduler, Instant.now().plusSeconds(1), UPDATE_FREQUENCY);
         addDetachListener(event -> updateScheduler.cancel(true));
+
+        final var imageUrl = configuration.getEvent().image();
+        if (imageUrl != null && !imageUrl.isBlank()) {
+            add(createImage(imageUrl));
+        }
     }
 
     private void updateScheduler() {
@@ -143,5 +149,12 @@ public final class EventView extends Div {
             roomView = new RoomView(room);
         }
         return roomView;
+    }
+
+    @NotNull
+    private Component createImage(@NotNull final String imageUrl) {
+        final var image = new Image(imageUrl, "Event Image");
+        image.setId("event-image");
+        return image;
     }
 }

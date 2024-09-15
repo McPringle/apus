@@ -55,3 +55,12 @@
     grid-template-columns: var(--event-grid-template-columns);
 }
 
+#event-view #event-image {
+    position: absolute;
+    border-radius: var(--lumo-border-radius-s);
+    border: var(--event-image-border);
+    bottom: var(--event-image-position-bottom);
+    left: var(--event-image-position-left);
+    width: var(--event-image-width);
+    height: var(--event-image-height);
+}

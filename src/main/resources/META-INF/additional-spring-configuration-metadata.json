@@ -31,6 +31,11 @@
       "description": "Adjust the date of the event in days (empty = disabled)."
     },
     {
+      "name": "apus.event.image",
+      "type": "java.lang.String",
+      "description": "The URL of the image to be shown below the event agenda (empty = no image)."
+    },
+    {
       "name": "apus.event.nextSessionTimeout",
       "type": "java.lang.Integer",
       "description": "Number of minutes a session is shown before it starts."

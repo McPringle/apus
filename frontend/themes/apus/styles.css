@@ -27,6 +27,12 @@
     --event-width: 870px;
     --event-grid-template-columns: auto auto;
 
+    --event-image-border: none;
+    --event-image-position-bottom: 10px;
+    --event-image-position-left: 10px;
+    --event-image-width: auto;
+    --event-image-height: auto;
+
     --social-background-color: #e7eaee;
     --social-title-color: #262626;
     --social-text-color: #262626;
