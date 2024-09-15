@@ -9,15 +9,22 @@ For questions and support requests, please use
 
 ## Version 3
 
-**Release date: work in progress 🚧**
+**Release date: 2024-09-15**
 
 ### New Features
 
-* Add a full-screen social media post view without conference agenda
+* Support full-screen social media post view without conference agenda
+* Adjusting number of agenda columns automatically as needed
+* Overwrite automatically generated social media headline
 
 ### Fixed Bugs
 
+* Fixed UI quirks
+
 ### Maintenance Work
+
+* Update all dependencies
+* Fixed a bunch of linter warnings
 
 ---
 

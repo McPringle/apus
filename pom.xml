@@ -6,7 +6,7 @@
     <groupId>swiss.fihlon</groupId>
     <artifactId>apus</artifactId>
     <name>Apus</name>
-    <version>3-SNAPSHOT</version>
+    <version>3</version>
     <packaging>jar</packaging>
     <description>A social wall to display posts at conferences with additional features.</description>
     <inceptionYear>2024</inceptionYear>
