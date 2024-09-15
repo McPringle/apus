@@ -15,6 +15,8 @@ For questions and support requests, please use
 
 ### Fixed Bugs
 
+* Fix agenda column width calculation
+
 ### Maintenance Work
 
 ---
