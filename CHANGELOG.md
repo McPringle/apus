@@ -19,6 +19,8 @@ For questions and support requests, please use
 
 ### Maintenance Work
 
+* Upgrade dependencies
+
 ---
 
 ## Version 3
