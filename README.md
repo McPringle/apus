@@ -141,7 +141,7 @@ The environment variables will override the default values. Some default values 
 1. https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/
 2. https://sessionize.com/api/v2/%s/view/Sessions
 
-The `EVENT_DATE_ADJUST` option uses the ISO-8601 period formats PnYnMnD and PnW. Examples:
+The `EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` and `PnW`. Examples:
 
 | Example     | Description                                                  |
 |-------------|--------------------------------------------------------------|
