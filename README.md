@@ -119,6 +119,7 @@ To modify the default configuration values, just specify environment variables w
 | DOAG_EVENT_ID              | 0       | The ID of the DOAG event to read the conference agenda (0 = disabled).       |
 | EVENT_DATE_ADJUST          |         | Adjust the date of the event in days, ISO-8601 formatted (empty = disabled). |
 | EVENT_NEXT_SESSION_TIMEOUT | 60      | Number of minutes a session is shown before it starts (0 = disabled).        |
+| EVENT_SHOW_CLOSED_ROOMS    | true    | Show (true) or hide (false) closed event rooms.                              |
 | EVENT_SHOW_LEGEND          | true    | Show (true) or hide (false) the event room legend.                           |
 | EVENT_UPDATE_FREQUENCY     | 5       | How often (in minutes) to update event data (0 = disabled).                  |
 | FILTER_LENGTH              | 500     | Hide social media posts which exceed this length (0 = disabled).             |

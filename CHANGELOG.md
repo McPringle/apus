@@ -14,6 +14,7 @@ For questions and support requests, please use
 ### New Features
 
 * Add configuration option to adjust event dates
+* Add configuration option to hide closed event rooms
 
 ### Fixed Bugs
 
