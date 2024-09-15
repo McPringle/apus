@@ -117,6 +117,7 @@ To modify the default configuration values, just specify environment variables w
 | DEMO_ROOM_COUNT            | 0       | Number of rooms for the event demo plugin (0 = disabled).                    |
 | DOAG_EVENT_API             | [1]     | The URL of the DOAG event API to read the conference agenda.                 |
 | DOAG_EVENT_ID              | 0       | The ID of the DOAG event to read the conference agenda (0 = disabled).       |
+| EVENT_DATE_ADJUST          |         | Adjust the date of the event in days, ISO-8601 formatted (empty = disabled). |
 | EVENT_NEXT_SESSION_TIMEOUT | 60      | Number of minutes a session is shown before it starts (0 = disabled).        |
 | EVENT_SHOW_LEGEND          | true    | Show (true) or hide (false) the event room legend.                           |
 | EVENT_UPDATE_FREQUENCY     | 5       | How often (in minutes) to update event data (0 = disabled).                  |
@@ -139,6 +140,19 @@ The environment variables will override the default values. Some default values 
 
 1. https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/
 2. https://sessionize.com/api/v2/%s/view/Sessions
+
+The `EVENT_DATE_ADJUST` option uses the ISO-8601 period formats PnYnMnD and PnW. Examples:
+
+| Example     | Description                                                  |
+|-------------|--------------------------------------------------------------|
+| `P5D`       | +5 days                                                      |
+| `P3M`       | +3 months                                                    |
+| `P2Y`       | +2 years                                                     |
+| `P4W`       | +4 weeks                                                     |
+| `P1Y2M3D`   | +1 year, +2 months, +3 days                                  |
+| `P1Y2M3W4D` | +1 year, +2 months, +25 days (3 weeks and 4 days)            |
+| `P-1Y2M`    | -1 year, +2 months (minus is valid for the year only)        |
+| `-P1Y2M`    | -1 year, -2 months (minus is valid for the whole expression) |
 
 #### Custom Styles
 

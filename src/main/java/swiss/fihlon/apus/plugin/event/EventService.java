@@ -29,6 +29,7 @@ import swiss.fihlon.apus.event.SessionImportException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,12 +44,14 @@ public final class EventService {
 
     private final List<EventPlugin> eventPlugins;
     private final ScheduledFuture<?> updateScheduler;
+    private final Period dateAdjust;
     private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
 
     public EventService(@NotNull final TaskScheduler taskScheduler,
                         @NotNull final Configuration configuration,
                         @NotNull final List<EventPlugin> eventPlugins) {
         this.eventPlugins = eventPlugins;
+        this.dateAdjust = configuration.getEvent().dateAdjust();
         if (isEnabled()) {
             updateSessions();
             final var updateFrequency = Duration.ofMinutes(configuration.getEvent().updateFrequency());
@@ -75,6 +78,7 @@ public final class EventService {
             final var sessions = eventPlugins.stream()
                     .filter(EventPlugin::isEnabled)
                     .flatMap(EventPlugin::getSessions)
+                    .map(this::dateAdjust)
                     .sorted()
                     .toList();
 
@@ -102,6 +106,22 @@ public final class EventService {
         } catch (final SessionImportException e) {
             LOGGER.error("Failed to import sessions: {}", e.getMessage());
         }
+    }
+
+    private Session dateAdjust(@NotNull final Session session) {
+        if (dateAdjust == null || dateAdjust.isZero()) {
+            return session;
+        }
+        return new Session(
+                session.id(),
+                session.startDate().plus(dateAdjust),
+                session.endDate().plus(dateAdjust),
+                session.room(),
+                session.title(),
+                session.speakers(),
+                session.language(),
+                session.track()
+        );
     }
 
     public Map<Room, List<Session>> getRoomsWithSessions() {

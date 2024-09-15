@@ -13,6 +13,8 @@ For questions and support requests, please use
 
 ### New Features
 
+* Add configuration option to adjust event dates
+
 ### Fixed Bugs
 
 * Fix agenda column width calculation

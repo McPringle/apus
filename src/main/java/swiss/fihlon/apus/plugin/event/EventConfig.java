@@ -17,5 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.event;
 
-public record EventConfig(int nextSessionTimeout, boolean showLegend, int updateFrequency) {
-}
+import java.time.Period;
+
+public record EventConfig(Period dateAdjust, int nextSessionTimeout, boolean showLegend, int updateFrequency) { }

@@ -51,7 +51,7 @@ class EventServiceTest {
     @BeforeAll
     static void mockConfiguration() {
         configurationMock = mock(Configuration.class);
-        when(configurationMock.getEvent()).thenReturn(new EventConfig(60, true, 0));
+        when(configurationMock.getEvent()).thenReturn(new EventConfig(null, 60, true, 0));
     }
 
     @Test

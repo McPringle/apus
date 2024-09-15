@@ -26,6 +26,11 @@
       "description": "The ID of the DOAG event to read the conference agenda."
     },
     {
+      "name": "apus.event.dateAdjust",
+      "type": "java.lang.String",
+      "description": "Adjust the date of the event in days (empty = disabled)."
+    },
+    {
       "name": "apus.event.nextSessionTimeout",
       "type": "java.lang.Integer",
       "description": "Number of minutes a session is shown before it starts."
@@ -98,12 +103,12 @@
     {
       "name": "apus.social.headline",
       "type": "java.lang.String",
-      "description" : "Overwrite the headline for social media posts."
+      "description": "Overwrite the headline for social media posts."
     },
     {
       "name": "apus.social.numberOfColumns",
       "type": "java.lang.Integer",
-      "description" : "How many columns to be used for social media posts."
+      "description": "How many columns to be used for social media posts."
     }
   ]
 }
