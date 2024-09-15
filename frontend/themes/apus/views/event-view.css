@@ -48,7 +48,7 @@
     margin-left: var(--lumo-space-s);
 }
 
-.room-container {
+#event-view .room-container {
     position: absolute;
     top: 57px;
     display: grid;
