@@ -16,6 +16,7 @@ For questions and support requests, please use
 * Add configuration option to adjust event dates
 * Add configuration option to hide closed event rooms
 * Display optional image below the event agenda
+* Add support for configuring multiple hashtags
 
 ### Fixed Bugs
 

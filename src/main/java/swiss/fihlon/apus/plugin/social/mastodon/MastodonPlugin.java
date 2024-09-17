@@ -42,7 +42,7 @@ public final class MastodonPlugin implements SocialPlugin {
 
     private final MastodonLoader mastodonLoader;
     private final String instance;
-    private final String hashtag;
+    private final String hashtags;
     private final boolean imagesEnabled;
     private final int imageLimit;
 
@@ -51,24 +51,31 @@ public final class MastodonPlugin implements SocialPlugin {
         this.mastodonLoader = mastodonLoader;
         final var mastodonConfig = configuration.getMastodon();
         this.instance = mastodonConfig.instance();
-        this.hashtag = mastodonConfig.hashtag();
+        this.hashtags = mastodonConfig.hashtags();
         this.imagesEnabled = mastodonConfig.imagesEnabled();
         this.imageLimit = mastodonConfig.imageLimit();
     }
 
     @Override
     public boolean isEnabled() {
-        return instance != null && !instance.isBlank() && hashtag != null && !hashtag.isBlank();
+        return instance != null && !instance.isBlank() && hashtags != null && !hashtags.isBlank();
     }
 
     @Override
     public Stream<Post> getPosts() {
         try {
-            LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
-            final List<Status> statuses = mastodonLoader.getStatuses(instance, hashtag);
-            LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", statuses.size(), hashtag, instance);
+            final List<Status> statuses = new ArrayList<>();
+            for (final String hashtag : hashtags.split(",")) {
+                if (hashtag.isBlank()) {
+                    continue;
+                }
+                LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
+                statuses.addAll(mastodonLoader.getStatuses(instance, hashtag.trim()));
+                LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", statuses.size(), hashtag, instance);
+            }
             return statuses.stream()
                     .map(this::convertToPost)
+                    .distinct()
                     .sorted();
         } catch (final MastodonException e) {
             LOGGER.error(e.getMessage(), e);

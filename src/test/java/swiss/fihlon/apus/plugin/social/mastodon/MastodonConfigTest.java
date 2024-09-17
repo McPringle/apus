@@ -37,7 +37,7 @@ class MastodonConfigTest {
         final var mastodonConfig = configuration.getMastodon();
         assertNotNull(mastodonConfig);
         assertEquals("ijug.social", mastodonConfig.instance());
-        assertEquals("java", mastodonConfig.hashtag());
+        assertEquals("java", mastodonConfig.hashtags());
         assertTrue(mastodonConfig.imagesEnabled());
         assertEquals(1, mastodonConfig.imageLimit());
     }

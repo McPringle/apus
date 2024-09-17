@@ -61,7 +61,7 @@ public final class SocialView extends Div {
 
         setId("social-view");
         if (configuration.getSocial().headline().isBlank()) {
-            add(new H2(getTranslation("social.heading", configuration.getMastodon().hashtag())));
+            add(new H2(getTranslation("social.heading", configuration.getMastodon().hashtags().split(",")[0])));
         } else {
             add(new H2(configuration.getSocial().headline()));
         }

@@ -81,9 +81,9 @@
       "description": "The URL of the database file for Java Forum Stuttgart."
     },
     {
-      "name": "apus.mastodon.hashtag",
+      "name": "apus.mastodon.hashtags",
       "type": "java.lang.String",
-      "description": "The hashtag for the Mastodon wall."
+      "description": "A list of comma separated hashtags for the Mastodon wall."
     },
     {
       "name": "apus.mastodon.imageLimit",

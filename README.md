@@ -131,7 +131,7 @@ To modify the default configuration values, just specify environment variables w
 | FILTER_SENSITIVE           | true    | Hide social media posts which contain sensitive information.                 |
 | FILTER_WORDS               |         | Hide social media posts which contain these words.                           |
 | JFS_DB_URL                 |         | The URL of the database file for Java Forum Stuttgart.                       |
-| MASTODON_HASHTAG           |         | The hashtag for the mastodon wall (empty = disabled).                        |
+| MASTODON_HASHTAGS          |         | A list of comma separated hashtags for the Mastodon wall (empty = disabled). |
 | MASTODON_IMAGE_LIMIT       | 1       | Limit number of images per post (0 = no limit).                              |
 | MASTODON_IMAGES_ENABLED    | true    | Enable or disable images in mastodon posts.                                  |
 | MASTODON_INSTANCE          |         | The Mastodon instance used to read the posts from (empty = disabled).        |
@@ -297,7 +297,7 @@ docker run \
     -e ADMIN_PASSWORD=sEcrEt \
     -e DEMO_ROOM_COUNT=12 \
     -e MASTODON_INSTANCE=mastodon.social \
-    -e MASTODON_HASHTAG=java \
+    -e MASTODON_HASHTAGS=java \
     -e TZ=CET \
     -d \
     --rm \

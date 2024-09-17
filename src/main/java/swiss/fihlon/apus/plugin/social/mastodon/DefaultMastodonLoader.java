@@ -31,10 +31,12 @@ import static social.bigbone.api.method.TimelineMethods.StatusOrigin.LOCAL_AND_R
 @Service
 public final class DefaultMastodonLoader implements MastodonLoader {
 
+    private static final int MASTODON_POST_RANGE_LIMIT = 30;
+
     @Override
     @NotNull public List<Status> getStatuses(@NotNull final String instance, @NotNull final String hashtag) throws MastodonException {
         final MastodonClient client = new MastodonClient.Builder(instance).build();
-        final Range range = new Range(null, null, null, 100);
+        final Range range = new Range(null, null, null, MASTODON_POST_RANGE_LIMIT);
         try {
             return client.timelines().getTagTimeline(hashtag, LOCAL_AND_REMOTE, range).execute().getPart();
         } catch (final BigBoneRequestException e) {
