@@ -194,15 +194,15 @@ Default values may change in newer versions of *Apus*. The custom styles of some
 
 ```
 --event-background-color: #9a1445;
---event-title-color: #000000;
---event-text-color: #000000;
+--event-title-color: #ffffff;
+--event-text-color: #ffffff;
 --event-running-session-color: #7248f0;
 --event-next-session-color: #7248f0;
 --event-closed-room-color: #7248f0;
 --event-room-border: 1px solid #000000;
 
 --social-background-color: #7248f0;
---social-title-color: #000000;
+--social-title-color: #ffffff;
 --social-text-color: #000000;
 --social-post-background-color: #ffffff;
 --social-post-border: 1px solid #000000;
