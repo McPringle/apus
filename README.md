@@ -200,6 +200,9 @@ Default values may change in newer versions of *Apus*. The custom styles of some
 --event-next-session-color: #7248f0;
 --event-closed-room-color: #7248f0;
 --event-room-border: 1px solid #000000;
+--event-image-border: 1px solid #000000;
+--event-image-width: 420px;
+--event-image-height: 420px;
 
 --social-background-color: #7248f0;
 --social-title-color: #ffffff;
