@@ -17,15 +17,32 @@
  */
 package swiss.fihlon.apus.event;
 
+import com.vaadin.flow.component.avatar.Avatar;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class SpeakerTest {
 
     @Test
     void fullName() {
         assertEquals("Speaker 1", new Speaker("Speaker 1").fullName());
+        assertEquals("Speaker 2", new Speaker("Speaker 2", null).fullName());
     }
 
+    @Test
+    void imageUrl() {
+        assertNull(new Speaker("").imageUrl());
+        assertNull(new Speaker("", null).imageUrl());
+        assertEquals("test.png", new Speaker("", "test.png").imageUrl());
+        assertEquals("https://foo.bar/test.png", new Speaker("", "https://foo.bar/test.png").imageUrl());
+    }
+
+    @Test
+    void avatar() {
+        final Avatar avatar = new Speaker("Speaker 1", "https://foo.bar/test.png").avatar();
+        assertEquals("Speaker 1", avatar.getName());
+        assertEquals("https://foo.bar/test.png", avatar.getImage());
+    }
 }

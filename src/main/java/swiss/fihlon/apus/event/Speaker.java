@@ -17,6 +17,18 @@
  */
 package swiss.fihlon.apus.event;
 
+import com.vaadin.flow.component.avatar.Avatar;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public record Speaker(@NotNull String fullName) { }
+public record Speaker(@NotNull String fullName, @Nullable String imageUrl) {
+
+    public Speaker(@NotNull String fullName) {
+        this(fullName, null);
+    }
+
+    public Avatar avatar() {
+        return new Avatar(fullName, imageUrl);
+    }
+
+}
