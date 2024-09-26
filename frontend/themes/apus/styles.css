@@ -40,6 +40,9 @@
     --social-post-border: 1px solid #909090;
     --social-post-column-count: 3;
 
+    --speaker-avatar-background-color: #ffffff;
+    --speaker-avatar-border: 1px solid #909090;
+
     background-color: #000000;
 }
 

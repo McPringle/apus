@@ -90,9 +90,7 @@ public final class RoomView extends Div {
         add(createSpeakersComponent());
         add(createRoomComponent());
         add(createTimeComponent());
-        if (track != null) {
-            add(createTrackComponent());
-        }
+        add(createImageComponent());
         addClassName(roomStyle.getCssStyle());
     }
 
@@ -164,10 +162,27 @@ public final class RoomView extends Div {
     }
 
     @NotNull
+    private Component createImageComponent() {
+        final var speakerAvatars = speakers.stream()
+                .filter(s -> s.imageUrl() != null && !s.imageUrl().isBlank())
+                .map(Speaker::avatar)
+                .toList();
+
+        if (speakerAvatars.isEmpty()) {
+            return createTrackComponent();
+        }
+
+        final var imageComponent = new Div();
+        imageComponent.addClassName("avatar");
+        imageComponent.add(speakerAvatars.getFirst());
+        return imageComponent;
+    }
+
+    @NotNull
     private Component createTrackComponent() {
         final var trackComponent = new Div();
         trackComponent.addClassName("track");
-        if (track != Track.NONE) {
+        if (track != null && track != Track.NONE) {
             final var trackImage = new Svg(track.svgCode());
             trackComponent.add(trackImage);
         }

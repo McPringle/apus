@@ -78,7 +78,7 @@ public final class DemoPlugin implements EventPlugin {
                     continue;
                 }
                 final Room fakeRoom = fakeRooms.get(numberOfRoom);
-                final Speaker fakeSpeaker = new Speaker(faker.name().fullName());
+                final Speaker fakeSpeaker = new Speaker(faker.name().fullName(), faker.avatar().image());
                 final Session fakeSession = new Session(String.format("DEMO-%d-%d", hourCount, numberOfRoom),
                         startDateTime, endDateTime, fakeRoom, faker.lorem().sentence(5), List.of(fakeSpeaker),
                         getRandomLanguage(), getRandomTrack());
