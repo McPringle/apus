@@ -19,11 +19,4 @@ package swiss.fihlon.apus.event;
 
 import org.jetbrains.annotations.NotNull;
 
-public record Speaker(@NotNull String fullName) implements Comparable<Speaker> {
-
-    @Override
-    public int compareTo(@NotNull final Speaker other) {
-        return fullName.compareTo(other.fullName);
-    }
-
-}
+public record Speaker(@NotNull String fullName) { }
