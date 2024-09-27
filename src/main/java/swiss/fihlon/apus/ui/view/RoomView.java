@@ -21,6 +21,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Svg;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.avatar.AvatarGroup;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
@@ -43,6 +44,8 @@ import java.util.stream.Collectors;
 
 @CssImport(value = "./themes/apus/views/room-view.css")
 public final class RoomView extends Div {
+
+    private static final int MAX_SPEAKER_AVATARS_PER_ROOM = 3;
 
     private final transient Room room;
     private final String title;
@@ -164,18 +167,18 @@ public final class RoomView extends Div {
     @NotNull
     private Component createImageComponent() {
         final var speakerAvatars = speakers.stream()
-                .filter(s -> s.imageUrl() != null && !s.imageUrl().isBlank())
-                .map(Speaker::avatar)
-                .toList();
+                .filter(speaker -> speaker.imageUrl() != null && !speaker.imageUrl().isBlank())
+                .map(speaker -> new AvatarGroup.AvatarGroupItem(speaker.fullName(), speaker.imageUrl()))
+                .toArray(AvatarGroup.AvatarGroupItem[]::new);
 
-        if (speakerAvatars.isEmpty()) {
+        if (speakerAvatars.length == 0) {
             return createTrackComponent();
         }
 
-        final var imageComponent = new Div();
-        imageComponent.addClassName("avatar");
-        imageComponent.add(speakerAvatars.getFirst());
-        return imageComponent;
+        final var avatarGroup = new AvatarGroup();
+        avatarGroup.setMaxItemsVisible(MAX_SPEAKER_AVATARS_PER_ROOM);
+        avatarGroup.add(speakerAvatars);
+        return avatarGroup;
     }
 
     @NotNull

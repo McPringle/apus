@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.event;
 
-import com.vaadin.flow.component.avatar.Avatar;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,10 +38,4 @@ class SpeakerTest {
         assertEquals("https://foo.bar/test.png", new Speaker("", "https://foo.bar/test.png").imageUrl());
     }
 
-    @Test
-    void avatar() {
-        final Avatar avatar = new Speaker("Speaker 1", "https://foo.bar/test.png").avatar();
-        assertEquals("Speaker 1", avatar.getName());
-        assertEquals("https://foo.bar/test.png", avatar.getImage());
-    }
 }
