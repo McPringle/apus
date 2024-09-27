@@ -39,7 +39,7 @@ class SessionizePluginTest {
     @Test
     void isEnabled() {
         final var configuration = mock(Configuration.class);
-        final var sessionizeConfig = new SessionizeConfig("1", "");
+        final var sessionizeConfig = new SessionizeConfig("1", "", "");
         when(configuration.getSessionize()).thenReturn(sessionizeConfig);
 
         final var sessionizePlugin = new SessionizePlugin(configuration);
@@ -49,7 +49,7 @@ class SessionizePluginTest {
     @Test
     void isDisabled() {
         final var configuration = mock(Configuration.class);
-        final var sessionizeConfig = new SessionizeConfig("0", "");
+        final var sessionizeConfig = new SessionizeConfig("0", "", "");
         when(configuration.getSessionize()).thenReturn(sessionizeConfig);
 
         final var sessionizePlugin = new SessionizePlugin(configuration);
@@ -59,7 +59,9 @@ class SessionizePluginTest {
     @Test
     void getSessions() {
         final var configuration = mock(Configuration.class);
-        final var sessionizeConfig = new SessionizeConfig("BBAD", "file:src/test/resources/sessionize.json?eventId=%s");
+        final var sessionizeConfig = new SessionizeConfig("BBAD",
+                "file:src/test/resources/sessionize.json?eventId=%s",
+                "file:src/test/resources/sessionize-speakers.json?eventId=%s");
         when(configuration.getSessionize()).thenReturn(sessionizeConfig);
 
         final var sessionizePlugin = new SessionizePlugin(configuration);
@@ -80,15 +82,19 @@ class SessionizePluginTest {
         assertEquals(new Room("Room A"), session.room());
         assertEquals("Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat", session.title());
         assertEquals(2, session.speakers().size());
-        assertEquals(new Speaker("Saul Goodman"), session.speakers().get(0));
-        assertEquals(new Speaker("Mike Ehrmantraut"), session.speakers().get(1));
+        assertEquals(new Speaker("Saul Goodman", "https://foo.bar/03415469-efed-4fde-b98c-b0e2db6225e7.png"),
+                session.speakers().get(0));
+        assertEquals(new Speaker("Mike Ehrmantraut", "https://foo.bar/0ad4f2e3-36c6-4093-b492-8098fa7e5560.png"),
+                session.speakers().get(1));
         assertEquals(Language.DE, session.language());
     }
 
     @Test
     void parseExceptionHandling() {
         final var configuration = mock(Configuration.class);
-        final var sessionizeConfig = new SessionizeConfig("1", "file:src/test/resources/sessionize-broken.json?eventId=%s");
+        final var sessionizeConfig = new SessionizeConfig("1",
+                "file:src/test/resources/sessionize-broken.json?eventId=%s",
+                "file:src/test/resources/sessionize-speakers.json?eventId=%s");
         when(configuration.getSessionize()).thenReturn(sessionizeConfig);
 
         final var sessionizePlugin = new SessionizePlugin(configuration);

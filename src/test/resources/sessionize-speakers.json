@@ -1,0 +1,47 @@
+[
+  {
+    "id": "e5da722a-b022-4556-b665-467e54baf9f4",
+    "fullName": "Walter White",
+    "profilePicture": "https://foo.bar/e5da722a-b022-4556-b665-467e54baf9f4.png"
+  },
+  {
+    "id": "2c9d3dc1-9f79-457f-b4b3-42ce42f6366a",
+    "fullName": "Jesse Pinkman",
+    "profilePicture": "https://foo.bar/2c9d3dc1-9f79-457f-b4b3-42ce42f6366a.png"
+  },
+  {
+    "id": "3ef92880-b80a-4305-b75c-35650d1259c8",
+    "fullName": "Gustavo Fring",
+    "profilePicture": "https://foo.bar/3ef92880-b80a-4305-b75c-35650d1259c8.png"
+  },
+  {
+    "id": "594c1b9a-bdfc-4d02-8045-65aa91a234ab",
+    "fullName": "Hank Schrader",
+    "profilePicture": "https://foo.bar/594c1b9a-bdfc-4d02-8045-65aa91a234ab.png"
+  },
+  {
+    "id": "03415469-efed-4fde-b98c-b0e2db6225e7",
+    "fullName": "Saul Goodman",
+    "profilePicture": "https://foo.bar/03415469-efed-4fde-b98c-b0e2db6225e7.png"
+  },
+  {
+    "id": "0ad4f2e3-36c6-4093-b492-8098fa7e5560",
+    "fullName": "Mike Ehrmantraut",
+    "profilePicture": "https://foo.bar/0ad4f2e3-36c6-4093-b492-8098fa7e5560.png"
+  },
+  {
+    "id": "2f4018fc-6f1a-484c-9297-383fb1a5c4ae",
+    "fullName": "Skyler White",
+    "profilePicture": "https://foo.bar/2f4018fc-6f1a-484c-9297-383fb1a5c4ae.png"
+  },
+  {
+    "id": "08aa10d6-848f-4458-80a8-f499295bd560",
+    "fullName": "Marie Schrader",
+    "profilePicture": "https://foo.bar/08aa10d6-848f-4458-80a8-f499295bd560.png"
+  },
+  {
+    "id": "4c1405e6-d193-49ff-b592-045adbf7f6fb",
+    "fullName": "Lydia Rodarte-Quayle",
+    "profilePicture": "https://foo.bar/4c1405e6-d193-49ff-b592-045adbf7f6fb.png"
+  }
+]

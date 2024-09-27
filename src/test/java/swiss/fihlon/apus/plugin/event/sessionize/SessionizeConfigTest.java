@@ -37,7 +37,7 @@ class SessionizeConfigTest {
         assertNotNull(sessionizeConfig);
         assertEquals("0", sessionizeConfig.eventId());
         assertEquals("https://sessionize.com/api/v2/%s/view/Sessions", sessionizeConfig.eventApi());
-        assertEquals("https://sessionize.com/api/v2/%s/view/Speaker", sessionizeConfig.speakerApi());
+        assertEquals("https://sessionize.com/api/v2/%s/view/Speakers", sessionizeConfig.speakerApi());
     }
 
 }

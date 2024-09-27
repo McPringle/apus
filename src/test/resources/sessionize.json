@@ -10,9 +10,11 @@
         "endsAt": "2024-01-01T10:00:00",
         "speakers": [
           {
+            "id": "e5da722a-b022-4556-b665-467e54baf9f4",
             "name": "Walter White"
           },
           {
+            "id": "2c9d3dc1-9f79-457f-b4b3-42ce42f6366a",
             "name": "Jesse Pinkman"
           }
         ],
@@ -37,9 +39,11 @@
         "endsAt": "2024-01-01T10:30:00",
         "speakers": [
           {
+            "id": "e5da722a-b022-4556-b665-467e54baf9f4",
             "name": "Walter White"
           },
           {
+            "id": "2c9d3dc1-9f79-457f-b4b3-42ce42f6366a",
             "name": "Jesse Pinkman"
           }
         ],
@@ -64,6 +68,7 @@
         "endsAt": "2024-01-02T19:45:00",
         "speakers": [
           {
+            "id": "3ef92880-b80a-4305-b75c-35650d1259c8",
             "name": "Gustavo Fring"
           }
         ],
@@ -88,6 +93,7 @@
         "endsAt": "2024-01-02T11:45:00",
         "speakers": [
           {
+            "id": "594c1b9a-bdfc-4d02-8045-65aa91a234ab",
             "name": "Hank Schrader"
           }
         ],
@@ -112,9 +118,11 @@
         "endsAt": "2024-01-03T19:45:00",
         "speakers": [
           {
+            "id": "03415469-efed-4fde-b98c-b0e2db6225e7",
             "name": "Saul Goodman"
           },
           {
+            "id": "0ad4f2e3-36c6-4093-b492-8098fa7e5560",
             "name": "Mike Ehrmantraut"
           }
         ],
@@ -139,6 +147,7 @@
         "endsAt": "2024-01-03T12:45:00",
         "speakers": [
           {
+            "id": "2f4018fc-6f1a-484c-9297-383fb1a5c4ae",
             "name": "Skyler White"
           }
         ],
@@ -163,6 +172,7 @@
         "endsAt": "2024-01-04T12:45:00",
         "speakers": [
           {
+            "id": "08aa10d6-848f-4458-80a8-f499295bd560",
             "name": "Marie Schrader"
           }
         ],
@@ -187,6 +197,7 @@
         "endsAt": "2024-01-04T14:45:00",
         "speakers": [
           {
+            "id": "4c1405e6-d193-49ff-b592-045adbf7f6fb",
             "name": "Lydia Rodarte-Quayle"
           }
         ],
