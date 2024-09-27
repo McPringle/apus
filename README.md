@@ -137,14 +137,16 @@ To modify the default configuration values, just specify environment variables w
 | MASTODON_INSTANCE          |         | The Mastodon instance used to read the posts from (empty = disabled).        |
 | SOCIAL_COLUMNS             | 3       | How many columns to be used for social media posts.                          |
 | SOCIAL_HEADLINE            |         | Overwrite the headline for social media posts (empty = don't overwrite).     |
-| SESSIONIZE_EVENT_API       | [2]     | The URL of the Sessionize event API to read the conference agenda.           |
+| SESSIONIZE_EVENT_API       | [2]     | The URL of the Sessionize API to read the conference agenda.                 |
 | SESSIONIZE_EVENT_ID        | 0       | The ID of the Sessionize event to read the conference agenda (0 = disabled). |
+| SESSIONIZE_SPEAKER_API     | [3]     | The URL of the Sessionize API to read the speaker information.               |
 | TZ                         | UTC     | The timezone used for date and time calculations.                            |
 
 The environment variables will override the default values. Some default values might be too long to be displayed in this table. They are marked with a number in square brackets and can be looked up in the following list:
 
 1. https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/
 2. https://sessionize.com/api/v2/%s/view/Sessions
+3. https://sessionize.com/api/v2/%s/view/Speakers
 
 The `EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` and `PnW`. Examples:
 

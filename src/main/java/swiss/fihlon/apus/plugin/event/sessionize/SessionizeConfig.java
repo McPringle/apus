@@ -17,5 +17,5 @@
  */
 package swiss.fihlon.apus.plugin.event.sessionize;
 
-public record SessionizeConfig(String eventId, String eventApi) {
+public record SessionizeConfig(String eventId, String eventApi, String speakerApi) {
 }

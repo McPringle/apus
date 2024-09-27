@@ -101,14 +101,19 @@
       "description": "The Mastodon instance used to read the posts from."
     },
     {
+      "name": "apus.sessionize.eventApi",
+      "type": "java.lang.String",
+      "description": "The URL of the Sessionize API to read the conference agenda."
+    },
+    {
       "name": "apus.sessionize.eventId",
       "type": "java.lang.String",
       "description": "The ID of the Sessionize event to read the conference agenda."
     },
     {
-      "name": "apus.sessionize.eventApi",
+      "name": "apus.sessionize.SpeakerApi",
       "type": "java.lang.String",
-      "description": "The URL of the Sessionize event API to read the conference agenda."
+      "description": "The URL of the Sessionize API to read the speaker information."
     },
     {
       "name": "apus.social.headline",
