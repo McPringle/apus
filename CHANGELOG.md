@@ -17,6 +17,7 @@ For questions and support requests, please use
 * Add configuration option to hide closed event rooms
 * Display optional image below the event agenda
 * Add support for configuring multiple hashtags
+* Add support for speaker pictures (overrides track icon)
 
 ### Fixed Bugs
 

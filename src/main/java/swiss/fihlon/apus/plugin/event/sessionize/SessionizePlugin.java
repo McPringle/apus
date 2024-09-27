@@ -38,6 +38,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 
@@ -51,10 +53,12 @@ public final class SessionizePlugin implements EventPlugin {
 
     private final String eventId;
     private final String eventApi;
+    private final String speakerApi;
 
     public SessionizePlugin(@NotNull final Configuration configuration) {
         this.eventId = configuration.getSessionize().eventId();
         this.eventApi = configuration.getSessionize().eventApi();
+        this.speakerApi = configuration.getSessionize().speakerApi();
     }
 
     @Override
@@ -64,7 +68,9 @@ public final class SessionizePlugin implements EventPlugin {
 
 
     @Override
-    @NotNull public Stream<Session> getSessions() {
+    @NotNull
+    public Stream<Session> getSessions() {
+        final Map<String, Speaker> allSpeakers = getAllSpeakers();
         final ArrayList<Session> sessions = new ArrayList<>();
         String lastSessionId = "";
         try {
@@ -74,7 +80,7 @@ public final class SessionizePlugin implements EventPlugin {
             for (int counter = 0; counter < sessionizeSessions.length(); counter++) {
                 final JSONObject sessionData = sessionizeSessions.getJSONObject(counter);
                 lastSessionId = sessionData.getString("id");
-                sessions.add(getSession(sessionData));
+                sessions.add(getSession(sessionData, allSpeakers));
             }
             LOGGER.info("Successfully loaded {} sessions for event ID {}", sessions.size(), eventId);
         } catch (IOException | URISyntaxException | JSONException e) {
@@ -83,12 +89,40 @@ public final class SessionizePlugin implements EventPlugin {
         return sessions.stream();
     }
 
-    private Session getSession(@NotNull final JSONObject sessionData) {
+    @NotNull
+    private Map<String, Speaker> getAllSpeakers() {
+        final Map<String, Speaker> allSpeakers = new HashMap<>();
+        String lastSpeakerId = "";
+        try {
+            final String json = DownloadUtil.getString(String.format(speakerApi, eventId));
+            final JSONArray speakerArray = new JSONArray(json);
+            for (int counter = 0; counter < speakerArray.length(); counter++) {
+                final JSONObject speakerData = speakerArray.getJSONObject(counter);
+                lastSpeakerId = speakerData.getString("id");
+                final String fullName = speakerData.getString("fullName");
+                final String profilePicture = speakerData.getString("profilePicture");
+                allSpeakers.put(lastSpeakerId, new Speaker(fullName, profilePicture));
+            }
+            LOGGER.info("Successfully loaded {} speakers for event ID {}", allSpeakers.size(), eventId);
+        } catch (IOException | URISyntaxException | JSONException e) {
+            throw new SessionImportException(String.format("Error parsing speaker %s: %s", lastSpeakerId, e.getMessage()), e);
+        }
+        return allSpeakers;
+    }
+
+    @NotNull
+    private Session getSession(@NotNull final JSONObject sessionData, @NotNull final Map<String, Speaker> allSpeakers) {
         final JSONArray speakersData = sessionData.getJSONArray("speakers");
-        final ArrayList<String> speakers = new ArrayList<>(speakersData.length());
+        final ArrayList<Speaker> speakers = new ArrayList<>(speakersData.length());
         for (int speakerCounter = 0; speakerCounter < speakersData.length(); speakerCounter++) {
             final JSONObject speakerData = speakersData.getJSONObject(speakerCounter);
-            speakers.add(speakerData.getString("name"));
+            final String speakerId = speakerData.getString("id");
+            final Speaker speaker = allSpeakers.get(speakerId);
+            if (speaker == null) {
+                throw new SessionImportException(String.format("Error parsing sessions: Can't find speaker with id %s!", speakerId));
+            } else {
+                speakers.add(speaker);
+            }
         }
 
         return new Session(
@@ -97,11 +131,12 @@ public final class SessionizePlugin implements EventPlugin {
                 LocalDateTime.parse(sessionData.getString("endsAt")),
                 new Room(sessionData.getString("room")),
                 sessionData.getString("title"),
-                speakers.stream().map(Speaker::new).toList(),
+                speakers,
                 getLanguage(sessionData),
                 Track.NONE);
     }
 
+    @NotNull
     private Language getLanguage(@NotNull final JSONObject singleSession) {
         final JSONArray categories = singleSession.getJSONArray("categories");
         for (int categoryCounter = 0; categoryCounter < categories.length(); categoryCounter++) {

@@ -21,6 +21,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class SessionImportException extends RuntimeException {
 
+    public SessionImportException(@NotNull final String message) {
+        super(message);
+    }
+
     public SessionImportException(@NotNull final String message, @NotNull final Exception e) {
         super(message, e);
     }
