@@ -58,6 +58,12 @@
     float: left;
     width: 376px;
     height: 47px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .room-view .title img.language {
