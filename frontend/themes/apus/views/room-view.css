@@ -89,7 +89,7 @@
     width: 40px;
 }
 
-.room-view .avatar vaadin-avatar-group vaadin-avatar {
+.room-view .avatar vaadin-avatar {
     background-color: var(--speaker-avatar-background-color);
     border: var(--speaker-avatar-border);
 }
