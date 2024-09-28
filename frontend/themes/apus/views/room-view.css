@@ -71,15 +71,19 @@
 }
 
 .room-view .track svg,
-.room-view vaadin-avatar-group vaadin-avatar {
+.room-view .avatar .avatar-group {
+    display: inline-block;
     position: absolute;
     bottom: 0;
     right: 0;
+}
+
+.room-view .track svg {
     height: 40px;
     width: 40px;
 }
 
-.room-view vaadin-avatar-group vaadin-avatar {
+.room-view .avatar vaadin-avatar-group vaadin-avatar {
     background-color: var(--speaker-avatar-background-color);
     border: var(--speaker-avatar-border);
 }
