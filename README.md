@@ -189,8 +189,8 @@ The following table contains the CSS variables you can modify to change the user
 | --social-text-color               | #262626           | The color for the text of the social wall.                         |
 | --social-post-background-color    | #ffffff           | The color for the background of social posts.                      |
 | --social-post-border              | 1px solid #909090 | The border for the social posts.                                   |
-| --speaker-avatar-background-color | #ffffff           | The color for the background of speaker avatars.                   |
-| --speaker-avatar-border           | 1px solid #909090 | The border for the speaker avatars.                                |
+| --speaker-avatar-background-color | transparent       | The color for the background of speaker avatars.                   |
+| --speaker-avatar-border           | none              | The border for the speaker avatars.                                |
 
 Default values may change in newer versions of *Apus*. The custom styles of some events are documented below.
 
@@ -214,8 +214,8 @@ Default values may change in newer versions of *Apus*. The custom styles of some
 --social-post-background-color: #ffffff;
 --social-post-border: 1px solid #000000;
 
---speaker-avatar-background-color: #ffffff;
---speaker-avatar-border: 1px solid #000000;
+--speaker-avatar-background-color: transparent;
+--speaker-avatar-border: none;
 ```
 
 #### Java Forum Stuttgart
