@@ -424,6 +424,15 @@ Special thanks for all these wonderful people who had helped this project so far
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/patlecat"><img src="https://avatars.githubusercontent.com/u/422020?v=4?s=100" width="100px;" alt="patlecat"/><br /><sub><b>patlecat</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=patlecat" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/haladamateusz"><img src="https://avatars.githubusercontent.com/u/26378632?v=4?s=100" width="100px;" alt="Mateusz Halada"/><br /><sub><b>Mateusz Halada</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=haladamateusz" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/leem53"><img src="https://avatars.githubusercontent.com/u/45996424?v=4?s=100" width="100px;" alt="Lennart"/><br /><sub><b>Lennart</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=leem53" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"></td>
+      <td align="center" valign="top" width="14.28%"></td>
+      <td align="center" valign="top" width="14.28%"></td>
+      <td align="center" valign="top" width="14.28%"></td>
+      <td align="center" valign="top" width="14.28%"></td>
+      <td align="center" valign="top" width="14.28%"></td>
+    </tr>
   </tbody>
 </table>
 
