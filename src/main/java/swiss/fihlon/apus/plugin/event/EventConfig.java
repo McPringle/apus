@@ -19,5 +19,5 @@ package swiss.fihlon.apus.plugin.event;
 
 import java.time.Period;
 
-public record EventConfig(Period dateAdjust, String image, int nextSessionTimeout, boolean showClosedRooms, boolean showLegend,
-                          int updateFrequency) { }
+public record EventConfig(Period dateAdjust, int demoRoomCount, String image, int nextSessionTimeout, boolean showClosedRooms,
+                          boolean showLegend, int updateFrequency) { }

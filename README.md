@@ -117,10 +117,10 @@ To modify the default configuration values, just specify environment variables w
 |----------------------------|---------|------------------------------------------------------------------------------|
 | ADMIN_PASSWORD             |         | The hashed password to get admin access (empty = disabled).                  |
 | CUSTOM_STYLES              |         | Inject custom styles into the user interface (see explanations below).       |
-| DEMO_ROOM_COUNT            | 0       | Number of rooms for the event demo plugin (0 = disabled).                    |
 | DOAG_EVENT_API             | [1]     | The URL of the DOAG event API to read the conference agenda.                 |
 | DOAG_EVENT_ID              | 0       | The ID of the DOAG event to read the conference agenda (0 = disabled).       |
 | EVENT_DATE_ADJUST          |         | Adjust the date of the event in days, ISO-8601 formatted (empty = disabled). |
+| EVENT_DEMO_ROOM_COUNT      | 0       | Number of rooms for the event demo plugin (0 = disabled).                    |
 | EVENT_IMAGE_URL            |         | The URL of the image to be shown below the event agenda (empty = no image).  |
 | EVENT_NEXT_SESSION_TIMEOUT | 60      | Number of minutes a session is shown before it starts (0 = disabled).        |
 | EVENT_SHOW_CLOSED_ROOMS    | true    | Show (true) or hide (false) closed event rooms.                              |
