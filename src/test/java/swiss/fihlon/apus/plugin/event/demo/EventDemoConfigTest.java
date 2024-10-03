@@ -17,4 +17,23 @@
  */
 package swiss.fihlon.apus.plugin.event.demo;
 
-public record DemoConfig(int roomCount) { }
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import swiss.fihlon.apus.configuration.Configuration;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+class EventDemoConfigTest {
+
+    @Autowired
+    private Configuration configuration;
+
+    @Test
+    void testDemoEventConfig() {
+        final var eventConfig = configuration.getEvent();
+        assertNotNull(eventConfig);
+        assertEquals(-1, eventConfig.demoRoomCount());
+    }
+}

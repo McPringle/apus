@@ -11,11 +11,6 @@
       "description": "Inject custom styles into the user interface."
     },
     {
-      "name": "apus.demo.roomCount",
-      "type": "java.lang.Integer",
-      "description": "Number of rooms for the event demo plugin."
-    },
-    {
       "name": "apus.doag.eventApi",
       "type": "java.lang.String",
       "description": "The URL of the DOAG event API to read the conference agenda."
@@ -29,6 +24,11 @@
       "name": "apus.event.dateAdjust",
       "type": "java.lang.String",
       "description": "Adjust the date of the event in days (empty = disabled)."
+    },
+    {
+      "name": "apus.event.demoRoomCount",
+      "type": "java.lang.Integer",
+      "description": "Number of rooms for the event demo plugin."
     },
     {
       "name": "apus.event.image",

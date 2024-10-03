@@ -40,7 +40,7 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 @Service
-public final class DemoPlugin implements EventPlugin {
+public final class EventDemoPlugin implements EventPlugin {
 
     private static final Locale LOCALE = Locale.getDefault();
     private static final Random RANDOM = new Random();
@@ -49,8 +49,8 @@ public final class DemoPlugin implements EventPlugin {
     private final int roomCount;
     private final List<Session> sessions;
 
-    public DemoPlugin(@NotNull final Configuration configuration) {
-        roomCount = configuration.getDemo().roomCount();
+    public EventDemoPlugin(@NotNull final Configuration configuration) {
+        roomCount = configuration.getEvent().demoRoomCount();
         sessions = roomCount > 0 ? createFakeSessions() : List.of();
     }
 

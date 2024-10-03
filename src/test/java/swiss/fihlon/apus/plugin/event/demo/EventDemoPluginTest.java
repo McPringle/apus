@@ -20,6 +20,7 @@ package swiss.fihlon.apus.plugin.event.demo;
 import org.junit.jupiter.api.Test;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.event.Session;
+import swiss.fihlon.apus.plugin.event.EventConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,35 +28,38 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class DemoPluginTest {
+class EventDemoPluginTest {
 
     @Test
     void isEnabled() {
+        final var eventConfig = mock(EventConfig.class);
+        when(eventConfig.demoRoomCount()).thenReturn(1);
         final var configuration = mock(Configuration.class);
-        final var demoEventConfig = new DemoConfig(1);
-        when(configuration.getDemo()).thenReturn(demoEventConfig);
+        when(configuration.getEvent()).thenReturn(eventConfig);
 
-        final var demoEventPlugin = new DemoPlugin(configuration);
+        final var demoEventPlugin = new EventDemoPlugin(configuration);
         assertTrue(demoEventPlugin.isEnabled());
     }
 
     @Test
     void isDisabled() {
+        final var eventConfig = mock(EventConfig.class);
+        when(eventConfig.demoRoomCount()).thenReturn(0);
         final var configuration = mock(Configuration.class);
-        final var demoEventConfig = new DemoConfig(0);
-        when(configuration.getDemo()).thenReturn(demoEventConfig);
+        when(configuration.getEvent()).thenReturn(eventConfig);
 
-        final var demoEventPlugin = new DemoPlugin(configuration);
+        final var demoEventPlugin = new EventDemoPlugin(configuration);
         assertFalse(demoEventPlugin.isEnabled());
     }
 
     @Test
     void getSessions() {
+        final var eventConfig = mock(EventConfig.class);
+        when(eventConfig.demoRoomCount()).thenReturn(1);
         final var configuration = mock(Configuration.class);
-        final var demoEventConfig = new DemoConfig(1);
-        when(configuration.getDemo()).thenReturn(demoEventConfig);
+        when(configuration.getEvent()).thenReturn(eventConfig);
 
-        final var demoEventPlugin = new DemoPlugin(configuration);
+        final var demoEventPlugin = new EventDemoPlugin(configuration);
         final var sessions = demoEventPlugin.getSessions().toList();
         assertEquals(24, sessions.size());
 
