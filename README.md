@@ -136,6 +136,7 @@ To modify the default configuration values, just specify environment variables w
 | MASTODON_IMAGES_ENABLED    | true    | Enable or disable images in mastodon posts.                                  |
 | MASTODON_INSTANCE          |         | The Mastodon instance used to read the posts from (empty = disabled).        |
 | SOCIAL_COLUMNS             | 3       | How many columns to be used for social media posts.                          |
+| SOCIAL_DEMO_POST_COUNT     | 0       | Number of posts for the social demo plugin (0 = disabled).                   |
 | SOCIAL_HEADLINE            |         | Overwrite the headline for social media posts (empty = don't overwrite).     |
 | SESSIONIZE_EVENT_API       | [2]     | The URL of the Sessionize API to read the conference agenda.                 |
 | SESSIONIZE_EVENT_ID        | 0       | The ID of the Sessionize event to read the conference agenda (0 = disabled). |

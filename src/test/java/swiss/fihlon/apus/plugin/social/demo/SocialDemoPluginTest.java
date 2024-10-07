@@ -18,6 +18,8 @@
 package swiss.fihlon.apus.plugin.social.demo;
 
 import org.junit.jupiter.api.Test;
+import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.SocialConfig;
 import swiss.fihlon.apus.social.Post;
 
 import java.util.List;
@@ -25,25 +27,48 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class SocialDemoPluginTest {
 
     @Test
     void isEnabled() {
-        final var socialDemoPlugin = new SocialDemoPlugin();
-        assertTrue(socialDemoPlugin.isEnabled());
+        final var socialConfig = mock(SocialConfig.class);
+        when(socialConfig.demoPostCount()).thenReturn(1);
+        final var configuration = mock(Configuration.class);
+        when(configuration.getSocial()).thenReturn(socialConfig);
+
+        final var demoSocialPlugin = new SocialDemoPlugin(configuration);
+        assertTrue(demoSocialPlugin.isEnabled());
+    }
+
+    @Test
+    void isDisabled() {
+        final var socialConfig = mock(SocialConfig.class);
+        when(socialConfig.demoPostCount()).thenReturn(0);
+        final var configuration = mock(Configuration.class);
+        when(configuration.getSocial()).thenReturn(socialConfig);
+
+        final var demoSocialPlugin = new SocialDemoPlugin(configuration);
+        assertTrue(demoSocialPlugin.isEnabled());
     }
 
     @Test
     void getPosts() {
-        final var socialDemoPlugin = new SocialDemoPlugin();
+        final var socialConfig = mock(SocialConfig.class);
+        when(socialConfig.demoPostCount()).thenReturn(1);
+        final var configuration = mock(Configuration.class);
+        when(configuration.getSocial()).thenReturn(socialConfig);
+
+        final var socialDemoPlugin = new SocialDemoPlugin(configuration);
         final List<Post> posts = socialDemoPlugin.getPosts().toList();
 
         assertNotNull(posts);
-        assertEquals(30, posts.size());
+        assertEquals(1, posts.size());
 
         final var firstPost = posts.getFirst();
-        assertEquals("DEMO-ID-1", firstPost.id());
+        assertEquals("SOCIAL-DEMO-ID-1", firstPost.id());
         assertTrue(firstPost.author().trim().length() > 5);
         assertTrue(firstPost.avatar().startsWith("https://"));
         assertTrue(firstPost.profile().contains("@"));

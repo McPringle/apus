@@ -20,6 +20,7 @@ package swiss.fihlon.apus.plugin.social.demo;
 import net.datafaker.Faker;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
+import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.plugin.social.SocialPlugin;
 import swiss.fihlon.apus.social.Post;
 
@@ -36,6 +37,12 @@ public final class SocialDemoPlugin implements SocialPlugin {
     private static final Locale LOCALE = Locale.getDefault();
     private static final Random RANDOM = new Random();
 
+    private final int postCount;
+
+    public SocialDemoPlugin(@NotNull final Configuration configuration) {
+        this.postCount = configuration.getSocial().demoPostCount();
+    }
+
     @Override
     public boolean isEnabled() {
         return true;
@@ -45,7 +52,7 @@ public final class SocialDemoPlugin implements SocialPlugin {
     public Stream<Post> getPosts() {
         final Faker faker = new Faker(LOCALE, RANDOM);
         final var posts = new ArrayList<Post>();
-        for (int number = 1; number <= 30; number++) {
+        for (int number = 1; number <= postCount; number++) {
             posts.add(
                     new Post(generateId(number),
                             getRandomDateTime(),
@@ -86,6 +93,6 @@ public final class SocialDemoPlugin implements SocialPlugin {
     }
 
     private static @NotNull String generateId(final int number) {
-        return String.format("DEMO-ID-%d", number);
+        return String.format("SOCIAL-DEMO-ID-%d", number);
     }
 }
