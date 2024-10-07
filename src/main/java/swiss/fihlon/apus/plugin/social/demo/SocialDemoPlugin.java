@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
@@ -46,9 +45,9 @@ public final class SocialDemoPlugin implements SocialPlugin {
     public Stream<Post> getPosts() {
         final Faker faker = new Faker(LOCALE, RANDOM);
         final var posts = new ArrayList<Post>();
-        for (int i = 0; i < 30; i++) {
+        for (int number = 1; number <= 30; number++) {
             posts.add(
-                    new Post(generateId(),
+                    new Post(generateId(number),
                             getRandomDateTime(),
                             getRandomAuthor(faker),
                             getRandomAvatar(faker),
@@ -86,7 +85,7 @@ public final class SocialDemoPlugin implements SocialPlugin {
         return LocalDateTime.now().minusMinutes(RANDOM.nextLong(10_000));
     }
 
-    private static @NotNull String generateId() {
-        return UUID.randomUUID().toString();
+    private static @NotNull String generateId(final int number) {
+        return String.format("DEMO-ID-%d", number);
     }
 }
