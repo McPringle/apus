@@ -123,7 +123,7 @@ To modify the default configuration values, just specify environment variables w
 | EVENT_DEMO_ROOM_COUNT      | 0       | Number of rooms for the event demo plugin (0 = disabled).                    |
 | EVENT_IMAGE_URL            |         | The URL of the image to be shown below the event agenda (empty = no image).  |
 | EVENT_NEXT_SESSION_TIMEOUT | 60      | Number of minutes a session is shown before it starts (0 = disabled).        |
-| EVENT_SHOW_CLOSED_ROOMS    | true    | Show (true) or hide (false) closed event rooms.                              |
+| EVENT_SHOW_EMPTY_ROOMS     | true    | Show (true) or hide (false) empty event rooms.                               |
 | EVENT_SHOW_LEGEND          | true    | Show (true) or hide (false) the event room legend.                           |
 | EVENT_UPDATE_FREQUENCY     | 5       | How often (in minutes) to update event data (0 = disabled).                  |
 | FILTER_LENGTH              | 500     | Hide social media posts which exceed this length (0 = disabled).             |
