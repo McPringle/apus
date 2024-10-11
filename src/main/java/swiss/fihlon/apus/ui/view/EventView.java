@@ -51,6 +51,7 @@ public final class EventView extends Div {
     private final transient EventService eventService;
     private final Duration nextSessionTimeout;
     private final boolean showLegend;
+    private final boolean showClosedRooms;
     private final Div roomContainer = new Div();
     private final Span legend = new Span();
 
@@ -60,6 +61,7 @@ public final class EventView extends Div {
         this.eventService = eventService;
         this.nextSessionTimeout = Duration.ofMinutes(configuration.getEvent().nextSessionTimeout());
         this.showLegend = configuration.getEvent().showLegend();
+        this.showClosedRooms = configuration.getEvent().showClosedRooms();
         setId("event-view");
         add(createTitle());
         if (showLegend) {
@@ -91,6 +93,9 @@ public final class EventView extends Div {
         final var roomStylesInUse = new HashSet<RoomStyle>();
         for (final Map.Entry<Room, List<Session>> roomWithSession : roomsWithSessions) {
             final RoomView roomView = createRoomView(roomWithSession, today);
+            if (!showClosedRooms && RoomStyle.EMPTY.equals(roomView.getRoomStyle())) {
+                continue; // don't show empty rooms when configured to do so
+            }
             roomStylesInUse.add(roomView.getRoomStyle());
             roomContainer.add(roomView);
         }

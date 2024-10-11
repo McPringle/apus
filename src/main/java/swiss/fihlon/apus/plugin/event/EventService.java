@@ -45,7 +45,6 @@ public final class EventService {
     private final List<EventPlugin> eventPlugins;
     private final ScheduledFuture<?> updateScheduler;
     private final Period dateAdjust;
-    private final boolean showClosedRooms;
     private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
 
     public EventService(@NotNull final TaskScheduler taskScheduler,
@@ -53,7 +52,6 @@ public final class EventService {
                         @NotNull final List<EventPlugin> eventPlugins) {
         this.eventPlugins = eventPlugins;
         this.dateAdjust = configuration.getEvent().dateAdjust();
-        this.showClosedRooms = configuration.getEvent().showClosedRooms();
         if (isEnabled()) {
             updateSessions();
             final var updateFrequency = Duration.ofMinutes(configuration.getEvent().updateFrequency());
@@ -103,9 +101,6 @@ public final class EventService {
             }
 
             synchronized (this) {
-                if (!showClosedRooms) {
-                    newRoomsWithSessions.entrySet().removeIf(entry -> entry.getValue().isEmpty());
-                }
                 roomsWithSessions = newRoomsWithSessions;
             }
         } catch (final SessionImportException e) {
