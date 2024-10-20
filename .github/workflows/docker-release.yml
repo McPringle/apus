@@ -4,7 +4,7 @@ on:
   # This can be used to automatically publish releases
   release:
     types: [published]
-  # This can be used to allow manually triggering nightlies from the web interface
+  # This can be used to allow manually triggering releases from the web interface
   workflow_dispatch:
 
 jobs:
@@ -18,6 +18,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
+
+      - name: Install Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Build with Maven
+        run: ./mvnw clean package -Pproduction -e
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -38,5 +47,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: mcpringle/apus:${{ github.event.release.tag_name }}
-          platforms: linux/amd64
-#          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64
