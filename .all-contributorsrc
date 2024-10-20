@@ -149,6 +149,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "RomeoIndiaJulietUniform",
+      "name": "RIJU MONDAL",
+      "avatar_url": "https://avatars.githubusercontent.com/u/157402485?v=4",
+      "profile": "https://github.com/RomeoIndiaJulietUniform",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
