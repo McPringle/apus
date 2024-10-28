@@ -336,7 +336,7 @@ Modify this command according your needs and consult the [configuration section]
 
 | Plugin                     | Supported Events                             |
 |----------------------------|----------------------------------------------|
-| `DemoPlugin`               | Creates fake session data for demo purposes. |
+| `EventDemoPlugin`          | Creates fake session data for demo purposes. |
 | `DoagPlugin`               | CloudLand, CyberLand, JavaLand, KI Navigator |
 | `JavaForumStuttgartPlugin` | Java Forum Stuttgart                         |
 | `SessionizePlugin`         | BaselOne, Java Forum Nord                    |
@@ -347,11 +347,12 @@ Plugins for other events are planned.
 
 *Apus* uses a simple plugin technology to import posts from various social media services. Plugins are currently available for the following services:
 
-| Plugin           | Supported Services |
-|------------------|--------------------|
-| `MastodonPlugin` | Mastodon           |
+| Plugin             | Supported Services                          |
+|--------------------|---------------------------------------------|
+| `MastodonPlugin`   | Mastodon                                    |
+| `SocialDemoPlugin` | Creates fake social posts for demo purposes |
 
-Plugins for other social media services are planned.
+Plugins for more social media services are planned.
 
 ### Plugin Development
 
