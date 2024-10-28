@@ -7,6 +7,12 @@ For questions and support requests, please use
 
 ---
 
+## Version 5
+
+**Release date: work in progress 🚧**
+
+---
+
 ## Version 4
 
 **Release date: 2024-10-28**
