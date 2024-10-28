@@ -9,7 +9,7 @@ For questions and support requests, please use
 
 ## Version 4
 
-**Release date: work in progress 🚧**
+**Release date: 2024-10-28**
 
 ### New Features
 
@@ -18,14 +18,20 @@ For questions and support requests, please use
 * Display optional image below the event agenda
 * Add support for configuring multiple hashtags
 * Add support for speaker pictures (overrides track icon)
+* Add social demo plugin for demo and testing purposes
+* Release docker images for ARM processors
 
 ### Fixed Bugs
 
 * Fix agenda column width calculation
+* Fix session view with very long titles
+* Fix hide empty room setting
 
 ### Maintenance Work
 
 * Upgrade dependencies
+* Fix linter warnings
+* Add test coverage monitoring
 
 ---
 
