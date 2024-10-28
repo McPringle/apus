@@ -56,7 +56,7 @@ See:
 | Feature                   | Status    |
 |---------------------------|-----------|
 | Running text with updates | - TODO -  |
-| Show sponsor information  | - TODO -  |
+| Show sponsor information  | SUPPORTED |
 | Use event based styling   | SUPPORTED |
 
 ## Build
