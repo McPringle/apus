@@ -17,6 +17,7 @@
  */
 package swiss.fihlon.apus.plugin.social.mastodon;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import social.bigbone.api.entity.Status;
 
@@ -24,6 +25,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DefaultMastodonLoaderTest {
 
@@ -33,4 +35,11 @@ class DefaultMastodonLoaderTest {
         assertNotNull(statuses);
         assertFalse(statuses.isEmpty());
     }
+
+    @Test
+    @Disabled
+    void throwException() {
+        assertThrows(MastodonException.class, () -> new DefaultMastodonLoader().getStatuses("non.existent.server", "java"));
+    }
+
 }

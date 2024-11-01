@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import social.bigbone.MastodonClient;
 import social.bigbone.api.Range;
 import social.bigbone.api.entity.Status;
-import social.bigbone.api.exception.BigBoneRequestException;
 
 import java.util.List;
 
@@ -35,11 +34,11 @@ public final class DefaultMastodonLoader implements MastodonLoader {
 
     @Override
     @NotNull public List<Status> getStatuses(@NotNull final String instance, @NotNull final String hashtag) throws MastodonException {
-        final MastodonClient client = new MastodonClient.Builder(instance).build();
-        final Range range = new Range(null, null, null, MASTODON_POST_RANGE_LIMIT);
         try {
+            final MastodonClient client = new MastodonClient.Builder(instance).build();
+            final Range range = new Range(null, null, null, MASTODON_POST_RANGE_LIMIT);
             return client.timelines().getTagTimeline(hashtag, LOCAL_AND_REMOTE, range).execute().getPart();
-        } catch (final BigBoneRequestException e) {
+        } catch (final Exception e) {
             throw new MastodonException(String.format("Unable to load posts with hashtag '%s' from Mastodon instance '%s'", hashtag, instance), e);
         }
     }
