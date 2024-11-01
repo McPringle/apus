@@ -23,7 +23,7 @@ import swiss.fihlon.apus.ui.KaribuTest;
 
 import static com.github.mvysny.kaributesting.v10.LocatorJ._assertOne;
 
-class SocialWallViewTest extends KaribuTest {
+class SocialWallViewIT extends KaribuTest {
 
     @Test
     @SuppressWarnings("java:S2699") // flase positiv: Karibu assertions are not recognized
