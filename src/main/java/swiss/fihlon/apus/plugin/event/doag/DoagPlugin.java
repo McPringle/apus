@@ -148,7 +148,7 @@ public final class DoagPlugin implements EventPlugin {
         for (final String language : List.of(defaultLanguage, "de", "en")) {
             try {
                 final String title = slot.getJSONObject("title").getString(language);
-                if (title != null && !title.isBlank()) {
+                if (!title.isBlank()) {
                     return title;
                 }
             } catch (final JSONException e) {
