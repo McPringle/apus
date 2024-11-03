@@ -19,7 +19,11 @@ package swiss.fihlon.apus.util;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class HtmlUtilTest {
 
@@ -53,6 +57,15 @@ class HtmlUtilTest {
                 HtmlUtil.extractText("<p style=\"color: red;\">Test</p>"));
         assertEquals("Test >>>Test<<< Test",
                 HtmlUtil.extractText("Test </p>>>>Test<<<<p> Test"));
+    }
+
+    @Test
+    void expectExceptionCallingConstructor() throws Exception {
+        final Constructor<HtmlUtil> constructor = HtmlUtil.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        final var exception = assertThrows(InvocationTargetException.class, constructor::newInstance).getTargetException();
+        assertEquals(IllegalStateException.class, exception.getClass());
+        assertEquals("Utility classes can't be instantiated!", exception.getMessage());
     }
 
 }

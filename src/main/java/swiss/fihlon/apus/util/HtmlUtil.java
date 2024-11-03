@@ -40,7 +40,7 @@ public final class HtmlUtil {
     }
 
     private HtmlUtil() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException("Utility classes can't be instantiated!");
     }
 
 }

@@ -19,6 +19,11 @@ package swiss.fihlon.apus.util;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DownloadUtilTest {
@@ -28,6 +33,15 @@ class DownloadUtilTest {
         final String string = DownloadUtil.getString("file:src/test/resources/DOAG.json");
         assertTrue(string.startsWith("{"));
         assertTrue(string.endsWith("}"));
+    }
+
+    @Test
+    void expectExceptionCallingConstructor() throws Exception {
+        final Constructor<DownloadUtil> constructor = DownloadUtil.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        final var exception = assertThrows(InvocationTargetException.class, constructor::newInstance).getTargetException();
+        assertEquals(IllegalStateException.class, exception.getClass());
+        assertEquals("Utility classes can't be instantiated!", exception.getMessage());
     }
 
 }

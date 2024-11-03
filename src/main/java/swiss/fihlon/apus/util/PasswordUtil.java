@@ -33,7 +33,7 @@ public final class PasswordUtil {
     }
 
     private PasswordUtil() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException("Utility classes can't be instantiated!");
     }
 
 }

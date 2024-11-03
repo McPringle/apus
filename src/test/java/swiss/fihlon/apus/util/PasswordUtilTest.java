@@ -19,7 +19,12 @@ package swiss.fihlon.apus.util;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PasswordUtilTest {
@@ -63,6 +68,15 @@ class PasswordUtilTest {
         assertTrue(PasswordUtil.matches(rawPassword, hashedPassword3));
         assertTrue(PasswordUtil.matches(rawPassword, hashedPassword4));
         assertTrue(PasswordUtil.matches(rawPassword, hashedPassword5));
+    }
+
+    @Test
+    void expectExceptionCallingConstructor() throws Exception {
+        final Constructor<PasswordUtil> constructor = PasswordUtil.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        final var exception = assertThrows(InvocationTargetException.class, constructor::newInstance).getTargetException();
+        assertEquals(IllegalStateException.class, exception.getClass());
+        assertEquals("Utility classes can't be instantiated!", exception.getMessage());
     }
 
 }
