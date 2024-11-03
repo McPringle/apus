@@ -21,13 +21,25 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SessionImportExceptionTest {
 
     @Test
     @SuppressWarnings("java:S5778")
-    void testException() {
+    void testExceptionWithMessage() {
+        final var exception = assertThrows(SessionImportException.class, () -> {
+            throw new SessionImportException("Session Import Exception");
+        });
+        assertInstanceOf(SessionImportException.class, exception);
+        assertEquals("Session Import Exception", exception.getMessage());
+        assertNull(exception.getCause());
+    }
+
+    @Test
+    @SuppressWarnings("java:S5778")
+    void testExceptionWithMessageAndCause() {
         final var exception = assertThrows(SessionImportException.class, () -> {
             throw new SessionImportException("Session Import Exception", new RuntimeException("Runtime Exception"));
         });
