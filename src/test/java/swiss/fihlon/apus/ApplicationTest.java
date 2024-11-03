@@ -21,12 +21,19 @@ import org.apache.commons.cli.ParseException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.MockedStatic;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.SpringApplication;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.times;
 
+@ExtendWith(MockitoExtension.class)
 class ApplicationTest {
 
     private final PrintStream standardOut = System.out;
@@ -84,4 +91,20 @@ class ApplicationTest {
         assertTrue(out.contains("Hash password and exit"));
     }
 
+    @Test
+    void testMainCallsSpring() throws ParseException {
+        final String[] args = new String[2];
+        args[0] = "foo";
+        args[1] = "bar";
+
+        try (MockedStatic<SpringApplication> springApplication = mockStatic(SpringApplication.class)) {
+            springApplication.when(() -> SpringApplication.run(Application.class, args))
+                    .thenReturn(null);
+            springApplication.verify(() -> SpringApplication.run(Application.class, args),
+                    times(0));
+            Application.main(args);
+            springApplication.verify(() -> SpringApplication.run(Application.class, args),
+                    times(1));
+        }
+    }
 }
