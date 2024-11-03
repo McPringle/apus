@@ -86,12 +86,25 @@ class DoagPluginTest {
     }
 
     @Test
-    void parseExceptionHandling() {
+    void exceptionWithBrokenTitle() {
         final var configuration = mock(Configuration.class);
-        final var doagConfig = new DoagConfig(1, "file:src/test/resources/DOAG-broken.json?eventId=%d");
+        final var doagConfig = new DoagConfig(1, "file:src/test/resources/DOAG-broken-title.json?eventId=%d");
         when(configuration.getDoag()).thenReturn(doagConfig);
 
         final var doagPlugin = new DoagPlugin(configuration);
-        assertThrows(SessionImportException.class, doagPlugin::getSessions);
+        final var exception = assertThrows(SessionImportException.class, doagPlugin::getSessions);
+        assertEquals("Error parsing slot 1: No title with language 'de' or 'en' for session '1'", exception.getMessage());
     }
+
+    @Test
+    void exceptionWithBlankTitle() {
+        final var configuration = mock(Configuration.class);
+        final var doagConfig = new DoagConfig(1, "file:src/test/resources/DOAG-blank-title.json?eventId=%d");
+        when(configuration.getDoag()).thenReturn(doagConfig);
+
+        final var doagPlugin = new DoagPlugin(configuration);
+        final var exception = assertThrows(SessionImportException.class, doagPlugin::getSessions);
+        assertEquals("Error parsing slot 1: No title with language 'de' or 'en' for session '1'", exception.getMessage());
+    }
+
 }

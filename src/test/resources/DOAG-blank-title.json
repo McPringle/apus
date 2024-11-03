@@ -1,0 +1,38 @@
+{
+  "schedule": {
+    "base_url": "https://meine.doag.org/",
+    "conference": {
+      "acronym": "BBAD",
+      "title": "Braking Bad",
+      "days": [
+        {
+          "date": "2024-01-01",
+          "rooms": {
+            "Room A": [
+              {
+                "id": 1,
+                "start": "09:45",
+                "duration": "00:15",
+                "language": [
+                  "de"
+                ],
+                "title": {
+                  "en": ""
+                },
+                "type": "lecture",
+                "persons": [
+                  {
+                    "public_name": "Walter White"
+                  },
+                  {
+                    "public_name": "Jesse Pinkman"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
