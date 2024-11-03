@@ -53,7 +53,7 @@ class EventDemoPluginTest {
     }
 
     @Test
-    void getSessions() {
+    void getSessionsForOneRoom() {
         final var eventConfig = mock(EventConfig.class);
         when(eventConfig.demoRoomCount()).thenReturn(1);
         final var configuration = mock(Configuration.class);
@@ -67,5 +67,28 @@ class EventDemoPluginTest {
         assertEquals(24, sessions.stream().map(Session::id).distinct().count());
         assertEquals(24, sessions.stream().flatMap(session -> session.speakers().stream()).distinct().count());
         assertEquals(1, sessions.stream().map(Session::room).distinct().count());
+    }
+
+    /**
+     * This test is run with three rooms. The plugin creates closed rooms
+     * (rooms without a session) every even hour in every even room number.
+     * Therefore, with 3 rooms we'll end up with 60 sessions instead of 72.
+     * 12 session slots not assigned (see `continue` statement in plugin).
+     */
+    @Test
+    void getSessionsForMultipleRooms() {
+        final var eventConfig = mock(EventConfig.class);
+        when(eventConfig.demoRoomCount()).thenReturn(3);
+        final var configuration = mock(Configuration.class);
+        when(configuration.getEvent()).thenReturn(eventConfig);
+
+        final var demoEventPlugin = new EventDemoPlugin(configuration);
+        final var sessions = demoEventPlugin.getSessions().toList();
+        assertEquals(60, sessions.size());
+
+        // no duplicate ids and speaker, exactly 240 entries (three rooms, each hour one session for 24 hours)
+        assertEquals(60, sessions.stream().map(Session::id).distinct().count());
+        assertEquals(60, sessions.stream().flatMap(session -> session.speakers().stream()).distinct().count());
+        assertEquals(3, sessions.stream().map(Session::room).distinct().count());
     }
 }
