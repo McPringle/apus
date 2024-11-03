@@ -45,6 +45,8 @@ public final class EventDemoPlugin implements EventPlugin {
     private static final Locale LOCALE = Locale.getDefault();
     private static final Random RANDOM = new Random();
     private static final int AROUND_THE_CLOCK = 24;
+    private static final List<Track> DEFAULT_TRACKS =
+            List.of(Track.ARCHITECTURE, Track.CLOUD, Track.CORE, Track.INFRASTRUCTURE, Track.SECURITY, Track.TOOLS);
 
     private final int roomCount;
     private final List<Session> sessions;
@@ -110,14 +112,6 @@ public final class EventDemoPlugin implements EventPlugin {
     }
 
     private @NotNull Track getRandomTrack() {
-        return switch (RANDOM.nextInt(6)) {
-            case 0 -> Track.ARCHITECTURE;
-            case 1 -> Track.CLOUD;
-            case 2 -> Track.CORE;
-            case 3 -> Track.INFRASTRUCTURE;
-            case 4 -> Track.SECURITY;
-            case 5 -> Track.TOOLS;
-            default -> Track.NONE;
-        };
+        return DEFAULT_TRACKS.get(RANDOM.nextInt(DEFAULT_TRACKS.size()));
     }
 }
