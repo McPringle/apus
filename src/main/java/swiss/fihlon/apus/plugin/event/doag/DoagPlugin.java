@@ -155,7 +155,7 @@ public final class DoagPlugin implements EventPlugin {
                 // skip and try next language
             }
         }
-        throw new JSONException(String.format("No title with language 'de' or 'en' for session '%s'", slot.getString("id")));
+        throw new JSONException(String.format("No title with language 'de' or 'en' for session '%s'", slot.getInt("id")));
     }
 
     private Duration parseDuration(@NotNull final String duration) {
