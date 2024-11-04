@@ -18,17 +18,13 @@
 package swiss.fihlon.apus.social;
 
 import org.junit.jupiter.api.Test;
-import swiss.fihlon.apus.event.Language;
-import swiss.fihlon.apus.event.Room;
-import swiss.fihlon.apus.event.Session;
-import swiss.fihlon.apus.event.Speaker;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PostTest {
 
@@ -42,18 +38,24 @@ class PostTest {
         final var postFour = new Post("P4", now.minusHours(3), "", "", "", "", List.of(), false, false);
         final var postFive = new Post("P5", now.minusHours(4), "", "", "", "", List.of(), false, false);
         final var postSix = new Post("P6", now.minusHours(5), "", "", "", "", List.of(), false, false);
+        final var postSeven = new Post("P7", now.minusHours(6), "", "", "", "", List.of(), false, false);
+        final var postEight = new Post("P8", now.minusHours(6), "", "", "", "", List.of(), false, false);
 
         final var unsortedPosts = new ArrayList<>(List.of(postTwo, postSix, postThree, postFour, postFive, postOne));
         Collections.shuffle(unsortedPosts);
-        final var sortedPosts = unsortedPosts.stream().sorted().toList();
-        System.out.println(sortedPosts);
 
-        assertEquals(postOne, sortedPosts.get(0));
+        unsortedPosts.add(postEight); // P8 before P7
+        unsortedPosts.add(postSeven); // both have the same date and time
+
+        final var sortedPosts = unsortedPosts.stream().sorted().toList();
+        assertEquals(postOne, sortedPosts.get(0)); // P1 to P6 ordered by date and time
         assertEquals(postTwo, sortedPosts.get(1));
         assertEquals(postThree, sortedPosts.get(2));
         assertEquals(postFour, sortedPosts.get(3));
         assertEquals(postFive, sortedPosts.get(4));
         assertEquals(postSix, sortedPosts.get(5));
+        assertEquals(postSeven, sortedPosts.get(6)); // P7 before P8, order by ID
+        assertEquals(postEight, sortedPosts.get(7)); // both have the same date and time
     }
 
     @Test
