@@ -21,9 +21,7 @@ import org.apache.commons.cli.ParseException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.SpringApplication;
 
 import java.io.ByteArrayOutputStream;
@@ -33,7 +31,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 
-@ExtendWith(MockitoExtension.class)
 class ApplicationTest {
 
     private final PrintStream standardOut = System.out;
