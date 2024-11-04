@@ -122,7 +122,7 @@ class EventServiceTest {
         new EventService(new NoOpTaskScheduler(), configurationMock, List.of(new ExceptionEventPlugin()));
         memoryAppender.stop();
 
-        final int errorCount = memoryAppender.search("Failed to import sessions", Level.ERROR).size();
+        final int errorCount = memoryAppender.searchMessages("Failed to import sessions", Level.ERROR).size();
         assertEquals(1, errorCount);
     }
 

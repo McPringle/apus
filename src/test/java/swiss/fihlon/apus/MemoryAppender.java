@@ -30,7 +30,7 @@ public final class MemoryAppender extends ListAppender<ILoggingEvent> {
         this.list.clear();
     }
 
-    public List<ILoggingEvent> search(final String string, final Level level) {
+    public List<ILoggingEvent> searchMessages(final String string, final Level level) {
         return this.list.stream()
           .filter(event -> event.getMessage().contains(string)
             && event.getLevel().equals(level))
