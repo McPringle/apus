@@ -21,7 +21,6 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.support.NoOpTaskScheduler;
@@ -34,6 +33,7 @@ import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
@@ -47,22 +47,18 @@ import static org.mockito.Mockito.when;
 
 class EventServiceTest {
 
-    private static Configuration configurationMock;
-
-    @BeforeAll
-    static void mockConfiguration() {
-        final var eventConfig = new EventConfig(Period.ZERO, 0, "", 60,
+    static Configuration mockConfiguration(@NotNull final Period dateAdjust) {
+        final var eventConfig = new EventConfig(dateAdjust, 0, "", 60,
                 true, true, 0);
-        configurationMock = mock(Configuration.class);
-        when(configurationMock.getEvent()).thenReturn(eventConfig);
+        final var configuration = mock(Configuration.class);
+        when(configuration.getEvent()).thenReturn(eventConfig);
+        return configuration;
     }
 
     @Test
     void getRoomsWithSessions() {
-
         // TestEventPlugin creates a shuffled list of sessions...
-
-        final EventService eventService = new EventService(new NoOpTaskScheduler(), configurationMock, List.of(new TestEventPlugin()));
+        final EventService eventService = new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ZERO), List.of(new TestEventPlugin()));
 
         // ...which is sorted and grouped by the EventService.
         final var roomsWithSessions = eventService.getRoomsWithSessions();
@@ -89,12 +85,24 @@ class EventServiceTest {
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
-        final var eventService = new EventService(new NoOpTaskScheduler(), configurationMock, List.of(new DisabledEventPlugin()));
+        final var eventService = new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ZERO), List.of(new DisabledEventPlugin()));
         eventService.stopUpdateScheduler();
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.searchMessages("No event plugin is enabled. No agenda will be displayed.", Level.WARN).size();
         assertEquals(1, errorCount);
+    }
+
+    @Test
+    void getSessionsWithDateAdjust() {
+        final var expectedDate = LocalDate.now().plusDays(10);
+        final var eventService = new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ofDays(10)), List.of(new NowEventPlugin()));
+        final var roomsWithSessions = eventService.getRoomsWithSessions();
+        for (final var sessions : roomsWithSessions.values()) {
+            for (final var session : sessions) {
+                assertEquals(expectedDate, session.startDate().toLocalDate());
+            }
+        }
     }
 
     /*
@@ -138,7 +146,7 @@ class EventServiceTest {
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
-        new EventService(new NoOpTaskScheduler(), configurationMock, List.of(new ExceptionEventPlugin()));
+        new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ZERO), List.of(new ExceptionEventPlugin()));
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.searchMessages("Failed to import sessions", Level.ERROR).size();
@@ -169,6 +177,29 @@ class EventServiceTest {
         @Override
         public @NotNull Stream<Session> getSessions() {
             throw new SessionImportException("This method should never be called", new RuntimeException());
+        }
+
+    }
+
+    static final class NowEventPlugin implements EventPlugin {
+
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
+
+        @Override
+        public @NotNull Stream<Session> getSessions() {
+            final var id = "TEST-0";
+            final var startDate = LocalDateTime.now();
+            final var endDate = startDate.plusHours(1);
+            final var room = new Room("Room X");
+            final var title = "Test Session";
+            final var speakers = List.of(new Speaker("Speaker 1"));
+            final var language = Language.EN;
+            final var track = Track.NONE;
+            final var session = new Session(id, startDate, endDate, room, title, speakers, language, track);
+            return Stream.of(session);
         }
 
     }
