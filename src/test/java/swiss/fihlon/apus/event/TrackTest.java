@@ -1,13 +1,16 @@
 package swiss.fihlon.apus.event;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.LoggerContext;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.slf4j.LoggerFactory;
+import swiss.fihlon.apus.MemoryAppender;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
@@ -56,22 +59,21 @@ class TrackTest {
 
     @Test
     void customTrackLogException() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        final var standardOut = System.out;
-        final var outputStreamCaptor = new ByteArrayOutputStream();
+        final MemoryAppender memoryAppender = new MemoryAppender();
+        memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
+        @SuppressWarnings("LoggerInitializedWithForeignClass") final Logger logger = (Logger) LoggerFactory.getLogger(Track.class);
+        logger.addAppender(memoryAppender);
 
-        try {
-            System.setOut(new PrintStream(outputStreamCaptor));
+        memoryAppender.start();
+        final Method defaultTrackMethod = Track.class.getDeclaredMethod("defaultTrack", String.class);
+        defaultTrackMethod.setAccessible(true);
+        final var track = defaultTrackMethod.invoke(String.class, "non-existing-file.svg");
+        assertEquals(Track.NONE, track);
+        memoryAppender.stop();
 
-            final Method defaultTrackMethod = Track.class.getDeclaredMethod("defaultTrack", String.class);
-            defaultTrackMethod.setAccessible(true);
-            final var track = defaultTrackMethod.invoke(String.class, "non-existing-file.svg");
-            assertEquals(Track.NONE, track);
-
-            final String out = outputStreamCaptor.toString();
-            assertTrue(out.contains("Unable to load default track icon 'non-existing-file.svg':"));
-        } finally {
-            System.setOut(standardOut);
-        }
+        final int errorCount = memoryAppender.searchFormattedMessages(
+                "Unable to load default track icon 'non-existing-file.svg':", Level.ERROR).size();
+        assertEquals(1, errorCount);
     }
 
 }
