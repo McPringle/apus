@@ -105,6 +105,21 @@ class EventServiceTest {
         }
     }
 
+    @Test
+    void importExceptionHandling() {
+        final MemoryAppender memoryAppender = new MemoryAppender();
+        memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
+        @SuppressWarnings("LoggerInitializedWithForeignClass") final Logger logger = (Logger) LoggerFactory.getLogger(EventService.class);
+        logger.addAppender(memoryAppender);
+
+        memoryAppender.start();
+        new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ZERO), List.of(new ExceptionEventPlugin()));
+        memoryAppender.stop();
+
+        final int errorCount = memoryAppender.searchMessages("Failed to import sessions", Level.ERROR).size();
+        assertEquals(1, errorCount);
+    }
+
     /*
      * This is the test data creator.
      */
@@ -136,21 +151,6 @@ class EventServiceTest {
             return new Session(id, startDate, endDate, room, title, speakers, language, track);
         }
 
-    }
-
-    @Test
-    void importExceptionHandling() {
-        final MemoryAppender memoryAppender = new MemoryAppender();
-        memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
-        final Logger logger = (Logger) LoggerFactory.getLogger(EventService.class);
-        logger.addAppender(memoryAppender);
-
-        memoryAppender.start();
-        new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ZERO), List.of(new ExceptionEventPlugin()));
-        memoryAppender.stop();
-
-        final int errorCount = memoryAppender.searchMessages("Failed to import sessions", Level.ERROR).size();
-        assertEquals(1, errorCount);
     }
 
     static final class ExceptionEventPlugin implements EventPlugin {
