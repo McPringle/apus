@@ -109,7 +109,7 @@ public final class EventService {
     }
 
     private Session dateAdjust(@NotNull final Session session) {
-        if (dateAdjust == null || dateAdjust.isZero()) {
+        if (dateAdjust.isZero()) {
             return session;
         }
         return new Session(

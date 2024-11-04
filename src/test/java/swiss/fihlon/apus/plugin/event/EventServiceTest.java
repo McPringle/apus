@@ -35,6 +35,7 @@ import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,8 +51,10 @@ class EventServiceTest {
 
     @BeforeAll
     static void mockConfiguration() {
+        final var eventConfig = new EventConfig(Period.ZERO, 0, "", 60,
+                true, true, 0);
         configurationMock = mock(Configuration.class);
-        when(configurationMock.getEvent()).thenReturn(new EventConfig(null, 0, null, 60, true, true, 0));
+        when(configurationMock.getEvent()).thenReturn(eventConfig);
     }
 
     @Test
