@@ -1,11 +1,17 @@
 package swiss.fihlon.apus.event;
 
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,6 +20,19 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TrackTest {
+
+    private final PrintStream standardOut = System.out;
+    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+
+    @BeforeEach
+    public void setUp() {
+        System.setOut(new PrintStream(outputStreamCaptor));
+    }
+
+    @AfterEach
+    public void tearDown() {
+        System.setOut(standardOut);
+    }
 
     @Test
     void noneTrack() {
@@ -48,6 +67,17 @@ class TrackTest {
     void customTrack() {
         final Track testee = new Track("testSvgCode");
         assertEquals("testSvgCode", testee.svgCode());
+    }
+
+    @Test
+    void customTrackLogException() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        final Method defaultTrackMethod = Track.class.getDeclaredMethod("defaultTrack", String.class);
+        defaultTrackMethod.setAccessible(true);
+        final var track = defaultTrackMethod.invoke(String.class, "non-existing-file.svg");
+        assertEquals(Track.NONE, track);
+
+        final String out = outputStreamCaptor.toString();
+        assertTrue(out.contains("Unable to load default track icon 'non-existing-file.svg':"));
     }
 
 }
