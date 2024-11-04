@@ -78,6 +78,22 @@ class EventServiceTest {
         assertEquals("TEST-1", room1.getFirst().id());
     }
 
+    @Test
+    void noEventPluginEnabled() {
+        final MemoryAppender memoryAppender = new MemoryAppender();
+        memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
+        @SuppressWarnings("LoggerInitializedWithForeignClass") final Logger logger = (Logger) LoggerFactory.getLogger(EventService.class);
+        logger.addAppender(memoryAppender);
+
+        memoryAppender.start();
+        final var eventService = new EventService(new NoOpTaskScheduler(), configurationMock, List.of(new DisabledEventPlugin()));
+        eventService.stopUpdateScheduler();
+        memoryAppender.stop();
+
+        final int errorCount = memoryAppender.searchMessages("No event plugin is enabled. No agenda will be displayed.", Level.WARN).size();
+        assertEquals(1, errorCount);
+    }
+
     /*
      * This is the test data creator.
      */
@@ -136,6 +152,20 @@ class EventServiceTest {
         @Override
         public @NotNull Stream<Session> getSessions() {
             throw new SessionImportException("This is a test", new RuntimeException());
+        }
+
+    }
+
+    static final class DisabledEventPlugin implements EventPlugin {
+
+        @Override
+        public boolean isEnabled() {
+            return false;
+        }
+
+        @Override
+        public @NotNull Stream<Session> getSessions() {
+            throw new SessionImportException("This method should never be called", new RuntimeException());
         }
 
     }
