@@ -17,15 +17,20 @@
  */
 package swiss.fihlon.apus.plugin.social.mastodon;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.LoggerContext;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.slf4j.LoggerFactory;
 import social.bigbone.PrecisionDateTime;
 import social.bigbone.api.entity.Account;
 import social.bigbone.api.entity.MediaAttachment;
 import social.bigbone.api.entity.Status;
+import swiss.fihlon.apus.MemoryAppender;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.social.Post;
 
@@ -97,10 +102,30 @@ class MastodonPluginTest {
         assertEquals("http://localhost/image1.webp", firstPost.images().getFirst());
     }
 
+    @Test
+    void getPostsCatchesException() {
+        final var configuration = mock(Configuration.class);
+        when(configuration.getMastodon()).thenReturn(
+                new MastodonConfig("localhost", "broken", true, 0));
+
+        final MemoryAppender memoryAppender = new MemoryAppender();
+        memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
+        @SuppressWarnings("LoggerInitializedWithForeignClass") final Logger logger = (Logger) LoggerFactory.getLogger(MastodonPlugin.class);
+        logger.addAppender(memoryAppender);
+
+        memoryAppender.start();
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
+        mastodonPlugin.getPosts();
+        memoryAppender.stop();
+
+        final int errorCount = memoryAppender.searchMessages("This is an expected exception.", Level.ERROR).size();
+        assertEquals(1, errorCount);
+    }
+
     private static final class TestMastodonLoader implements MastodonLoader {
 
         @Override
-        @NotNull public List<Status> getStatuses(@NotNull String instance, @NotNull String hashtag) {
+        @NotNull public List<Status> getStatuses(@NotNull String instance, @NotNull String hashtag) throws MastodonException {
             if (hashtag.equals("foobar")) {
                 return List.of(
                         createStatus(1),
@@ -109,6 +134,8 @@ class MastodonPluginTest {
                         createStatus(4),
                         createStatus(5)
                 );
+            } else if (hashtag.equals("broken")) {
+                throw new MastodonException("This is an expected exception.", new RuntimeException("This is a faked cause."));
             }
             return List.of();
         }
