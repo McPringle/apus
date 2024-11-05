@@ -51,10 +51,17 @@ class MastodonPluginTest {
 
     private static Stream<Arguments> provideDataForDisabledTest() {
         return Stream.of(
+                Arguments.of(null, null),
+                Arguments.of(null, ""),
+                Arguments.of("", null),
                 Arguments.of("", ""),
+                Arguments.of(" ", null),
+                Arguments.of(null, " "),
                 Arguments.of(" ", " "),
+                Arguments.of(null, "foobar"),
                 Arguments.of("", "foobar"),
                 Arguments.of(" ", "foobar"),
+                Arguments.of("localhost", null),
                 Arguments.of("localhost", ""),
                 Arguments.of("localhost", " ")
         );
