@@ -162,8 +162,11 @@ class MastodonPluginTest {
         assertNotNull(posts);
         assertEquals(5, posts.size());
 
+        final var firstPost = posts.getFirst();
+        assertEquals("http://localhost/image1b.webp", firstPost.images().getFirst());
+
         for (final Post post : posts) {
-            assertEquals(2, post.images().size());
+            assertEquals(1, post.images().size());
         }
     }
 
