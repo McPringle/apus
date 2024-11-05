@@ -5,6 +5,7 @@ import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
+import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -78,6 +80,29 @@ class JavaForumStuttgartPluginTest {
         assertEquals(new Speaker("Saul Goodman"), session.speakers().get(0));
         assertEquals(new Speaker("Mike Ehrmantraut"), session.speakers().get(1));
         assertEquals(Language.UNKNOWN, session.language());
+    }
+
+    @Test
+    void throwsExceptionWithNonExistingDatabase() {
+        final var configuration = mock(Configuration.class);
+        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/non-existing.db");
+        when(configuration.getJfs()).thenReturn(jfsConfig);
+
+        final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);
+        final var exception = assertThrows(SessionImportException.class, () -> jfsPlugin.getSessions().toList());
+        assertTrue(exception.getMessage().startsWith("Error downloading database file from 'file:src/test/resources/non-existing.db': "));
+    }
+
+
+    @Test
+    void throwsExceptionWithEmptyDatabase() {
+        final var configuration = mock(Configuration.class);
+        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/jfs-empty.db");
+        when(configuration.getJfs()).thenReturn(jfsConfig);
+
+        final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);
+        final var exception = assertThrows(SessionImportException.class, () -> jfsPlugin.getSessions().toList());
+        assertTrue(exception.getMessage().startsWith("Error importing session data for Java Forum Stuttgart: "));
     }
 
 }
