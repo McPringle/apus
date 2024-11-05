@@ -23,6 +23,7 @@ import social.bigbone.api.entity.Status;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,9 +38,10 @@ class DefaultMastodonLoaderTest {
     }
 
     @Test
-    @Disabled
     void throwException() {
-        assertThrows(MastodonException.class, () -> new DefaultMastodonLoader().getStatuses("non.existent.server", "java"));
+        final var exception = assertThrows(MastodonException.class,
+                () -> new DefaultMastodonLoader().getStatuses("non.existent.server", "java"));
+        assertEquals("Unable to load posts with hashtag 'java' from Mastodon instance 'non.existent.server'", exception.getMessage());
     }
 
 }
