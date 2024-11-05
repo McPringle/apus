@@ -89,7 +89,7 @@ class MastodonPluginTest {
     }
 
     @Test
-    void getPosts() {
+    void getPostsWithUnlimitedImages() {
         final var configuration = mock(Configuration.class);
         when(configuration.getMastodon()).thenReturn(
                 new MastodonConfig("localhost", "foobar,foo,,bar", true, 0));
@@ -105,8 +105,66 @@ class MastodonPluginTest {
         assertEquals("Display Name 1", firstPost.author());
         assertEquals("Avatar 1", firstPost.avatar());
         assertEquals("profile1@localhost", firstPost.profile());
-        assertEquals(1, firstPost.images().size());
-        assertEquals("http://localhost/image1.webp", firstPost.images().getFirst());
+        assertEquals("http://localhost/image1a.webp", firstPost.images().getFirst());
+        assertEquals("http://localhost/image1b.webp", firstPost.images().get(1));
+
+        for (final Post post : posts) {
+            assertEquals(2, post.images().size());
+        }
+    }
+
+    @Test
+    void getPostsWithOneImage() {
+        final var configuration = mock(Configuration.class);
+        when(configuration.getMastodon()).thenReturn(
+                new MastodonConfig("localhost", "foobar", true, 1));
+
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
+        final List<Post> posts = mastodonPlugin.getPosts().toList();
+
+        assertNotNull(posts);
+        assertEquals(5, posts.size());
+
+        final var firstPost = posts.getFirst();
+        assertEquals("http://localhost/image1a.webp", firstPost.images().getFirst());
+
+        for (final Post post : posts) {
+            assertEquals(1, post.images().size());
+        }
+    }
+
+    @Test
+    void getPostsWithoutImages() {
+        final var configuration = mock(Configuration.class);
+        when(configuration.getMastodon()).thenReturn(
+                new MastodonConfig("localhost", "foobar", false, 0));
+
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
+        final List<Post> posts = mastodonPlugin.getPosts().toList();
+
+        assertNotNull(posts);
+        assertEquals(5, posts.size());
+
+        for (final Post post : posts) {
+            assertEquals(0, post.images().size());
+        }
+    }
+
+    @Test
+    void getPostsWithInvalidImageTypes() {
+        final var configuration = mock(Configuration.class);
+        when(configuration.getMastodon()).thenReturn(
+                new MastodonConfig("localhost", "invalidImageType", true, 0));
+
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
+        final List<Post> posts = mastodonPlugin.getPosts().toList();
+
+        assertNotNull(posts);
+        assertEquals(5, posts.size());
+
+        for (final Post post : posts) {
+            assertEquals(2, post.images().size());
+        }
     }
 
     @Test
@@ -135,11 +193,19 @@ class MastodonPluginTest {
         @NotNull public List<Status> getStatuses(@NotNull String instance, @NotNull String hashtag) throws MastodonException {
             if (hashtag.equals("foobar")) {
                 return List.of(
-                        createStatus(1),
-                        createStatus(2),
-                        createStatus(3),
-                        createStatus(4),
-                        createStatus(5)
+                        createStatus(1, false),
+                        createStatus(2, false),
+                        createStatus(3, false),
+                        createStatus(4, false),
+                        createStatus(5, false)
+                );
+            } else if (hashtag.equals("invalidImageType")) {
+                return List.of(
+                        createStatus(1, true),
+                        createStatus(2, true),
+                        createStatus(3, true),
+                        createStatus(4, true),
+                        createStatus(5, true)
                 );
             } else if (hashtag.equals("broken")) {
                 throw new MastodonException("This is an expected exception.", new RuntimeException("This is a faked cause."));
@@ -147,7 +213,7 @@ class MastodonPluginTest {
             return List.of();
         }
 
-        private Status createStatus(final int i) {
+        private Status createStatus(final int i, boolean invalidImageType) {
             final Account account = mock(Account.class);
             when(account.getDisplayName()).thenReturn("Display Name " + i);
             when(account.getAvatar()).thenReturn("Avatar " + i);
@@ -156,18 +222,21 @@ class MastodonPluginTest {
             final PrecisionDateTime createdAt = mock(PrecisionDateTime.class);
             when(createdAt.mostPreciseOrFallback(any())).thenReturn(Instant.now().minus(i, ChronoUnit.MINUTES));
 
-            final MediaAttachment mediaAttachment = mock(MediaAttachment.class);
-            when(mediaAttachment.getType()).thenReturn(MediaAttachment.MediaType.IMAGE);
-            when(mediaAttachment.getUrl()).thenReturn("http://localhost/image" + i + ".webp");
-            final List<MediaAttachment> mediaAttachments = List.of(mediaAttachment);
+            final MediaAttachment mediaAttachmentA = mock(MediaAttachment.class);
+            when(mediaAttachmentA.getType()).thenReturn(invalidImageType ? MediaAttachment.MediaType.VIDEO : MediaAttachment.MediaType.IMAGE);
+            when(mediaAttachmentA.getUrl()).thenReturn("http://localhost/image" + i + "a.webp");
+            final MediaAttachment mediaAttachmentB = mock(MediaAttachment.class);
+            when(mediaAttachmentB.getType()).thenReturn(MediaAttachment.MediaType.IMAGE);
+            when(mediaAttachmentB.getUrl()).thenReturn("http://localhost/image" + i + "b.webp");
+            final List<MediaAttachment> mediaAttachments = List.of(mediaAttachmentA, mediaAttachmentB);
 
             final Status status = mock(Status.class);
             when(status.getId()).thenReturn("ID " + i);
-            when(status.getAccount()).thenReturn(account);
+            when(status.getAccount()).thenReturn(i == 1 ? account : null);
             when(status.getCreatedAt()).thenReturn(createdAt);
             when(status.getContent()).thenReturn("Content for post #" + i);
             when(status.getMediaAttachments()).thenReturn(mediaAttachments);
-            when(status.getInReplyToId()).thenReturn(null);
+            when(status.getInReplyToId()).thenReturn(i == 1 ? null : " ");
             when(status.isSensitive()).thenReturn(false);
             return status;
         }
