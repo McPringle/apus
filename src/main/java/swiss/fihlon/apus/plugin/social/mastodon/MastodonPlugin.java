@@ -109,7 +109,7 @@ public final class MastodonPlugin implements SocialPlugin {
     private List<String> getImages(@NotNull final List<MediaAttachment> mediaAttachments) {
         final List<String> images = new ArrayList<>();
         for (final MediaAttachment mediaAttachment : mediaAttachments) {
-            if (imageLimit == 0 || images.size() < imageLimit
+            if ((imageLimit == 0 || images.size() < imageLimit)
                     && MediaAttachment.MediaType.IMAGE.equals(mediaAttachment.getType())) {
                 images.add(mediaAttachment.getUrl());
             }
