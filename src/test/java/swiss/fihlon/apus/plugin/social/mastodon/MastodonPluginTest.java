@@ -80,7 +80,7 @@ class MastodonPluginTest {
     void getPosts() {
         final var configuration = mock(Configuration.class);
         when(configuration.getMastodon()).thenReturn(
-                new MastodonConfig("localhost", "foobar", true, 0));
+                new MastodonConfig("localhost", "foobar,foo,,bar", true, 0));
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         final List<Post> posts = mastodonPlugin.getPosts().toList();
@@ -101,13 +101,16 @@ class MastodonPluginTest {
 
         @Override
         @NotNull public List<Status> getStatuses(@NotNull String instance, @NotNull String hashtag) {
-            return List.of(
-                    createStatus(1),
-                    createStatus(2),
-                    createStatus(3),
-                    createStatus(4),
-                    createStatus(5)
-            );
+            if (hashtag.equals("foobar")) {
+                return List.of(
+                        createStatus(1),
+                        createStatus(2),
+                        createStatus(3),
+                        createStatus(4),
+                        createStatus(5)
+                );
+            }
+            return List.of();
         }
 
         private Status createStatus(final int i) {
