@@ -17,12 +17,17 @@
  */
 package swiss.fihlon.apus.plugin.social;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.LoggerContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.scheduling.support.NoOpTaskScheduler;
+import swiss.fihlon.apus.MemoryAppender;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.social.Post;
 
@@ -123,6 +128,23 @@ class SocialServiceTest {
         final List<Post> posts = socialService.getPosts(0);
         final List<String> profiles = posts.stream().map(Post::profile).distinct().toList();
         assertFalse(profiles.contains("profile1@localhost"));
+    }
+
+    @Test
+    void getErrorWithoutPlugin() {
+        final MemoryAppender memoryAppender = new MemoryAppender();
+        memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
+        @SuppressWarnings("LoggerInitializedWithForeignClass") final Logger logger = (Logger) LoggerFactory.getLogger(SocialService.class);
+        logger.addAppender(memoryAppender);
+
+        memoryAppender.start();
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of());
+        final List<Post> posts = socialService.getPosts(0);
+        assertEquals(0, posts.size());
+        memoryAppender.stop();
+
+        final int errorCount = memoryAppender.searchMessages("No social plugin is enabled. No posts will be displayed.", Level.WARN).size();
+        assertEquals(1, errorCount);
     }
 
     private static final class TestSocialPlugin implements SocialPlugin {
