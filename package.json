@@ -39,8 +39,8 @@
     "vite": "5.4.9",
     "vite-plugin-checker": "0.8.0",
     "workbox-build": "7.1.1",
-    "workbox-core": "7.1.0",
-    "workbox-precaching": "7.1.0",
+    "workbox-core": "7.3.0",
+    "workbox-precaching": "7.3.0",
     "@preact/signals-react-transform": "0.4.0"
   },
   "overrides": {
@@ -99,8 +99,8 @@
       "vite": "5.4.9",
       "vite-plugin-checker": "0.8.0",
       "workbox-build": "7.1.1",
-      "workbox-core": "7.1.0",
-      "workbox-precaching": "7.1.0",
+      "workbox-core": "7.3.0",
+      "workbox-precaching": "7.3.0",
       "@preact/signals-react-transform": "0.4.0"
     },
     "hash": "566200de64d387e1dfe7409fc25bec1e4f2079026ce4331c469b6ce3a4cf50fb"
