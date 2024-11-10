@@ -398,7 +398,7 @@
                     <execution>
                         <id>outdated-check</id>
                         <goals>
-                            <!-- <goal>check</goal> -->
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
