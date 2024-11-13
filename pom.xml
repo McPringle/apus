@@ -289,6 +289,11 @@
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>3.5.2</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.simplify4u.plugins</groupId>
+                    <artifactId>pgpverify-maven-plugin</artifactId>
+                    <version>1.18.2</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -313,6 +318,18 @@
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.simplify4u.plugins</groupId>
+                <artifactId>pgpverify-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
