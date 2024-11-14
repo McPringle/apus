@@ -1,0 +1,37 @@
+[
+  {
+    "groupId": null,
+    "groupName": "All",
+    "sessions": [
+      {
+        "id": "1",
+        "title": "Lorem ipsum dolor sit amet",
+        "startsAt": "2024-01-01T09:45:00",
+        "endsAt": "2024-01-01T10:00:00",
+        "speakers": [
+          {
+            "id": "e5da722a-b022-4556-b665-467e54baf9f4",
+            "name": "Walter White"
+          },
+          {
+            "id": "2c9d3dc1-9f79-457f-b4b3-42ce42f6366a",
+            "name": "Jesse Pinkman"
+          }
+        ],
+        "categories": [
+          {
+            "id": 68911,
+            "name": "Language",
+            "categoryItems": [
+              {
+                "id": 123456,
+                "name": "Foobar"
+              }
+            ]
+          }
+        ],
+        "room": "Room A"
+      }
+    ]
+  }
+]
