@@ -113,4 +113,17 @@ class SessionizePluginTest {
         final var exception = assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
         assertTrue(exception.getMessage().startsWith("Error parsing speaker"));
     }
+
+    @Test
+    void parseExceptionUnknownSpeaker() {
+        final var configuration = mock(Configuration.class);
+        final var sessionizeConfig = new SessionizeConfig("1",
+                "file:src/test/resources/sessionize-unknown-speaker.json?eventId=%s",
+                "file:src/test/resources/sessionize-speakers.json?eventId=%s");
+        when(configuration.getSessionize()).thenReturn(sessionizeConfig);
+
+        final var sessionizePlugin = new SessionizePlugin(configuration);
+        final var exception = assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
+        assertEquals("Error parsing sessions: Can't find speaker with id 2c9d3dc1-9f79-457f-0000-42ce42f6366a!", exception.getMessage());
+    }
 }
