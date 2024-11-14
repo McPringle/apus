@@ -155,4 +155,20 @@ class SessionizePluginTest {
         final var session = sessions.getFirst();
         assertEquals(Language.UNKNOWN, session.language());
     }
+
+    @Test
+    void noLanguage() {
+        final var configuration = mock(Configuration.class);
+        final var sessionizeConfig = new SessionizeConfig("1",
+                "file:src/test/resources/sessionize-no-language.json?eventId=%s",
+                "file:src/test/resources/sessionize-speakers.json?eventId=%s");
+        when(configuration.getSessionize()).thenReturn(sessionizeConfig);
+
+        final var sessionizePlugin = new SessionizePlugin(configuration);
+        final var sessions = sessionizePlugin.getSessions().toList();
+        assertEquals(1, sessions.size());
+
+        final var session = sessions.getFirst();
+        assertEquals(Language.UNKNOWN, session.language());
+    }
 }
