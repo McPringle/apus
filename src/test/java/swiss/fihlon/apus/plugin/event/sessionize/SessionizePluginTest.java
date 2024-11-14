@@ -90,7 +90,7 @@ class SessionizePluginTest {
     }
 
     @Test
-    void parseExceptionHandling() {
+    void parseExceptionSessions() {
         final var configuration = mock(Configuration.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/sessionize-broken.json?eventId=%s",
@@ -99,5 +99,18 @@ class SessionizePluginTest {
 
         final var sessionizePlugin = new SessionizePlugin(configuration);
         assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
+    }
+
+    @Test
+    void parseExceptionSpeakers() {
+        final var configuration = mock(Configuration.class);
+        final var sessionizeConfig = new SessionizeConfig("1",
+                "file:src/test/resources/sessionize.json?eventId=%s",
+                "file:src/test/resources/sessionize-speakers-broken.json?eventId=%s");
+        when(configuration.getSessionize()).thenReturn(sessionizeConfig);
+
+        final var sessionizePlugin = new SessionizePlugin(configuration);
+        final var exception = assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
+        assertTrue(exception.getMessage().startsWith("Error parsing speaker"));
     }
 }
