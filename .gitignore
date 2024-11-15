@@ -55,3 +55,8 @@ out/
 tsconfig.json
 types.d.ts
 index.html
+
+# Temporary Codecov files
+codecov
+codecov.SHA256SUM
+codecov.SHA256SUM.sig
