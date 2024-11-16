@@ -49,7 +49,7 @@ import java.util.stream.Stream;
 @Service
 public final class DoagPlugin implements EventPlugin {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(DoagPlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DoagPlugin.class);
 
     private final int eventId;
     private final String eventApi;

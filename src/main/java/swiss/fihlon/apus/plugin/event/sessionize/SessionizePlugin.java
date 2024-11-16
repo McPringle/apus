@@ -45,7 +45,7 @@ import java.util.stream.Stream;
 
 @Service
 public final class SessionizePlugin implements EventPlugin {
-    public static final Logger LOGGER = LoggerFactory.getLogger(SessionizePlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionizePlugin.class);
 
     private static final int CATEGORY_ID_LANGUAGE = 68911;
     private static final int LANGUAGE_ID_ENGLISH = 242155;

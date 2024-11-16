@@ -30,7 +30,7 @@ import java.util.Objects;
 
 public record Track(String svgCode) {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(Track.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Track.class);
 
     public static final Track NONE = new Track(null);
     public static final Track ARCHITECTURE = defaultTrack("architecture.svg");

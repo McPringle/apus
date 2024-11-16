@@ -55,7 +55,7 @@ import java.util.stream.Stream;
 @Service
 public final class JavaForumStuttgartPlugin implements EventPlugin {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(JavaForumStuttgartPlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JavaForumStuttgartPlugin.class);
 
     private final String dbUrl;
 

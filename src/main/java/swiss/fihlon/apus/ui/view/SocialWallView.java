@@ -35,7 +35,7 @@ import java.util.Arrays;
 @CssImport(value = "./themes/apus/views/social-wall-view.css")
 public final class SocialWallView extends Div {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(SocialWallView.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SocialWallView.class);
 
     public SocialWallView(@NotNull final EventService eventService,
                           @NotNull final SocialService socialService,
