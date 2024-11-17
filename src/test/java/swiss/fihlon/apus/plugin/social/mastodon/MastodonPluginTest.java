@@ -89,9 +89,22 @@ class MastodonPluginTest {
     }
 
     @Test
-    void getPostsWithUnlimitedImages() {
+    void getPostsWithMultipleHashtags() {
         final var configuration = mock(Configuration.class);
         final var mastodonConfig = new MastodonConfig("localhost", "foobar,foo,,bar", true, 0);
+        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
+        final List<Post> posts = mastodonPlugin.getPosts().toList();
+
+        assertNotNull(posts);
+        assertEquals(5, posts.size());
+    }
+
+    @Test
+    void getPostsWithUnlimitedImages() {
+        final var configuration = mock(Configuration.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "foobar", true, 0);
         when(configuration.getMastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
