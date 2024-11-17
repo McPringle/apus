@@ -98,7 +98,7 @@ class MastodonPluginTest {
         final List<Post> posts = mastodonPlugin.getPosts().toList();
 
         assertNotNull(posts);
-        assertEquals(5, posts.size());
+        assertEquals(10, posts.size());
     }
 
     @Test
@@ -214,6 +214,15 @@ class MastodonPluginTest {
                         createStatus(3, false),
                         createStatus(4, false),
                         createStatus(5, false)
+                );
+                case "foo" -> List.of(
+                        createStatus(6, false),
+                        createStatus(7, false)
+                );
+                case "bar" -> List.of(
+                        createStatus(8, false),
+                        createStatus(9, false),
+                        createStatus(10, false)
                 );
                 case "invalidImageType" -> List.of(
                         createStatus(1, true),
