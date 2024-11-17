@@ -88,17 +88,33 @@ class MastodonPluginTest {
         assertTrue(mastodonPlugin.isEnabled());
     }
 
-    @Test
-    void getPostsWithMultipleHashtags() {
+    private static Stream<Arguments> provideDataForHashtagsTest() {
+        return Stream.of(
+                Arguments.of("", 0),
+                Arguments.of(" ", 0),
+                Arguments.of("foobar", 5),
+                Arguments.of("foo", 2),
+                Arguments.of("bar", 3),
+                Arguments.of("foobar,foo", 7),
+                Arguments.of("foobar,bar", 8),
+                Arguments.of("foo,bar", 5),
+                Arguments.of("foobar,,bar", 8),
+                Arguments.of("foobar, ,bar", 8)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideDataForHashtagsTest")
+    void getPostsWithHashtags(@NotNull final String hashtags, final int expectedNumberOfPosts) {
         final var configuration = mock(Configuration.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "foobar,foo,,bar", true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", hashtags, true, 0);
         when(configuration.getMastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         final List<Post> posts = mastodonPlugin.getPosts().toList();
 
         assertNotNull(posts);
-        assertEquals(10, posts.size());
+        assertEquals(expectedNumberOfPosts, posts.size());
     }
 
     @Test
