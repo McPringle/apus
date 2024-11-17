@@ -91,8 +91,8 @@ class MastodonPluginTest {
     @Test
     void getPostsWithUnlimitedImages() {
         final var configuration = mock(Configuration.class);
-        when(configuration.getMastodon()).thenReturn(
-                new MastodonConfig("localhost", "foobar,foo,,bar", true, 0));
+        final var mastodonConfig = new MastodonConfig("localhost", "foobar,foo,,bar", true, 0);
+        when(configuration.getMastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         final List<Post> posts = mastodonPlugin.getPosts().toList();
@@ -116,8 +116,8 @@ class MastodonPluginTest {
     @Test
     void getPostsWithOneImage() {
         final var configuration = mock(Configuration.class);
-        when(configuration.getMastodon()).thenReturn(
-                new MastodonConfig("localhost", "foobar", true, 1));
+        final var mastodonConfig = new MastodonConfig("localhost", "foobar", true, 1);
+        when(configuration.getMastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         final List<Post> posts = mastodonPlugin.getPosts().toList();
@@ -136,8 +136,8 @@ class MastodonPluginTest {
     @Test
     void getPostsWithoutImages() {
         final var configuration = mock(Configuration.class);
-        when(configuration.getMastodon()).thenReturn(
-                new MastodonConfig("localhost", "foobar", false, 0));
+        final var mastodonConfig = new MastodonConfig("localhost", "foobar", false, 0);
+        when(configuration.getMastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         final List<Post> posts = mastodonPlugin.getPosts().toList();
@@ -153,8 +153,8 @@ class MastodonPluginTest {
     @Test
     void getPostsWithInvalidImageTypes() {
         final var configuration = mock(Configuration.class);
-        when(configuration.getMastodon()).thenReturn(
-                new MastodonConfig("localhost", "invalidImageType", true, 0));
+        final var mastodonConfig = new MastodonConfig("localhost", "invalidImageType", true, 0);
+        when(configuration.getMastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         final List<Post> posts = mastodonPlugin.getPosts().toList();
@@ -173,8 +173,8 @@ class MastodonPluginTest {
     @Test
     void getPostsCatchesException() {
         final var configuration = mock(Configuration.class);
-        when(configuration.getMastodon()).thenReturn(
-                new MastodonConfig("localhost", "broken", true, 0));
+        final var mastodonConfig = new MastodonConfig("localhost", "broken", true, 0);
+        when(configuration.getMastodon()).thenReturn(mastodonConfig);
 
         final MemoryAppender memoryAppender = new MemoryAppender();
         memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
@@ -194,26 +194,24 @@ class MastodonPluginTest {
 
         @Override
         @NotNull public List<Status> getStatuses(@NotNull String instance, @NotNull String hashtag) throws MastodonException {
-            if (hashtag.equals("foobar")) {
-                return List.of(
+            return switch (hashtag) {
+                case "foobar" -> List.of(
                         createStatus(1, false),
                         createStatus(2, false),
                         createStatus(3, false),
                         createStatus(4, false),
                         createStatus(5, false)
                 );
-            } else if (hashtag.equals("invalidImageType")) {
-                return List.of(
+                case "invalidImageType" -> List.of(
                         createStatus(1, true),
                         createStatus(2, true),
                         createStatus(3, true),
                         createStatus(4, true),
                         createStatus(5, true)
                 );
-            } else if (hashtag.equals("broken")) {
-                throw new MastodonException("This is an expected exception.", new RuntimeException("This is a faked cause."));
-            }
-            return List.of();
+                case "broken" -> throw new MastodonException("This is an expected exception.", new RuntimeException("This is a faked cause."));
+                default -> List.of();
+            };
         }
 
         private Status createStatus(final int i, boolean invalidImageType) {
