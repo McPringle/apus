@@ -21,6 +21,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -69,7 +70,7 @@ class MastodonPluginTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(final String instance, final String hashtag) {
+    void isDisabled(@Nullable final String instance, @Nullable final String hashtag) {
         final var configuration = mock(Configuration.class);
         final var mastodonConfig = new MastodonConfig(instance, hashtag, true, 0);
         when(configuration.getMastodon()).thenReturn(mastodonConfig);
