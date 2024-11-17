@@ -220,6 +220,26 @@ class MastodonPluginTest {
         assertEquals(1, errorCount);
     }
 
+    @Test
+    void testReplyConversion() {
+        final var configuration = mock(Configuration.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "foobar", true, 1);
+        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
+        final List<Post> posts = mastodonPlugin.getPosts().toList();
+
+        assertNotNull(posts);
+        assertEquals(5, posts.size());
+
+        for (int i = 0; i < posts.size() - 1; i++) {
+            final Post post = posts.get(i);
+            assertFalse(post.isReply(), "Post with " + post.id());
+        }
+
+        assertTrue(posts.getLast().isReply());
+    }
+
     private static final class TestMastodonLoader implements MastodonLoader {
 
         @Override
@@ -276,7 +296,7 @@ class MastodonPluginTest {
             when(status.getCreatedAt()).thenReturn(createdAt);
             when(status.getContent()).thenReturn("Content for post #" + i);
             when(status.getMediaAttachments()).thenReturn(mediaAttachments);
-            when(status.getInReplyToId()).thenReturn(i == 1 ? null : " ");
+            when(status.getInReplyToId()).thenReturn(i == 1 ? null : i == 5 ? "ID 4" : " ");
             when(status.isSensitive()).thenReturn(false);
             return status;
         }
