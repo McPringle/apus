@@ -208,7 +208,7 @@ class MastodonPluginTest {
 
         final MemoryAppender memoryAppender = new MemoryAppender();
         memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
-        @SuppressWarnings("LoggerInitializedWithForeignClass") final Logger logger = (Logger) LoggerFactory.getLogger(MastodonPlugin.class);
+        final Logger logger = (Logger) LoggerFactory.getLogger(MastodonPlugin.class);
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
