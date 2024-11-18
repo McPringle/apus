@@ -396,6 +396,21 @@
             </plugin>
 
             <plugin>
+                <groupId>org.spdx</groupId>
+                <artifactId>spdx-maven-plugin</artifactId>
+                <version>0.7.4</version>
+                <executions>
+                    <execution>
+                        <id>build-spdx</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>createSPDX</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>com.giovds</groupId>
                 <artifactId>outdated-maven-plugin</artifactId>
                 <version>1.3.0</version>
