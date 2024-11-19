@@ -73,6 +73,13 @@ class SocialServiceTest {
     }
 
     @Test
+    void getPostsWithNegativeLimit() {
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
+        final List<Post> posts = socialService.getPosts(-1);
+        assertEquals(10, posts.size());
+    }
+
+    @Test
     void getPostsWithLimit() {
         final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
         final List<Post> posts = socialService.getPosts(5);
