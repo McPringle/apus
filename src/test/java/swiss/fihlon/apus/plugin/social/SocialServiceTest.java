@@ -20,6 +20,7 @@ package swiss.fihlon.apus.plugin.social;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -171,6 +172,7 @@ class SocialServiceTest {
 
         @Override
         public Stream<Post> getPosts() {
+            final Faker faker = new Faker();
             final var now = LocalDateTime.now();
             final List<Post> posts = new ArrayList<>();
             for (int i = 10; i > 0; i--) {
@@ -179,6 +181,9 @@ class SocialServiceTest {
             }
             posts.add(new Post("PX", now, "Troll", "","troll@localhost",
                     "<p>This post is foobar!</p>", List.of(), false, false));
+            posts.add(new Post("PL", now, "Writer", "","writer@localhost",
+                    "<p>" + faker.lorem().characters(501) + "</p>", List.of(),
+                    false, false));
             Collections.shuffle(posts);
             return posts.stream();
         }
