@@ -415,19 +415,9 @@
                 <artifactId>outdated-maven-plugin</artifactId>
                 <version>1.3.0</version>
                 <configuration>
-                    <!-- The maximum amount of inactive years allowed -->
                     <years>1</years>
-                    <!-- Whether to fail the build if an outdated dependency is found -->
                     <shouldFailBuild>true</shouldFailBuild>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>outdated-check</id>
-                        <goals>
-                            <!-- <goal>check</goal> -->
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
