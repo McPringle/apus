@@ -42,6 +42,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
@@ -89,6 +90,13 @@ class SocialServiceTest {
         assertEquals("P3", posts.get(2).id());
         assertEquals("P4", posts.get(3).id());
         assertEquals("P5", posts.get(4).id());
+    }
+
+    @Test
+    void getEmptyPosts() {
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new EmptySocialPlugin()));
+        final List<Post> posts = socialService.getPosts(10);
+        assertTrue(posts.isEmpty());
     }
 
     @Test
@@ -171,6 +179,19 @@ class SocialServiceTest {
             }
             Collections.shuffle(posts);
             return posts.stream();
+        }
+    }
+
+    private static final class EmptySocialPlugin implements SocialPlugin {
+
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
+
+        @Override
+        public Stream<Post> getPosts() {
+            return List.<Post>of().stream();
         }
     }
 }
