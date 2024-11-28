@@ -430,6 +430,7 @@ Special thanks for all these wonderful people who had helped this project so far
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/leem53"><img src="https://avatars.githubusercontent.com/u/45996424?v=4?s=100" width="100px;" alt="Lennart"/><br /><sub><b>Lennart</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=leem53" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/RomeoIndiaJulietUniform"><img src="https://avatars.githubusercontent.com/u/157402485?v=4?s=100" width="100px;" alt="RIJU MONDAL"/><br /><sub><b>RIJU MONDAL</b></sub></a><br /><a href="#infra-RomeoIndiaJulietUniform" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ky0n"><img src="https://avatars.githubusercontent.com/u/30866028?v=4?s=100" width="100px;" alt="Hendrik"/><br /><sub><b>Hendrik</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=ky0n" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
