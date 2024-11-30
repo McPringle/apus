@@ -56,43 +56,45 @@ public final class BlueSkyPlugin implements SocialPlugin {
 
     @Override
     public Stream<Post> getPosts() {
-        var url = String.format(postAPI, instance, hashtags);
-        ArrayList<Post> posts = new ArrayList<>();
+        final var url = String.format(postAPI, instance, hashtags);
+        final var posts = new ArrayList<Post>();
         try {
-            var json = DownloadUtil.getString(url);
-            var jsonPosts = new JSONObject(json).getJSONArray("posts");
+            final var json = DownloadUtil.getString(url);
+            final var jsonPosts = new JSONObject(json).getJSONArray("posts");
             for (var i = 0; i < jsonPosts.length(); i++) {
-                var post = jsonPosts.getJSONObject(i);
+                final var post = jsonPosts.getJSONObject(i);
                 posts.add(createPost(post));
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
         return posts.stream();
     }
 
-    private Post createPost(final JSONObject post) {
-        var id = post.getString("uri");
+    @NotNull
+    private Post createPost(final @NotNull JSONObject post) {
+        final var id = post.getString("uri");
 
-        var author = post.getJSONObject("author");
-        var displayName = author.getString("displayName");
-        var avatar = author.getString("avatar");
-        var handle = author.getString("handle");
+        final var author = post.getJSONObject("author");
+        final var displayName = author.getString("displayName");
+        final var avatar = author.getString("avatar");
+        final var handle = author.getString("handle");
 
-        var postRecord = post.getJSONObject("record");
-        var text = postRecord.getString("text");
-        var date = ZonedDateTime.parse(postRecord.getString("createdAt")).toLocalDateTime();
+        final var postRecord = post.getJSONObject("record");
+        final var text = postRecord.getString("text");
+        final var date = ZonedDateTime.parse(postRecord.getString("createdAt")).toLocalDateTime();
 
-        var imageLinks = new ArrayList<String>();
+        final var imageLinks = new ArrayList<String>();
         if (post.has("embed")) {
-            var embed = post.getJSONObject("embed");
+            final var embed = post.getJSONObject("embed");
             if (embed.getString("$type").equals("app.bsky.embed.images#view")) {
-                var images = embed.getJSONArray("images");
+                final var images = embed.getJSONArray("images");
                 for (var i = 0; i < images.length(); i++) {
                     imageLinks.add(images.getJSONObject(i).getString("thumb"));
                 }
             }
         }
+
         return new Post(id, date, displayName, avatar, handle, text, imageLinks, false, false);
     }
 }
