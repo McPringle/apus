@@ -24,6 +24,7 @@ import swiss.fihlon.apus.plugin.event.EventConfig;
 import swiss.fihlon.apus.plugin.event.doag.DoagConfig;
 import swiss.fihlon.apus.plugin.event.jfs.JavaForumStuttgartConfig;
 import swiss.fihlon.apus.plugin.event.sessionize.SessionizeConfig;
+import swiss.fihlon.apus.plugin.social.bluesky.BlueSkyConfig;
 import swiss.fihlon.apus.plugin.social.mastodon.MastodonConfig;
 
 @org.springframework.context.annotation.Configuration
@@ -46,6 +47,7 @@ public class Configuration {
     private SessionizeConfig sessionize;
 
     // Social Plugin Configs
+    private BlueSkyConfig blueSky;
     private MastodonConfig mastodon;
 
     //////////////////
@@ -131,6 +133,14 @@ public class Configuration {
     ///////////////////////////
     // Social Plugin Configs //
     ///////////////////////////
+
+    public BlueSkyConfig getBlueSky() {
+        return blueSky;
+    }
+
+    public void setBlueSky(@NotNull final BlueSkyConfig blueSky) {
+        this.blueSky = blueSky;
+    }
 
     public MastodonConfig getMastodon() {
         return mastodon;

@@ -17,10 +17,12 @@
  */
 package swiss.fihlon.apus.plugin.social.bluesky;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.plugin.social.SocialPlugin;
 import swiss.fihlon.apus.social.Post;
 import swiss.fihlon.apus.util.DownloadUtil;
@@ -30,18 +32,31 @@ import java.util.ArrayList;
 import java.util.stream.Stream;
 
 @Service
-public final class BlueskyPlugin implements SocialPlugin {
+public final class BlueSkyPlugin implements SocialPlugin {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BlueskyPlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BlueSkyPlugin.class);
+
+    private final String hashtags;
+    private final String instance;
+    private final String postAPI;
+
+    public BlueSkyPlugin(@NotNull final Configuration configuration) {
+        final var blueSkyConfig = configuration.getBlueSky();
+        hashtags = blueSkyConfig.hashtags();
+        instance = blueSkyConfig.instance();
+        postAPI = blueSkyConfig.postAPI();
+    }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return instance != null && !instance.isBlank()
+                && hashtags != null && !hashtags.isBlank()
+                && postAPI != null && !postAPI.isBlank();
     }
 
     @Override
     public Stream<Post> getPosts() {
-        var url = "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=hackergarten";
+        var url = String.format(postAPI, instance, hashtags);
         ArrayList<Post> posts = new ArrayList<>();
         try {
             var json = DownloadUtil.getString(url);
