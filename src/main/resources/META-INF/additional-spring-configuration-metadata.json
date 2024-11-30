@@ -41,9 +41,9 @@
       "description" : "Number of minutes a session is shown before it starts."
     },
     {
-      "name" : "apus.event.showClosedRooms",
+      "name" : "apus.event.showEmptyRooms",
       "type" : "java.lang.Boolean",
-      "description" : "Show (true) or hide (false) closed event rooms."
+      "description" : "Show (true) or hide (false) empty event rooms."
     },
     {
       "name" : "apus.event.showLegend",
