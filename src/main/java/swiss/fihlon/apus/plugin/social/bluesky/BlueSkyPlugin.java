@@ -79,9 +79,9 @@ public final class BlueSkyPlugin implements SocialPlugin {
         var avatar = author.getString("avatar");
         var handle = author.getString("handle");
 
-        var record = post.getJSONObject("record");
-        var text = record.getString("text");
-        var date = ZonedDateTime.parse(record.getString("createdAt")).toLocalDateTime();
+        var postRecord = post.getJSONObject("record");
+        var text = postRecord.getString("text");
+        var date = ZonedDateTime.parse(postRecord.getString("createdAt")).toLocalDateTime();
 
         var imageLinks = new ArrayList<String>();
         if (post.has("embed")) {
