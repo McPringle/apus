@@ -357,7 +357,7 @@ Plugins for more social media services are planned.
 
 ### Plugin Development
 
-Everyone is welcome to contribute a plugin themselves. The implementation is very simple. There are two types of plugins: `EventPlugin` and `SocialPlugin`. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.event` or `swiss.fihlon.apus.plugin.social`, based on the plugin type. The implementation is carried out in this new package. Implement one of these two interfaces depending on the plugin type you want to contribute.
+Everyone is welcome to contribute a plugin themselves. The implementation is very simple. There are two types of plugins: `EventPlugin` and `SocialPlugin`. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.event` or `swiss.fihlon.apus.plugin.social`, based on the plugin type. The implementation is carried out in this new package. Implement one of these two interfaces depending on the plugin type you want to contribute and annotate the class with `@Service`.
 
 If your implementation requires a configuration, the `Configuration` class must be extended accordingly. Add a property and corresponding setters and getters in the marked sections. Implement the settings object as a `record` in your new plugin package. Take one of the existing plugins as a template. Default settings belong in the file `application.properties` and the corresponding schema is stored in `additional-spring-configuration-metadata.json`. Of course, this `README.md` must also be adapted.
 
@@ -415,7 +415,7 @@ Special thanks for all these wonderful people who had helped this project so far
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/myyxl"><img src="https://avatars.githubusercontent.com/u/22593897?v=4?s=100" width="100px;" alt="Marlon"/><br /><sub><b>Marlon</b></sub></a><br /><a href="https://github.com/McPringle/apus/issues?q=author%3Amyyxl" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/tlangdun"><img src="https://avatars.githubusercontent.com/u/51236478?v=4?s=100" width="100px;" alt="tlangdun"/><br /><sub><b>tlangdun</b></sub></a><br /><a href="#tool-tlangdun" title="Tools">🔧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/MarkusBarthlen"><img src="https://avatars.githubusercontent.com/u/13293680?v=4?s=100" width="100px;" alt="MarkusBarthlen"/><br /><sub><b>MarkusBarthlen</b></sub></a><br /><a href="#tool-MarkusBarthlen" title="Tools">🔧</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/eins78"><img src="https://avatars.githubusercontent.com/u/134942?v=4?s=100" width="100px;" alt="Max Albrecht"/><br /><sub><b>Max Albrecht</b></sub></a><br /><a href="#infra-eins78" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/eins78"><img src="https://avatars.githubusercontent.com/u/134942?v=4?s=100" width="100px;" alt="Max Albrecht"/><br /><sub><b>Max Albrecht</b></sub></a><br /><a href="#infra-eins78" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#tool-eins78" title="Tools">🔧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/StefanMallia"><img src="https://avatars.githubusercontent.com/u/5004438?v=4?s=100" width="100px;" alt="Stefan Mallia"/><br /><sub><b>Stefan Mallia</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=StefanMallia" title="Code">💻</a></td>
     </tr>
     <tr>
@@ -430,6 +430,7 @@ Special thanks for all these wonderful people who had helped this project so far
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/leem53"><img src="https://avatars.githubusercontent.com/u/45996424?v=4?s=100" width="100px;" alt="Lennart"/><br /><sub><b>Lennart</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=leem53" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/RomeoIndiaJulietUniform"><img src="https://avatars.githubusercontent.com/u/157402485?v=4?s=100" width="100px;" alt="RIJU MONDAL"/><br /><sub><b>RIJU MONDAL</b></sub></a><br /><a href="#infra-RomeoIndiaJulietUniform" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ky0n"><img src="https://avatars.githubusercontent.com/u/30866028?v=4?s=100" width="100px;" alt="Hendrik"/><br /><sub><b>Hendrik</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=ky0n" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

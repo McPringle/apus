@@ -65,7 +65,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/134942?v=4",
       "profile": "https://github.com/eins78",
       "contributions": [
-        "infra"
+        "infra",
+        "tool"
       ]
     },
     {
@@ -157,6 +158,15 @@
       "profile": "https://github.com/RomeoIndiaJulietUniform",
       "contributions": [
         "infra"
+      ]
+    },
+    {
+      "login": "ky0n",
+      "name": "Hendrik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30866028?v=4",
+      "profile": "https://github.com/ky0n",
+      "contributions": [
+        "code"
       ]
     }
   ],
