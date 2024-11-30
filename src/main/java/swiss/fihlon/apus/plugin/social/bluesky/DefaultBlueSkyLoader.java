@@ -32,11 +32,7 @@ public final class DefaultBlueSkyLoader implements BlueSkyLoader {
         try {
             final var url = String.format(postAPI, instance, hashtag);
             final var json = DownloadUtil.getString(url);
-            final var jsonPosts = new JSONObject(json).getJSONArray("posts");
-            if (jsonPosts != null) {
-                return jsonPosts;
-            }
-            throw new NullPointerException(String.format("No posts with hashtag '%s' from BlueSky instance '%s'", hashtag, instance));
+            return new JSONObject(json).getJSONArray("posts");
         } catch (final Exception e) {
             throw new BlueSkyException(String.format("Unable to load posts with hashtag '%s' from BlueSky instance '%s'", hashtag, instance), e);
         }
