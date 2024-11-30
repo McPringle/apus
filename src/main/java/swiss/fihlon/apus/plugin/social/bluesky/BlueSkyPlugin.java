@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.configuration.Configuration;
 import swiss.fihlon.apus.plugin.social.SocialPlugin;
 import swiss.fihlon.apus.social.Post;
-import swiss.fihlon.apus.util.DownloadUtil;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -36,15 +35,18 @@ public final class BlueSkyPlugin implements SocialPlugin {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BlueSkyPlugin.class);
 
+    private final BlueSkyLoader blueSkyLoader;
     private final String hashtags;
     private final String instance;
     private final String postAPI;
 
-    public BlueSkyPlugin(@NotNull final Configuration configuration) {
+    public BlueSkyPlugin(@NotNull final BlueSkyLoader blueSkyLoader,
+                         @NotNull final Configuration configuration) {
+        this.blueSkyLoader = blueSkyLoader;
         final var blueSkyConfig = configuration.getBlueSky();
-        hashtags = blueSkyConfig.hashtags();
-        instance = blueSkyConfig.instance();
-        postAPI = blueSkyConfig.postAPI();
+        this.hashtags = blueSkyConfig.hashtags();
+        this.instance = blueSkyConfig.instance();
+        this.postAPI = blueSkyConfig.postAPI();
     }
 
     @Override
@@ -56,19 +58,28 @@ public final class BlueSkyPlugin implements SocialPlugin {
 
     @Override
     public Stream<Post> getPosts() {
-        final var url = String.format(postAPI, instance, hashtags);
-        final var posts = new ArrayList<Post>();
         try {
-            final var json = DownloadUtil.getString(url);
-            final var jsonPosts = new JSONObject(json).getJSONArray("posts");
-            for (var i = 0; i < jsonPosts.length(); i++) {
-                final var post = jsonPosts.getJSONObject(i);
-                posts.add(createPost(post));
+            final var posts = new ArrayList<Post>();
+
+            for (final String hashtag : hashtags.split(",")) {
+                if (hashtag.isBlank()) {
+                    continue;
+                }
+                LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
+                final var jsonPosts = blueSkyLoader.getPosts(instance, hashtag.trim(), postAPI);
+                LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", jsonPosts.length(), hashtag, instance);
+
+                for (var i = 0; i < jsonPosts.length(); i++) {
+                    final var post = jsonPosts.getJSONObject(i);
+                    posts.add(createPost(post));
+                }
             }
-        } catch (final Exception e) {
+
+            return posts.stream();
+        } catch (final BlueSkyException e) {
             LOGGER.error(e.getMessage(), e);
+            return Stream.of();
         }
-        return posts.stream();
     }
 
     @NotNull
