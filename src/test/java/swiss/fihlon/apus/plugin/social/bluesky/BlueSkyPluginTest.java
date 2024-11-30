@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -185,7 +184,6 @@ class BlueSkyPluginTest {
     }
 
     @Test
-    @Disabled("Replies are not jet implemented for BlueSky posts.")
     void testReplyConversion() {
         final var configuration = mock(Configuration.class);
         final var blueSkyConfig = new BlueSkyConfig("localhost", "foobar", "https://%s/q=%s");
@@ -233,6 +231,16 @@ class BlueSkyPluginTest {
 
         private JSONObject createPost(final int i) {
             final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), ZoneId.systemDefault());
+            final var fakeReply = """
+                                        "reply": {
+                      "parent": {
+                        "uri": "ID 1"
+                      },
+                      "root": {
+                        "uri": "ID 1"
+                      }
+                    },
+                """;
 
             final var postJSON = """
                 {
@@ -244,6 +252,7 @@ class BlueSkyPluginTest {
                   },
                   "record": {
                     "createdAt": "${createdAt}",
+                    ${reply}
                     "text": "Content for post #${i}"
                   },
                   "embed": {
@@ -260,7 +269,8 @@ class BlueSkyPluginTest {
                 }
                 """
                 .replaceAll(Pattern.quote("${i}"), Integer.toString(i))
-                .replaceAll(Pattern.quote("${createdAt}"), createdAt.format(DATE_TIME_FORMATTER));
+                .replaceAll(Pattern.quote("${createdAt}"), createdAt.format(DATE_TIME_FORMATTER))
+                .replaceAll(Pattern.quote("${reply}"), i == 5 ? fakeReply : "");
 
             return new JSONObject(postJSON);
         }

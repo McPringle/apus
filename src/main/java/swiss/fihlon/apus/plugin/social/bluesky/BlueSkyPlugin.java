@@ -93,6 +93,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
 
         final var postRecord = post.getJSONObject("record");
         final var text = postRecord.getString("text");
+        final var isReply = postRecord.has("reply");
         final var date = ZonedDateTime.parse(postRecord.getString("createdAt")).toLocalDateTime();
 
         final var imageLinks = new ArrayList<String>();
@@ -106,6 +107,6 @@ public final class BlueSkyPlugin implements SocialPlugin {
             }
         }
 
-        return new Post(id, date, displayName, avatar, handle, text, imageLinks, false, false);
+        return new Post(id, date, displayName, avatar, handle, text, imageLinks, isReply, false);
     }
 }
