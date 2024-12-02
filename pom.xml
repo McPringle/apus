@@ -413,7 +413,7 @@
             <plugin>
                 <groupId>com.giovds</groupId>
                 <artifactId>outdated-maven-plugin</artifactId>
-                <version>1.3.0</version>
+                <version>1.4.0</version>
                 <configuration>
                     <years>1</years>
                     <shouldFailBuild>true</shouldFailBuild>
