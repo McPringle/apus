@@ -100,10 +100,12 @@ public final class BlueSkyPlugin implements SocialPlugin {
         final var imageLinks = new ArrayList<String>();
         if (post.has("embed")) {
             final var embed = post.getJSONObject("embed");
-            if (embed.getString("$type").equals("app.bsky.embed.images#view")) {
+            final var type = embed.getString("$type");
+            if (type.equals("app.bsky.embed.images#view")) {
                 final var images = embed.getJSONArray("images");
                 for (var i = 0; i < images.length(); i++) {
-                    imageLinks.add(images.getJSONObject(i).getString("thumb"));
+                    final var image = images.getJSONObject(i);
+                    imageLinks.add(image.getString("thumb"));
                 }
             }
         }
