@@ -209,30 +209,30 @@ class BlueSkyPluginTest {
         @NotNull public JSONArray getPosts(@NotNull String instance, @NotNull String hashtag, @NotNull String postAPI) throws BlueSkyException {
             return switch (hashtag) {
                 case "foobar" -> new JSONArray(List.of(
-                        createPost(1),
-                        createPost(2),
-                        createPost(3),
-                        createPost(4),
-                        createPost(5)
+                        createPost(1, hashtag),
+                        createPost(2, hashtag),
+                        createPost(3, hashtag),
+                        createPost(4, hashtag),
+                        createPost(5, hashtag)
                 ));
                 case "foo" -> new JSONArray(List.of(
-                        createPost(6),
-                        createPost(7)
+                        createPost(6, hashtag),
+                        createPost(7, hashtag)
                 ));
                 case "bar" -> new JSONArray(List.of(
-                        createPost(8),
-                        createPost(9),
-                        createPost(10)
+                        createPost(8, hashtag),
+                        createPost(9, hashtag),
+                        createPost(10, hashtag)
                 ));
                 case "broken" -> throw new BlueSkyException("This is an expected exception.", new RuntimeException("This is a faked cause."));
                 default -> new JSONArray(List.of());
             };
         }
 
-        private JSONObject createPost(final int i) {
+        private JSONObject createPost(final int i, @NotNull final String hashtag) {
             final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), ZoneId.systemDefault());
             final var fakeReply = """
-                                        "reply": {
+                    "reply": {
                       "parent": {
                         "uri": "ID 1"
                       },
@@ -253,7 +253,17 @@ class BlueSkyPluginTest {
                   "record": {
                     "createdAt": "${createdAt}",
                     ${reply}
-                    "text": "Content for post #${i}"
+                    "text": "Content for post #${i}",
+                    "facets": [
+                      {
+                        "features": [
+                          {
+                            "$type": "app.bsky.richtext.facet#tag",
+                            "tag": "${tag}"
+                          }
+                        ]
+                      },
+                    ]
                   },
                   "embed": {
                     "$type": "app.bsky.embed.images#view",
@@ -269,6 +279,7 @@ class BlueSkyPluginTest {
                 }
                 """
                 .replaceAll(Pattern.quote("${i}"), Integer.toString(i))
+                .replaceAll(Pattern.quote("${tag}"), hashtag)
                 .replaceAll(Pattern.quote("${createdAt}"), createdAt.format(DATE_TIME_FORMATTER))
                 .replaceAll(Pattern.quote("${reply}"), i == 5 ? fakeReply : "");
 
