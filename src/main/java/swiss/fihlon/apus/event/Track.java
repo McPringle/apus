@@ -25,7 +25,6 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 public record Track(String svgCode) {
@@ -47,7 +46,7 @@ public record Track(String svgCode) {
             final String fileName = FILE_NAME_TEMPLATE.formatted(svgFileName);
             final URL url = Track.class.getResource(fileName);
             final URI uri = Objects.requireNonNull(url).toURI();
-            final Path path = Paths.get(uri);
+            final Path path = Path.of(uri);
             final String svgCode = Files.readString(path);
             return new Track(svgCode.trim());
         } catch (final Exception e) {
