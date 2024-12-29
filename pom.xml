@@ -216,6 +216,11 @@
             <version>2.4.2</version>
         </dependency>
         <dependency>
+            <groupId>org.gaul</groupId>
+            <artifactId>modernizer-maven-annotations</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -418,6 +423,26 @@
                     <years>1</years>
                     <shouldFailBuild>true</shouldFailBuild>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.gaul</groupId>
+                <artifactId>modernizer-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <javaVersion>${java.version}</javaVersion>
+                    <failOnViolations>true</failOnViolations>
+                    <includeTestClasses>true</includeTestClasses>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>modernizer</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>modernizer</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
