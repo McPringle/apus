@@ -17,6 +17,7 @@
  */
 package swiss.fihlon.apus.plugin.event.jfs;
 
+import org.gaul.modernizer_maven_annotations.SuppressModernizer;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +102,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return allTalks.stream().map(talk -> mapToSession(talk, allAssignments, allSpeakers, allTracks));
     }
 
+    @SuppressModernizer
     private @NotNull Path downloadDatabaseFile() {
         try {
             final Path temporaryDatabaseFile = Files.createTempFile("jfs-", ".db");
