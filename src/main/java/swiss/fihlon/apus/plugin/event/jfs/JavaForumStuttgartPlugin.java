@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.event.jfs;
 
-import org.gaul.modernizer_maven_annotations.SuppressModernizer;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +30,11 @@ import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -102,18 +100,15 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return allTalks.stream().map(talk -> mapToSession(talk, allAssignments, allSpeakers, allTracks));
     }
 
-    @SuppressModernizer
     private @NotNull Path downloadDatabaseFile() {
         try {
             final Path temporaryDatabaseFile = Files.createTempFile("jfs-", ".db");
             LOGGER.info("Start downloading database from {} ...", dbUrl);
             final URI uri = URI.create(dbUrl);
             final URL url = uri.toURL();
-            try (
-                    ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-                    FileOutputStream fos = new FileOutputStream(temporaryDatabaseFile.toFile())
-            ) {
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            try (InputStream is = url.openStream();
+                 OutputStream os = Files.newOutputStream(temporaryDatabaseFile)) {
+                is.transferTo(os);
             }
             LOGGER.info("Successfully downloaded database to temporary file {}", temporaryDatabaseFile);
             return temporaryDatabaseFile;
