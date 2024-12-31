@@ -1,7 +1,7 @@
 package swiss.fihlon.apus.plugin.event.jfs;
 
 import org.junit.jupiter.api.Test;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
@@ -24,9 +24,9 @@ class JavaForumStuttgartPluginTest {
 
     @Test
     void isEnabled() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var jfsConfig = new JavaForumStuttgartConfig("test");
-        when(configuration.getJfs()).thenReturn(jfsConfig);
+        when(configuration.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);
         assertTrue(jfsPlugin.isEnabled());
@@ -34,9 +34,9 @@ class JavaForumStuttgartPluginTest {
 
     @Test
     void isDisabledBecauseNull() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var jfsConfig = new JavaForumStuttgartConfig(null);
-        when(configuration.getJfs()).thenReturn(jfsConfig);
+        when(configuration.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);
         assertFalse(jfsPlugin.isEnabled());
@@ -44,9 +44,9 @@ class JavaForumStuttgartPluginTest {
 
     @Test
     void isDisabledBecauseEmpty() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var jfsConfig = new JavaForumStuttgartConfig("");
-        when(configuration.getJfs()).thenReturn(jfsConfig);
+        when(configuration.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);
         assertFalse(jfsPlugin.isEnabled());
@@ -54,9 +54,9 @@ class JavaForumStuttgartPluginTest {
 
     @Test
     void getSessions() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/jfs.db");
-        when(configuration.getJfs()).thenReturn(jfsConfig);
+        when(configuration.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);
         final var sessions = jfsPlugin.getSessions().toList();
@@ -84,9 +84,9 @@ class JavaForumStuttgartPluginTest {
 
     @Test
     void throwsExceptionWithNonExistingDatabase() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/non-existing.db");
-        when(configuration.getJfs()).thenReturn(jfsConfig);
+        when(configuration.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);
         final var exception = assertThrows(SessionImportException.class, () -> jfsPlugin.getSessions().toList());
@@ -96,9 +96,9 @@ class JavaForumStuttgartPluginTest {
 
     @Test
     void throwsExceptionWithEmptyDatabase() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/jfs-empty.db");
-        when(configuration.getJfs()).thenReturn(jfsConfig);
+        when(configuration.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);
         final var exception = assertThrows(SessionImportException.class, () -> jfsPlugin.getSessions().toList());

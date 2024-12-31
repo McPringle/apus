@@ -18,7 +18,7 @@
 package swiss.fihlon.apus.plugin.social.demo;
 
 import org.junit.jupiter.api.Test;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.configuration.SocialConfig;
 import swiss.fihlon.apus.social.Post;
 
@@ -36,8 +36,8 @@ class SocialDemoPluginTest {
     void isEnabled() {
         final var socialConfig = mock(SocialConfig.class);
         when(socialConfig.demoPostCount()).thenReturn(1);
-        final var configuration = mock(Configuration.class);
-        when(configuration.getSocial()).thenReturn(socialConfig);
+        final var configuration = mock(AppConfig.class);
+        when(configuration.social()).thenReturn(socialConfig);
 
         final var demoSocialPlugin = new SocialDemoPlugin(configuration);
         assertTrue(demoSocialPlugin.isEnabled());
@@ -47,8 +47,8 @@ class SocialDemoPluginTest {
     void isDisabled() {
         final var socialConfig = mock(SocialConfig.class);
         when(socialConfig.demoPostCount()).thenReturn(0);
-        final var configuration = mock(Configuration.class);
-        when(configuration.getSocial()).thenReturn(socialConfig);
+        final var configuration = mock(AppConfig.class);
+        when(configuration.social()).thenReturn(socialConfig);
 
         final var demoSocialPlugin = new SocialDemoPlugin(configuration);
         assertTrue(demoSocialPlugin.isEnabled());
@@ -58,8 +58,8 @@ class SocialDemoPluginTest {
     void getPosts() {
         final var socialConfig = mock(SocialConfig.class);
         when(socialConfig.demoPostCount()).thenReturn(1);
-        final var configuration = mock(Configuration.class);
-        when(configuration.getSocial()).thenReturn(socialConfig);
+        final var configuration = mock(AppConfig.class);
+        when(configuration.social()).thenReturn(socialConfig);
 
         final var socialDemoPlugin = new SocialDemoPlugin(configuration);
         final List<Post> posts = socialDemoPlugin.getPosts().toList();

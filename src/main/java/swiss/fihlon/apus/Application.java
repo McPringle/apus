@@ -30,7 +30,9 @@ import org.apache.commons.cli.ParseException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.util.PasswordUtil;
 
 /**
@@ -41,6 +43,7 @@ import swiss.fihlon.apus.util.PasswordUtil;
  */
 @SpringBootApplication
 @EnableScheduling
+@EnableConfigurationProperties(AppConfig.class)
 @Push
 @PageTitle("Apus – Social Media Wall with Event Agenda")
 @PWA(name = "Apus", shortName = "Apus")

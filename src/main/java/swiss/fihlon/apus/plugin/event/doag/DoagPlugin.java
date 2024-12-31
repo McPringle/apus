@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
@@ -54,9 +54,9 @@ public final class DoagPlugin implements EventPlugin {
     private final int eventId;
     private final String eventApi;
 
-    public DoagPlugin(@NotNull final Configuration configuration) {
-        this.eventId = configuration.getDoag().eventId();
-        this.eventApi = configuration.getDoag().eventApi();
+    public DoagPlugin(@NotNull final AppConfig appConfig) {
+        this.eventId = appConfig.doag().eventId();
+        this.eventApi = appConfig.doag().eventApi();
     }
 
     @Override

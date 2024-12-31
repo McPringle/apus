@@ -20,7 +20,7 @@ package swiss.fihlon.apus.plugin.event.demo;
 import net.datafaker.Faker;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
@@ -51,8 +51,8 @@ public final class EventDemoPlugin implements EventPlugin {
     private final int roomCount;
     private final List<Session> sessions;
 
-    public EventDemoPlugin(@NotNull final Configuration configuration) {
-        roomCount = configuration.getEvent().demoRoomCount();
+    public EventDemoPlugin(@NotNull final AppConfig appConfig) {
+        roomCount = appConfig.event().demoRoomCount();
         sessions = roomCount > 0 ? createFakeSessions() : List.of();
     }
 

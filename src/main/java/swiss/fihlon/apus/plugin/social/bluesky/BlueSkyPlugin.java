@@ -22,7 +22,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.social.SocialPlugin;
 import swiss.fihlon.apus.social.Post;
 
@@ -41,9 +41,9 @@ public final class BlueSkyPlugin implements SocialPlugin {
     private final String postAPI;
 
     public BlueSkyPlugin(@NotNull final BlueSkyLoader blueSkyLoader,
-                         @NotNull final Configuration configuration) {
+                         @NotNull final AppConfig appConfig) {
         this.blueSkyLoader = blueSkyLoader;
-        final var blueSkyConfig = configuration.getBlueSky();
+        final var blueSkyConfig = appConfig.blueSky();
         this.hashtags = blueSkyConfig.hashtags();
         this.instance = blueSkyConfig.instance();
         this.postAPI = blueSkyConfig.postAPI();

@@ -32,7 +32,7 @@ import social.bigbone.api.entity.Account;
 import social.bigbone.api.entity.MediaAttachment;
 import social.bigbone.api.entity.Status;
 import swiss.fihlon.apus.MemoryAppender;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.social.Post;
 
 import java.time.Instant;
@@ -71,9 +71,9 @@ class MastodonPluginTest {
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
     void isDisabled(@Nullable final String instance, @Nullable final String hashtag) {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig(instance, hashtag, true, 0);
-        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+        when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         assertFalse(mastodonPlugin.isEnabled());
@@ -81,9 +81,9 @@ class MastodonPluginTest {
 
     @Test
     void isEnabled() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig("localhost", "foobar", true, 0);
-        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+        when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         assertTrue(mastodonPlugin.isEnabled());
@@ -107,9 +107,9 @@ class MastodonPluginTest {
     @ParameterizedTest
     @MethodSource("provideDataForHashtagsTest")
     void getPostsWithHashtags(@NotNull final String hashtags, final int expectedNumberOfPosts) {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig("localhost", hashtags, true, 0);
-        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+        when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         final List<Post> posts = mastodonPlugin.getPosts().toList();
@@ -120,9 +120,9 @@ class MastodonPluginTest {
 
     @Test
     void getPostsWithUnlimitedImages() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig("localhost", "foobar", true, 0);
-        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+        when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         final List<Post> posts = mastodonPlugin.getPosts().toList();
@@ -145,9 +145,9 @@ class MastodonPluginTest {
 
     @Test
     void getPostsWithOneImage() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig("localhost", "foobar", true, 1);
-        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+        when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         final List<Post> posts = mastodonPlugin.getPosts().toList();
@@ -165,9 +165,9 @@ class MastodonPluginTest {
 
     @Test
     void getPostsWithoutImages() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig("localhost", "foobar", false, 0);
-        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+        when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         final List<Post> posts = mastodonPlugin.getPosts().toList();
@@ -182,9 +182,9 @@ class MastodonPluginTest {
 
     @Test
     void getPostsWithInvalidImageTypes() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig("localhost", "invalidImageType", true, 0);
-        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+        when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         final List<Post> posts = mastodonPlugin.getPosts().toList();
@@ -202,9 +202,9 @@ class MastodonPluginTest {
 
     @Test
     void getPostsCatchesException() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig("localhost", "broken", true, 0);
-        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+        when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MemoryAppender memoryAppender = new MemoryAppender();
         memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
@@ -222,9 +222,9 @@ class MastodonPluginTest {
 
     @Test
     void testReplyConversion() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig("localhost", "foobar", true, 1);
-        when(configuration.getMastodon()).thenReturn(mastodonConfig);
+        when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
         final List<Post> posts = mastodonPlugin.getPosts().toList();

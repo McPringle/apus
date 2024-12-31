@@ -31,7 +31,7 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.social.SocialService;
 import swiss.fihlon.apus.social.Post;
 import swiss.fihlon.apus.util.PasswordUtil;
@@ -48,28 +48,28 @@ public final class SocialView extends Div {
     private static final Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
 
     private final transient SocialService socialService;
-    private final transient Configuration configuration;
+    private final transient AppConfig appConfig;
     private final List<Div> postsColumns;
     private final ContextMenu contextMenu;
     private boolean adminModeEnabled = false;
 
     public SocialView(@NotNull final SocialService socialService,
                       @NotNull final TaskScheduler taskScheduler,
-                      @NotNull final Configuration configuration) {
+                      @NotNull final AppConfig appConfig) {
         this.socialService = socialService;
-        this.configuration = configuration;
+        this.appConfig = appConfig;
 
         setId("social-view");
-        if (configuration.getSocial().headline().isBlank()) {
-            add(new H2(getTranslation("social.heading", configuration.getMastodon().hashtags().split(",")[0])));
+        if (appConfig.social().headline().isBlank()) {
+            add(new H2(getTranslation("social.heading", appConfig.mastodon().hashtags().split(",")[0])));
         } else {
-            add(new H2(configuration.getSocial().headline()));
+            add(new H2(appConfig.social().headline()));
         }
         var postsColumnsDiv = new Div();
         postsColumnsDiv.addClassName("posts");
         add(postsColumnsDiv);
 
-        final int numberOfColumns = configuration.getSocial().numberOfColumns();
+        final int numberOfColumns = appConfig.social().numberOfColumns();
         postsColumns = new ArrayList<>(numberOfColumns);
         for (int i = 0; i < numberOfColumns; i++) {
             final var postsContainer = new Div();
@@ -78,7 +78,7 @@ public final class SocialView extends Div {
             postsColumnsDiv.add(postsContainer);
         }
 
-        if (adminModeEnabled || configuration.getAdmin().password().isBlank()) {
+        if (adminModeEnabled || appConfig.admin().password().isBlank()) {
             contextMenu = null;
         } else {
             contextMenu = new ContextMenu();
@@ -130,7 +130,7 @@ public final class SocialView extends Div {
     }
 
     private void handleLogin(@NotNull final String password) {
-        if (PasswordUtil.matches(password, configuration.getAdmin().password())) {
+        if (PasswordUtil.matches(password, appConfig.admin().password())) {
             adminModeEnabled = true;
             contextMenu.setTarget(null);
             updatePosts();

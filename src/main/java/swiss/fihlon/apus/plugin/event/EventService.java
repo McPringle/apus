@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ScheduledFuture;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 
 @Service
 public final class EventService {
@@ -48,13 +48,13 @@ public final class EventService {
     private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
 
     public EventService(@NotNull final TaskScheduler taskScheduler,
-                        @NotNull final Configuration configuration,
+                        @NotNull final AppConfig appConfig,
                         @NotNull final List<EventPlugin> eventPlugins) {
         this.eventPlugins = eventPlugins;
-        this.dateAdjust = configuration.getEvent().dateAdjust();
+        this.dateAdjust = appConfig.event().dateAdjust();
         if (isEnabled()) {
             updateSessions();
-            final var updateFrequency = Duration.ofMinutes(configuration.getEvent().updateFrequency());
+            final var updateFrequency = Duration.ofMinutes(appConfig.event().updateFrequency());
             if (updateFrequency.isPositive()) {
                 updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, updateFrequency);
             } else {

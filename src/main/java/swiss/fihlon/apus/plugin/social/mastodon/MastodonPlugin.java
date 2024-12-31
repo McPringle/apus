@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import social.bigbone.api.entity.Account;
 import social.bigbone.api.entity.MediaAttachment;
 import social.bigbone.api.entity.Status;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.social.SocialPlugin;
 import swiss.fihlon.apus.social.Post;
 
@@ -47,9 +47,9 @@ public final class MastodonPlugin implements SocialPlugin {
     private final int imageLimit;
 
     public MastodonPlugin(@NotNull final MastodonLoader mastodonLoader,
-                          @NotNull final Configuration configuration) {
+                          @NotNull final AppConfig appConfig) {
         this.mastodonLoader = mastodonLoader;
-        final var mastodonConfig = configuration.getMastodon();
+        final var mastodonConfig = appConfig.mastodon();
         this.instance = mastodonConfig.instance();
         this.hashtags = mastodonConfig.hashtags();
         this.imagesEnabled = mastodonConfig.imagesEnabled();

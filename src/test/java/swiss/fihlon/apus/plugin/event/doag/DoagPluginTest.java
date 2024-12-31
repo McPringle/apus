@@ -18,12 +18,12 @@
 package swiss.fihlon.apus.plugin.event.doag;
 
 import org.junit.jupiter.api.Test;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
-import swiss.fihlon.apus.configuration.Configuration;
 
 import java.time.LocalDateTime;
 
@@ -38,9 +38,9 @@ class DoagPluginTest {
 
     @Test
     void isEnabled() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var doagConfig = new DoagConfig(1, "");
-        when(configuration.getDoag()).thenReturn(doagConfig);
+        when(configuration.doag()).thenReturn(doagConfig);
 
         final var doagPlugin = new DoagPlugin(configuration);
         assertTrue(doagPlugin.isEnabled());
@@ -48,9 +48,9 @@ class DoagPluginTest {
 
     @Test
     void isDisabled() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var doagConfig = new DoagConfig(0, "");
-        when(configuration.getDoag()).thenReturn(doagConfig);
+        when(configuration.doag()).thenReturn(doagConfig);
 
         final var doagPlugin = new DoagPlugin(configuration);
         assertFalse(doagPlugin.isEnabled());
@@ -58,9 +58,9 @@ class DoagPluginTest {
 
     @Test
     void getSessions() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var doagConfig = new DoagConfig(1, "file:src/test/resources/DOAG.json?eventId=%d");
-        when(configuration.getDoag()).thenReturn(doagConfig);
+        when(configuration.doag()).thenReturn(doagConfig);
 
         final var doagPlugin = new DoagPlugin(configuration);
         final var sessions = doagPlugin.getSessions().toList();
@@ -87,9 +87,9 @@ class DoagPluginTest {
 
     @Test
     void exceptionWithBrokenTitle() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var doagConfig = new DoagConfig(1, "file:src/test/resources/DOAG-broken-title.json?eventId=%d");
-        when(configuration.getDoag()).thenReturn(doagConfig);
+        when(configuration.doag()).thenReturn(doagConfig);
 
         final var doagPlugin = new DoagPlugin(configuration);
         final var exception = assertThrows(SessionImportException.class, doagPlugin::getSessions);
@@ -98,9 +98,9 @@ class DoagPluginTest {
 
     @Test
     void exceptionWithBlankTitle() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var doagConfig = new DoagConfig(1, "file:src/test/resources/DOAG-blank-title.json?eventId=%d");
-        when(configuration.getDoag()).thenReturn(doagConfig);
+        when(configuration.doag()).thenReturn(doagConfig);
 
         final var doagPlugin = new DoagPlugin(configuration);
         final var exception = assertThrows(SessionImportException.class, doagPlugin::getSessions);

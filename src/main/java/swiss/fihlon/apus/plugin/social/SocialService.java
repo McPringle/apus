@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.social.Post;
 import swiss.fihlon.apus.util.HtmlUtil;
 
@@ -57,13 +57,13 @@ public final class SocialService {
     private List<Post> posts = List.of();
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
-                         @NotNull final Configuration configuration,
+                         @NotNull final AppConfig appConfig,
                          @NotNull final List<SocialPlugin> socialPlugins) {
         this.socialPlugins = socialPlugins;
-        filterLength = configuration.getFilter().length();
-        filterReplies = configuration.getFilter().replies();
-        filterSensitive = configuration.getFilter().sensitive();
-        filterWords = configuration.getFilter().words().stream()
+        filterLength = appConfig.filter().length();
+        filterReplies = appConfig.filter().replies();
+        filterSensitive = appConfig.filter().sensitive();
+        filterWords = appConfig.filter().words().stream()
                 .map(filterWord -> filterWord.toLowerCase(DEFAULT_LOCALE).trim())
                 .toList();
         loadHiddenPostIds();

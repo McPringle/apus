@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
@@ -58,8 +58,8 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
 
     private final String dbUrl;
 
-    public JavaForumStuttgartPlugin(@NotNull final Configuration configuration) {
-        dbUrl = configuration.getJfs().dbUrl();
+    public JavaForumStuttgartPlugin(@NotNull final AppConfig appConfig) {
+        dbUrl = appConfig.jfs().dbUrl();
     }
 
     @Override

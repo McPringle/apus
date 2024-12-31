@@ -26,7 +26,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.RoomStyle;
 import swiss.fihlon.apus.event.Session;
@@ -57,11 +57,11 @@ public final class EventView extends Div {
 
     public EventView(@NotNull final EventService eventService,
                      @NotNull final TaskScheduler taskScheduler,
-                     @NotNull final Configuration configuration) {
+                     @NotNull final AppConfig appConfig) {
         this.eventService = eventService;
-        this.nextSessionTimeout = Duration.ofMinutes(configuration.getEvent().nextSessionTimeout());
-        this.showLegend = configuration.getEvent().showLegend();
-        this.showEmptyRooms = configuration.getEvent().showEmptyRooms();
+        this.nextSessionTimeout = Duration.ofMinutes(appConfig.event().nextSessionTimeout());
+        this.showLegend = appConfig.event().showLegend();
+        this.showEmptyRooms = appConfig.event().showEmptyRooms();
         setId("event-view");
         add(createTitle());
         if (showLegend) {
@@ -73,7 +73,7 @@ public final class EventView extends Div {
                 this::updateScheduler, Instant.now().plusSeconds(1), UPDATE_FREQUENCY);
         addDetachListener(event -> updateScheduler.cancel(true));
 
-        final var imageUrl = configuration.getEvent().image();
+        final var imageUrl = appConfig.event().image();
         if (imageUrl != null && !imageUrl.isBlank()) {
             add(createImage(imageUrl));
         }

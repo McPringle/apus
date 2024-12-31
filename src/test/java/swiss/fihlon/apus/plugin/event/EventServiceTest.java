@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.support.NoOpTaskScheduler;
 import swiss.fihlon.apus.MemoryAppender;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
@@ -47,11 +47,11 @@ import static org.mockito.Mockito.when;
 
 class EventServiceTest {
 
-    static Configuration mockConfiguration(@NotNull final Period dateAdjust) {
+    static AppConfig mockConfiguration(@NotNull final Period dateAdjust) {
         final var eventConfig = new EventConfig(dateAdjust, 0, "", 60,
                 true, true, 0);
-        final var configuration = mock(Configuration.class);
-        when(configuration.getEvent()).thenReturn(eventConfig);
+        final var configuration = mock(AppConfig.class);
+        when(configuration.event()).thenReturn(eventConfig);
         return configuration;
     }
 

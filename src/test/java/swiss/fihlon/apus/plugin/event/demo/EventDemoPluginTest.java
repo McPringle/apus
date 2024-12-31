@@ -18,7 +18,7 @@
 package swiss.fihlon.apus.plugin.event.demo;
 
 import org.junit.jupiter.api.Test;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.plugin.event.EventConfig;
 
@@ -32,11 +32,11 @@ import static org.mockito.Mockito.when;
 
 class EventDemoPluginTest {
 
-    private Configuration mockConfiguration(final int demoRoomCount) {
+    private AppConfig mockConfiguration(final int demoRoomCount) {
         final var eventConfig = new EventConfig(Period.ZERO, demoRoomCount, "", 60,
                 true, true, 0);
-        final var configuration = mock(Configuration.class);
-        when(configuration.getEvent()).thenReturn(eventConfig);
+        final var configuration = mock(AppConfig.class);
+        when(configuration.event()).thenReturn(eventConfig);
         return configuration;
     }
 

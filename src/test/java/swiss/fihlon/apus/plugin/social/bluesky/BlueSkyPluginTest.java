@@ -30,7 +30,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.LoggerFactory;
 import swiss.fihlon.apus.MemoryAppender;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.social.Post;
 
 import java.time.LocalDateTime;
@@ -91,9 +91,9 @@ class BlueSkyPluginTest {
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
     void isDisabled(@Nullable final String instance, @Nullable final String hashtag, @Nullable final String postAPI) {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var blueSkyConfig = new BlueSkyConfig(instance, hashtag, postAPI);
-        when(configuration.getBlueSky()).thenReturn(blueSkyConfig);
+        when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final var blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
         assertFalse(blueSkyPlugin.isEnabled());
@@ -101,9 +101,9 @@ class BlueSkyPluginTest {
 
     @Test
     void isEnabled() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var blueSkyConfig = new BlueSkyConfig("localhost", "foobar", "test");
-        when(configuration.getBlueSky()).thenReturn(blueSkyConfig);
+        when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final var blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
         assertTrue(blueSkyPlugin.isEnabled());
@@ -127,9 +127,9 @@ class BlueSkyPluginTest {
     @ParameterizedTest
     @MethodSource("provideDataForHashtagsTest")
     void getPostsWithHashtags(@NotNull final String hashtags, final int expectedNumberOfPosts) {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var blueSkyConfig = new BlueSkyConfig("localhost", hashtags, "https://%s/q=%s");
-        when(configuration.getBlueSky()).thenReturn(blueSkyConfig);
+        when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
         final List<Post> posts = blueSkyPlugin.getPosts().toList();
@@ -140,9 +140,9 @@ class BlueSkyPluginTest {
 
     @Test
     void getPostsWithUnlimitedImages() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var blueSkyConfig = new BlueSkyConfig("localhost", "foobar", "https://%s/q=%s");
-        when(configuration.getBlueSky()).thenReturn(blueSkyConfig);
+        when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
         final List<Post> posts = blueSkyPlugin.getPosts().toList();
@@ -165,9 +165,9 @@ class BlueSkyPluginTest {
 
     @Test
     void getPostsCatchesException() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var blueSkyConfig = new BlueSkyConfig("localhost", "broken", "https://%s/q=%s");
-        when(configuration.getBlueSky()).thenReturn(blueSkyConfig);
+        when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final MemoryAppender memoryAppender = new MemoryAppender();
         memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
@@ -185,9 +185,9 @@ class BlueSkyPluginTest {
 
     @Test
     void testReplyConversion() {
-        final var configuration = mock(Configuration.class);
+        final var configuration = mock(AppConfig.class);
         final var blueSkyConfig = new BlueSkyConfig("localhost", "foobar", "https://%s/q=%s");
-        when(configuration.getBlueSky()).thenReturn(blueSkyConfig);
+        when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
         final List<Post> posts = blueSkyPlugin.getPosts().toList();

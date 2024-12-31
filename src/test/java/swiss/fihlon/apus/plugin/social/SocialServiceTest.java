@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.scheduling.support.NoOpTaskScheduler;
 import swiss.fihlon.apus.MemoryAppender;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.social.Post;
 
 import java.io.IOException;
@@ -65,25 +65,25 @@ class SocialServiceTest {
     }
 
     @Autowired
-    private Configuration configuration;
+    private AppConfig appConfig;
 
     @Test
     void getPostsWithoutLimit() {
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of(new TestSocialPlugin()));
         final List<Post> posts = socialService.getPosts(0);
         assertEquals(10, posts.size());
     }
 
     @Test
     void getPostsWithNegativeLimit() {
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of(new TestSocialPlugin()));
         final List<Post> posts = socialService.getPosts(-1);
         assertEquals(10, posts.size());
     }
 
     @Test
     void getPostsWithLimit() {
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of(new TestSocialPlugin()));
         final List<Post> posts = socialService.getPosts(5);
         assertEquals(5, posts.size());
         assertEquals("P1", posts.get(0).id());
@@ -95,14 +95,14 @@ class SocialServiceTest {
 
     @Test
     void getEmptyPosts() {
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new EmptySocialPlugin()));
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of(new EmptySocialPlugin()));
         final List<Post> posts = socialService.getPosts(10);
         assertTrue(posts.isEmpty());
     }
 
     @Test
     void hidePost() {
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of(new TestSocialPlugin()));
         final List<Post> postsBefore = socialService.getPosts(10);
         assertEquals(10, postsBefore.size());
 
@@ -114,7 +114,7 @@ class SocialServiceTest {
 
     @Test
     void blockProfile() {
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of(new TestSocialPlugin()));
         final List<Post> postsBefore = socialService.getPosts(10);
         assertEquals(10, postsBefore.size());
 
@@ -128,7 +128,7 @@ class SocialServiceTest {
         final var filePath = getConfigDir().resolve("hiddenPosts");
         Files.writeString(filePath, "P5\nP6");
 
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of(new TestSocialPlugin()));
         final List<Post> posts = socialService.getPosts(0);
         final List<String> ids = posts.stream().map(Post::id).distinct().toList();
         assertFalse(ids.contains("P5"));
@@ -140,7 +140,7 @@ class SocialServiceTest {
         final var filePath = getConfigDir().resolve("blockedProfiles");
         Files.writeString(filePath, "profile1@localhost");
 
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of(new TestSocialPlugin()));
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of(new TestSocialPlugin()));
         final List<Post> posts = socialService.getPosts(0);
         final List<String> profiles = posts.stream().map(Post::profile).distinct().toList();
         assertFalse(profiles.contains("profile1@localhost"));
@@ -154,7 +154,7 @@ class SocialServiceTest {
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), configuration, List.of());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of());
         final List<Post> posts = socialService.getPosts(0);
         assertEquals(0, posts.size());
         memoryAppender.stop();

@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.event.EventService;
 import swiss.fihlon.apus.plugin.social.SocialService;
 
@@ -40,19 +40,19 @@ public final class SocialWallView extends Div {
     public SocialWallView(@NotNull final EventService eventService,
                           @NotNull final SocialService socialService,
                           @NotNull final TaskScheduler taskScheduler,
-                          @NotNull final Configuration configuration) {
+                          @NotNull final AppConfig appConfig) {
         setId("social-wall-view");
-        addDynamicStyles(configuration, eventService);
-        addCustomStyles(configuration);
+        addDynamicStyles(appConfig, eventService);
+        addCustomStyles(appConfig);
         if (eventService.isEnabled()) {
-            add(new EventView(eventService, taskScheduler, configuration));
+            add(new EventView(eventService, taskScheduler, appConfig));
         }
-        add(new SocialView(socialService, taskScheduler, configuration));
+        add(new SocialView(socialService, taskScheduler, appConfig));
     }
 
-    private static void addDynamicStyles(@NotNull final Configuration configuration, @NotNull final EventService eventService) {
+    private static void addDynamicStyles(@NotNull final AppConfig appConfig, @NotNull final EventService eventService) {
         final var currentStyle = UI.getCurrent().getElement().getStyle();
-        currentStyle.set("--social-post-column-count", Integer.toString(configuration.getSocial().numberOfColumns()));
+        currentStyle.set("--social-post-column-count", Integer.toString(appConfig.social().numberOfColumns()));
         if (eventService.isEnabled()) {
             final int roomCount = eventService.getRoomsWithSessions().size();
             final int columnCount = Math.ceilDiv(roomCount, 6);
@@ -66,8 +66,8 @@ public final class SocialWallView extends Div {
         }
     }
 
-    private static void addCustomStyles(@NotNull final Configuration configuration) {
-        final String customStyles = configuration.getCustom().styles();
+    private static void addCustomStyles(@NotNull final AppConfig appConfig) {
+        final String customStyles = appConfig.custom().styles();
         if (!customStyles.isBlank()) {
             final var currentStyle = UI.getCurrent().getElement().getStyle();
             Arrays.stream(customStyles.split(";"))

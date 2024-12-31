@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
@@ -55,10 +55,10 @@ public final class SessionizePlugin implements EventPlugin {
     private final String eventApi;
     private final String speakerApi;
 
-    public SessionizePlugin(@NotNull final Configuration configuration) {
-        this.eventId = configuration.getSessionize().eventId();
-        this.eventApi = configuration.getSessionize().eventApi();
-        this.speakerApi = configuration.getSessionize().speakerApi();
+    public SessionizePlugin(@NotNull final AppConfig appConfig) {
+        this.eventId = appConfig.sessionize().eventId();
+        this.eventApi = appConfig.sessionize().eventApi();
+        this.speakerApi = appConfig.sessionize().speakerApi();
     }
 
     @Override

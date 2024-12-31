@@ -20,7 +20,7 @@ package swiss.fihlon.apus.plugin.social.demo;
 import net.datafaker.Faker;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
-import swiss.fihlon.apus.configuration.Configuration;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.social.SocialPlugin;
 import swiss.fihlon.apus.social.Post;
 
@@ -39,8 +39,8 @@ public final class SocialDemoPlugin implements SocialPlugin {
 
     private final int postCount;
 
-    public SocialDemoPlugin(@NotNull final Configuration configuration) {
-        this.postCount = configuration.getSocial().demoPostCount();
+    public SocialDemoPlugin(@NotNull final AppConfig appConfig) {
+        this.postCount = appConfig.social().demoPostCount();
     }
 
     @Override
