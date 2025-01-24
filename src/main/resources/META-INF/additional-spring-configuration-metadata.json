@@ -1,149 +1,154 @@
 {
-  "properties" : [
+  "properties": [
     {
-      "name" : "apus.admin.password",
-      "type" : "java.lang.String",
-      "description" : "The password to get admin access (empty = disabled)."
+      "name": "apus.admin.password",
+      "type": "java.lang.String",
+      "description": "The password to get admin access (empty = disabled)."
     },
     {
-      "name" : "apus.bluesky.hashtags",
-      "type" : "java.lang.String",
-      "description" : "A list of comma separated hashtags for BlueSky posts."
+      "name": "apus.bluesky.hashtags",
+      "type": "java.lang.String",
+      "description": "A list of comma separated hashtags for BlueSky posts."
     },
     {
-      "name" : "apus.bluesky.instance",
-      "type" : "java.lang.String",
-      "description" : "The BlueSky instance used to read the posts from."
+      "name": "apus.bluesky.instance",
+      "type": "java.lang.String",
+      "description": "The BlueSky instance used to read the posts from."
     },
     {
-      "name" : "apus.bluesky.postAPI",
-      "type" : "java.lang.String",
-      "description" : "The URL of the BlueSky API to read the posts."
+      "name": "apus.bluesky.postAPI",
+      "type": "java.lang.String",
+      "description": "The URL of the BlueSky API to read the posts."
     },
     {
-      "name" : "apus.custom.styles",
-      "type" : "java.lang.String",
-      "description" : "Inject custom styles into the user interface."
+      "name": "apus.bluesky.postLimit",
+      "type": "java.lang.Integer",
+      "description": "The limit for the number of BlueSky posts when accessing the API."
     },
     {
-      "name" : "apus.doag.eventApi",
-      "type" : "java.lang.String",
-      "description" : "The URL of the DOAG event API to read the conference agenda."
+      "name": "apus.custom.styles",
+      "type": "java.lang.String",
+      "description": "Inject custom styles into the user interface."
     },
     {
-      "name" : "apus.doag.eventId",
-      "type" : "java.lang.Integer",
-      "description" : "The ID of the DOAG event to read the conference agenda."
+      "name": "apus.doag.eventApi",
+      "type": "java.lang.String",
+      "description": "The URL of the DOAG event API to read the conference agenda."
     },
     {
-      "name" : "apus.event.dateAdjust",
-      "type" : "java.lang.String",
-      "description" : "Adjust the date of the event in days (empty = disabled)."
+      "name": "apus.doag.eventId",
+      "type": "java.lang.Integer",
+      "description": "The ID of the DOAG event to read the conference agenda."
     },
     {
-      "name" : "apus.event.demoRoomCount",
-      "type" : "java.lang.Integer",
-      "description" : "Number of rooms for the event demo plugin."
+      "name": "apus.event.dateAdjust",
+      "type": "java.lang.String",
+      "description": "Adjust the date of the event in days (empty = disabled)."
     },
     {
-      "name" : "apus.event.image",
-      "type" : "java.lang.String",
-      "description" : "The URL of the image to be shown below the event agenda (empty = no image)."
+      "name": "apus.event.demoRoomCount",
+      "type": "java.lang.Integer",
+      "description": "Number of rooms for the event demo plugin."
     },
     {
-      "name" : "apus.event.nextSessionTimeout",
-      "type" : "java.lang.Integer",
-      "description" : "Number of minutes a session is shown before it starts."
+      "name": "apus.event.image",
+      "type": "java.lang.String",
+      "description": "The URL of the image to be shown below the event agenda (empty = no image)."
     },
     {
-      "name" : "apus.event.showEmptyRooms",
-      "type" : "java.lang.Boolean",
-      "description" : "Show (true) or hide (false) empty event rooms."
+      "name": "apus.event.nextSessionTimeout",
+      "type": "java.lang.Integer",
+      "description": "Number of minutes a session is shown before it starts."
     },
     {
-      "name" : "apus.event.showLegend",
-      "type" : "java.lang.Boolean",
-      "description" : "Show (true) or hide (false) the event room legend."
+      "name": "apus.event.showEmptyRooms",
+      "type": "java.lang.Boolean",
+      "description": "Show (true) or hide (false) empty event rooms."
     },
     {
-      "name" : "apus.event.updateFrequency",
-      "type" : "java.lang.Integer",
-      "description" : "How often (in minutes) to update event data."
+      "name": "apus.event.showLegend",
+      "type": "java.lang.Boolean",
+      "description": "Show (true) or hide (false) the event room legend."
     },
     {
-      "name" : "apus.filter.length",
-      "type" : "java.lang.Integer",
-      "description" : "Hide social media messages which exceed this length."
+      "name": "apus.event.updateFrequency",
+      "type": "java.lang.Integer",
+      "description": "How often (in minutes) to update event data."
     },
     {
-      "name" : "apus.filter.replies",
-      "type" : "java.lang.Boolean",
-      "description" : "Hide social media messages which are replies."
+      "name": "apus.filter.length",
+      "type": "java.lang.Integer",
+      "description": "Hide social media messages which exceed this length."
     },
     {
-      "name" : "apus.filter.sensitive",
-      "type" : "java.lang.Boolean",
-      "description" : "Hide social media messages which contain sensitive information."
+      "name": "apus.filter.replies",
+      "type": "java.lang.Boolean",
+      "description": "Hide social media messages which are replies."
     },
     {
-      "name" : "apus.filter.words",
-      "type" : "java.lang.String",
-      "description" : "Hide social media messages which contain these words."
+      "name": "apus.filter.sensitive",
+      "type": "java.lang.Boolean",
+      "description": "Hide social media messages which contain sensitive information."
     },
     {
-      "name" : "apus.jfs.dbUrl",
-      "type" : "java.lang.String",
-      "description" : "The URL of the database file for Java Forum Stuttgart."
+      "name": "apus.filter.words",
+      "type": "java.lang.String",
+      "description": "Hide social media messages which contain these words."
     },
     {
-      "name" : "apus.mastodon.hashtags",
-      "type" : "java.lang.String",
-      "description" : "A list of comma separated hashtags for Mastodon posts."
+      "name": "apus.jfs.dbUrl",
+      "type": "java.lang.String",
+      "description": "The URL of the database file for Java Forum Stuttgart."
     },
     {
-      "name" : "apus.mastodon.imageLimit",
-      "type" : "java.lang.Integer",
-      "description" : "Limit number of images per post."
+      "name": "apus.mastodon.hashtags",
+      "type": "java.lang.String",
+      "description": "A list of comma separated hashtags for Mastodon posts."
     },
     {
-      "name" : "apus.mastodon.imagesEnabled",
-      "type" : "java.lang.Boolean",
-      "description" : "Enable or disable images in mastodon posts."
+      "name": "apus.mastodon.imageLimit",
+      "type": "java.lang.Integer",
+      "description": "Limit number of images per post."
     },
     {
-      "name" : "apus.mastodon.instance",
-      "type" : "java.lang.String",
-      "description" : "The Mastodon instance used to read the posts from."
+      "name": "apus.mastodon.imagesEnabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable or disable images in mastodon posts."
     },
     {
-      "name" : "apus.sessionize.eventApi",
-      "type" : "java.lang.String",
-      "description" : "The URL of the Sessionize API to read the conference agenda."
+      "name": "apus.mastodon.instance",
+      "type": "java.lang.String",
+      "description": "The Mastodon instance used to read the posts from."
     },
     {
-      "name" : "apus.sessionize.eventId",
-      "type" : "java.lang.String",
-      "description" : "The ID of the Sessionize event to read the conference agenda."
+      "name": "apus.sessionize.eventApi",
+      "type": "java.lang.String",
+      "description": "The URL of the Sessionize API to read the conference agenda."
     },
     {
-      "name" : "apus.sessionize.SpeakerApi",
-      "type" : "java.lang.String",
-      "description" : "The URL of the Sessionize API to read the speaker information."
+      "name": "apus.sessionize.eventId",
+      "type": "java.lang.String",
+      "description": "The ID of the Sessionize event to read the conference agenda."
     },
     {
-      "name" : "apus.social.demoPostCount",
-      "type" : "java.lang.Integer",
-      "description" : "Number of posts for the social demo plugin (0 = disabled)."
+      "name": "apus.sessionize.SpeakerApi",
+      "type": "java.lang.String",
+      "description": "The URL of the Sessionize API to read the speaker information."
     },
     {
-      "name" : "apus.social.headline",
-      "type" : "java.lang.String",
-      "description" : "Overwrite the headline for social media posts."
+      "name": "apus.social.demoPostCount",
+      "type": "java.lang.Integer",
+      "description": "Number of posts for the social demo plugin (0 = disabled)."
     },
     {
-      "name" : "apus.social.numberOfColumns",
-      "type" : "java.lang.Integer",
-      "description" : "How many columns to be used for social media posts."
+      "name": "apus.social.headline",
+      "type": "java.lang.String",
+      "description": "Overwrite the headline for social media posts."
+    },
+    {
+      "name": "apus.social.numberOfColumns",
+      "type": "java.lang.Integer",
+      "description": "How many columns to be used for social media posts."
     }
   ]
 }

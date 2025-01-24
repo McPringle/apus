@@ -120,6 +120,7 @@ To modify the default configuration values, just specify environment variables w
 | BLUESKY_HASHTAGS           |               | A list of comma separated hashtags for BlueSky posts (empty = disabled).     |
 | BLUESKY_INSTANCE           | api.bsky.app  | The BlueSky instance used to read the posts from (empty = disabled).         |
 | BLUESKY_POST_API           | [1]           | The URL of the BlueSky API to read the posts (empty = disabled).             |
+| BLUESKY_POST_LIMIT         | 30            | The limit for the number of BlueSky posts when accessing the API.            |
 | CUSTOM_STYLES              |               | Inject custom styles into the user interface (see explanations below).       |
 | DOAG_EVENT_API             | [2]           | The URL of the DOAG event API to read the conference agenda.                 |
 | DOAG_EVENT_ID              | 0             | The ID of the DOAG event to read the conference agenda (0 = disabled).       |

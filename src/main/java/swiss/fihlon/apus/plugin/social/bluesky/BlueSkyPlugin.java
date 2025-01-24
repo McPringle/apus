@@ -39,6 +39,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
     private final String hashtags;
     private final String instance;
     private final String postAPI;
+    private final int postLimit;
 
     public BlueSkyPlugin(@NotNull final BlueSkyLoader blueSkyLoader,
                          @NotNull final AppConfig appConfig) {
@@ -47,6 +48,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
         this.hashtags = blueSkyConfig.hashtags();
         this.instance = blueSkyConfig.instance();
         this.postAPI = blueSkyConfig.postAPI();
+        this.postLimit = blueSkyConfig.postLimit();
     }
 
     @Override
@@ -67,7 +69,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
                     continue;
                 }
                 LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
-                final var jsonPosts = blueSkyLoader.getPosts(instance, hashtag.trim(), postAPI);
+                final var jsonPosts = blueSkyLoader.getPosts(instance, hashtag.trim(), postAPI, postLimit);
                 LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", jsonPosts.length(), hashtag, instance);
 
                 for (var i = 0; i < jsonPosts.length(); i++) {

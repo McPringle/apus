@@ -28,9 +28,13 @@ public final class DefaultBlueSkyLoader implements BlueSkyLoader {
 
     @Override
     @NotNull
-    public JSONArray getPosts(@NotNull final String instance, @NotNull final String hashtag, @NotNull final String postAPI) throws BlueSkyException {
+    public JSONArray getPosts(@NotNull final String instance,
+                              @NotNull final String hashtag,
+                              @NotNull final String postAPI,
+                              final int postLimit)
+            throws BlueSkyException {
         try {
-            final var url = String.format(postAPI, instance, hashtag);
+            final var url = String.format(postAPI, instance, hashtag, postLimit);
             final var json = DownloadUtil.getString(url);
             return new JSONObject(json).getJSONArray("posts");
         } catch (final Exception e) {
