@@ -92,3 +92,4 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ steps.lowercase-repo.outputs.repository }}
+          readme-filepath: DOCKER.md
