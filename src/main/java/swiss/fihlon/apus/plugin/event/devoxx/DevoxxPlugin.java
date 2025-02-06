@@ -24,19 +24,21 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import swiss.fihlon.apus.configuration.Configuration;
-import swiss.fihlon.apus.event.*;
+import swiss.fihlon.apus.configuration.AppConfig;
+import swiss.fihlon.apus.event.Language;
+import swiss.fihlon.apus.event.Room;
+import swiss.fihlon.apus.event.Session;
+import swiss.fihlon.apus.event.SessionImportException;
+import swiss.fihlon.apus.event.Speaker;
+import swiss.fihlon.apus.event.Track;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
 import swiss.fihlon.apus.util.DownloadUtil;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 
@@ -46,8 +48,8 @@ public final class DevoxxPlugin implements EventPlugin {
 
     private final String eventApi;
 
-    public DevoxxPlugin(@NotNull final Configuration configuration) {
-        this.eventApi = configuration.getDevoxx().eventApi();
+    public DevoxxPlugin(@NotNull final AppConfig configuration) {
+        this.eventApi = configuration.devoxx().eventApi();
     }
 
     @Override
