@@ -86,7 +86,7 @@ public final class DevoxxPlugin implements EventPlugin {
                         proposal.getString("title"),
                         getSpeakers(proposal.getJSONArray("speakers")),
                         Language.UNKNOWN, // TODO: parse language #292
-                        Track.NONE); // TODO parse track #293
+                        Track.NONE); // TODO: parse track #293
                 sessions.add(session);
             }
             LOGGER.info("Successfully loaded {} sessions for event ID {} on {}", sessions.size(), eventId, weekday);
