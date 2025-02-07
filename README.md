@@ -46,11 +46,14 @@ See:
 | Event                | Plugin                     |
 |----------------------|----------------------------|
 | BaselOne             | `SessionizePlugin`         |
+| CloudLand            | `DoagPlugin`               |
 | CyberLand            | `DoagPlugin`               |
+| Devoxx               | `DevoxxPlugin`             |
 | Java Forum Nord      | `SessionizePlugin`         |
 | Java Forum Stuttgart | `JavaForumStuttgartPlugin` |
 | JavaLand             | `DoagPlugin`               |
-| Voxxed Days Zürich   | - TODO -                   |
+| KI Navigator         | `DoagPlugin`               |
+| Voxxed Days          | `DevoxxPlugin`             |
 
 ### And more
 
@@ -346,6 +349,7 @@ Modify this command according your needs and consult the [configuration section]
 | Plugin                     | Supported Events                             |
 |----------------------------|----------------------------------------------|
 | `EventDemoPlugin`          | Creates fake session data for demo purposes. |
+| `DevoxxPlugin`             | Devoxx and Voxxed Days conferences           |
 | `DoagPlugin`               | CloudLand, CyberLand, JavaLand, KI Navigator |
 | `JavaForumStuttgartPlugin` | Java Forum Stuttgart                         |
 | `SessionizePlugin`         | BaselOne, Java Forum Nord                    |
