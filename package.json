@@ -4,14 +4,14 @@
   "type": "module",
   "dependencies": {
     "@polymer/polymer": "3.5.2",
-    "@vaadin/bundles": "24.5.4",
+    "@vaadin/bundles": "24.6.3",
     "@vaadin/common-frontend": "0.0.19",
-    "@vaadin/polymer-legacy-adapter": "24.5.4",
-    "@vaadin/react-components": "24.5.4",
+    "@vaadin/polymer-legacy-adapter": "24.6.3",
+    "@vaadin/react-components": "24.6.3",
     "@vaadin/vaadin-development-mode-detector": "2.0.7",
-    "@vaadin/vaadin-lumo-styles": "24.5.4",
-    "@vaadin/vaadin-material-styles": "24.5.4",
-    "@vaadin/vaadin-themable-mixin": "24.5.4",
+    "@vaadin/vaadin-lumo-styles": "24.6.3",
+    "@vaadin/vaadin-material-styles": "24.6.3",
+    "@vaadin/vaadin-themable-mixin": "24.6.3",
     "@vaadin/vaadin-usage-statistics": "2.1.3",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
@@ -63,14 +63,14 @@
   "vaadin": {
     "dependencies": {
       "@polymer/polymer": "3.5.2",
-      "@vaadin/bundles": "24.5.4",
+      "@vaadin/bundles": "24.6.3",
       "@vaadin/common-frontend": "0.0.19",
-      "@vaadin/polymer-legacy-adapter": "24.5.4",
-      "@vaadin/react-components": "24.5.4",
+      "@vaadin/polymer-legacy-adapter": "24.6.3",
+      "@vaadin/react-components": "24.6.3",
       "@vaadin/vaadin-development-mode-detector": "2.0.7",
-      "@vaadin/vaadin-lumo-styles": "24.5.4",
-      "@vaadin/vaadin-material-styles": "24.5.4",
-      "@vaadin/vaadin-themable-mixin": "24.5.4",
+      "@vaadin/vaadin-lumo-styles": "24.6.3",
+      "@vaadin/vaadin-material-styles": "24.6.3",
+      "@vaadin/vaadin-themable-mixin": "24.6.3",
       "@vaadin/vaadin-usage-statistics": "2.1.3",
       "construct-style-sheets-polyfill": "3.1.0",
       "date-fns": "2.29.3",
@@ -100,6 +100,6 @@
       "workbox-core": "7.3.0",
       "workbox-precaching": "7.3.0"
     },
-    "hash": "c488880a18873f8201b75ced23b71a74a677b0b555ccb6b49ac152afe46068c6"
+    "hash": "81b09bfacdcb9f1aa8bf27e0750ef965d41fe1079f4834915e27c2d14e780d90"
   }
 }
