@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.social.mastodon;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import social.bigbone.api.entity.Status;
 
