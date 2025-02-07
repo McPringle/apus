@@ -19,11 +19,6 @@ package swiss.fihlon.apus.plugin.social.bluesky;
 
 import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
-import social.bigbone.api.entity.Status;
-import swiss.fihlon.apus.plugin.social.mastodon.DefaultMastodonLoader;
-import swiss.fihlon.apus.plugin.social.mastodon.MastodonException;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

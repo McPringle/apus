@@ -17,4 +17,4 @@
  */
 package swiss.fihlon.apus.plugin.social.mastodon;
 
-public record MastodonConfig(String instance, String hashtags, boolean imagesEnabled, int imageLimit) { }
+public record MastodonConfig(String instance, String hashtags, String postAPI, int postLimit, boolean imagesEnabled, int imageLimit) { }

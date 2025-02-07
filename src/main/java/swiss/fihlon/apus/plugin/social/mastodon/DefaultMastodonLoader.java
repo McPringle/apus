@@ -18,26 +18,24 @@
 package swiss.fihlon.apus.plugin.social.mastodon;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.springframework.stereotype.Service;
-import social.bigbone.MastodonClient;
-import social.bigbone.api.Range;
-import social.bigbone.api.entity.Status;
-
-import java.util.List;
-
-import static social.bigbone.api.method.TimelineMethods.StatusOrigin.LOCAL_AND_REMOTE;
+import swiss.fihlon.apus.util.DownloadUtil;
 
 @Service
 public final class DefaultMastodonLoader implements MastodonLoader {
 
-    private static final int MASTODON_POST_RANGE_LIMIT = 30;
-
     @Override
-    @NotNull public List<Status> getStatuses(@NotNull final String instance, @NotNull final String hashtag) throws MastodonException {
+    @NotNull
+    public JSONArray getPosts(@NotNull final String instance,
+                              @NotNull final String hashtag,
+                              @NotNull final String postAPI,
+                              final int postLimit)
+            throws MastodonException {
         try {
-            final MastodonClient client = new MastodonClient.Builder(instance).build();
-            final Range range = new Range(null, null, null, MASTODON_POST_RANGE_LIMIT);
-            return client.timelines().getTagTimeline(hashtag, LOCAL_AND_REMOTE, range).execute().getPart();
+            final var url = String.format(postAPI, instance, hashtag, postLimit);
+            final var json = DownloadUtil.getString(url);
+            return new JSONArray(json);
         } catch (final Exception e) {
             throw new MastodonException(String.format("Unable to load posts with hashtag '%s' from Mastodon instance '%s'", hashtag, instance), e);
         }

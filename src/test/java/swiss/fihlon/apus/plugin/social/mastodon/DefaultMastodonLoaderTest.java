@@ -17,10 +17,8 @@
  */
 package swiss.fihlon.apus.plugin.social.mastodon;
 
+import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
-import social.bigbone.api.entity.Status;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -31,15 +29,17 @@ class DefaultMastodonLoaderTest {
 
     @Test
     void getStatuses() throws MastodonException {
-        final List<Status> statuses = new DefaultMastodonLoader().getStatuses("ijug.social", "java");
-        assertNotNull(statuses);
-        assertFalse(statuses.isEmpty());
+        final JSONArray posts = new DefaultMastodonLoader().getPosts("ijug.social", "java",
+                "https://%s/api/v1/timelines/tag/%s?limit=%d", 1);
+        assertNotNull(posts);
+        assertFalse(posts.isEmpty());
     }
 
     @Test
     void throwException() {
         final var exception = assertThrows(MastodonException.class,
-                () -> new DefaultMastodonLoader().getStatuses("non.existent.server", "java"));
+                () -> new DefaultMastodonLoader().getPosts("non.existent.server", "java",
+                        "https://%s/api/v1/timelines/tag/%s?limit=%d", 1));
         assertEquals("Unable to load posts with hashtag 'java' from Mastodon instance 'non.existent.server'", exception.getMessage());
     }
 

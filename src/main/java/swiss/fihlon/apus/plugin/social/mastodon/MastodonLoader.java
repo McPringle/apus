@@ -18,10 +18,10 @@
 package swiss.fihlon.apus.plugin.social.mastodon;
 
 import org.jetbrains.annotations.NotNull;
-import social.bigbone.api.entity.Status;
-
-import java.util.List;
+import org.json.JSONArray;
 
 public interface MastodonLoader {
-    @NotNull List<Status> getStatuses(@NotNull String instance, @NotNull String hashtag) throws MastodonException;
+
+    @NotNull JSONArray getPosts(@NotNull String instance, @NotNull String hashtag, @NotNull String postAPI, int postLimit) throws MastodonException;
+
 }
