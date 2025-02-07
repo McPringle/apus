@@ -76,20 +76,21 @@ public final class DevoxxPlugin implements EventPlugin {
                 if (sessionData.isNull("proposal")) {
                     continue;
                 }
+                lastSessionId = Integer.toString(sessionData.getInt("id"));
                 JSONObject proposal = sessionData.getJSONObject("proposal");
                 Session session = new Session(
-                        Integer.toString(sessionData.getInt("id")),
+                        lastSessionId,
                         ZonedDateTime.parse(sessionData.getString("fromDate")).toLocalDateTime(),
                         ZonedDateTime.parse(sessionData.getString("toDate")).toLocalDateTime(),
                         new Room(sessionData.getJSONObject("room").getString("name")),
                         proposal.getString("title"),
                         getSpeakers(proposal.getJSONArray("speakers")),
-                        Language.UNKNOWN,
-                        Track.NONE);
+                        Language.UNKNOWN, // TODO: parse language #292
+                        Track.NONE); // TODO parse track #293
                 sessions.add(session);
             }
             LOGGER.info("Successfully loaded {} sessions for event ID {} on {}", sessions.size(), eventId, weekday);
-        } catch (IOException | URISyntaxException | JSONException e) {
+        } catch (final IOException | URISyntaxException | JSONException e) {
             throw new SessionImportException(String.format("Error parsing session %s: %s", lastSessionId, e.getMessage()), e);
         }
         return sessions.stream();
@@ -97,9 +98,9 @@ public final class DevoxxPlugin implements EventPlugin {
 
     @NotNull
     private List<Speaker> getSpeakers(@NotNull final JSONArray speakersData) {
-        final ArrayList<Speaker> speakers = new ArrayList<>();
+        final var speakers = new ArrayList<Speaker>();
         for (int counter = 0; counter < speakersData.length(); counter++) {
-            JSONObject speakerData = speakersData.getJSONObject(counter);
+            final var speakerData = speakersData.getJSONObject(counter);
             speakers.add(new Speaker(speakerData.getString("fullName"), speakerData.getString("imageUrl")));
         }
         return speakers;

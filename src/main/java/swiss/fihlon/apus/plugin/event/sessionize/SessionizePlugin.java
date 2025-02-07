@@ -104,7 +104,7 @@ public final class SessionizePlugin implements EventPlugin {
                 allSpeakers.put(lastSpeakerId, new Speaker(fullName, profilePicture));
             }
             LOGGER.info("Successfully loaded {} speakers for event ID {}", allSpeakers.size(), eventId);
-        } catch (IOException | URISyntaxException | JSONException e) {
+        } catch (final IOException | URISyntaxException | JSONException e) {
             throw new SessionImportException(String.format("Error parsing speaker %s: %s", lastSpeakerId, e.getMessage()), e);
         }
         return allSpeakers;
