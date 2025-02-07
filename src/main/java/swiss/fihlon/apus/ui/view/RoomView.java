@@ -111,6 +111,7 @@ public final class RoomView extends Div {
     @NotNull
     private Component createSpeakersComponent() {
         final var speakersComponent = new Div();
+        speakersComponent.addClassName("speakers");
         if (speakers.isEmpty()) {
             speakersComponent.add(nbsp());
         } else {
@@ -127,15 +128,18 @@ public final class RoomView extends Div {
 
     @NotNull
     private Component createRoomComponent() {
-        return new Div(
+        final var roomComponent = new Div(
                 new Icon(VaadinIcon.LOCATION_ARROW_CIRCLE),
                 new Text(room.name())
         );
+        roomComponent.addClassName("room");
+        return roomComponent;
     }
 
     @NotNull
     private Component createTimeComponent() {
         final var timeComponent = new Div();
+        timeComponent.addClassName("time");
         final var now = LocalTime.now().withSecond(59).withNano(999);
         if (startTime == null || endTime == null) { // empty session
             timeComponent.add(nbsp());

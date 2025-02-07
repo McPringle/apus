@@ -22,20 +22,21 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.LoggerFactory;
-import social.bigbone.PrecisionDateTime;
-import social.bigbone.api.entity.Account;
-import social.bigbone.api.entity.MediaAttachment;
-import social.bigbone.api.entity.Status;
 import swiss.fihlon.apus.MemoryAppender;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.social.Post;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Stream;
@@ -44,11 +45,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class MastodonPluginTest {
+
+    private static final String POST_API = "https://%s/api/v1/timelines/tag/%s?limit=%d";
+    private static final int POST_LIMIT = 30;
 
     private static Stream<Arguments> provideDataForDisabledTest() {
         return Stream.of(
@@ -72,7 +75,7 @@ class MastodonPluginTest {
     @MethodSource("provideDataForDisabledTest")
     void isDisabled(@Nullable final String instance, @Nullable final String hashtag) {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig(instance, hashtag, true, 0);
+        final var mastodonConfig = new MastodonConfig(instance, hashtag, POST_API, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
@@ -82,7 +85,7 @@ class MastodonPluginTest {
     @Test
     void isEnabled() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "foobar", true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", "foobar", POST_API, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
@@ -108,7 +111,7 @@ class MastodonPluginTest {
     @MethodSource("provideDataForHashtagsTest")
     void getPostsWithHashtags(@NotNull final String hashtags, final int expectedNumberOfPosts) {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", hashtags, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", hashtags, POST_API, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
@@ -121,7 +124,7 @@ class MastodonPluginTest {
     @Test
     void getPostsWithUnlimitedImages() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "foobar", true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", "foobar", POST_API, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
@@ -146,7 +149,7 @@ class MastodonPluginTest {
     @Test
     void getPostsWithOneImage() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "foobar", true, 1);
+        final var mastodonConfig = new MastodonConfig("localhost", "foobar", POST_API, POST_LIMIT, true, 1);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
@@ -166,7 +169,7 @@ class MastodonPluginTest {
     @Test
     void getPostsWithoutImages() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "foobar", false, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", "foobar", POST_API, POST_LIMIT, false, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
@@ -183,7 +186,7 @@ class MastodonPluginTest {
     @Test
     void getPostsWithInvalidImageTypes() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "invalidImageType", true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", "invalidImageType", POST_API, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
@@ -203,7 +206,7 @@ class MastodonPluginTest {
     @Test
     void getPostsCatchesException() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "broken", true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", "broken", POST_API, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MemoryAppender memoryAppender = new MemoryAppender();
@@ -223,7 +226,7 @@ class MastodonPluginTest {
     @Test
     void testReplyConversion() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "foobar", true, 1);
+        final var mastodonConfig = new MastodonConfig("localhost", "foobar", POST_API, POST_LIMIT, true, 1);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
@@ -243,62 +246,71 @@ class MastodonPluginTest {
     private static final class TestMastodonLoader implements MastodonLoader {
 
         @Override
-        @NotNull public List<Status> getStatuses(@NotNull String instance, @NotNull String hashtag) throws MastodonException {
-            return switch (hashtag) {
+        @NotNull
+        public JSONArray getPosts(@NotNull final String instance,
+                                  @NotNull final String hashtag,
+                                  @NotNull final String postAPI,
+                                  final int postLimit)
+                throws MastodonException {
+            final var posts = new JSONArray();
+            posts.putAll(switch (hashtag) {
                 case "foobar" -> List.of(
-                        createStatus(1, false),
-                        createStatus(2, false),
-                        createStatus(3, false),
-                        createStatus(4, false),
-                        createStatus(5, false)
+                        createPost(1, false),
+                        createPost(2, false),
+                        createPost(3, false),
+                        createPost(4, false),
+                        createPost(5, false)
                 );
                 case "foo" -> List.of(
-                        createStatus(6, false),
-                        createStatus(7, false)
+                        createPost(6, false),
+                        createPost(7, false)
                 );
                 case "bar" -> List.of(
-                        createStatus(8, false),
-                        createStatus(9, false),
-                        createStatus(10, false)
+                        createPost(8, false),
+                        createPost(9, false),
+                        createPost(10, false)
                 );
                 case "invalidImageType" -> List.of(
-                        createStatus(1, true),
-                        createStatus(2, true),
-                        createStatus(3, true),
-                        createStatus(4, true),
-                        createStatus(5, true)
+                        createPost(1, true),
+                        createPost(2, true),
+                        createPost(3, true),
+                        createPost(4, true),
+                        createPost(5, true)
                 );
                 case "broken" -> throw new MastodonException("This is an expected exception.", new RuntimeException("This is a faked cause."));
                 default -> List.of();
-            };
+            });
+            return posts;
         }
 
-        private Status createStatus(final int i, boolean invalidImageType) {
-            final Account account = mock(Account.class);
-            when(account.getDisplayName()).thenReturn("Display Name " + i);
-            when(account.getAvatar()).thenReturn("Avatar " + i);
-            when(account.getAcct()).thenReturn("profile" + i);
+        private JSONObject createPost(final int i, boolean invalidImageType) {
+            final var post = new JSONObject();
+            post.put("id", "ID " + i);
+            post.put("in_reply_to_id", i == 1 ? null : i == 5 ? "ID 4" : " ");
+            post.put("sensitive", false);
+            post.put("content", "Content for post #" + i);
 
-            final PrecisionDateTime createdAt = mock(PrecisionDateTime.class);
-            when(createdAt.mostPreciseOrFallback(any())).thenReturn(Instant.now().minus(i, ChronoUnit.MINUTES));
+            final var account = new JSONObject();
+            account.put("display_name", "Display Name " + i);
+            account.put("avatar", "Avatar " + i);
+            account.put("acct", "profile" + i + "@localhost");
+            post.put("account", account);
 
-            final MediaAttachment mediaAttachmentA = mock(MediaAttachment.class);
-            when(mediaAttachmentA.getType()).thenReturn(invalidImageType ? MediaAttachment.MediaType.VIDEO : MediaAttachment.MediaType.IMAGE);
-            when(mediaAttachmentA.getUrl()).thenReturn("http://localhost/image" + i + "a.webp");
-            final MediaAttachment mediaAttachmentB = mock(MediaAttachment.class);
-            when(mediaAttachmentB.getType()).thenReturn(MediaAttachment.MediaType.IMAGE);
-            when(mediaAttachmentB.getUrl()).thenReturn("http://localhost/image" + i + "b.webp");
-            final List<MediaAttachment> mediaAttachments = List.of(mediaAttachmentA, mediaAttachmentB);
+            final var createdAt = ZonedDateTime.ofInstant(Instant.now().minus(i, ChronoUnit.MINUTES), ZoneId.of("Z"));
+            post.put("created_at", createdAt.format(DateTimeFormatter.ISO_INSTANT));
 
-            final Status status = mock(Status.class);
-            when(status.getId()).thenReturn("ID " + i);
-            when(status.getAccount()).thenReturn(i == 1 ? account : null);
-            when(status.getCreatedAt()).thenReturn(createdAt);
-            when(status.getContent()).thenReturn("Content for post #" + i);
-            when(status.getMediaAttachments()).thenReturn(mediaAttachments);
-            when(status.getInReplyToId()).thenReturn(i == 1 ? null : i == 5 ? "ID 4" : " ");
-            when(status.isSensitive()).thenReturn(false);
-            return status;
+            final var mediaAttachments = new JSONArray();
+            final var mediaAttachmentA = new JSONObject();
+            mediaAttachmentA.put("type", invalidImageType ? "video" : "image");
+            mediaAttachmentA.put("preview_url", "http://localhost/image" + i + "a.webp");
+            mediaAttachments.put(mediaAttachmentA);
+            final var mediaAttachmentB = new JSONObject();
+            mediaAttachmentB.put("type", "image");
+            mediaAttachmentB.put("preview_url", "http://localhost/image" + i + "b.webp");
+            mediaAttachments.put(mediaAttachmentB);
+            post.put("media_attachments", mediaAttachments);
+
+            return post;
         }
     }
 }

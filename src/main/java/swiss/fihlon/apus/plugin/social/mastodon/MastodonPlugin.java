@@ -18,19 +18,16 @@
 package swiss.fihlon.apus.plugin.social.mastodon;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import social.bigbone.api.entity.Account;
-import social.bigbone.api.entity.MediaAttachment;
-import social.bigbone.api.entity.Status;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.social.SocialPlugin;
 import swiss.fihlon.apus.social.Post;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -41,8 +38,10 @@ public final class MastodonPlugin implements SocialPlugin {
     private static final Logger LOGGER = LoggerFactory.getLogger(MastodonPlugin.class);
 
     private final MastodonLoader mastodonLoader;
-    private final String instance;
     private final String hashtags;
+    private final String instance;
+    private final String postAPI;
+    private final int postLimit;
     private final boolean imagesEnabled;
     private final int imageLimit;
 
@@ -50,68 +49,73 @@ public final class MastodonPlugin implements SocialPlugin {
                           @NotNull final AppConfig appConfig) {
         this.mastodonLoader = mastodonLoader;
         final var mastodonConfig = appConfig.mastodon();
-        this.instance = mastodonConfig.instance();
         this.hashtags = mastodonConfig.hashtags();
+        this.instance = mastodonConfig.instance();
+        this.postAPI = mastodonConfig.postAPI();
+        this.postLimit = mastodonConfig.postLimit();
         this.imagesEnabled = mastodonConfig.imagesEnabled();
         this.imageLimit = mastodonConfig.imageLimit();
     }
 
     @Override
     public boolean isEnabled() {
-        return instance != null && !instance.isBlank() && hashtags != null && !hashtags.isBlank();
+        final var instanceOk = instance != null && !instance.isBlank();
+        final var hashtagsOk = hashtags != null && !hashtags.isBlank();
+        final var postAPIOk = postAPI != null && !postAPI.isBlank();
+        return instanceOk && hashtagsOk && postAPIOk;
     }
 
     @Override
     public Stream<Post> getPosts() {
         try {
-            final List<Status> statuses = new ArrayList<>();
+            final var posts = new ArrayList<Post>();
+
             for (final String hashtag : hashtags.split(",")) {
                 if (hashtag.isBlank()) {
                     continue;
                 }
                 LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
-                statuses.addAll(mastodonLoader.getStatuses(instance, hashtag.trim()));
-                LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", statuses.size(), hashtag, instance);
+                final var jsonPosts = mastodonLoader.getPosts(instance, hashtag.trim(), postAPI, postLimit);
+                LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", jsonPosts.length(), hashtag, instance);
+
+                for (var i = 0; i < jsonPosts.length(); i++) {
+                    final var post = jsonPosts.getJSONObject(i);
+                    posts.add(createPost(post));
+                }
             }
-            return statuses.stream()
-                    .map(this::convertToPost)
-                    .distinct()
-                    .sorted();
+
+            return posts.stream();
         } catch (final MastodonException e) {
             LOGGER.error(e.getMessage(), e);
             return Stream.of();
         }
     }
 
-    private Post convertToPost(@NotNull final Status status) {
-        final String id = status.getId();
-        final Account account = status.getAccount();
-        final Instant instant = status.getCreatedAt().mostPreciseOrFallback(Instant.MIN);
-        final LocalDateTime date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-        final String author = account == null ? "" : account.getDisplayName();
-        final String avatar = account == null ? "" : account.getAvatar();
-        final String profile = account == null ? "" : getProfile(account);
-        final String html = status.getContent();
-        final List<String> images = imagesEnabled ? getImages(status.getMediaAttachments()) : List.of();
-        final String inReplyToId = status.getInReplyToId();
-        final boolean isReply = inReplyToId != null && !inReplyToId.isBlank();
-        final boolean isSensitive = status.isSensitive();
-
+    @NotNull
+    private Post createPost(final @NotNull JSONObject post) {
+        final var id = post.getString("id");
+        final var date = ZonedDateTime.parse(post.getString("created_at")).toLocalDateTime();
+        final var account = post.getJSONObject("account");
+        final var author = account.getString("display_name");
+        final var avatar = account.getString("avatar");
+        final var profile = account.getString("acct");
+        final var html = post.getString("content");
+        final var isReply = !post.isNull("in_reply_to_id") && !post.getString("in_reply_to_id").isBlank();
+        final var isSensitive = post.getBoolean("sensitive");
+        final var images = getImages(post.getJSONArray("media_attachments"));
         return new Post(id, date, author, avatar, profile, html, images, isReply, isSensitive);
     }
 
     @NotNull
-    private String getProfile(@NotNull final Account account) {
-        final var profile = account.getAcct();
-        return profile.contains("@") ? profile : profile.concat("@").concat(instance);
-    }
-
-    private List<String> getImages(@NotNull final List<MediaAttachment> mediaAttachments) {
+    private List<String> getImages(final @NotNull JSONArray mediaAttachments) {
         final List<String> images = new ArrayList<>();
-        for (final MediaAttachment mediaAttachment : mediaAttachments) {
-            if ((imageLimit == 0 || images.size() < imageLimit)
-                    && MediaAttachment.MediaType.IMAGE.equals(mediaAttachment.getType())) {
-                images.add(mediaAttachment.getUrl());
+        if (imagesEnabled) {
+            for (var i = 0; i < mediaAttachments.length(); i++) {
+                final var mediaAttachment = mediaAttachments.getJSONObject(i);
+                if ((imageLimit == 0 || images.size() < imageLimit)
+                        && mediaAttachment.getString("type").equals("image")) {
+                    images.add(mediaAttachment.getString("preview_url"));
+                }
             }
         }
         return images;

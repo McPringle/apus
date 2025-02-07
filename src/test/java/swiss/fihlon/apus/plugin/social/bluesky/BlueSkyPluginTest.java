@@ -287,4 +287,67 @@ class BlueSkyPluginTest {
             return new JSONObject(postJSON);
         }
     }
+
+    @Test
+    void getPostsWithoutEmbed() {
+        final var configuration = mock(AppConfig.class);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "foobar", "https://%s/q=%s&limit=%d", 30);
+        when(configuration.blueSky()).thenReturn(blueSkyConfig);
+
+        final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new NoEmbedBlueSkyLoader(), configuration);
+        final List<Post> posts = blueSkyPlugin.getPosts().toList();
+
+        assertNotNull(posts);
+        assertEquals(3, posts.size());
+
+        for (int i = 0; i < posts.size() - 1; i++) {
+            final Post post = posts.get(i);
+            assertTrue(post.images().isEmpty());
+        }
+    }
+
+    private static final class NoEmbedBlueSkyLoader implements BlueSkyLoader {
+
+        @Override
+        @NotNull public JSONArray getPosts(@NotNull String instance, @NotNull String hashtag, @NotNull String postAPI, int postLimit) {
+            return new JSONArray(List.of(
+                    createPost(1, hashtag),
+                    createPost(2, hashtag),
+                    createPost(3, hashtag)
+            ));
+        }
+
+        private JSONObject createPost(final int i, @NotNull final String hashtag) {
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), ZoneId.systemDefault());
+            final var postJSON = """
+                {
+                  "uri": "ID ${i}",
+                  "author": {
+                    "handle": "profile${i}",
+                    "displayName": "Display Name ${i}",
+                    "avatar": "Avatar ${i}"
+                  },
+                  "record": {
+                    "createdAt": "${createdAt}",
+                    "text": "Content for post #${i}",
+                    "facets": [
+                      {
+                        "features": [
+                          {
+                            "$type": "app.bsky.richtext.facet#tag",
+                            "tag": "${tag}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+                """
+                    .replaceAll(Pattern.quote("${i}"), Integer.toString(i))
+                    .replaceAll(Pattern.quote("${tag}"), hashtag)
+                    .replaceAll(Pattern.quote("${createdAt}"), createdAt.format(DATE_TIME_FORMATTER));
+
+            return new JSONObject(postJSON);
+        }
+    }
 }
