@@ -68,7 +68,9 @@ public final class DevoxxPlugin implements EventPlugin {
             final JSONArray devoxxSessions = new JSONArray(json);
             for (int counter = 0; counter < devoxxSessions.length(); counter++) {
                 final JSONObject sessionData = devoxxSessions.getJSONObject(counter);
-                if (sessionData.isNull("proposal") ) continue;
+                if (sessionData.isNull("proposal")) {
+                    continue;
+                }
                 JSONObject proposal = sessionData.getJSONObject("proposal");
                 Session session = new Session(
                         Integer.toString(sessionData.getInt("id")),
@@ -88,9 +90,10 @@ public final class DevoxxPlugin implements EventPlugin {
         return sessions.stream();
     }
 
-    private @NotNull List<Speaker> getSpeakers(JSONArray speakersData) {
+    @NotNull
+    private List<Speaker> getSpeakers(@NotNull final JSONArray speakersData) {
         final ArrayList<Speaker> speakers = new ArrayList<>();
-        for(int counter = 0; counter < speakersData.length(); counter++){
+        for (int counter = 0; counter < speakersData.length(); counter++) {
             JSONObject speakerData = speakersData.getJSONObject(counter);
             speakers.add(new Speaker(speakerData.getString("fullName"), speakerData.getString("imageUrl")));
         }
