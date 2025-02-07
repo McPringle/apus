@@ -125,8 +125,10 @@ To modify the default configuration values, just specify environment variables w
 | BLUESKY_POST_API           | [1]          | The URL of the BlueSky API to read the posts (empty = disabled).             |
 | BLUESKY_POST_LIMIT         | 30           | The limit for the number of BlueSky posts when accessing the API.            |
 | CUSTOM_STYLES              |              | Inject custom styles into the user interface (see explanations below).       |
-| DEVOXX_EVENT_API           |              | The URL of the Devoxx API to read the conference agenda.       |
-| DOAG_EVENT_API             | [2]          | The URL of the DOAG event API to read the conference agenda.                 |
+| DEVOXX_EVENT_API           | [2]          | The URL of the Devoxx API to read the conference agenda.                     |
+| DEVOXX_EVENT_ID            |              | The ID of the Devoxx event to read the conference agenda.                    |
+| DEVOXX_WEEKDAY             |              | The day of the week of the Devoxx event to read the conference agenda.       |
+| DOAG_EVENT_API             | [3]          | The URL of the DOAG event API to read the conference agenda.                 |
 | DOAG_EVENT_ID              | 0            | The ID of the DOAG event to read the conference agenda (0 = disabled).       |
 | EVENT_DATE_ADJUST          |              | Adjust the date of the event in days, ISO-8601 formatted (empty = disabled). |
 | EVENT_DEMO_ROOM_COUNT      | 0            | Number of rooms for the event demo plugin (0 = disabled).                    |
@@ -144,23 +146,24 @@ To modify the default configuration values, just specify environment variables w
 | MASTODON_IMAGE_LIMIT       | 1            | Limit number of images per post (0 = no limit).                              |
 | MASTODON_IMAGES_ENABLED    | true         | Enable or disable images in mastodon posts.                                  |
 | MASTODON_INSTANCE          |              | The Mastodon instance used to read the posts from (empty = disabled).        |
-| MASTODON_POST_API          | [3]          | The URL of the Mastodon API to read the posts (empty = disabled).            |
+| MASTODON_POST_API          | [4]          | The URL of the Mastodon API to read the posts (empty = disabled).            |
 | MASTODON_POST_LIMIT        | 30           | The limit for the number of Mastodon posts when accessing the API.           |
 | SOCIAL_COLUMNS             | 3            | How many columns to be used for social media posts.                          |
 | SOCIAL_DEMO_POST_COUNT     | 0            | Number of posts for the social demo plugin (0 = disabled).                   |
 | SOCIAL_HEADLINE            |              | Overwrite the headline for social media posts (empty = don't overwrite).     |
-| SESSIONIZE_EVENT_API       | [4]          | The URL of the Sessionize API to read the conference agenda.                 |
+| SESSIONIZE_EVENT_API       | [5]          | The URL of the Sessionize API to read the conference agenda.                 |
 | SESSIONIZE_EVENT_ID        | 0            | The ID of the Sessionize event to read the conference agenda (0 = disabled). |
-| SESSIONIZE_SPEAKER_API     | [5]          | The URL of the Sessionize API to read the speaker information.               |
+| SESSIONIZE_SPEAKER_API     | [6]          | The URL of the Sessionize API to read the speaker information.               |
 | TZ                         | UTC          | The timezone used for date and time calculations.                            |
 
 The environment variables will override the default values. Some default values might be too long to be displayed in this table. They are marked with a number in square brackets and can be looked up in the following list:
 
 1. https://%s/xrpc/app.bsky.feed.searchPosts?q=%s
-2. https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/
-3. https://%s/api/v1/timelines/tag/%s?limit=%d
-4. https://sessionize.com/api/v2/%s/view/Sessions
-5. https://sessionize.com/api/v2/%s/view/Speakers
+2. https://%s.cfp.dev/api/public/schedules/%s
+3. https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/
+4. https://%s/api/v1/timelines/tag/%s?limit=%d
+5. https://sessionize.com/api/v2/%s/view/Sessions
+6. https://sessionize.com/api/v2/%s/view/Speakers
 
 The `EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` and `PnW`. Examples:
 

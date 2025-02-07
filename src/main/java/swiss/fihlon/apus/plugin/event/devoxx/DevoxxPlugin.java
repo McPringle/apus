@@ -39,6 +39,7 @@ import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 
@@ -47,14 +48,18 @@ public final class DevoxxPlugin implements EventPlugin {
     public static final Logger LOGGER = LoggerFactory.getLogger(DevoxxPlugin.class);
 
     private final String eventApi;
+    private final String eventId;
+    private final String weekday;
 
     public DevoxxPlugin(@NotNull final AppConfig configuration) {
         this.eventApi = configuration.devoxx().eventApi();
+        this.eventId = configuration.devoxx().eventId();
+        this.weekday = configuration.devoxx().weekday().toLowerCase(Locale.getDefault());
     }
 
     @Override
     public boolean isEnabled() {
-        return !eventApi.isBlank();
+        return !eventApi.isBlank() && !eventId.isBlank() && !weekday.isBlank();
     }
 
 
@@ -64,7 +69,7 @@ public final class DevoxxPlugin implements EventPlugin {
         final ArrayList<Session> sessions = new ArrayList<>();
         String lastSessionId = "";
         try {
-            final String json = DownloadUtil.getString(eventApi);
+            final String json = DownloadUtil.getString(String.format(eventApi, eventId, weekday));
             final JSONArray devoxxSessions = new JSONArray(json);
             for (int counter = 0; counter < devoxxSessions.length(); counter++) {
                 final JSONObject sessionData = devoxxSessions.getJSONObject(counter);
@@ -83,7 +88,7 @@ public final class DevoxxPlugin implements EventPlugin {
                         Track.NONE);
                 sessions.add(session);
             }
-            //LOGGER.info("Successfully loaded {} sessions for event ID {}", sessions.size(), eventId);
+            LOGGER.info("Successfully loaded {} sessions for event ID {} on {}", sessions.size(), eventId, weekday);
         } catch (IOException | URISyntaxException | JSONException e) {
             throw new SessionImportException(String.format("Error parsing session %s: %s", lastSessionId, e.getMessage()), e);
         }

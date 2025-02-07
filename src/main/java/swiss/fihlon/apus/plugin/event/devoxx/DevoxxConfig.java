@@ -17,5 +17,5 @@
  */
 package swiss.fihlon.apus.plugin.event.devoxx;
 
-public record DevoxxConfig(String eventApi) {
+public record DevoxxConfig(String eventApi, String eventId, String weekday) {
 }

@@ -36,6 +36,16 @@
       "description": "The URL of the Devoxx API to read the conference agenda."
     },
     {
+      "name": "apus.devoxx.eventId",
+      "type": "java.lang.String",
+      "description": "The ID of the Devoxx event to read the conference agenda."
+    },
+    {
+      "name": "apus.devoxx.weekday",
+      "type": "java.lang.String",
+      "description": "The day of the week of the Devoxx event to read the conference agenda."
+    },
+    {
       "name": "apus.doag.eventApi",
       "type": "java.lang.String",
       "description": "The URL of the DOAG event API to read the conference agenda."
