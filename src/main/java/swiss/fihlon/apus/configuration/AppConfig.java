@@ -20,6 +20,7 @@ package swiss.fihlon.apus.configuration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import swiss.fihlon.apus.plugin.event.EventConfig;
+import swiss.fihlon.apus.plugin.event.devoxx.DevoxxConfig;
 import swiss.fihlon.apus.plugin.event.doag.DoagConfig;
 import swiss.fihlon.apus.plugin.event.jfs.JavaForumStuttgartConfig;
 import swiss.fihlon.apus.plugin.event.sessionize.SessionizeConfig;
@@ -28,7 +29,7 @@ import swiss.fihlon.apus.plugin.social.mastodon.MastodonConfig;
 
 @ConfigurationProperties(prefix = "apus")
 public record AppConfig(String version, AdminConfig admin, CustomConfig custom, EventConfig event, SocialConfig social, FilterConfig filter,
-                        DoagConfig doag, JavaForumStuttgartConfig jfs, SessionizeConfig sessionize,
+                        DevoxxConfig devoxx, DoagConfig doag, JavaForumStuttgartConfig jfs, SessionizeConfig sessionize,
                         BlueSkyConfig blueSky, MastodonConfig mastodon) {
 
     @ConstructorBinding
