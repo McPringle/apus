@@ -89,7 +89,7 @@ class DevoxxPluginTest {
     void getSessions() {
         final var appConfig = mock(AppConfig.class);
         final var devoxxConfig = new DevoxxConfig(
-                "file:src/test/resources/devoxx.json?eventId=%s&weekday=%s",
+                "file:src/test/resources/testdata/devoxx.json?eventId=%s&weekday=%s",
                 "BBAD", "monday");
         when(appConfig.devoxx()).thenReturn(devoxxConfig);
 
@@ -122,7 +122,7 @@ class DevoxxPluginTest {
     void parseExceptionSessions() {
         final var appConfig = mock(AppConfig.class);
         final var devoxxConfig = new DevoxxConfig(
-                "file:src/test/resources/devoxx-broken.json?eventId=%s&weekday=%s",
+                "file:src/test/resources/testdata/devoxx-broken.json?eventId=%s&weekday=%s",
                 "1", "monday");
         when(appConfig.devoxx()).thenReturn(devoxxConfig);
 

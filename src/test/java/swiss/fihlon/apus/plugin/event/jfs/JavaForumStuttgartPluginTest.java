@@ -55,7 +55,7 @@ class JavaForumStuttgartPluginTest {
     @Test
     void getSessions() {
         final var configuration = mock(AppConfig.class);
-        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/jfs.db");
+        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/jfs.db");
         when(configuration.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);
@@ -85,19 +85,19 @@ class JavaForumStuttgartPluginTest {
     @Test
     void throwsExceptionWithNonExistingDatabase() {
         final var configuration = mock(AppConfig.class);
-        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/non-existing.db");
+        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/non-existing.db");
         when(configuration.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);
         final var exception = assertThrows(SessionImportException.class, () -> jfsPlugin.getSessions().toList());
-        assertTrue(exception.getMessage().startsWith("Error downloading database file from 'file:src/test/resources/non-existing.db': "));
+        assertTrue(exception.getMessage().startsWith("Error downloading database file from 'file:src/test/resources/testdata/non-existing.db': "));
     }
 
 
     @Test
     void throwsExceptionWithEmptyDatabase() {
         final var configuration = mock(AppConfig.class);
-        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/jfs-empty.db");
+        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/jfs-empty.db");
         when(configuration.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);

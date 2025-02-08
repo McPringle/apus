@@ -30,7 +30,7 @@ class DownloadUtilTest {
 
     @Test
     void getString() throws Exception {
-        final String string = DownloadUtil.getString("file:src/test/resources/DOAG.json");
+        final String string = DownloadUtil.getString("file:src/test/resources/testdata/DOAG.json");
         assertTrue(string.startsWith("{"));
         assertTrue(string.endsWith("}"));
     }
