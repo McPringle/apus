@@ -69,19 +69,19 @@ public final class DevoxxPlugin implements EventPlugin {
     @Override
     @NotNull
     public Stream<Session> getSessions() {
-        final ArrayList<Session> sessions = new ArrayList<>();
-        String lastSessionId = "";
+        final var sessions = new ArrayList<Session>();
+        var lastSessionId = "";
         try {
-            final String json = DownloadUtil.getString(String.format(eventApi, eventId, weekday));
-            final JSONArray devoxxSessions = new JSONArray(json);
+            final var json = DownloadUtil.getString(String.format(eventApi, eventId, weekday.toLowerCase(Locale.getDefault())));
+            final var devoxxSessions = new JSONArray(json);
             for (int counter = 0; counter < devoxxSessions.length(); counter++) {
-                final JSONObject sessionData = devoxxSessions.getJSONObject(counter);
+                final var sessionData = devoxxSessions.getJSONObject(counter);
                 if (sessionData.isNull("proposal")) {
                     continue;
                 }
                 lastSessionId = Integer.toString(sessionData.getInt("id"));
-                JSONObject proposal = sessionData.getJSONObject("proposal");
-                Session session = new Session(
+                var proposal = sessionData.getJSONObject("proposal");
+                var session = new Session(
                         lastSessionId,
                         ZonedDateTime.parse(sessionData.getString("fromDate")).toLocalDateTime(),
                         ZonedDateTime.parse(sessionData.getString("toDate")).toLocalDateTime(),
