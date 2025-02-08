@@ -20,7 +20,6 @@ package swiss.fihlon.apus.plugin.event.devoxx;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -79,7 +78,7 @@ public final class DevoxxPlugin implements EventPlugin {
                 if (sessionData.isNull("proposal")) {
                     continue;
                 }
-                lastSessionId = Integer.toString(sessionData.getInt("id"));
+                lastSessionId = "%s:%d".formatted(eventId, sessionData.getInt("id"));
                 var proposal = sessionData.getJSONObject("proposal");
                 var session = new Session(
                         lastSessionId,
