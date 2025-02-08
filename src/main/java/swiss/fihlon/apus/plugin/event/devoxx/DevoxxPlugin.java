@@ -54,12 +54,15 @@ public final class DevoxxPlugin implements EventPlugin {
     public DevoxxPlugin(@NotNull final AppConfig configuration) {
         this.eventApi = configuration.devoxx().eventApi();
         this.eventId = configuration.devoxx().eventId();
-        this.weekday = configuration.devoxx().weekday().toLowerCase(Locale.getDefault());
+        this.weekday = configuration.devoxx().weekday();
     }
 
     @Override
     public boolean isEnabled() {
-        return !eventApi.isBlank() && !eventId.isBlank() && !weekday.isBlank();
+        final var eventApiOk = eventApi != null && !eventApi.isBlank();
+        final var eventIdOk = eventId != null && !eventId.isBlank();
+        final var weekdayOk = weekday != null && !weekday.isBlank();
+        return eventApiOk && eventIdOk && weekdayOk;
     }
 
 
