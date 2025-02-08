@@ -1,0 +1,159 @@
+[
+  {
+    "id": 1,
+    "fromDate": "2024-01-01T09:45:00Z",
+    "toDate": "2024-01-01T10:00:00Z",
+    "room": {
+      "name": "Room A"
+    },
+    "proposal": {
+      "title": "Lorem ipsum dolor sit amet",
+      "speakers": [
+        {
+          "fullName": "Walter White",
+          "imageUrl": "https://foo.bar/e5da722a-b022-4556-b665-467e54baf9f4.png"
+        },
+        {
+          "fullName": "Jesse Pinkman",
+          "imageUrl": "https://foo.bar/2c9d3dc1-9f79-457f-b4b3-42ce42f6366a.png"
+        }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "fromDate": "2024-01-01T10:00:00Z",
+    "toDate": "2024-01-01T10:30:00Z",
+    "room": {
+      "name": "Room A"
+    },
+    "proposal": {
+      "title": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat",
+      "speakers": [
+        {
+          "fullName": "Walter White",
+          "imageUrl": "https://foo.bar/e5da722a-b022-4556-b665-467e54baf9f4.png"
+        },
+        {
+          "fullName": "Jesse Pinkman",
+          "imageUrl": "https://foo.bar/2c9d3dc1-9f79-457f-b4b3-42ce42f6366a.png"
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "fromDate": "2024-01-02T19:00:00Z",
+    "toDate": "2024-01-02T19:45:00Z",
+    "room": {
+      "name": "Room A"
+    },
+    "proposal": {
+      "title": "Ut wisi enim ad minim veniam",
+      "speakers": [
+        {
+          "fullName": "Gustavo Fring",
+          "imageUrl": "https://foo.bar/3ef92880-b80a-4305-b75c-35650d1259c8.png"
+        }
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "fromDate": "2024-01-02T11:00:00Z",
+    "toDate": "2024-01-02T11:45:00Z",
+    "room": {
+      "name": "Room B"
+    },
+    "proposal": {
+      "title": "Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum",
+      "speakers": [
+        {
+          "fullName": "Hank Schrader",
+          "imageUrl": "https://foo.bar/594c1b9a-bdfc-4d02-8045-65aa91a234ab.png"
+        }
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "fromDate": "2024-01-03T19:00:00Z",
+    "toDate": "2024-01-03T19:45:00Z",
+    "room": {
+      "name": "Room A"
+    },
+    "proposal": {
+      "title": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat",
+      "speakers": [
+        {
+          "fullName": "Saul Goodman",
+          "imageUrl": "https://foo.bar/03415469-efed-4fde-b98c-b0e2db6225e7.png"
+        },
+        {
+          "fullName": "Mike Ehrmantraut",
+          "imageUrl": "https://foo.bar/0ad4f2e3-36c6-4093-b492-8098fa7e5560.png"
+        }
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "fromDate": "2024-01-03T11:00:00Z",
+    "toDate": "2024-01-03T12:45:00Z",
+    "room": {
+      "name": "Room B"
+    },
+    "proposal": {
+      "title": "At vero eos et accusam et justo duo dolores et ea rebum",
+      "speakers": [
+        {
+          "fullName": "Skyler White",
+          "imageUrl": "https://foo.bar/2f4018fc-6f1a-484c-9297-383fb1a5c4ae.png"
+        }
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "fromDate": "2024-01-04T10:00:00Z",
+    "toDate": "2024-01-04T12:45:00Z",
+    "room": {
+      "name": "Room A"
+    },
+    "proposal": {
+      "title": "Consetetur sadipscing elitr",
+      "speakers": [
+        {
+          "fullName": "Marie Schrader",
+          "imageUrl": "https://foo.bar/08aa10d6-848f-4458-80a8-f499295bd560.png"
+        }
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "fromDate": "2024-01-04T13:00:00Z",
+    "toDate": "2024-01-04T14:45:00Z",
+    "room": {
+      "name": "Room A"
+    },
+    "proposal": {
+      "title": "Consetetur sadipscing elitr",
+      "speakers": [
+        {
+          "fullName": "Lydia Rodarte-Quayle",
+          "imageUrl": "https://foo.bar/4c1405e6-d193-49ff-b592-045adbf7f6fb.png"
+        }
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "fromDate": "2024-01-04T15:00:00Z",
+    "toDate": "2024-01-04T15:30:00Z",
+    "room": {
+      "name": "Room C"
+    },
+    "proposal": null
+  }
+]

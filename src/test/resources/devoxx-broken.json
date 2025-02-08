@@ -1,0 +1,13 @@
+[
+  {
+    "id": 1,
+    "fromDate": "2024-01-01T09:45:00Z",
+    "toDate": "2024-01-01T10:00:00Z",
+    "room": {
+      "name": "Room A"
+    },
+    "proposal": {
+      "title": "Lorem ipsum dolor sit amet"
+    }
+  }
+]
