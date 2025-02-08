@@ -89,7 +89,7 @@ class JavaForumStuttgartPluginTest {
         when(configuration.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);
-        final var exception = assertThrows(SessionImportException.class, () -> jfsPlugin.getSessions().toList());
+        final var exception = assertThrows(SessionImportException.class, jfsPlugin::getSessions);
         assertTrue(exception.getMessage().startsWith("Error downloading database file from 'file:src/test/resources/testdata/non-existing.db': "));
     }
 
@@ -101,7 +101,7 @@ class JavaForumStuttgartPluginTest {
         when(configuration.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(configuration);
-        final var exception = assertThrows(SessionImportException.class, () -> jfsPlugin.getSessions().toList());
+        final var exception = assertThrows(SessionImportException.class, jfsPlugin::getSessions);
         assertTrue(exception.getMessage().startsWith("Error importing session data for Java Forum Stuttgart: "));
     }
 
