@@ -123,6 +123,7 @@ To modify the default configuration values, just specify environment variables w
 | BLUESKY_INSTANCE           | api.bsky.app | The BlueSky instance used to read the posts from (empty = disabled).         |
 | BLUESKY_POST_API           | [1]          | The URL of the BlueSky API to read the posts (empty = disabled).             |
 | BLUESKY_POST_LIMIT         | 30           | The limit for the number of BlueSky posts when accessing the API.            |
+| CUSTOM_LANGUAGE            | en           | Language code of the language used for the UI.                               |
 | CUSTOM_STYLES              |              | Inject custom styles into the user interface (see explanations below).       |
 | DEVOXX_EVENT_API           | [2]          | The URL of the Devoxx API to read the conference agenda.                     |
 | DEVOXX_EVENT_ID            |              | The ID of the Devoxx event to read the conference agenda.                    |

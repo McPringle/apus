@@ -19,4 +19,4 @@ package swiss.fihlon.apus.configuration;
 
 import org.jetbrains.annotations.NotNull;
 
-public record CustomConfig(@NotNull String styles) { }
+public record CustomConfig(@NotNull String language, @NotNull String styles) { }
