@@ -32,14 +32,13 @@ See:
 
 ### Show posts from Social Media
 
-| Platform  | Status    |
-|-----------|-----------|
-| BlueSky   | SUPPORTED |
-| Instagram | - TODO -  |
-| LinkedIn  | - TODO -  |
-| Mastodon  | SUPPORTED |
-| Threads   | - TODO -  |
-| Twitter   | - TODO -  |
+| Platform    | Status    |
+|-------------|-----------|
+| BlueSky     | SUPPORTED |
+| Instagram   | - TODO -  |
+| LinkedIn    | - TODO -  |
+| Mastodon    | SUPPORTED |
+| Threads     | - TODO -  |
 
 ### Show event agenda
 
