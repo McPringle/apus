@@ -75,7 +75,7 @@ public final class EventService {
 
     private void updateSessions() {
         try {
-            final var sessions = eventPlugins.stream()
+            final var sessions = eventPlugins.parallelStream()
                     .filter(EventPlugin::isEnabled)
                     .flatMap(EventPlugin::getSessions)
                     .map(this::dateAdjust)

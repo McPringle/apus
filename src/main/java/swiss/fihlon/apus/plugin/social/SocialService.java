@@ -83,7 +83,7 @@ public final class SocialService {
     }
 
     private void updatePosts() {
-        final var newPosts = socialPlugins.stream()
+        final var newPosts = socialPlugins.parallelStream()
                 .filter(SocialPlugin::isEnabled)
                 .flatMap(SocialPlugin::getPosts)
                 .filter(post -> !hiddenPosts.contains(post.id()))
