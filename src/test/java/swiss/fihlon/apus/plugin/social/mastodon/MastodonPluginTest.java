@@ -55,27 +55,32 @@ class MastodonPluginTest {
 
     private static Stream<Arguments> provideDataForDisabledTest() {
         return Stream.of(
-                Arguments.of(null, null),
-                Arguments.of(null, ""),
-                Arguments.of("", null),
-                Arguments.of("", ""),
-                Arguments.of(" ", null),
-                Arguments.of(null, " "),
-                Arguments.of(" ", " "),
-                Arguments.of(null, "foobar"),
-                Arguments.of("", "foobar"),
-                Arguments.of(" ", "foobar"),
-                Arguments.of("localhost", null),
-                Arguments.of("localhost", ""),
-                Arguments.of("localhost", " ")
+                Arguments.of(null, null, null),
+                Arguments.of(null, null, ""),
+                Arguments.of(null, null, " "),
+                Arguments.of(null, null, "api"),
+                Arguments.of(null, "", "api"),
+                Arguments.of("", null, "api"),
+                Arguments.of("", "", "api"),
+                Arguments.of(" ", null, "api"),
+                Arguments.of(null, " ", "api"),
+                Arguments.of(" ", " ", "api"),
+                Arguments.of(null, "foobar", "api"),
+                Arguments.of("", "foobar", "api"),
+                Arguments.of(" ", "foobar", "api"),
+                Arguments.of("localhost", null, "api"),
+                Arguments.of("localhost", "", "api"),
+                Arguments.of("localhost", "foobar", null),
+                Arguments.of("localhost", "foobar", ""),
+                Arguments.of("localhost", "foobar", " ")
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(@Nullable final String instance, @Nullable final String hashtag) {
+    void isDisabled(@Nullable final String instance, @Nullable final String hashtag, @Nullable final String postApi) {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig(instance, hashtag, POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig(instance, hashtag, postApi, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
