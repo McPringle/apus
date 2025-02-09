@@ -31,15 +31,16 @@ import java.util.ResourceBundle;
 @SpringComponent
 public final class ApplicationI18NProvider implements I18NProvider {
 
-    private static final List<Locale> SUPPORTED_LOCALES = List.of(Locale.ENGLISH, Locale.GERMAN);
+    private static final @NotNull List<Locale> SUPPORTED_LOCALES = List.of(Locale.ENGLISH, Locale.GERMAN);
 
-    private final Locale locale;
+    private final transient @NotNull ResourceBundle resourceBundle;
 
     public ApplicationI18NProvider(@NotNull final AppConfig appConfig) {
-        locale = switch (appConfig.custom().language()) {
+        final var locale = switch (appConfig.custom().language()) {
             case "de" -> Locale.GERMAN;
             default -> Locale.ENGLISH;
         };
+        resourceBundle = ResourceBundle.getBundle("i18n/translations", locale);
     }
 
     @Override
@@ -49,7 +50,7 @@ public final class ApplicationI18NProvider implements I18NProvider {
 
     @Override
     public String getTranslation(@NotNull final String key, @Nullable final Locale ignoreLocale, @NotNull final Object... params) {
-        final String message =  ResourceBundle.getBundle("i18n/translations", locale).getString(key);
+        final String message =  resourceBundle.getString(key);
         return params.length > 0 ? MessageFormat.format(message, params) : message;
     }
 }
