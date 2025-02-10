@@ -25,6 +25,7 @@ import swiss.fihlon.apus.social.Post;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -51,7 +52,7 @@ class SocialDemoPluginTest {
         when(configuration.social()).thenReturn(socialConfig);
 
         final var demoSocialPlugin = new SocialDemoPlugin(configuration);
-        assertTrue(demoSocialPlugin.isEnabled());
+        assertFalse(demoSocialPlugin.isEnabled());
     }
 
     @Test

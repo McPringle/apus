@@ -45,7 +45,7 @@ public final class SocialDemoPlugin implements SocialPlugin {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return postCount > 0;
     }
 
     @Override
