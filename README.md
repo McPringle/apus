@@ -156,6 +156,9 @@ To modify the default configuration values, just specify environment variables w
 | APUS_SESSIONIZE_SPEAKER_API     | [6]          | The URL of the Sessionize API to read the speaker information.               |
 | TZ                              | UTC          | The timezone used for date and time calculations.                            |
 
+> [!NOTE]  
+> The `TZ` environment variable is not specific to *Apus*, it is a system variable and therefore has no `APUS` prefix!
+
 The environment variables will override the default values. Some default values might be too long to be displayed in this table. They are marked with a number in square brackets and can be looked up in the following list:
 
 1. `https://%s/xrpc/app.bsky.feed.searchPosts?q=%s`
@@ -177,9 +180,6 @@ The `APUS_EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` a
 | `P1Y2M3W4D` | +1 year, +2 months, +25 days (3 weeks and 4 days)            |
 | `P-1Y2M`    | -1 year, +2 months (minus is valid for the year only)        |
 | `-P1Y2M`    | -1 year, -2 months (minus is valid for the whole expression) |
-
-> [!NOTE]  
-> The `TZ` environment variable is not specific to *Apus*, it is a system variable and therefore has no `APUS` prefix!
 
 #### Custom Styles
 
