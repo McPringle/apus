@@ -11,6 +11,23 @@ For questions and support requests, please use
 
 **Release date: work in progress 🚧**
 
+### New Features
+
+* Add support for BlueSky
+* Add support for Devoxx events (including Voxxed Days)
+* Configure UI language via environment variable
+* Dynamically generate social headline based on enabled plugins
+
+### Fixed Bugs
+
+* Fix internationalization / localization issues
+
+### Maintenance Work
+
+* Add SBOM (Software Bill of Materials) generation
+* Shorten README for DockerHub
+* Prefix all environment variables with `APUS`
+
 ---
 
 ## Version 4
