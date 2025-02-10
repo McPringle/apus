@@ -41,6 +41,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
+import java.util.stream.Collectors;
 
 @CssImport(value = "./themes/apus/views/social-view.css")
 public final class SocialView extends Div {
@@ -60,11 +61,19 @@ public final class SocialView extends Div {
         this.appConfig = appConfig;
 
         setId("social-view");
+
+        final H2 socialHeadline;
         if (appConfig.social().headline().isBlank()) {
-            add(new H2(getTranslation("social.heading", appConfig.mastodon().hashtags().split(",")[0])));
+            socialHeadline = new H2(getTranslation("social.heading",
+                    appConfig.mastodon().hashtags().split(",")[0],
+                    socialService.getServiceNames().collect(Collectors.joining(", "))
+            ));
         } else {
-            add(new H2(appConfig.social().headline()));
+            socialHeadline = new H2(appConfig.social().headline());
         }
+        socialHeadline.setId("social-headline");
+        add(socialHeadline);
+
         var postsColumnsDiv = new Div();
         postsColumnsDiv.addClassName("posts");
         add(postsColumnsDiv);

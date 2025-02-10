@@ -52,6 +52,11 @@ public final class BlueSkyPlugin implements SocialPlugin {
     }
 
     @Override
+    public String getServiceName() {
+        return "BlueSky";
+    }
+
+    @Override
     public boolean isEnabled() {
         final var instanceOk = instance != null && !instance.isBlank();
         final var hashtagsOk = hashtags != null && !hashtags.isBlank();

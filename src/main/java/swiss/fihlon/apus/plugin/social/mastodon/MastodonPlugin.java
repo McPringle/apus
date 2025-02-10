@@ -58,6 +58,11 @@ public final class MastodonPlugin implements SocialPlugin {
     }
 
     @Override
+    public String getServiceName() {
+        return "Mastodon";
+    }
+
+    @Override
     public boolean isEnabled() {
         final var instanceOk = instance != null && !instance.isBlank();
         final var hashtagsOk = hashtags != null && !hashtags.isBlank();

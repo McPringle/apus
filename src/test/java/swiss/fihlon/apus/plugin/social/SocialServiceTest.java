@@ -166,6 +166,11 @@ class SocialServiceTest {
     private static final class TestSocialPlugin implements SocialPlugin {
 
         @Override
+        public String getServiceName() {
+            return "Test";
+        }
+
+        @Override
         public boolean isEnabled() {
             return true;
         }
@@ -190,6 +195,11 @@ class SocialServiceTest {
     }
 
     private static final class EmptySocialPlugin implements SocialPlugin {
+
+        @Override
+        public String getServiceName() {
+            return "Empty";
+        }
 
         @Override
         public boolean isEnabled() {

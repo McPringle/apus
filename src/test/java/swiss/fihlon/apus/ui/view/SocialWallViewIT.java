@@ -18,20 +18,24 @@
 package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.html.H2;
 import org.junit.jupiter.api.Test;
 import swiss.fihlon.apus.ui.KaribuTest;
 
 import static com.github.mvysny.kaributesting.v10.LocatorJ._assertOne;
+import static com.github.mvysny.kaributesting.v10.LocatorJ._get;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SocialWallViewIT extends KaribuTest {
 
     @Test
-    @SuppressWarnings("java:S2699") // flase positiv: Karibu assertions are not recognized
     void socialWallContainsViews() {
         UI.getCurrent().navigate(SocialWallView.class);
         _assertOne(SocialWallView.class);
         _assertOne(EventView.class);
         _assertOne(SocialView.class);
+        assertEquals("Posts with #java on BlueSky, Mastodon",
+                _get(H2.class, spec -> spec.withId("social-headline")).getText());
     }
 
 }

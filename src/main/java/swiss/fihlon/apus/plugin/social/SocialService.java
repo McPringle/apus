@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
+import java.util.stream.Stream;
 
 @Service
 public final class SocialService {
@@ -75,6 +76,13 @@ public final class SocialService {
             LOGGER.warn("No social plugin is enabled. No posts will be displayed.");
             updateScheduler = null;
         }
+    }
+
+    public Stream<String> getServiceNames() {
+        return socialPlugins.stream()
+                .filter(SocialPlugin::isEnabled)
+                .map(SocialPlugin::getServiceName)
+                .sorted();
     }
 
     @PreDestroy

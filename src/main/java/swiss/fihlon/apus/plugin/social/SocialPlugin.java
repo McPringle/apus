@@ -23,6 +23,8 @@ import java.util.stream.Stream;
 
 public interface SocialPlugin {
 
+    String getServiceName();
+
     boolean isEnabled();
 
     Stream<Post> getPosts();

@@ -52,6 +52,16 @@ class BlueSkyPluginTest {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
+    @Test
+    void getServiceName() {
+        final var configuration = mock(AppConfig.class);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "foobar", "https://%s/q=%s&limit=%d", 30);
+        when(configuration.blueSky()).thenReturn(blueSkyConfig);
+
+        final var blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
+        assertEquals("BlueSky", blueSkyPlugin.getServiceName());
+    }
+
     private static Stream<Arguments> provideDataForDisabledTest() {
         return Stream.of(
                 Arguments.of(null, null, null),

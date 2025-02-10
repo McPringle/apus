@@ -53,6 +53,16 @@ class MastodonPluginTest {
     private static final String POST_API = "https://%s/api/v1/timelines/tag/%s?limit=%d";
     private static final int POST_LIMIT = 30;
 
+    @Test
+    void getServiceName() {
+        final var configuration = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "foobar", POST_API, POST_LIMIT, true, 0);
+        when(configuration.mastodon()).thenReturn(mastodonConfig);
+
+        final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
+        assertEquals("Mastodon", mastodonPlugin.getServiceName());
+    }
+
     private static Stream<Arguments> provideDataForDisabledTest() {
         return Stream.of(
                 Arguments.of(null, null, null),

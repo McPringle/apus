@@ -34,6 +34,16 @@ import static org.mockito.Mockito.when;
 class SocialDemoPluginTest {
 
     @Test
+    void getServiceName() {
+        final var socialConfig = mock(SocialConfig.class);
+        final var configuration = mock(AppConfig.class);
+        when(configuration.social()).thenReturn(socialConfig);
+
+        final var demoSocialPlugin = new SocialDemoPlugin(configuration);
+        assertEquals("Demo", demoSocialPlugin.getServiceName());
+    }
+
+    @Test
     void isEnabled() {
         final var socialConfig = mock(SocialConfig.class);
         when(socialConfig.demoPostCount()).thenReturn(1);

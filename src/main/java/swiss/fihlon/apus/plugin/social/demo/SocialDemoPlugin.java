@@ -44,6 +44,11 @@ public final class SocialDemoPlugin implements SocialPlugin {
     }
 
     @Override
+    public String getServiceName() {
+        return "Demo";
+    }
+
+    @Override
     public boolean isEnabled() {
         return postCount > 0;
     }
