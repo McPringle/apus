@@ -17,6 +17,7 @@ For questions and support requests, please use
 * Add support for Devoxx events (including Voxxed Days)
 * Configure UI language via environment variable
 * Dynamically generate social headline based on enabled plugins
+* Hashtags are now handled independent of the social media plugins.
 
 ### Fixed Bugs
 
