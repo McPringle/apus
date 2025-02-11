@@ -55,7 +55,7 @@ class BlueSkyPluginTest {
     @Test
     void getServiceName() {
         final var configuration = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "foobar", "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
         when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final var blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
@@ -64,45 +64,28 @@ class BlueSkyPluginTest {
 
     private static Stream<Arguments> provideDataForDisabledTest() {
         return Stream.of(
-                Arguments.of(null, null, null),
-                Arguments.of(null, null, ""),
-                Arguments.of(null, "", null),
-                Arguments.of(null, "", ""),
-                Arguments.of("", "", ""),
-                Arguments.of("", "", null),
-                Arguments.of("", null, null),
-                Arguments.of("", null, ""),
+                Arguments.of(null, null),
+                Arguments.of(null, ""),
+                Arguments.of("", null),
+                Arguments.of("", ""),
 
-                Arguments.of(null, null, " "),
-                Arguments.of(null, " ", null),
-                Arguments.of(null, " ", " "),
-                Arguments.of(" ", " ", " "),
-                Arguments.of(" ", " ", null),
-                Arguments.of(" ", null, null),
-                Arguments.of(" ", null, " "),
+                Arguments.of(null, " "),
+                Arguments.of(" ", " "),
+                Arguments.of(" ", null),
 
-                Arguments.of(null, "test", null),
-                Arguments.of(null, "test", ""),
-                Arguments.of(null, "test", " "),
-                Arguments.of(null, "test", "test"),
+                Arguments.of(null, "test"),
 
-                Arguments.of("test", null, null),
-                Arguments.of("test", null, ""),
-                Arguments.of("test", null, " "),
-                Arguments.of("test", null, "test"),
-
-                Arguments.of("test", null, null),
-                Arguments.of("test", "", null),
-                Arguments.of("test", " ", null),
-                Arguments.of("test", "test", null)
+                Arguments.of("test", null),
+                Arguments.of("test", ""),
+                Arguments.of("test", " ")
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(@Nullable final String instance, @Nullable final String hashtag, @Nullable final String postAPI) {
+    void isDisabled(@Nullable final String instance, @Nullable final String postAPI) {
         final var configuration = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig(instance, hashtag, postAPI, 30);
+        final var blueSkyConfig = new BlueSkyConfig(instance, postAPI, 30);
         when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final var blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
@@ -112,7 +95,7 @@ class BlueSkyPluginTest {
     @Test
     void isEnabled() {
         final var configuration = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "foobar", "test", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "test", 30);
         when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final var blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
@@ -121,28 +104,28 @@ class BlueSkyPluginTest {
 
     private static Stream<Arguments> provideDataForHashtagsTest() {
         return Stream.of(
-                Arguments.of("", 0),
-                Arguments.of(" ", 0),
-                Arguments.of("foobar", 5),
-                Arguments.of("foo", 2),
-                Arguments.of("bar", 3),
-                Arguments.of("foobar,foo", 7),
-                Arguments.of("foobar,bar", 8),
-                Arguments.of("foo,bar", 5),
-                Arguments.of("foobar,,bar", 8),
-                Arguments.of("foobar, ,bar", 8)
+                Arguments.of(List.of(""), 0),
+                Arguments.of(List.of(" "), 0),
+                Arguments.of(List.of("foobar"), 5),
+                Arguments.of(List.of("foo"), 2),
+                Arguments.of(List.of("bar"), 3),
+                Arguments.of(List.of("foobar", "foo"), 7),
+                Arguments.of(List.of("foobar", "bar"), 8),
+                Arguments.of(List.of("foo", "bar"), 5),
+                Arguments.of(List.of("foobar", "", "bar"), 8),
+                Arguments.of(List.of("foobar", " ", "bar"), 8)
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideDataForHashtagsTest")
-    void getPostsWithHashtags(@NotNull final String hashtags, final int expectedNumberOfPosts) {
+    void getPostsWithHashtags(@NotNull final List<String> hashtags, final int expectedNumberOfPosts) {
         final var configuration = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", hashtags, "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
         when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
-        final List<Post> posts = blueSkyPlugin.getPosts().toList();
+        final List<Post> posts = blueSkyPlugin.getPosts(hashtags).toList();
 
         assertNotNull(posts);
         assertEquals(expectedNumberOfPosts, posts.size());
@@ -151,11 +134,11 @@ class BlueSkyPluginTest {
     @Test
     void getPostsWithUnlimitedImages() {
         final var configuration = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "foobar", "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
         when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
-        final List<Post> posts = blueSkyPlugin.getPosts().toList();
+        final List<Post> posts = blueSkyPlugin.getPosts(List.of("foobar")).toList();
 
         assertNotNull(posts);
         assertEquals(5, posts.size());
@@ -176,7 +159,7 @@ class BlueSkyPluginTest {
     @Test
     void getPostsCatchesException() {
         final var configuration = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "broken", "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
         when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final MemoryAppender memoryAppender = new MemoryAppender();
@@ -186,7 +169,7 @@ class BlueSkyPluginTest {
 
         memoryAppender.start();
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
-        blueSkyPlugin.getPosts();
+        blueSkyPlugin.getPosts(List.of("broken"));
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.searchMessages("This is an expected exception.", Level.ERROR).size();
@@ -196,11 +179,11 @@ class BlueSkyPluginTest {
     @Test
     void testReplyConversion() {
         final var configuration = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "foobar", "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
         when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), configuration);
-        final List<Post> posts = blueSkyPlugin.getPosts().toList();
+        final List<Post> posts = blueSkyPlugin.getPosts(List.of("foobar")).toList();
 
         assertNotNull(posts);
         assertEquals(5, posts.size());
@@ -301,11 +284,11 @@ class BlueSkyPluginTest {
     @Test
     void getPostsWithoutEmbed() {
         final var configuration = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "foobar", "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
         when(configuration.blueSky()).thenReturn(blueSkyConfig);
 
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new NoEmbedBlueSkyLoader(), configuration);
-        final List<Post> posts = blueSkyPlugin.getPosts().toList();
+        final List<Post> posts = blueSkyPlugin.getPosts(List.of("foobar")).toList();
 
         assertNotNull(posts);
         assertEquals(3, posts.size());

@@ -17,16 +17,20 @@
  */
 package swiss.fihlon.apus.plugin.social;
 
+import org.jetbrains.annotations.NotNull;
 import swiss.fihlon.apus.social.Post;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 public interface SocialPlugin {
 
+    @NotNull
     String getServiceName();
 
     boolean isEnabled();
 
-    Stream<Post> getPosts();
+    @NotNull
+    Stream<Post> getPosts(@NotNull List<String> hashtags);
 
 }

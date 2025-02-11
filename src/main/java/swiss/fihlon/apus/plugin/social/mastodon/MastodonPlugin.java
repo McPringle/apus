@@ -38,7 +38,6 @@ public final class MastodonPlugin implements SocialPlugin {
     private static final Logger LOGGER = LoggerFactory.getLogger(MastodonPlugin.class);
 
     private final MastodonLoader mastodonLoader;
-    private final String hashtags;
     private final String instance;
     private final String postAPI;
     private final int postLimit;
@@ -49,7 +48,6 @@ public final class MastodonPlugin implements SocialPlugin {
                           @NotNull final AppConfig appConfig) {
         this.mastodonLoader = mastodonLoader;
         final var mastodonConfig = appConfig.mastodon();
-        this.hashtags = mastodonConfig.hashtags();
         this.instance = mastodonConfig.instance();
         this.postAPI = mastodonConfig.postAPI();
         this.postLimit = mastodonConfig.postLimit();
@@ -58,6 +56,7 @@ public final class MastodonPlugin implements SocialPlugin {
     }
 
     @Override
+    @NotNull
     public String getServiceName() {
         return "Mastodon";
     }
@@ -65,20 +64,17 @@ public final class MastodonPlugin implements SocialPlugin {
     @Override
     public boolean isEnabled() {
         final var instanceOk = instance != null && !instance.isBlank();
-        final var hashtagsOk = hashtags != null && !hashtags.isBlank();
         final var postAPIOk = postAPI != null && !postAPI.isBlank();
-        return instanceOk && hashtagsOk && postAPIOk;
+        return instanceOk && postAPIOk;
     }
 
     @Override
-    public Stream<Post> getPosts() {
+    @NotNull
+    public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
         try {
             final var posts = new ArrayList<Post>();
 
-            for (final String hashtag : hashtags.split(",")) {
-                if (hashtag.isBlank()) {
-                    continue;
-                }
+            for (final String hashtag : hashtags) {
                 LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
                 final var jsonPosts = mastodonLoader.getPosts(instance, hashtag.trim(), postAPI, postLimit);
                 LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", jsonPosts.length(), hashtag, instance);

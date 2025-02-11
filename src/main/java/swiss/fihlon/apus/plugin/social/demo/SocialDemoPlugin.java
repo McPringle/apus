@@ -44,6 +44,7 @@ public final class SocialDemoPlugin implements SocialPlugin {
     }
 
     @Override
+    @NotNull
     public String getServiceName() {
         return "Demo";
     }
@@ -54,7 +55,8 @@ public final class SocialDemoPlugin implements SocialPlugin {
     }
 
     @Override
-    public Stream<Post> getPosts() {
+    @NotNull
+    public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
         final Faker faker = new Faker(LOCALE, RANDOM);
         final var posts = new ArrayList<Post>();
         for (int number = 1; number <= postCount; number++) {

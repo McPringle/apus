@@ -33,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -49,6 +50,7 @@ public final class SocialService {
 
     private final ScheduledFuture<?> updateScheduler;
     private final List<SocialPlugin> socialPlugins;
+    private final List<String> hashtags;
     private final int filterLength;
     private final boolean filterReplies;
     private final boolean filterSensitive;
@@ -61,6 +63,10 @@ public final class SocialService {
                          @NotNull final AppConfig appConfig,
                          @NotNull final List<SocialPlugin> socialPlugins) {
         this.socialPlugins = socialPlugins;
+        hashtags = Arrays.stream(appConfig.hashtags().split(","))
+                .filter(hashtag -> !hashtag.isBlank())
+                .map(String::trim)
+                .toList();
         filterLength = appConfig.filter().length();
         filterReplies = appConfig.filter().replies();
         filterSensitive = appConfig.filter().sensitive();
@@ -69,7 +75,7 @@ public final class SocialService {
                 .toList();
         loadHiddenPostIds();
         loadBlockedProfiles();
-        if (socialPlugins.stream().anyMatch(SocialPlugin::isEnabled)) {
+        if (!hashtags.isEmpty() && socialPlugins.stream().anyMatch(SocialPlugin::isEnabled)) {
             updatePosts();
             updateScheduler = taskScheduler.scheduleAtFixedRate(this::updatePosts, UPDATE_FREQUENCY);
         } else {
@@ -93,7 +99,7 @@ public final class SocialService {
     private void updatePosts() {
         final var newPosts = socialPlugins.parallelStream()
                 .filter(SocialPlugin::isEnabled)
-                .flatMap(SocialPlugin::getPosts)
+                .flatMap(plugin -> plugin.getPosts(hashtags))
                 .filter(post -> !hiddenPosts.contains(post.id()))
                 .filter(post -> !blockedProfiles.contains(post.profile()))
                 .filter(post -> !filterSensitive || !post.isSensitive())

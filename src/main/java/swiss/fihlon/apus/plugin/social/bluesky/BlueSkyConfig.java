@@ -17,4 +17,4 @@
  */
 package swiss.fihlon.apus.plugin.social.bluesky;
 
-public record BlueSkyConfig(String instance, String hashtags, String postAPI, int postLimit) { }
+public record BlueSkyConfig(String instance, String postAPI, int postLimit) { }

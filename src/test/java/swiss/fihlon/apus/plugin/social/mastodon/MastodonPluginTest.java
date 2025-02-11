@@ -56,7 +56,7 @@ class MastodonPluginTest {
     @Test
     void getServiceName() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "foobar", POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
@@ -65,32 +65,25 @@ class MastodonPluginTest {
 
     private static Stream<Arguments> provideDataForDisabledTest() {
         return Stream.of(
-                Arguments.of(null, null, null),
-                Arguments.of(null, null, ""),
-                Arguments.of(null, null, " "),
-                Arguments.of(null, null, "api"),
-                Arguments.of(null, "", "api"),
-                Arguments.of("", null, "api"),
-                Arguments.of("", "", "api"),
-                Arguments.of(" ", null, "api"),
-                Arguments.of(null, " ", "api"),
-                Arguments.of(" ", " ", "api"),
-                Arguments.of(null, "foobar", "api"),
-                Arguments.of("", "foobar", "api"),
-                Arguments.of(" ", "foobar", "api"),
-                Arguments.of("localhost", null, "api"),
-                Arguments.of("localhost", "", "api"),
-                Arguments.of("localhost", "foobar", null),
-                Arguments.of("localhost", "foobar", ""),
-                Arguments.of("localhost", "foobar", " ")
+                Arguments.of(null, null),
+                Arguments.of(null, ""),
+                Arguments.of(null, " "),
+                Arguments.of(null, "api"),
+                Arguments.of(null, "api"),
+                Arguments.of("", "api"),
+                Arguments.of(" ", "api"),
+                Arguments.of(null, "api"),
+                Arguments.of("localhost", null),
+                Arguments.of("localhost", ""),
+                Arguments.of("localhost", " ")
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(@Nullable final String instance, @Nullable final String hashtag, @Nullable final String postApi) {
+    void isDisabled(@Nullable final String instance, @Nullable final String postApi) {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig(instance, hashtag, postApi, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig(instance, postApi, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
@@ -100,7 +93,7 @@ class MastodonPluginTest {
     @Test
     void isEnabled() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "foobar", POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
@@ -109,28 +102,28 @@ class MastodonPluginTest {
 
     private static Stream<Arguments> provideDataForHashtagsTest() {
         return Stream.of(
-                Arguments.of("", 0),
-                Arguments.of(" ", 0),
-                Arguments.of("foobar", 5),
-                Arguments.of("foo", 2),
-                Arguments.of("bar", 3),
-                Arguments.of("foobar,foo", 7),
-                Arguments.of("foobar,bar", 8),
-                Arguments.of("foo,bar", 5),
-                Arguments.of("foobar,,bar", 8),
-                Arguments.of("foobar, ,bar", 8)
+                Arguments.of(List.of(""), 0),
+                Arguments.of(List.of(" "), 0),
+                Arguments.of(List.of("foobar"), 5),
+                Arguments.of(List.of("foo"), 2),
+                Arguments.of(List.of("bar"), 3),
+                Arguments.of(List.of("foobar", "foo"), 7),
+                Arguments.of(List.of("foobar", "bar"), 8),
+                Arguments.of(List.of("foo", "bar"), 5),
+                Arguments.of(List.of("foobar", "", "bar"), 8),
+                Arguments.of(List.of("foobar", " ", "bar"), 8)
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideDataForHashtagsTest")
-    void getPostsWithHashtags(@NotNull final String hashtags, final int expectedNumberOfPosts) {
+    void getPostsWithHashtags(@NotNull final List<String> hashtags, final int expectedNumberOfPosts) {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", hashtags, POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
-        final List<Post> posts = mastodonPlugin.getPosts().toList();
+        final List<Post> posts = mastodonPlugin.getPosts(hashtags).toList();
 
         assertNotNull(posts);
         assertEquals(expectedNumberOfPosts, posts.size());
@@ -139,11 +132,11 @@ class MastodonPluginTest {
     @Test
     void getPostsWithUnlimitedImages() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "foobar", POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
-        final List<Post> posts = mastodonPlugin.getPosts().toList();
+        final List<Post> posts = mastodonPlugin.getPosts(List.of("foobar")).toList();
 
         assertNotNull(posts);
         assertEquals(5, posts.size());
@@ -164,11 +157,11 @@ class MastodonPluginTest {
     @Test
     void getPostsWithOneImage() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "foobar", POST_API, POST_LIMIT, true, 1);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 1);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
-        final List<Post> posts = mastodonPlugin.getPosts().toList();
+        final List<Post> posts = mastodonPlugin.getPosts(List.of("foobar")).toList();
 
         assertNotNull(posts);
         assertEquals(5, posts.size());
@@ -184,11 +177,11 @@ class MastodonPluginTest {
     @Test
     void getPostsWithoutImages() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "foobar", POST_API, POST_LIMIT, false, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, false, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
-        final List<Post> posts = mastodonPlugin.getPosts().toList();
+        final List<Post> posts = mastodonPlugin.getPosts(List.of("foobar")).toList();
 
         assertNotNull(posts);
         assertEquals(5, posts.size());
@@ -201,11 +194,11 @@ class MastodonPluginTest {
     @Test
     void getPostsWithInvalidImageTypes() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "invalidImageType", POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
-        final List<Post> posts = mastodonPlugin.getPosts().toList();
+        final List<Post> posts = mastodonPlugin.getPosts(List.of("invalidImageType")).toList();
 
         assertNotNull(posts);
         assertEquals(5, posts.size());
@@ -221,7 +214,7 @@ class MastodonPluginTest {
     @Test
     void getPostsCatchesException() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "broken", POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 0);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MemoryAppender memoryAppender = new MemoryAppender();
@@ -231,7 +224,7 @@ class MastodonPluginTest {
 
         memoryAppender.start();
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
-        mastodonPlugin.getPosts();
+        mastodonPlugin.getPosts(List.of("broken"));
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.searchMessages("This is an expected exception.", Level.ERROR).size();
@@ -241,11 +234,11 @@ class MastodonPluginTest {
     @Test
     void testReplyConversion() {
         final var configuration = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "foobar", POST_API, POST_LIMIT, true, 1);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 1);
         when(configuration.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), configuration);
-        final List<Post> posts = mastodonPlugin.getPosts().toList();
+        final List<Post> posts = mastodonPlugin.getPosts(List.of("foobar")).toList();
 
         assertNotNull(posts);
         assertEquals(5, posts.size());

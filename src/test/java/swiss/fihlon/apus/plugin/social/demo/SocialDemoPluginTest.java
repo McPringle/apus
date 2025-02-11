@@ -73,7 +73,7 @@ class SocialDemoPluginTest {
         when(configuration.social()).thenReturn(socialConfig);
 
         final var socialDemoPlugin = new SocialDemoPlugin(configuration);
-        final List<Post> posts = socialDemoPlugin.getPosts().toList();
+        final List<Post> posts = socialDemoPlugin.getPosts(List.of()).toList();
 
         assertNotNull(posts);
         assertEquals(1, posts.size());

@@ -21,6 +21,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import net.datafaker.Faker;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -166,6 +167,7 @@ class SocialServiceTest {
     private static final class TestSocialPlugin implements SocialPlugin {
 
         @Override
+        @NotNull
         public String getServiceName() {
             return "Test";
         }
@@ -176,7 +178,8 @@ class SocialServiceTest {
         }
 
         @Override
-        public Stream<Post> getPosts() {
+        @NotNull
+        public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
             final Faker faker = new Faker();
             final var now = LocalDateTime.now();
             final List<Post> posts = new ArrayList<>();
@@ -197,6 +200,7 @@ class SocialServiceTest {
     private static final class EmptySocialPlugin implements SocialPlugin {
 
         @Override
+        @NotNull
         public String getServiceName() {
             return "Empty";
         }
@@ -207,8 +211,9 @@ class SocialServiceTest {
         }
 
         @Override
-        public Stream<Post> getPosts() {
-            return List.<Post>of().stream();
+        @NotNull
+        public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
+            return Stream.<Post>of();
         }
     }
 }

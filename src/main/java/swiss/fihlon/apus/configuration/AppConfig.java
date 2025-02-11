@@ -28,7 +28,8 @@ import swiss.fihlon.apus.plugin.social.bluesky.BlueSkyConfig;
 import swiss.fihlon.apus.plugin.social.mastodon.MastodonConfig;
 
 @ConfigurationProperties(prefix = "apus")
-public record AppConfig(String version, AdminConfig admin, CustomConfig custom, EventConfig event, SocialConfig social, FilterConfig filter,
+public record AppConfig(String version, String hashtags,
+                        AdminConfig admin, CustomConfig custom, EventConfig event, SocialConfig social, FilterConfig filter,
                         DevoxxConfig devoxx, DoagConfig doag, JavaForumStuttgartConfig jfs, SessionizeConfig sessionize,
                         BlueSkyConfig blueSky, MastodonConfig mastodon) {
 

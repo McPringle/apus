@@ -28,6 +28,7 @@ import swiss.fihlon.apus.social.Post;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Service
@@ -36,7 +37,6 @@ public final class BlueSkyPlugin implements SocialPlugin {
     private static final Logger LOGGER = LoggerFactory.getLogger(BlueSkyPlugin.class);
 
     private final BlueSkyLoader blueSkyLoader;
-    private final String hashtags;
     private final String instance;
     private final String postAPI;
     private final int postLimit;
@@ -45,13 +45,13 @@ public final class BlueSkyPlugin implements SocialPlugin {
                          @NotNull final AppConfig appConfig) {
         this.blueSkyLoader = blueSkyLoader;
         final var blueSkyConfig = appConfig.blueSky();
-        this.hashtags = blueSkyConfig.hashtags();
         this.instance = blueSkyConfig.instance();
         this.postAPI = blueSkyConfig.postAPI();
         this.postLimit = blueSkyConfig.postLimit();
     }
 
     @Override
+    @NotNull
     public String getServiceName() {
         return "BlueSky";
     }
@@ -59,20 +59,17 @@ public final class BlueSkyPlugin implements SocialPlugin {
     @Override
     public boolean isEnabled() {
         final var instanceOk = instance != null && !instance.isBlank();
-        final var hashtagsOk = hashtags != null && !hashtags.isBlank();
         final var postAPIOk = postAPI != null && !postAPI.isBlank();
-        return instanceOk && hashtagsOk && postAPIOk;
+        return instanceOk && postAPIOk;
     }
 
     @Override
-    public Stream<Post> getPosts() {
+    @NotNull
+    public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
         try {
             final var posts = new ArrayList<Post>();
 
-            for (final String hashtag : hashtags.split(",")) {
-                if (hashtag.isBlank()) {
-                    continue;
-                }
+            for (final String hashtag : hashtags) {
                 LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
                 final var jsonPosts = blueSkyLoader.getPosts(instance, hashtag.trim(), postAPI, postLimit);
                 LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", jsonPosts.length(), hashtag, instance);
