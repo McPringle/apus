@@ -18,10 +18,8 @@
 package swiss.fihlon.apus;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import swiss.fihlon.apus.configuration.AppConfig;
-import swiss.fihlon.apus.configuration.CustomConfig;
 
 import java.util.List;
 import java.util.Locale;
@@ -34,9 +32,8 @@ import static org.mockito.Mockito.when;
 class ApplicationI18NProviderTest {
 
     private AppConfig createLanguageConfig(@NotNull final String language) {
-        final var customConfig = new CustomConfig(language, "");
         final var appConfig = mock(AppConfig.class);
-        when(appConfig.custom()).thenReturn(customConfig);
+        when(appConfig.language()).thenReturn(language);
         return appConfig;
     }
 
@@ -54,6 +51,7 @@ class ApplicationI18NProviderTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     void englishTranslationWithNullParameters() {
         final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig("en"));
         assertEquals("Rooms & Sessions", i18nProvider.getTranslation("event.heading", null, (Object) null));
@@ -78,6 +76,7 @@ class ApplicationI18NProviderTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     void germanTranslationWithNullParameters() {
         final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig("de"));
         assertEquals("Räume & Vorträge", i18nProvider.getTranslation("event.heading", null, (Object) null));

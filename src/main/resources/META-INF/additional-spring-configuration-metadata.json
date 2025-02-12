@@ -21,11 +21,6 @@
       "description" : "The limit for the number of BlueSky posts when accessing the API."
     },
     {
-      "name" : "apus.custom.language",
-      "type" : "java.lang.String",
-      "description" : "Language code of the language used for the UI."
-    },
-    {
       "name" : "apus.custom.styles",
       "type" : "java.lang.String",
       "description" : "Inject custom styles into the user interface."
@@ -119,6 +114,11 @@
       "name" : "apus.jfs.dbUrl",
       "type" : "java.lang.String",
       "description" : "The URL of the database file for Java Forum Stuttgart."
+    },
+    {
+      "name" : "apus.language",
+      "type" : "java.lang.String",
+      "description" : "Language code of the language used for the UI."
     },
     {
       "name" : "apus.mastodon.imageLimit",

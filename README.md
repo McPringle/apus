@@ -122,7 +122,6 @@ To modify the default configuration values, just specify environment variables w
 | APUS_BLUESKY_INSTANCE           | api.bsky.app | The BlueSky instance used to read the posts from (empty = disabled).          |
 | APUS_BLUESKY_POST_API           | [1]          | The URL of the BlueSky API to read the posts (empty = disabled).              |
 | APUS_BLUESKY_POST_LIMIT         | 30           | The limit for the number of BlueSky posts when accessing the API.             |
-| APUS_CUSTOM_LANGUAGE            | en           | Language code of the language used for the UI.                                |
 | APUS_CUSTOM_STYLES              |              | Inject custom styles into the user interface (see explanations below).        |
 | APUS_DEVOXX_EVENT_API           | [2]          | The URL of the Devoxx API to read the conference agenda.                      |
 | APUS_DEVOXX_EVENT_ID            |              | The ID of the Devoxx event to read the conference agenda.                     |
@@ -142,6 +141,7 @@ To modify the default configuration values, just specify environment variables w
 | APUS_FILTER_WORDS               |              | Hide social media posts which contain these words.                            |
 | APUS_HASHTAGS                   |              | A list of comma separated hashtags for social media posts (empty = disabled). |
 | APUS_JFS_DB_URL                 |              | The URL of the database file for Java Forum Stuttgart.                        |
+| APUS_LANGUAGE                   | en           | Language code of the language used for the UI.                                |
 | APUS_MASTODON_IMAGE_LIMIT       | 1            | Limit number of images per post (0 = no limit).                               |
 | APUS_MASTODON_IMAGES_ENABLED    | true         | Enable or disable images in mastodon posts.                                   |
 | APUS_MASTODON_INSTANCE          |              | The Mastodon instance used to read the posts from (empty = disabled).         |

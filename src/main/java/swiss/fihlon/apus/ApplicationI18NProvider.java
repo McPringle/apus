@@ -36,7 +36,7 @@ public final class ApplicationI18NProvider implements I18NProvider {
     private final transient @NotNull ResourceBundle resourceBundle;
 
     public ApplicationI18NProvider(@NotNull final AppConfig appConfig) {
-        final var locale = switch (appConfig.custom().language()) {
+        final var locale = switch (appConfig.language()) {
             case "de" -> Locale.GERMAN;
             default -> Locale.ENGLISH;
         };
