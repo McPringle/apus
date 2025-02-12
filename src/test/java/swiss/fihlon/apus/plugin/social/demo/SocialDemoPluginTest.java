@@ -36,10 +36,10 @@ class SocialDemoPluginTest {
     @Test
     void getServiceName() {
         final var socialConfig = mock(SocialConfig.class);
-        final var configuration = mock(AppConfig.class);
-        when(configuration.social()).thenReturn(socialConfig);
+        final var appConfig = mock(AppConfig.class);
+        when(appConfig.social()).thenReturn(socialConfig);
 
-        final var demoSocialPlugin = new SocialDemoPlugin(configuration);
+        final var demoSocialPlugin = new SocialDemoPlugin(appConfig);
         assertEquals("Demo", demoSocialPlugin.getServiceName());
     }
 
@@ -47,10 +47,10 @@ class SocialDemoPluginTest {
     void isEnabled() {
         final var socialConfig = mock(SocialConfig.class);
         when(socialConfig.demoPostCount()).thenReturn(1);
-        final var configuration = mock(AppConfig.class);
-        when(configuration.social()).thenReturn(socialConfig);
+        final var appConfig = mock(AppConfig.class);
+        when(appConfig.social()).thenReturn(socialConfig);
 
-        final var demoSocialPlugin = new SocialDemoPlugin(configuration);
+        final var demoSocialPlugin = new SocialDemoPlugin(appConfig);
         assertTrue(demoSocialPlugin.isEnabled());
     }
 
@@ -58,10 +58,10 @@ class SocialDemoPluginTest {
     void isDisabled() {
         final var socialConfig = mock(SocialConfig.class);
         when(socialConfig.demoPostCount()).thenReturn(0);
-        final var configuration = mock(AppConfig.class);
-        when(configuration.social()).thenReturn(socialConfig);
+        final var appConfig = mock(AppConfig.class);
+        when(appConfig.social()).thenReturn(socialConfig);
 
-        final var demoSocialPlugin = new SocialDemoPlugin(configuration);
+        final var demoSocialPlugin = new SocialDemoPlugin(appConfig);
         assertFalse(demoSocialPlugin.isEnabled());
     }
 
@@ -69,10 +69,10 @@ class SocialDemoPluginTest {
     void getPosts() {
         final var socialConfig = mock(SocialConfig.class);
         when(socialConfig.demoPostCount()).thenReturn(1);
-        final var configuration = mock(AppConfig.class);
-        when(configuration.social()).thenReturn(socialConfig);
+        final var appConfig = mock(AppConfig.class);
+        when(appConfig.social()).thenReturn(socialConfig);
 
-        final var socialDemoPlugin = new SocialDemoPlugin(configuration);
+        final var socialDemoPlugin = new SocialDemoPlugin(appConfig);
         final List<Post> posts = socialDemoPlugin.getPosts(List.of()).toList();
 
         assertNotNull(posts);

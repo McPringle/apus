@@ -38,31 +38,31 @@ class DoagPluginTest {
 
     @Test
     void isEnabled() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var doagConfig = new DoagConfig(1, "");
-        when(configuration.doag()).thenReturn(doagConfig);
+        when(appConfig.doag()).thenReturn(doagConfig);
 
-        final var doagPlugin = new DoagPlugin(configuration);
+        final var doagPlugin = new DoagPlugin(appConfig);
         assertTrue(doagPlugin.isEnabled());
     }
 
     @Test
     void isDisabled() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var doagConfig = new DoagConfig(0, "");
-        when(configuration.doag()).thenReturn(doagConfig);
+        when(appConfig.doag()).thenReturn(doagConfig);
 
-        final var doagPlugin = new DoagPlugin(configuration);
+        final var doagPlugin = new DoagPlugin(appConfig);
         assertFalse(doagPlugin.isEnabled());
     }
 
     @Test
     void getSessions() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var doagConfig = new DoagConfig(1, "file:src/test/resources/testdata/DOAG.json?eventId=%d");
-        when(configuration.doag()).thenReturn(doagConfig);
+        when(appConfig.doag()).thenReturn(doagConfig);
 
-        final var doagPlugin = new DoagPlugin(configuration);
+        final var doagPlugin = new DoagPlugin(appConfig);
         final var sessions = doagPlugin.getSessions().toList();
         assertEquals(8, sessions.size());
 
@@ -87,22 +87,22 @@ class DoagPluginTest {
 
     @Test
     void exceptionWithBrokenTitle() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var doagConfig = new DoagConfig(1, "file:src/test/resources/testdata/DOAG-broken-title.json?eventId=%d");
-        when(configuration.doag()).thenReturn(doagConfig);
+        when(appConfig.doag()).thenReturn(doagConfig);
 
-        final var doagPlugin = new DoagPlugin(configuration);
+        final var doagPlugin = new DoagPlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, doagPlugin::getSessions);
         assertEquals("Error parsing slot 1: No title with language 'de' or 'en' for session '1'", exception.getMessage());
     }
 
     @Test
     void exceptionWithBlankTitle() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var doagConfig = new DoagConfig(1, "file:src/test/resources/testdata/DOAG-blank-title.json?eventId=%d");
-        when(configuration.doag()).thenReturn(doagConfig);
+        when(appConfig.doag()).thenReturn(doagConfig);
 
-        final var doagPlugin = new DoagPlugin(configuration);
+        final var doagPlugin = new DoagPlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, doagPlugin::getSessions);
         assertEquals("Error parsing slot 1: No title with language 'de' or 'en' for session '1'", exception.getMessage());
     }

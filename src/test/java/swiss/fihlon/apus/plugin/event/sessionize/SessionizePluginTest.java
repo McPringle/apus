@@ -38,33 +38,33 @@ class SessionizePluginTest {
 
     @Test
     void isEnabled() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1", "", "");
-        when(configuration.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.sessionize()).thenReturn(sessionizeConfig);
 
-        final var sessionizePlugin = new SessionizePlugin(configuration);
+        final var sessionizePlugin = new SessionizePlugin(appConfig);
         assertTrue(sessionizePlugin.isEnabled());
     }
 
     @Test
     void isDisabled() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("0", "", "");
-        when(configuration.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.sessionize()).thenReturn(sessionizeConfig);
 
-        final var sessionizePlugin = new SessionizePlugin(configuration);
+        final var sessionizePlugin = new SessionizePlugin(appConfig);
         assertFalse(sessionizePlugin.isEnabled());
     }
 
     @Test
     void getSessions() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("BBAD",
                 "file:src/test/resources/testdata/sessionize.json?eventId=%s",
                 "file:src/test/resources/testdata/sessionize-speakers.json?eventId=%s");
-        when(configuration.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.sessionize()).thenReturn(sessionizeConfig);
 
-        final var sessionizePlugin = new SessionizePlugin(configuration);
+        final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var sessions = sessionizePlugin.getSessions().toList();
         assertEquals(8, sessions.size());
 
@@ -91,64 +91,64 @@ class SessionizePluginTest {
 
     @Test
     void parseExceptionSessions() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/testdata/sessionize-broken.json?eventId=%s",
                 "file:src/test/resources/testdata/sessionize-speakers.json?eventId=%s");
-        when(configuration.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.sessionize()).thenReturn(sessionizeConfig);
 
-        final var sessionizePlugin = new SessionizePlugin(configuration);
+        final var sessionizePlugin = new SessionizePlugin(appConfig);
         assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
     }
 
     @Test
     void parseExceptionSpeakers() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/testdata/sessionize.json?eventId=%s",
                 "file:src/test/resources/testdata/sessionize-speakers-broken.json?eventId=%s");
-        when(configuration.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.sessionize()).thenReturn(sessionizeConfig);
 
-        final var sessionizePlugin = new SessionizePlugin(configuration);
+        final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
         assertTrue(exception.getMessage().startsWith("Error parsing speaker"));
     }
 
     @Test
     void parseExceptionUnknownSpeaker() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/testdata/sessionize-unknown-speaker.json?eventId=%s",
                 "file:src/test/resources/testdata/sessionize-speakers.json?eventId=%s");
-        when(configuration.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.sessionize()).thenReturn(sessionizeConfig);
 
-        final var sessionizePlugin = new SessionizePlugin(configuration);
+        final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
         assertEquals("Error parsing sessions: Can't find speaker with id 2c9d3dc1-9f79-457f-0000-42ce42f6366a!", exception.getMessage());
     }
 
     @Test
     void parseExceptionUnknownLanguage() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/testdata/sessionize-unknown-language.json?eventId=%s",
                 "file:src/test/resources/testdata/sessionize-speakers.json?eventId=%s");
-        when(configuration.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.sessionize()).thenReturn(sessionizeConfig);
 
-        final var sessionizePlugin = new SessionizePlugin(configuration);
+        final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
         assertEquals("Error parsing session 1: Unknown language ID: 123456", exception.getMessage());
     }
 
     @Test
     void unknownLanguage() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/testdata/sessionize-no-categories.json?eventId=%s",
                 "file:src/test/resources/testdata/sessionize-speakers.json?eventId=%s");
-        when(configuration.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.sessionize()).thenReturn(sessionizeConfig);
 
-        final var sessionizePlugin = new SessionizePlugin(configuration);
+        final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var sessions = sessionizePlugin.getSessions().toList();
         assertEquals(1, sessions.size());
 
@@ -158,13 +158,13 @@ class SessionizePluginTest {
 
     @Test
     void noLanguage() {
-        final var configuration = mock(AppConfig.class);
+        final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/testdata/sessionize-no-language.json?eventId=%s",
                 "file:src/test/resources/testdata/sessionize-speakers.json?eventId=%s");
-        when(configuration.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.sessionize()).thenReturn(sessionizeConfig);
 
-        final var sessionizePlugin = new SessionizePlugin(configuration);
+        final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var sessions = sessionizePlugin.getSessions().toList();
         assertEquals(1, sessions.size());
 

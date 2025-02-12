@@ -35,9 +35,9 @@ class EventDemoPluginTest {
     private AppConfig mockConfiguration(final int demoRoomCount) {
         final var eventConfig = new EventConfig(Period.ZERO, demoRoomCount, "", 60,
                 true, true, 0);
-        final var configuration = mock(AppConfig.class);
-        when(configuration.event()).thenReturn(eventConfig);
-        return configuration;
+        final var appConfig = mock(AppConfig.class);
+        when(appConfig.event()).thenReturn(eventConfig);
+        return appConfig;
     }
 
     @Test

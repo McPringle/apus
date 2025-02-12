@@ -50,9 +50,9 @@ class EventServiceTest {
     static AppConfig mockConfiguration(@NotNull final Period dateAdjust) {
         final var eventConfig = new EventConfig(dateAdjust, 0, "", 60,
                 true, true, 0);
-        final var configuration = mock(AppConfig.class);
-        when(configuration.event()).thenReturn(eventConfig);
-        return configuration;
+        final var appConfig = mock(AppConfig.class);
+        when(appConfig.event()).thenReturn(eventConfig);
+        return appConfig;
     }
 
     @Test
