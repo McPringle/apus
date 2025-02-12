@@ -17,6 +17,7 @@
  */
 package swiss.fihlon.apus.configuration;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import swiss.fihlon.apus.plugin.event.EventConfig;
@@ -28,10 +29,11 @@ import swiss.fihlon.apus.plugin.social.bluesky.BlueSkyConfig;
 import swiss.fihlon.apus.plugin.social.mastodon.MastodonConfig;
 
 @ConfigurationProperties(prefix = "apus")
-public record AppConfig(String version, String hashtags, String language,
-                        AdminConfig admin, CustomConfig custom, EventConfig event, SocialConfig social, FilterConfig filter,
-                        DevoxxConfig devoxx, DoagConfig doag, JavaForumStuttgartConfig jfs, SessionizeConfig sessionize,
-                        BlueSkyConfig blueSky, MastodonConfig mastodon) {
+public record AppConfig(@NotNull String version, @NotNull String hashtags, @NotNull String language,
+                        @NotNull AdminConfig admin, @NotNull CustomConfig custom,
+                        @NotNull EventConfig event, @NotNull SocialConfig social, @NotNull FilterConfig filter,
+                        @NotNull DevoxxConfig devoxx, @NotNull DoagConfig doag, @NotNull JavaForumStuttgartConfig jfs,
+                        @NotNull SessionizeConfig sessionize, @NotNull BlueSkyConfig blueSky, @NotNull MastodonConfig mastodon) {
 
     @ConstructorBinding
     @SuppressWarnings({"java:S1186", "java:S6207"})
