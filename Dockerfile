@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21
+FROM eclipse-temurin:23
 COPY target/apus-*.jar /usr/app/app.jar
 RUN useradd -m apus
 USER apus
