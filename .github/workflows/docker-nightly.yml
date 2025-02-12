@@ -41,7 +41,7 @@ jobs:
             echo "defined=false" >> $GITHUB_OUTPUT;
           fi
 
-  build-publish:
+  docker-nightly:
     if: needs.check-build.outputs.last-build-sha != github.sha && needs.check-secrets.outputs.defined == 'true'
     runs-on: ubuntu-latest
     name: Build and push Docker image
