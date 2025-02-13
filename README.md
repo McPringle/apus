@@ -122,7 +122,6 @@ To modify the default configuration values, just specify environment variables w
 | APUS_BLUESKY_INSTANCE           | api.bsky.app | The BlueSky instance used to read the posts from (empty = disabled).          |
 | APUS_BLUESKY_POST_API           | [1]          | The URL of the BlueSky API to read the posts (empty = disabled).              |
 | APUS_BLUESKY_POST_LIMIT         | 30           | The limit for the number of BlueSky posts when accessing the API.             |
-| APUS_CUSTOM_STYLES              |              | Inject custom styles into the user interface (see explanations below).        |
 | APUS_DEVOXX_EVENT_API           | [2]          | The URL of the Devoxx API to read the conference agenda.                      |
 | APUS_DEVOXX_EVENT_ID            |              | The ID of the Devoxx event to read the conference agenda.                     |
 | APUS_DEVOXX_WEEKDAY             |              | The day of the week of the Devoxx event to read the conference agenda.        |
@@ -153,6 +152,7 @@ To modify the default configuration values, just specify environment variables w
 | APUS_SESSIONIZE_EVENT_API       | [5]          | The URL of the Sessionize API to read the conference agenda.                  |
 | APUS_SESSIONIZE_EVENT_ID        | 0            | The ID of the Sessionize event to read the conference agenda (0 = disabled).  |
 | APUS_SESSIONIZE_SPEAKER_API     | [6]          | The URL of the Sessionize API to read the speaker information.                |
+| APUS_STYLES                     |              | Inject custom styles into the user interface (see explanations below).        |
 | TZ                              | UTC          | The timezone used for date and time calculations.                             |
 
 > [!NOTE]  
@@ -182,7 +182,7 @@ The `APUS_EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` a
 
 #### Custom Styles
 
-You can modify the styles of the user interface using CSS variables. The CSS variables must be set using the environment variable `APUS_CUSTOM_STYLES` in key and value pairs. The key is the variable to be set and must start with two dashes (`--`). Keys and values must be separated by a colon (`:`). Multiple key and value pairs are separated by a semicolon (`;`). Example:
+You can modify the styles of the user interface using CSS variables. The CSS variables must be set using the environment variable `APUS_STYLES` in key and value pairs. The key is the variable to be set and must start with two dashes (`--`). Keys and values must be separated by a colon (`:`). Multiple key and value pairs are separated by a semicolon (`;`). Example:
 
 ```
 --name-of-variable-one:value1;--name-of-variable-two:value2

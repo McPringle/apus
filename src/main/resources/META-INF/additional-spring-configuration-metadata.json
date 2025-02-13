@@ -21,11 +21,6 @@
       "description" : "The limit for the number of BlueSky posts when accessing the API."
     },
     {
-      "name" : "apus.custom.styles",
-      "type" : "java.lang.String",
-      "description" : "Inject custom styles into the user interface."
-    },
-    {
       "name" : "apus.devoxx.eventApi",
       "type" : "java.lang.String",
       "description" : "The URL of the Devoxx API to read the conference agenda."
@@ -174,6 +169,11 @@
       "name" : "apus.social.numberOfColumns",
       "type" : "java.lang.Integer",
       "description" : "How many columns to be used for social media posts."
+    },
+    {
+      "name" : "apus.styles",
+      "type" : "java.lang.String",
+      "description" : "Inject custom styles into the user interface."
     }
   ]
 }

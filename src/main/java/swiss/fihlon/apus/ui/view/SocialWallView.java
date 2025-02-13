@@ -67,10 +67,10 @@ public final class SocialWallView extends Div {
     }
 
     private static void addCustomStyles(@NotNull final AppConfig appConfig) {
-        final String customStyles = appConfig.custom().styles();
-        if (!customStyles.isBlank()) {
+        final String styles = appConfig.styles();
+        if (!styles.isBlank()) {
             final var currentStyle = UI.getCurrent().getElement().getStyle();
-            Arrays.stream(customStyles.split(";"))
+            Arrays.stream(styles.split(";"))
                     .forEach(customStyle -> {
                         if (!customStyle.isBlank()) {
                             final var style = customStyle.split(":", 2);
