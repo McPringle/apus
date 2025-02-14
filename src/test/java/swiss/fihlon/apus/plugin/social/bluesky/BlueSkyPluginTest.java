@@ -157,6 +157,29 @@ class BlueSkyPluginTest {
     }
 
     @Test
+    void getPostsWithVideos() {
+        final var appConfig = mock(AppConfig.class);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
+        when(appConfig.blueSky()).thenReturn(blueSkyConfig);
+
+        final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
+        final List<Post> posts = blueSkyPlugin.getPosts(List.of("videos")).toList();
+
+        assertNotNull(posts);
+        assertEquals(3, posts.size());
+
+        final var firstPost = posts.getFirst();
+        assertEquals("ID 11", firstPost.id());
+        assertEquals("Display Name 11", firstPost.author());
+        assertEquals("Avatar 11", firstPost.avatar());
+        assertEquals("profile11", firstPost.profile());
+
+        for (final Post post : posts) {
+            assertTrue(post.images().isEmpty());
+        }
+    }
+
+    @Test
     void getPostsCatchesException() {
         final var appConfig = mock(AppConfig.class);
         final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
@@ -203,27 +226,32 @@ class BlueSkyPluginTest {
                 throws BlueSkyException {
             return switch (hashtag) {
                 case "foobar" -> new JSONArray(List.of(
-                        createPost(1, hashtag),
-                        createPost(2, hashtag),
-                        createPost(3, hashtag),
-                        createPost(4, hashtag),
-                        createPost(5, hashtag)
+                        createPost(1, hashtag, false),
+                        createPost(2, hashtag, false),
+                        createPost(3, hashtag, false),
+                        createPost(4, hashtag, false),
+                        createPost(5, hashtag, false)
                 ));
                 case "foo" -> new JSONArray(List.of(
-                        createPost(6, hashtag),
-                        createPost(7, hashtag)
+                        createPost(6, hashtag, false),
+                        createPost(7, hashtag, false)
                 ));
                 case "bar" -> new JSONArray(List.of(
-                        createPost(8, hashtag),
-                        createPost(9, hashtag),
-                        createPost(10, hashtag)
+                        createPost(8, hashtag, false),
+                        createPost(9, hashtag, false),
+                        createPost(10, hashtag, false)
+                ));
+                case "videos" -> new JSONArray(List.of(
+                        createPost(11, hashtag, true),
+                        createPost(12, hashtag, true),
+                        createPost(13, hashtag, true)
                 ));
                 case "broken" -> throw new BlueSkyException("This is an expected exception.", new RuntimeException("This is a faked cause."));
                 default -> new JSONArray(List.of());
             };
         }
 
-        private JSONObject createPost(final int i, @NotNull final String hashtag) {
+        private JSONObject createPost(final int i, @NotNull final String hashtag, boolean withVideo) {
             final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), ZoneId.systemDefault());
             final var fakeReply = """
                     "reply": {
@@ -260,7 +288,7 @@ class BlueSkyPluginTest {
                     ]
                   },
                   "embed": {
-                    "$type": "app.bsky.embed.images#view",
+                    "$type": "${embedType}",
                     "images": [
                       {
                         "thumb": "http://localhost/image${i}a.webp"
@@ -275,7 +303,8 @@ class BlueSkyPluginTest {
                 .replaceAll(Pattern.quote("${i}"), Integer.toString(i))
                 .replaceAll(Pattern.quote("${tag}"), hashtag)
                 .replaceAll(Pattern.quote("${createdAt}"), createdAt.format(DATE_TIME_FORMATTER))
-                .replaceAll(Pattern.quote("${reply}"), i == 5 ? fakeReply : "");
+                .replaceAll(Pattern.quote("${reply}"), i == 5 ? fakeReply : "")
+                .replaceAll(Pattern.quote("${embedType}"), withVideo ? "app.bsky.embed.video#view" : "app.bsky.embed.images#view");
 
             return new JSONObject(postJSON);
         }
