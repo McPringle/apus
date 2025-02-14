@@ -30,11 +30,14 @@ See:
 | Event                | Plugin                     |
 |----------------------|----------------------------|
 | BaselOne             | `SessionizePlugin`         |
+| CloudLand            | `DoagPlugin`               |
 | CyberLand            | `DoagPlugin`               |
+| Devoxx               | `DevoxxPlugin`             |
 | Java Forum Nord      | `SessionizePlugin`         |
 | Java Forum Stuttgart | `JavaForumStuttgartPlugin` |
 | JavaLand             | `DoagPlugin`               |
-| Voxxed Days Zürich   | - TODO -                   |
+| KI Navigator         | `DoagPlugin`               |
+| Voxxed Days          | `DevoxxPlugin`             |
 
 ### And more
 
@@ -52,48 +55,58 @@ See:
 
 To modify the default configuration values, just specify environment variables with the following names:
 
-| Environment Variable       | Default       | Description                                                                  |
-|----------------------------|---------------|------------------------------------------------------------------------------|
-| ADMIN_PASSWORD             |               | The hashed password to get admin access (empty = disabled).                  |
-| BLUESKY_HASHTAGS           |               | A list of comma separated hashtags for BlueSky posts (empty = disabled).     |
-| BLUESKY_INSTANCE           | api.bsky.app  | The BlueSky instance used to read the posts from (empty = disabled).         |
-| BLUESKY_POST_API           | [1]           | The URL of the BlueSky API to read the posts (empty = disabled).             |
-| BLUESKY_POST_LIMIT         | 30            | The limit for the number of BlueSky posts when accessing the API.            |
-| CUSTOM_STYLES              |               | Inject custom styles into the user interface (see explanations below).       |
-| DOAG_EVENT_API             | [2]           | The URL of the DOAG event API to read the conference agenda.                 |
-| DOAG_EVENT_ID              | 0             | The ID of the DOAG event to read the conference agenda (0 = disabled).       |
-| EVENT_DATE_ADJUST          |               | Adjust the date of the event in days, ISO-8601 formatted (empty = disabled). |
-| EVENT_DEMO_ROOM_COUNT      | 0             | Number of rooms for the event demo plugin (0 = disabled).                    |
-| EVENT_IMAGE_URL            |               | The URL of the image to be shown below the event agenda (empty = no image).  |
-| EVENT_NEXT_SESSION_TIMEOUT | 60            | Number of minutes a session is shown before it starts (0 = disabled).        |
-| EVENT_SHOW_EMPTY_ROOMS     | true          | Show (true) or hide (false) empty event rooms.                               |
-| EVENT_SHOW_LEGEND          | true          | Show (true) or hide (false) the event room legend.                           |
-| EVENT_UPDATE_FREQUENCY     | 5             | How often (in minutes) to update event data (0 = disabled).                  |
-| FILTER_LENGTH              | 500           | Hide social media posts which exceed this length (0 = disabled).             |
-| FILTER_REPLIES             | true          | Hide social media posts which are replies.                                   |
-| FILTER_SENSITIVE           | true          | Hide social media posts which contain sensitive information.                 |
-| FILTER_WORDS               |               | Hide social media posts which contain these words.                           |
-| JFS_DB_URL                 |               | The URL of the database file for Java Forum Stuttgart.                       |
-| MASTODON_HASHTAGS          |               | A list of comma separated hashtags for Mastodon posts (empty = disabled).    |
-| MASTODON_IMAGE_LIMIT       | 1             | Limit number of images per post (0 = no limit).                              |
-| MASTODON_IMAGES_ENABLED    | true          | Enable or disable images in mastodon posts.                                  |
-| MASTODON_INSTANCE          |               | The Mastodon instance used to read the posts from (empty = disabled).        |
-| SOCIAL_COLUMNS             | 3             | How many columns to be used for social media posts.                          |
-| SOCIAL_DEMO_POST_COUNT     | 0             | Number of posts for the social demo plugin (0 = disabled).                   |
-| SOCIAL_HEADLINE            |               | Overwrite the headline for social media posts (empty = don't overwrite).     |
-| SESSIONIZE_EVENT_API       | [3]           | The URL of the Sessionize API to read the conference agenda.                 |
-| SESSIONIZE_EVENT_ID        | 0             | The ID of the Sessionize event to read the conference agenda (0 = disabled). |
-| SESSIONIZE_SPEAKER_API     | [4]           | The URL of the Sessionize API to read the speaker information.               |
-| TZ                         | UTC           | The timezone used for date and time calculations.                            |
+| Environment Variable            | Default      | Description                                                                   |
+|---------------------------------|--------------|-------------------------------------------------------------------------------|
+| APUS_ADMIN_PASSWORD             |              | The hashed password to get admin access (empty = disabled).                   |
+| APUS_BLUESKY_INSTANCE           | api.bsky.app | The BlueSky instance used to read the posts from (empty = disabled).          |
+| APUS_BLUESKY_POST_API           | [1]          | The URL of the BlueSky API to read the posts (empty = disabled).              |
+| APUS_BLUESKY_POST_LIMIT         | 30           | The limit for the number of BlueSky posts when accessing the API.             |
+| APUS_DEVOXX_EVENT_API           | [2]          | The URL of the Devoxx API to read the conference agenda.                      |
+| APUS_DEVOXX_EVENT_ID            |              | The ID of the Devoxx event to read the conference agenda.                     |
+| APUS_DEVOXX_WEEKDAY             |              | The day of the week of the Devoxx event to read the conference agenda.        |
+| APUS_DOAG_EVENT_API             | [3]          | The URL of the DOAG event API to read the conference agenda.                  |
+| APUS_DOAG_EVENT_ID              | 0            | The ID of the DOAG event to read the conference agenda (0 = disabled).        |
+| APUS_EVENT_DATE_ADJUST          |              | Adjust the date of the event in days, ISO-8601 formatted (empty = disabled).  |
+| APUS_EVENT_DEMO_ROOM_COUNT      | 0            | Number of rooms for the event demo plugin (0 = disabled).                     |
+| APUS_EVENT_IMAGE_URL            |              | The URL of the image to be shown below the event agenda (empty = no image).   |
+| APUS_EVENT_NEXT_SESSION_TIMEOUT | 60           | Number of minutes a session is shown before it starts (0 = disabled).         |
+| APUS_EVENT_SHOW_EMPTY_ROOMS     | true         | Show (true) or hide (false) empty event rooms.                                |
+| APUS_EVENT_SHOW_LEGEND          | true         | Show (true) or hide (false) the event room legend.                            |
+| APUS_EVENT_UPDATE_FREQUENCY     | 5            | How often (in minutes) to update event data (0 = disabled).                   |
+| APUS_FILTER_LENGTH              | 500          | Hide social media posts which exceed this length (0 = disabled).              |
+| APUS_FILTER_REPLIES             | true         | Hide social media posts which are replies.                                    |
+| APUS_FILTER_SENSITIVE           | true         | Hide social media posts which contain sensitive information.                  |
+| APUS_FILTER_WORDS               |              | Hide social media posts which contain these words.                            |
+| APUS_HASHTAGS                   |              | A list of comma separated hashtags for social media posts (empty = disabled). |
+| APUS_JFS_DB_URL                 |              | The URL of the database file for Java Forum Stuttgart.                        |
+| APUS_LANGUAGE                   | en           | Language code of the language used for the UI.                                |
+| APUS_MASTODON_IMAGE_LIMIT       | 1            | Limit number of images per post (0 = no limit).                               |
+| APUS_MASTODON_IMAGES_ENABLED    | true         | Enable or disable images in mastodon posts.                                   |
+| APUS_MASTODON_INSTANCE          |              | The Mastodon instance used to read the posts from (empty = disabled).         |
+| APUS_MASTODON_POST_API          | [4]          | The URL of the Mastodon API to read the posts (empty = disabled).             |
+| APUS_MASTODON_POST_LIMIT        | 30           | The limit for the number of Mastodon posts when accessing the API.            |
+| APUS_SOCIAL_COLUMNS             | 3            | How many columns to be used for social media posts.                           |
+| APUS_SOCIAL_DEMO_POST_COUNT     | 0            | Number of posts for the social demo plugin (0 = disabled).                    |
+| APUS_SOCIAL_HEADLINE            |              | Overwrite the headline for social media posts (empty = don't overwrite).      |
+| APUS_SESSIONIZE_EVENT_API       | [5]          | The URL of the Sessionize API to read the conference agenda.                  |
+| APUS_SESSIONIZE_EVENT_ID        | 0            | The ID of the Sessionize event to read the conference agenda (0 = disabled).  |
+| APUS_SESSIONIZE_SPEAKER_API     | [6]          | The URL of the Sessionize API to read the speaker information.                |
+| APUS_STYLES                     |              | Inject custom styles into the user interface (see explanations below).        |
+| TZ                              | UTC          | The timezone used for date and time calculations.                             |
+
+> [!NOTE]  
+> The `TZ` environment variable is not specific to *Apus*, it is a system variable and therefore has no `APUS` prefix!
 
 The environment variables will override the default values. Some default values might be too long to be displayed in this table. They are marked with a number in square brackets and can be looked up in the following list:
 
-1. https://%s/xrpc/app.bsky.feed.searchPosts?q=%s
-2. https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/
-3. https://sessionize.com/api/v2/%s/view/Sessions
-4. https://sessionize.com/api/v2/%s/view/Speakers
+1. `https://%s/xrpc/app.bsky.feed.searchPosts?q=%s`
+2. `https://%s.cfp.dev/api/public/schedules/%s`
+3. `https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/`
+4. `https://%s/api/v1/timelines/tag/%s?limit=%d`
+5. `https://sessionize.com/api/v2/%s/view/Sessions`
+6. `https://sessionize.com/api/v2/%s/view/Speakers`
 
-The `EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` and `PnW`. Examples:
+The `APUS_EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` and `PnW`. Examples:
 
 | Example     | Description                                                  |
 |-------------|--------------------------------------------------------------|
@@ -108,7 +121,7 @@ The `EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` and `P
 
 #### Custom Styles
 
-You can modify the styles of the user interface using CSS variables. The CSS variables must be set using the environment variable `CUSTOM_STYLES` in key and value pairs. The key is the variable to be set and must start with two dashes (`--`). Keys and values must be separated by a colon (`:`). Multiple key and value pairs are separated by a semicolon (`;`). Example:
+You can modify the styles of the user interface using CSS variables. The CSS variables must be set using the environment variable `APUS_STYLES` in key and value pairs. The key is the variable to be set and must start with two dashes (`--`). Keys and values must be separated by a colon (`:`). Multiple key and value pairs are separated by a semicolon (`;`). Example:
 
 ```
 --name-of-variable-one:value1;--name-of-variable-two:value2
@@ -169,10 +182,10 @@ docker run \
     --name apus \
     -p 80:8080 \
     -v $HOME/.apus:/home/apus/.apus \
-    -e ADMIN_PASSWORD=sEcrEt \
-    -e DEMO_ROOM_COUNT=12 \
-    -e MASTODON_INSTANCE=mastodon.social \
-    -e MASTODON_HASHTAGS=java \
+    -e APUS_ADMIN_PASSWORD=sEcrEt \
+    -e APUS_DEMO_ROOM_COUNT=12 \
+    -e APUS_HASHTAGS=java \
+    -e APUS_MASTODON_INSTANCE=mastodon.social \
     -e TZ=CET \
     -d \
     --rm \
