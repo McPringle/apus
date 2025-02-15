@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.ui.view;
 
-import com.vaadin.flow.component.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
@@ -33,15 +32,9 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static swiss.fihlon.apus.util.TestUtil.getComponentsByClassName;
 
 class RoomViewTest {
-
-    private static List<Component> getComponentsByClassName(@NotNull final RoomView roomView, @NotNull final String className) {
-        return roomView.getChildren()
-                .filter(component -> component.getElement().getAttribute("class").contains(className))
-                .toList();
-    }
 
     private static void assertTitle(@NotNull final RoomView roomView, @NotNull final String title, @Nullable final String language) {
         final var components = getComponentsByClassName(roomView, "title");

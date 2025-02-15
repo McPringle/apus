@@ -33,14 +33,20 @@ public final class ApplicationI18NProvider implements I18NProvider {
 
     private static final @NotNull List<Locale> SUPPORTED_LOCALES = List.of(Locale.ENGLISH, Locale.GERMAN);
 
+    private final @NotNull Locale locale;
     private final transient @NotNull ResourceBundle resourceBundle;
 
     public ApplicationI18NProvider(@NotNull final AppConfig appConfig) {
-        final var locale = switch (appConfig.language()) {
+        locale = switch (appConfig.language()) {
             case "de" -> Locale.GERMAN;
             default -> Locale.ENGLISH;
         };
         resourceBundle = ResourceBundle.getBundle("i18n/translations", locale);
+    }
+
+    @NotNull
+    public Locale getLocale() {
+        return locale;
     }
 
     @Override

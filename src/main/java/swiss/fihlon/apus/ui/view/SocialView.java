@@ -40,6 +40,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,7 @@ public final class SocialView extends Div {
 
     private static final Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
 
+    private final Locale locale;
     private final transient SocialService socialService;
     private final transient AppConfig appConfig;
     private final List<Div> postsColumns;
@@ -56,7 +58,9 @@ public final class SocialView extends Div {
 
     public SocialView(@NotNull final SocialService socialService,
                       @NotNull final TaskScheduler taskScheduler,
-                      @NotNull final AppConfig appConfig) {
+                      @NotNull final AppConfig appConfig,
+                      @NotNull final Locale locale) {
+        this.locale = locale;
         this.socialService = socialService;
         this.appConfig = appConfig;
 
@@ -157,7 +161,7 @@ public final class SocialView extends Div {
         postsColumns.forEach(HasComponents::removeAll);
         int i = 0;
         for (final Post post : socialService.getPosts(30)) {
-            final var postView = new PostView(post);
+            final var postView = new PostView(post, locale);
             if (adminModeEnabled) {
                 final var postMenu = new ContextMenu();
                 postMenu.addItem(getTranslation("social.post.contextmenu.hide.post"), event -> hidePost(post));

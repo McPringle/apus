@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
+import swiss.fihlon.apus.ApplicationI18NProvider;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.event.EventService;
 import swiss.fihlon.apus.plugin.social.SocialService;
@@ -40,14 +41,16 @@ public final class SocialWallView extends Div {
     public SocialWallView(@NotNull final EventService eventService,
                           @NotNull final SocialService socialService,
                           @NotNull final TaskScheduler taskScheduler,
-                          @NotNull final AppConfig appConfig) {
+                          @NotNull final AppConfig appConfig,
+                          @NotNull final ApplicationI18NProvider i18NProvider) {
         setId("social-wall-view");
         addDynamicStyles(appConfig, eventService);
         addCustomStyles(appConfig);
         if (eventService.isEnabled()) {
             add(new EventView(eventService, taskScheduler, appConfig));
         }
-        add(new SocialView(socialService, taskScheduler, appConfig));
+        final var locale = i18NProvider.getLocale();
+        add(new SocialView(socialService, taskScheduler, appConfig, locale));
     }
 
     private static void addDynamicStyles(@NotNull final AppConfig appConfig, @NotNull final EventService eventService) {

@@ -20,7 +20,6 @@ package swiss.fihlon.apus.ui.view;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
@@ -32,10 +31,16 @@ import org.ocpsoft.prettytime.PrettyTime;
 import swiss.fihlon.apus.social.Post;
 import swiss.fihlon.apus.util.HtmlUtil;
 
+import java.util.Locale;
+
 @CssImport(value = "./themes/apus/views/post-view.css")
 public final class PostView extends Div {
 
-    public PostView(@NotNull final Post post) {
+    @NotNull
+    private final Locale locale;
+
+    public PostView(@NotNull final Post post, @NotNull final Locale locale) {
+        this.locale = locale;
         setId("post-" + post.id());
         addClassName("post-view");
         add(createHeaderComponent(post));
@@ -44,7 +49,8 @@ public final class PostView extends Div {
         add(createDateTimeComponent(post));
     }
 
-    @NotNull Component createHeaderComponent(@NotNull final Post post) {
+    @NotNull
+    private Component createHeaderComponent(@NotNull final Post post) {
         final var avatar = createAvatarComponent(post);
         final var author = new Div(new Text(post.author()));
         author.addClassName("author");
@@ -52,11 +58,15 @@ public final class PostView extends Div {
         profile.addClassName("profile");
         final var authorContainer = new Div(author, profile);
         authorContainer.addClassName("author-container");
-        return new Header(avatar, authorContainer);
+        final var header = new Header(avatar, authorContainer);
+        header.addClassName("header");
+        return header;
     }
 
     private Component createAvatarComponent(@NotNull final Post post) {
-        return new Avatar(post.author(), post.avatar());
+        final var avatar = new Avatar(post.author(), post.avatar());
+        avatar.addClassName("avatar");
+        return avatar;
     }
 
     @NotNull
@@ -77,7 +87,7 @@ public final class PostView extends Div {
     private Component createDateTimeComponent(@NotNull final Post post) {
         final var dateTimeComponent = new Footer();
         dateTimeComponent.addClassName("datetime");
-        final var prettyTime = new PrettyTime(UI.getCurrent().getLocale());
+        final var prettyTime = new PrettyTime(locale);
         dateTimeComponent.add(new Text(prettyTime.format(post.date())));
         return dateTimeComponent;
     }
