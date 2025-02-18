@@ -19,6 +19,9 @@ package swiss.fihlon.apus.ui.view;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
@@ -29,6 +32,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static swiss.fihlon.apus.util.TestUtil.getComponentsByClassName;
@@ -129,14 +133,23 @@ class RoomViewTest {
 //        }
     }
 
-    @Test
-    void constructorWithRoom() {
-        final var room = new Room("My Room");
+    private static Stream<Arguments> provideArgumentsForRoomTest() {
+        return Stream.of(
+                Arguments.of("Room One"),
+                Arguments.of("Room Two"),
+                Arguments.of("Room Three")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideArgumentsForRoomTest")
+    void constructorWithRoom(@NotNull final String roomName) {
+        final var room = new Room(roomName);
         final var roomView = new RoomView(room);
         assertEquals(5, roomView.getChildren().count());
         assertTitle(roomView, "!{event.room.empty}!", Language.UNKNOWN);
         assertSpeakers(roomView, "");
-        assertRoom(roomView, "My Room");
+        assertRoom(roomView, roomName);
         assertTime(roomView, "");
         assertTrack(roomView, Track.NONE);
     }
