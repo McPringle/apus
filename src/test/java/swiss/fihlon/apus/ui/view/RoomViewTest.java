@@ -18,7 +18,6 @@
 package swiss.fihlon.apus.ui.view;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
@@ -36,20 +35,20 @@ import static swiss.fihlon.apus.util.TestUtil.getComponentsByClassName;
 
 class RoomViewTest {
 
-    private static void assertTitle(@NotNull final RoomView roomView, @NotNull final String title, @Nullable final String language) {
+    private static void assertTitle(@NotNull final RoomView roomView, @NotNull final String title, @NotNull final Language language) {
         final var components = getComponentsByClassName(roomView, "title");
         assertEquals(1, components.size());
 
         final var titleComponent = components.getFirst();
         final var titleChildren = titleComponent.getChildren().toList();
-        assertEquals(language == null ? 1 : 2, titleChildren.size());
+        assertEquals(language == Language.UNKNOWN ? 1 : 2, titleChildren.size());
 
         final var text = titleChildren.getFirst();
         assertEquals(title, text.getElement().getText());
 
-        if (language != null) {
+        if (language != Language.UNKNOWN) {
             final var image = titleChildren.getLast();
-            assertEquals("icons/flags/%s.svg".formatted(language), image.getElement().getAttribute("src"));
+            assertEquals(language.getFlagFileName(), image.getElement().getAttribute("src"));
         }
     }
 
@@ -135,11 +134,11 @@ class RoomViewTest {
         final var room = new Room("My Room");
         final var roomView = new RoomView(room);
         assertEquals(5, roomView.getChildren().count());
-        assertTitle(roomView, "!{event.room.empty}!", null);
+        assertTitle(roomView, "!{event.room.empty}!", Language.UNKNOWN);
         assertSpeakers(roomView, "");
         assertRoom(roomView, "My Room");
         assertTime(roomView, "");
-        assertTrack(roomView, "");
+        assertTrack(roomView, Track.NONE);
     }
 
     @Test
@@ -153,11 +152,29 @@ class RoomViewTest {
                 Language.EN, Track.CORE);
         final var roomView = new RoomView(session);
         assertEquals(5, roomView.getChildren().count());
-        assertTitle(roomView, "My Session", "en");
+        assertTitle(roomView, "My Session", Language.EN);
         assertSpeakers(roomView, "Speaker One, Speaker Two");
         assertRoom(roomView, "My Room");
         assertTime(roomView, "!{event.session.countdown.minutes}!");
-        assertTrack(roomView, Track.CORE.svgCode());
+        assertTrack(roomView, Track.CORE);
+    }
+
+    @Test
+    void sessionWithUnknownLanguage() {
+        final var today = LocalDate.now();
+        final var session = new Session("42",
+                LocalDateTime.of(today, LocalTime.MIDNIGHT),
+                LocalDateTime.of(today, LocalTime.MAX),
+                new Room("My Room"), "My Session",
+                List.of(new Speaker("Speaker One"), new Speaker("Speaker Two")),
+                Language.UNKNOWN, Track.CORE);
+        final var roomView = new RoomView(session);
+        assertEquals(5, roomView.getChildren().count());
+        assertTitle(roomView, "My Session", Language.UNKNOWN);
+        assertSpeakers(roomView, "Speaker One, Speaker Two");
+        assertRoom(roomView, "My Room");
+        assertTime(roomView, "!{event.session.countdown.minutes}!");
+        assertTrack(roomView, Track.CORE);
     }
 
 }
