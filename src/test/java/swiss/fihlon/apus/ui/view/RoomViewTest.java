@@ -18,6 +18,7 @@
 package swiss.fihlon.apus.ui.view;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -115,18 +116,40 @@ class RoomViewTest {
         }
     }
 
-    private static void assertTrack(@NotNull final RoomView roomView, @NotNull final Track track) {
+    private static void assertTrack(@NotNull final RoomView roomView, @Nullable final Track track) {
         final var components = getComponentsByClassName(roomView, "track");
+        assertEquals(track == null ? 0 : 1, components.size());
+
+        if (track != null) {
+            final var trackComponent = components.getFirst();
+            final var trackChildren = trackComponent.getChildren().toList();
+
+            if (track == Track.NONE) {
+                assertEquals(0, trackChildren.size());
+            } else {
+                assertEquals(1, trackChildren.size());
+                // TODO find out how to identify the correct SVG was used #291
+            }
+        }
+    }
+
+    private static void assertAvatar(@NotNull final RoomView roomView, @NotNull final List<String> avatarLinks) {
+        final var components = getComponentsByClassName(roomView, "avatar");
         assertEquals(1, components.size());
 
-        final var trackComponent = components.getFirst();
-        final var trackChildren = trackComponent.getChildren().toList();
+        final var component = components.getFirst();
+        final var groups = getComponentsByClassName(component, "avatar-group");
+        assertEquals(1, groups.size());
 
-        if (track == Track.NONE) {
-            assertEquals(0, trackChildren.size());
-        } else {
-            assertEquals(1, trackChildren.size());
-            // TODO find out how to identify the correct SVG was used #291
+        final var group = groups.getFirst();
+        final var avatars = group.getChildren().toList();
+        assertEquals(avatarLinks.size(), avatars.size());
+
+        for (int i = 0; i < avatarLinks.size(); i++) {
+            final var avatarLink = avatarLinks.get(i);
+            final var avatar = avatars.get(i);
+            final var element = avatar.getElement();
+            assertEquals(avatarLink, element.getAttribute("img"));
         }
     }
 
@@ -203,6 +226,48 @@ class RoomViewTest {
         assertRoom(roomView, "My Room");
         assertTime(roomView, "!{event.session.countdown.minutes}!");
         assertTrack(roomView, Track.NONE);
+    }
+
+    @Test
+    void sessionWithSpeakerAvatarAndTrack() {
+        final var today = LocalDate.now();
+        final var session = new Session("42",
+                LocalDateTime.of(today, LocalTime.MIDNIGHT),
+                LocalDateTime.of(today, LocalTime.MAX),
+                new Room("My Room"), "My Session",
+                List.of(
+                        new Speaker("Speaker One", "https://localhost/avatar1.png"),
+                        new Speaker("Speaker Two", "https://localhost/avatar2.svg")),
+                Language.EN, Track.CORE);
+        final var roomView = new RoomView(session);
+        assertEquals(5, roomView.getChildren().count());
+        assertTitle(roomView, "My Session", Language.EN);
+        assertSpeakers(roomView, "Speaker One, Speaker Two");
+        assertRoom(roomView, "My Room");
+        assertTime(roomView, "!{event.session.countdown.minutes}!");
+        assertTrack(roomView, null);
+        assertAvatar(roomView, List.of("https://localhost/avatar1.png", "https://localhost/avatar2.svg"));
+    }
+
+    @Test
+    void sessionWithSpeakerAvatarWithoutTrack() {
+        final var today = LocalDate.now();
+        final var session = new Session("42",
+                LocalDateTime.of(today, LocalTime.MIDNIGHT),
+                LocalDateTime.of(today, LocalTime.MAX),
+                new Room("My Room"), "My Session",
+                List.of(
+                        new Speaker("Speaker One", "https://localhost/avatar1.png"),
+                        new Speaker("Speaker Two", "https://localhost/avatar2.svg")),
+                Language.EN, Track.NONE);
+        final var roomView = new RoomView(session);
+        assertEquals(5, roomView.getChildren().count());
+        assertTitle(roomView, "My Session", Language.EN);
+        assertSpeakers(roomView, "Speaker One, Speaker Two");
+        assertRoom(roomView, "My Room");
+        assertTime(roomView, "!{event.session.countdown.minutes}!");
+        assertTrack(roomView, null);
+        assertAvatar(roomView, List.of("https://localhost/avatar1.png", "https://localhost/avatar2.svg"));
     }
 
 }
