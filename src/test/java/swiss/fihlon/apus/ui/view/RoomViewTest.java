@@ -115,22 +115,19 @@ class RoomViewTest {
         }
     }
 
-    private static void assertTrack(@NotNull final RoomView roomView, @NotNull final String svgCode) {
-        // TODO find out how to identify the correct SVG was used #291
-//        final var components = getComponentsByClassName(roomView, "track");
-//        assertEquals(1, components.size());
-//
-//        final var trackComponent = components.getFirst();
-//        final var trackChildren = trackComponent.getChildren().toList();
-//
-//        if (svgCode.isBlank()) {
-//            assertEquals(0, trackChildren.size());
-//        } else {
-//            assertEquals(1, trackChildren.size());
-//            final var svg = trackChildren.getFirst();
-//            final var html = svg.getElement().getOuterHTML();
-//            assertTrue(html.contains(svgCode));
-//        }
+    private static void assertTrack(@NotNull final RoomView roomView, @NotNull final Track track) {
+        final var components = getComponentsByClassName(roomView, "track");
+        assertEquals(1, components.size());
+
+        final var trackComponent = components.getFirst();
+        final var trackChildren = trackComponent.getChildren().toList();
+
+        if (track == Track.NONE) {
+            assertEquals(0, trackChildren.size());
+        } else {
+            assertEquals(1, trackChildren.size());
+            // TODO find out how to identify the correct SVG was used #291
+        }
     }
 
     private static Stream<Arguments> provideArgumentsForRoomTest() {
@@ -188,6 +185,24 @@ class RoomViewTest {
         assertRoom(roomView, "My Room");
         assertTime(roomView, "!{event.session.countdown.minutes}!");
         assertTrack(roomView, Track.CORE);
+    }
+
+    @Test
+    void sessionWithNoTrack() {
+        final var today = LocalDate.now();
+        final var session = new Session("42",
+                LocalDateTime.of(today, LocalTime.MIDNIGHT),
+                LocalDateTime.of(today, LocalTime.MAX),
+                new Room("My Room"), "My Session",
+                List.of(new Speaker("Speaker One"), new Speaker("Speaker Two")),
+                Language.EN, Track.NONE);
+        final var roomView = new RoomView(session);
+        assertEquals(5, roomView.getChildren().count());
+        assertTitle(roomView, "My Session", Language.EN);
+        assertSpeakers(roomView, "Speaker One, Speaker Two");
+        assertRoom(roomView, "My Room");
+        assertTime(roomView, "!{event.session.countdown.minutes}!");
+        assertTrack(roomView, Track.NONE);
     }
 
 }
