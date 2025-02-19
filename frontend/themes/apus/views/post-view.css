@@ -47,8 +47,13 @@
     word-wrap: break-word;
 }
 
+.post-view .source-logo > svg {
+    float: left;
+    height: var(--lumo-font-size-xs);
+}
+
 .post-view .datetime {
     font-size: var(--lumo-font-size-xs);
     font-style: italic;
-    text-align: right;
+    float: right;
 }

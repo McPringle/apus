@@ -19,6 +19,7 @@ package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
+import com.vaadin.flow.component.Svg;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -46,7 +47,7 @@ public final class PostView extends Div {
         add(createHeaderComponent(post));
         add(createTextComponent(post));
         add(createImageComponents(post));
-        add(createDateTimeComponent(post));
+        add(createFooterComponent(post));
     }
 
     @NotNull
@@ -81,6 +82,22 @@ public final class PostView extends Div {
         return post.images().stream()
                 .map(image -> new Image(image, image))
                 .toArray(Image[]::new);
+    }
+
+    @NotNull
+    private Component createFooterComponent(@NotNull final Post post) {
+        final var sourceLogoComponent = createSourceLogoComponent(post);
+        final var dateTimeComponent = createDateTimeComponent(post);
+        final var footer = new Footer(sourceLogoComponent, dateTimeComponent);
+        footer.addClassName("footer");
+        return footer;
+    }
+
+    @NotNull
+    private Component createSourceLogoComponent(@NotNull final Post post) {
+        final var svg = new Svg(post.sourceLogo());
+        svg.addClassName("source-logo");
+        return svg;
     }
 
     @NotNull

@@ -25,7 +25,7 @@ import java.util.List;
 public record Post(@NotNull String id, @NotNull LocalDateTime date,
                    @NotNull String author, @NotNull String avatar, @NotNull String profile,
                    @NotNull String html, @NotNull List<String> images,
-                   boolean isReply, boolean isSensitive)
+                   boolean isReply, boolean isSensitive, @NotNull String sourceLogo)
         implements Comparable<Post> {
     @Override
     public int compareTo(@NotNull final Post other) {
