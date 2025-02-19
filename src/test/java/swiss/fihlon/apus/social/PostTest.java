@@ -32,14 +32,14 @@ class PostTest {
     void compareTo() {
         final var now = LocalDateTime.now();
 
-        final var postOne = new Post("P1", now, "", "", "", "", List.of(), false, false);
-        final var postTwo = new Post("P2", now.minusHours(1), "", "", "", "", List.of(), false, false);
-        final var postThree = new Post("P3", now.minusHours(2), "", "", "", "", List.of(), false, false);
-        final var postFour = new Post("P4", now.minusHours(3), "", "", "", "", List.of(), false, false);
-        final var postFive = new Post("P5", now.minusHours(4), "", "", "", "", List.of(), false, false);
-        final var postSix = new Post("P6", now.minusHours(5), "", "", "", "", List.of(), false, false);
-        final var postSeven = new Post("P7", now.minusHours(6), "", "", "", "", List.of(), false, false);
-        final var postEight = new Post("P8", now.minusHours(6), "", "", "", "", List.of(), false, false);
+        final var postOne = new Post("P1", now, "", "", "", "", List.of(), false, false, "");
+        final var postTwo = new Post("P2", now.minusHours(1), "", "", "", "", List.of(), false, false, "");
+        final var postThree = new Post("P3", now.minusHours(2), "", "", "", "", List.of(), false, false, "");
+        final var postFour = new Post("P4", now.minusHours(3), "", "", "", "", List.of(), false, false, "");
+        final var postFive = new Post("P5", now.minusHours(4), "", "", "", "", List.of(), false, false, "");
+        final var postSix = new Post("P6", now.minusHours(5), "", "", "", "", List.of(), false, false, "");
+        final var postSeven = new Post("P7", now.minusHours(6), "", "", "", "", List.of(), false, false, "");
+        final var postEight = new Post("P8", now.minusHours(6), "", "", "", "", List.of(), false, false, "");
 
         final var unsortedPosts = new ArrayList<>(List.of(postTwo, postSix, postThree, postFour, postFive, postOne));
         Collections.shuffle(unsortedPosts);
@@ -70,7 +70,7 @@ class PostTest {
         final var isReply = false;
         final var isSensitive = false;
 
-        final var post = new Post(id, date, author, avatar, profile, html, images, isReply, isSensitive);
+        final var post = new Post(id, date, author, avatar, profile, html, images, isReply, isSensitive, "");
         assertEquals(id, post.id());
         assertEquals(date, post.date());
         assertEquals(author, post.author());

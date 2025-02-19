@@ -185,13 +185,14 @@ class SocialServiceTest {
             final List<Post> posts = new ArrayList<>();
             for (int i = 10; i > 0; i--) {
                 posts.add(new Post("P" + i, now.minusHours(i), "Author " + (i % 2), "Avatar " + i,
-                        "profile" + (i % 2) + "@localhost","<p>Content of post #1</p>", List.of(), false, false));
+                        "profile" + (i % 2) + "@localhost","<p>Content of post #1</p>",
+                        List.of(), false, false, ""));
             }
             posts.add(new Post("PX", now, "Troll", "","troll@localhost",
-                    "<p>This post is foobar!</p>", List.of(), false, false));
+                    "<p>This post is foobar!</p>", List.of(), false, false, ""));
             posts.add(new Post("PL", now, "Writer", "","writer@localhost",
                     "<p>" + faker.lorem().characters(501) + "</p>", List.of(),
-                    false, false));
+                    false, false, ""));
             Collections.shuffle(posts);
             return posts.stream();
         }

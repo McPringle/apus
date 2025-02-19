@@ -1,6 +1,7 @@
 package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.html.Footer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -51,7 +52,7 @@ class PostViewTest {
                       @NotNull final String postProfile,
                       @NotNull final String postHtml,
                       @NotNull final List<String> postImages) {
-        final var post = new Post(postId, postDate, postAuthor, postAvatar, postProfile, postHtml, postImages, false, false);
+        final var post = new Post(postId, postDate, postAuthor, postAvatar, postProfile, postHtml, postImages, false, false, "");
         final var locale = Locale.ENGLISH;
         final var postView = new PostView(post, locale);
 
@@ -62,7 +63,7 @@ class PostViewTest {
         assertHeader(postView, postAvatar, postAuthor, postProfile);
         assertContent(postView, postHtml);
         assertImage(postView, postImages);
-        assertDateTime(postView, postDate, locale);
+        assertFooter(postView, postDate, locale);
     }
 
     private static void assertHeader(@NotNull final PostView postView,
@@ -137,10 +138,19 @@ class PostViewTest {
         assertEquals(expectedImages.get(1), components.getLast().getElement().getAttribute("src"));
     }
 
-    private void assertDateTime(@NotNull final PostView postView,
+    private void assertFooter(@NotNull final PostView postView,
                                 @NotNull final LocalDateTime postDate,
                                 @NotNull final Locale locale) {
-        final var components = getComponentsByClassName(postView, "datetime");
+        final var components = getComponentsByClassName(postView, "footer");
+        assertEquals(1, components.size());
+        final var footer = (Footer) components.getFirst();
+        assertDateTime(footer, postDate, locale);
+    }
+
+    private void assertDateTime(@NotNull final Footer footer,
+                                @NotNull final LocalDateTime postDate,
+                                @NotNull final Locale locale) {
+        final var components = getComponentsByClassName(footer, "datetime");
         assertEquals(1, components.size());
         assertEquals(new PrettyTime(locale).format(postDate), components.getFirst().getElement().getText());
     }
