@@ -101,7 +101,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
                     final var type = feature.getString("$type");
                     if (type.equals("app.bsky.richtext.facet#tag")) {
                         final var tag = feature.getString("tag");
-                        if (tag.equals(hashtag)) {
+                        if (tag.equalsIgnoreCase(hashtag)) {
                             return true;
                         }
                     }
