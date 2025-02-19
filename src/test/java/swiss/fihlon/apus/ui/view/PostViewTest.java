@@ -1,6 +1,7 @@
 package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Svg;
 import com.vaadin.flow.component.html.Footer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,6 +16,7 @@ import java.util.Locale;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static swiss.fihlon.apus.util.TestUtil.getComponentsByClassName;
@@ -31,7 +33,8 @@ class PostViewTest {
                         "http://localhost/avatar.png",
                         "@nickname",
                         "<p>Test</p>",
-                        List.of("http://localhost/image1.png", "http://localhost/image2.svg")),
+                        List.of("http://localhost/image1.png", "http://localhost/image2.svg"),
+                        ""),
                 Arguments.of(
                         "TEST:FOOBAR",
                         LocalDateTime.now().minusDays(3),
@@ -39,7 +42,11 @@ class PostViewTest {
                         "file://foobar.svg",
                         "@foobar",
                         "<p>Foobar</p>",
-                        List.of("file://foobar.svg", "https://test/foobar.jpg"))
+                        List.of("file://foobar.svg", "https://test/foobar.jpg"),
+                        """
+                        <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                           <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+                        </svg>""")
         );
     }
 
@@ -51,8 +58,9 @@ class PostViewTest {
                       @NotNull final String postAvatar,
                       @NotNull final String postProfile,
                       @NotNull final String postHtml,
-                      @NotNull final List<String> postImages) {
-        final var post = new Post(postId, postDate, postAuthor, postAvatar, postProfile, postHtml, postImages, false, false, "");
+                      @NotNull final List<String> postImages,
+                      @NotNull final String sourceLogo) {
+        final var post = new Post(postId, postDate, postAuthor, postAvatar, postProfile, postHtml, postImages, false, false, sourceLogo);
         final var locale = Locale.ENGLISH;
         final var postView = new PostView(post, locale);
 
@@ -63,7 +71,7 @@ class PostViewTest {
         assertHeader(postView, postAvatar, postAuthor, postProfile);
         assertContent(postView, postHtml);
         assertImage(postView, postImages);
-        assertFooter(postView, postDate, locale);
+        assertFooter(postView, sourceLogo, postDate, locale);
     }
 
     private static void assertHeader(@NotNull final PostView postView,
@@ -139,12 +147,28 @@ class PostViewTest {
     }
 
     private void assertFooter(@NotNull final PostView postView,
+                                @NotNull final String sourceLogo,
                                 @NotNull final LocalDateTime postDate,
                                 @NotNull final Locale locale) {
         final var components = getComponentsByClassName(postView, "footer");
         assertEquals(1, components.size());
         final var footer = (Footer) components.getFirst();
+        assertSourceLogo(footer, sourceLogo);
         assertDateTime(footer, postDate, locale);
+    }
+
+    private void assertSourceLogo(@NotNull final Footer footer,
+                                  @NotNull final String sourceLogo) {
+        final var components = getComponentsByClassName(footer, "source-logo");
+        assertEquals(1, components.size());
+
+        final var svg = (Svg) components.getFirst();
+        // TODO find out how to identify the correct SVG was used #291
+        if (sourceLogo.isBlank()) {
+            assertFalse(svg.getElement().getOuterHTML().contains("<svg"));
+        } else {
+            assertTrue(svg.getElement().getOuterHTML().contains("<svg"));
+        }
     }
 
     private void assertDateTime(@NotNull final Footer footer,
