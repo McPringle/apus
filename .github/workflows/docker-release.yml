@@ -46,5 +46,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: mcpringle/apus:${{ github.event.release.tag_name }}
+          tags: mcpringle/apus:${{ github.event.release.tag_name }}, mcpringle/apus:latest
           platforms: linux/amd64,linux/arm64
