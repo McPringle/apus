@@ -43,6 +43,10 @@
     font-weight: bold;
 }
 
+.post-view .content {
+    word-wrap: break-word;
+}
+
 .post-view .datetime {
     font-size: var(--lumo-font-size-xs);
     font-style: italic;
