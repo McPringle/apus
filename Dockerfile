@@ -1,4 +1,5 @@
 FROM eclipse-temurin:23
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 COPY target/apus-*.jar /usr/app/app.jar
 RUN useradd -m apus
 USER apus
