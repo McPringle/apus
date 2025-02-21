@@ -31,6 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.scheduling.support.NoOpTaskScheduler;
 import swiss.fihlon.apus.MemoryAppender;
 import swiss.fihlon.apus.configuration.AppConfig;
+import swiss.fihlon.apus.configuration.SocialConfig;
 import swiss.fihlon.apus.social.Post;
 
 import java.io.IOException;
@@ -164,6 +165,46 @@ class SocialServiceTest {
         assertEquals(1, errorCount);
     }
 
+    private AppConfig createModifiedImageConfig(final boolean imagesEnabled, final int imageLimit) {
+        final var newSocialConfig = new SocialConfig(appConfig.social().demoPostCount(), appConfig.social().headline(),
+                appConfig.social().numberOfColumns(), imagesEnabled, imageLimit);
+        return new AppConfig(appConfig.version(), appConfig.hashtags(), appConfig.language(), appConfig.styles(), appConfig.admin(),
+                appConfig.event(), newSocialConfig, appConfig.filter(), appConfig.devoxx(), appConfig.doag(), appConfig.jfs(),
+                appConfig.sessionize(), appConfig.blueSky(), appConfig.mastodon());
+    }
+
+    @Test
+    void getPostsWithImagesDisabled() {
+        final var testConfig = createModifiedImageConfig(false, 0);
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), testConfig, List.of(new TestSocialPlugin()));
+        final List<Post> posts = socialService.getPosts(0);
+        for (final var post : posts) {
+            assertTrue(post.images().isEmpty());
+        }
+    }
+
+    @Test
+    void getPostsWithMaxOneImage() {
+        final var testConfig = createModifiedImageConfig(true, 1);
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), testConfig, List.of(new TestSocialPlugin()));
+        final List<Post> posts = socialService.getPosts(0);
+        for (final var post : posts) {
+            assertEquals(1, post.images().size());
+        }
+    }
+
+    @Test
+    void getPostsWithUnlimitedImages() {
+        final var testConfig = createModifiedImageConfig(true, 0);
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), testConfig, List.of(new TestSocialPlugin()));
+        final List<Post> posts = socialService.getPosts(0);
+        for (final var post : posts) {
+            final var id = post.id();
+            final var number = Integer.parseInt(id.substring(1));
+            assertEquals(number, post.images().size());
+        }
+    }
+
     private static final class TestSocialPlugin implements SocialPlugin {
 
         @Override
@@ -184,9 +225,13 @@ class SocialServiceTest {
             final var now = LocalDateTime.now();
             final List<Post> posts = new ArrayList<>();
             for (int i = 10; i > 0; i--) {
+                final var images = new ArrayList<String>();
+                for (int j = 0; j < i; j++) {
+                    images.add(faker.file().fileName());
+                }
                 posts.add(new Post("P" + i, now.minusHours(i), "Author " + (i % 2), "Avatar " + i,
                         "profile" + (i % 2) + "@localhost","<p>Content of post #1</p>",
-                        List.of(), false, false, ""));
+                        images, false, false, ""));
             }
             posts.add(new Post("PX", now, "Troll", "","troll@localhost",
                     "<p>This post is foobar!</p>", List.of(), false, false, ""));

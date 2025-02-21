@@ -28,9 +28,13 @@ For questions and support requests, please use
 
 * Add SBOM (Software Bill of Materials) generation
 * Shorten README for DockerHub
-* Prefix all environment variables with `APUS`
 * Add `latest` tag to Docker release builds
 * Add a lot of new automated tests
+
+### Breaking Changes
+
+* Prefix all environment variables with `APUS`
+* Image configuration is now for all social media plugins
 
 ---
 

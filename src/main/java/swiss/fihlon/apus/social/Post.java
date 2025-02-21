@@ -27,9 +27,15 @@ public record Post(@NotNull String id, @NotNull LocalDateTime date,
                    @NotNull String html, @NotNull List<String> images,
                    boolean isReply, boolean isSensitive, @NotNull String sourceLogo)
         implements Comparable<Post> {
+
     @Override
     public int compareTo(@NotNull final Post other) {
         final int dateCompareResult = other.date.compareTo(date);
         return dateCompareResult == 0 ? id.compareTo(other.id) : dateCompareResult;
     }
+
+    public Post withImages(@NotNull final List<String> newImages) {
+        return new Post(id, date, author, avatar, profile, html, List.copyOf(newImages), isReply, isSensitive, sourceLogo);
+    }
+
 }

@@ -47,8 +47,6 @@ public final class MastodonPlugin implements SocialPlugin {
     private final String instance;
     private final String postAPI;
     private final int postLimit;
-    private final boolean imagesEnabled;
-    private final int imageLimit;
 
     public MastodonPlugin(@NotNull final MastodonLoader mastodonLoader,
                           @NotNull final AppConfig appConfig) {
@@ -57,8 +55,6 @@ public final class MastodonPlugin implements SocialPlugin {
         this.instance = mastodonConfig.instance();
         this.postAPI = mastodonConfig.postAPI();
         this.postLimit = mastodonConfig.postLimit();
-        this.imagesEnabled = mastodonConfig.imagesEnabled();
-        this.imageLimit = mastodonConfig.imageLimit();
     }
 
     @Override
@@ -116,13 +112,10 @@ public final class MastodonPlugin implements SocialPlugin {
     @NotNull
     private List<String> getImages(final @NotNull JSONArray mediaAttachments) {
         final List<String> images = new ArrayList<>();
-        if (imagesEnabled) {
-            for (var i = 0; i < mediaAttachments.length(); i++) {
-                final var mediaAttachment = mediaAttachments.getJSONObject(i);
-                if ((imageLimit == 0 || images.size() < imageLimit)
-                        && mediaAttachment.getString("type").equals("image")) {
-                    images.add(mediaAttachment.getString("preview_url"));
-                }
+        for (var i = 0; i < mediaAttachments.length(); i++) {
+            final var mediaAttachment = mediaAttachments.getJSONObject(i);
+            if (mediaAttachment.getString("type").equals("image")) {
+                images.add(mediaAttachment.getString("preview_url"));
             }
         }
         return images;

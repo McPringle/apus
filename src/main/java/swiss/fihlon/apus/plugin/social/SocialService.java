@@ -55,6 +55,8 @@ public final class SocialService {
     private final boolean filterReplies;
     private final boolean filterSensitive;
     private final List<String> filterWords;
+    private final boolean imagesEnabled;
+    private final int imageLimit;
     private final Set<String> hiddenPosts = new HashSet<>();
     private final Set<String> blockedProfiles = new HashSet<>();
     private List<Post> posts = List.of();
@@ -75,6 +77,8 @@ public final class SocialService {
                 .toList();
         loadHiddenPostIds();
         loadBlockedProfiles();
+        imagesEnabled = appConfig.social().imagesEnabled();
+        imageLimit = appConfig.social().imageLimit();
         if (!hashtags.isEmpty() && socialPlugins.stream().anyMatch(SocialPlugin::isEnabled)) {
             updatePosts();
             updateScheduler = taskScheduler.scheduleAtFixedRate(this::updatePosts, UPDATE_FREQUENCY);
@@ -106,10 +110,22 @@ public final class SocialService {
                 .filter(post -> !filterReplies || !post.isReply())
                 .filter(post -> filterLength <= 0 || HtmlUtil.extractText(post.html()).length() <= filterLength)
                 .filter(this::checkWordFilter)
+                .map(this::checkImages)
                 .sorted()
                 .toList();
         synchronized (this) {
             posts = new ArrayList<>(newPosts);
+        }
+    }
+
+    private Post checkImages(@NotNull final Post post) {
+        if (imagesEnabled && imageLimit == 0 || post.images().isEmpty()) {
+            return post;
+        } else if (!imagesEnabled) {
+            return post.withImages(List.of());
+        } else {
+            final var images = post.images().subList(0, Math.min(imageLimit, post.images().size()));
+            return post.withImages(images);
         }
     }
 

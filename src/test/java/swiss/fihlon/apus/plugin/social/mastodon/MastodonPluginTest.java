@@ -56,7 +56,7 @@ class MastodonPluginTest {
     @Test
     void getServiceName() {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -83,7 +83,7 @@ class MastodonPluginTest {
     @MethodSource("provideDataForDisabledTest")
     void isDisabled(@Nullable final String instance, @Nullable final String postApi) {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig(instance, postApi, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig(instance, postApi, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -93,7 +93,7 @@ class MastodonPluginTest {
     @Test
     void isEnabled() {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -119,7 +119,7 @@ class MastodonPluginTest {
     @MethodSource("provideDataForHashtagsTest")
     void getPostsWithHashtags(@NotNull final List<String> hashtags, final int expectedNumberOfPosts) {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -132,7 +132,7 @@ class MastodonPluginTest {
     @Test
     void getPostsWithUnlimitedImages() {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -155,46 +155,9 @@ class MastodonPluginTest {
     }
 
     @Test
-    void getPostsWithOneImage() {
-        final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 1);
-        when(appConfig.mastodon()).thenReturn(mastodonConfig);
-
-        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
-        final List<Post> posts = mastodonPlugin.getPosts(List.of("foobar")).toList();
-
-        assertNotNull(posts);
-        assertEquals(5, posts.size());
-
-        final var firstPost = posts.getFirst();
-        assertEquals("http://localhost/image1a.webp", firstPost.images().getFirst());
-
-        for (final Post post : posts) {
-            assertEquals(1, post.images().size());
-        }
-    }
-
-    @Test
-    void getPostsWithoutImages() {
-        final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, false, 0);
-        when(appConfig.mastodon()).thenReturn(mastodonConfig);
-
-        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
-        final List<Post> posts = mastodonPlugin.getPosts(List.of("foobar")).toList();
-
-        assertNotNull(posts);
-        assertEquals(5, posts.size());
-
-        for (final Post post : posts) {
-            assertEquals(0, post.images().size());
-        }
-    }
-
-    @Test
     void getPostsWithInvalidImageTypes() {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -214,7 +177,7 @@ class MastodonPluginTest {
     @Test
     void getPostsCatchesException() {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 0);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final MemoryAppender memoryAppender = new MemoryAppender();
@@ -234,7 +197,7 @@ class MastodonPluginTest {
     @Test
     void testReplyConversion() {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT, true, 1);
+        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
