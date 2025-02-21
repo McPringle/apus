@@ -65,7 +65,7 @@ public final class SocialService {
                          @NotNull final AppConfig appConfig,
                          @NotNull final List<SocialPlugin> socialPlugins) {
         this.socialPlugins = socialPlugins;
-        hashtags = Arrays.stream(appConfig.hashtags().split(","))
+        hashtags = Arrays.stream(appConfig.social().hashtags().split(","))
                 .filter(hashtag -> !hashtag.isBlank())
                 .map(String::trim)
                 .toList();

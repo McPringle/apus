@@ -101,11 +101,6 @@
       "description" : "Hide social media messages which contain these words."
     },
     {
-      "name" : "apus.hashtags",
-      "type" : "java.lang.String",
-      "description" : "A list of comma separated hashtags for social media posts."
-    },
-    {
       "name" : "apus.jfs.dbUrl",
       "type" : "java.lang.String",
       "description" : "The URL of the database file for Java Forum Stuttgart."
@@ -149,6 +144,11 @@
       "name" : "apus.social.demoPostCount",
       "type" : "java.lang.Integer",
       "description" : "Number of posts for the social demo plugin (0 = disabled)."
+    },
+    {
+      "name" : "apus.social.hashtags",
+      "type" : "java.lang.String",
+      "description" : "A list of comma separated hashtags for social media posts."
     },
     {
       "name" : "apus.social.headline",

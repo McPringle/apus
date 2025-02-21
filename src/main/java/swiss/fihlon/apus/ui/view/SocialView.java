@@ -69,7 +69,7 @@ public final class SocialView extends Div {
         final H2 socialHeadline;
         if (appConfig.social().headline().isBlank()) {
             socialHeadline = new H2(getTranslation("social.heading",
-                    appConfig.hashtags().split(",")[0],
+                    appConfig.social().hashtags().split(",")[0],
                     socialService.getServiceNames().collect(Collectors.joining(", "))
             ));
         } else {
