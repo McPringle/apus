@@ -34,7 +34,7 @@ class SocialWallViewIT extends KaribuTest {
         _assertOne(SocialWallView.class);
         _assertOne(EventView.class);
         _assertOne(SocialView.class);
-        assertEquals("Posts with #java on BlueSky, Mastodon",
+        assertEquals("Publish a message with #java on BlueSky / Mastodon",
                 _get(H2.class, spec -> spec.withId("social-headline")).getText());
     }
 
