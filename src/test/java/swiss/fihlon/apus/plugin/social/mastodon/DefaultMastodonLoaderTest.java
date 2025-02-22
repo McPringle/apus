@@ -19,6 +19,7 @@ package swiss.fihlon.apus.plugin.social.mastodon;
 
 import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
+import org.junitpioneer.jupiter.RetryingTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DefaultMastodonLoaderTest {
 
-    @Test
+    @RetryingTest(3)
     void getStatuses() throws MastodonException {
         final JSONArray posts = new DefaultMastodonLoader().getPosts("ijug.social", "java",
                 "https://%s/api/v1/timelines/tag/%s?limit=%d", 1);

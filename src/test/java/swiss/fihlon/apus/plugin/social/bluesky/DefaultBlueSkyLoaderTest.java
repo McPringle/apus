@@ -19,6 +19,7 @@ package swiss.fihlon.apus.plugin.social.bluesky;
 
 import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
+import org.junitpioneer.jupiter.RetryingTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DefaultBlueSkyLoaderTest {
 
-    @Test
+    @RetryingTest(3)
     void getPosts() throws BlueSkyException {
         final JSONArray jsonPosts = new DefaultBlueSkyLoader()
                 .getPosts("api.bsky.app", "java", "https://%s/xrpc/app.bsky.feed.searchPosts?q=%s&limit=%d", 30);
