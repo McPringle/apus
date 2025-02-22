@@ -19,6 +19,7 @@ For questions and support requests, please use
 * Dynamically generate social headline based on enabled plugins
 * Hashtags are now handled independent of the social media plugins
 * Show the logo of the social media network in the social media post
+* Keep existing posts to avoid empty screens on errors
 
 ### Fixed Bugs
 

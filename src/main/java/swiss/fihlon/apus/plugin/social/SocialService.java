@@ -39,12 +39,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 public final class SocialService {
 
     private static final Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
+    private static final int MAX_POSTS = 50;
     private static final Locale DEFAULT_LOCALE = Locale.getDefault();
     private static final Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
 
@@ -101,21 +103,22 @@ public final class SocialService {
     }
 
     private void updatePosts() {
-        final var newPosts = socialPlugins.parallelStream()
-                .filter(SocialPlugin::isEnabled)
-                .flatMap(plugin -> plugin.getPosts(hashtags))
-                .filter(post -> !hiddenPosts.contains(post.id()))
-                .filter(post -> !blockedProfiles.contains(post.profile()))
-                .filter(post -> !filterSensitive || !post.isSensitive())
-                .filter(post -> !filterReplies || !post.isReply())
-                .filter(post -> filterLength <= 0 || HtmlUtil.extractText(post.html()).length() <= filterLength)
-                .filter(this::checkWordFilter)
-                .map(this::checkImages)
+        posts = Stream.concat(
+                posts.stream(),
+                socialPlugins.parallelStream()
+                        .filter(SocialPlugin::isEnabled)
+                        .flatMap(plugin -> plugin.getPosts(hashtags))
+                        .filter(post -> !hiddenPosts.contains(post.id()))
+                        .filter(post -> !blockedProfiles.contains(post.profile()))
+                        .filter(post -> !filterSensitive || !post.isSensitive())
+                        .filter(post -> !filterReplies || !post.isReply())
+                        .filter(post -> filterLength <= 0 || HtmlUtil.extractText(post.html()).length() <= filterLength)
+                        .filter(this::checkWordFilter)
+                        .map(this::checkImages))
                 .sorted()
-                .toList();
-        synchronized (this) {
-            posts = new ArrayList<>(newPosts);
-        }
+                .distinct()
+                .limit(MAX_POSTS)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private Post checkImages(@NotNull final Post post) {
