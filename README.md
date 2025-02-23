@@ -35,10 +35,7 @@ See:
 | Platform    | Status    |
 |-------------|-----------|
 | BlueSky     | SUPPORTED |
-| Instagram   | - TODO -  |
-| LinkedIn    | - TODO -  |
 | Mastodon    | SUPPORTED |
-| Threads     | - TODO -  |
 
 ### Show event agenda
 
