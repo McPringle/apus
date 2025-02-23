@@ -3,7 +3,7 @@
 [![All Tests](https://github.com/McPringle/apus/actions/workflows/all-tests.yml/badge.svg)](https://github.com/McPringle/apus/actions/workflows/all-tests.yml)
 [![codecov](https://codecov.io/gh/McPringle/apus/graph/badge.svg?token=OPDR66ID7D)](https://codecov.io/gh/McPringle/apus)
 
-**A social wall for conferences with additional features.**
+**A social wall for conferences.**
 
 The name *Apus* is based on Apus Apus, Latin for common swift. This is a bird species that is extremely adapted to a life in the air and can stay in the air for around ten months almost without interruption and can reach speeds of more than 200 km/h during flight maneuvers. This bird breeds in a wall, flies reliably for extremely long periods without crashing and is also extremely fast. Hopefully all of this also applies to Apus: fast execution, uninterrupted and reliable operation!
 
@@ -11,6 +11,14 @@ See:
 
 * https://en.wikipedia.org/wiki/Common_swift
 * https://en.wikipedia.org/wiki/Apus_(bird)
+
+## Mission Statement
+
+🇬🇧  
+*Apus* connects conference attendees in real time: Our application displays the up-to-date program with current and upcoming presentations as well as live-shared impressions from social networks. We provide orientation, foster interaction, and turn every event into a connected experience.
+
+🇩🇪  
+*Apus* bringt Konferenzteilnehmer in Echtzeit zusammen: Unsere Anwendung zeigt das aktuelle Programm mit laufenden und bevorstehenden Vorträge sowie live geteilte Eindrücke aus sozialen Netzwerken. So schaffen wir Orientierung, fördern Interaktion und machen jede Veranstaltung zu einem vernetzten Erlebnis.
 
 ## Screenshots
 
