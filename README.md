@@ -330,7 +330,7 @@ docker run \
     -v $HOME/.apus:/home/apus/.apus \
     -e APUS_ADMIN_PASSWORD=sEcrEt \
     -e APUS_DEMO_ROOM_COUNT=6 \
-    -e APUS_MASTODON_HASHTAGS=java \
+    -e APUS_SOCIAL_HASHTAGS=java \
     -e TZ=CET \
     -d \
     --rm \
