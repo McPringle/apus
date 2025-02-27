@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.ocpsoft.prettytime.PrettyTime;
 import swiss.fihlon.apus.social.Post;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
@@ -28,7 +28,7 @@ class PostViewTest {
         return Stream.of(
                 Arguments.of(
                         "TEST:1",
-                        LocalDateTime.now().minusHours(1),
+                        ZonedDateTime.now().minusHours(1),
                         "Firstname Lastname",
                         "http://localhost/avatar.png",
                         "@nickname",
@@ -37,7 +37,7 @@ class PostViewTest {
                         ""),
                 Arguments.of(
                         "TEST:FOOBAR",
-                        LocalDateTime.now().minusDays(3),
+                        ZonedDateTime.now().minusDays(3),
                         "Foobar",
                         "file://foobar.svg",
                         "@foobar",
@@ -53,7 +53,7 @@ class PostViewTest {
     @ParameterizedTest
     @MethodSource("provideDataForPostViewTest")
     void testPostView(@NotNull final String postId,
-                      @NotNull final LocalDateTime postDate,
+                      @NotNull final ZonedDateTime postDate,
                       @NotNull final String postAuthor,
                       @NotNull final String postAvatar,
                       @NotNull final String postProfile,
@@ -148,7 +148,7 @@ class PostViewTest {
 
     private void assertFooter(@NotNull final PostView postView,
                                 @NotNull final String sourceLogo,
-                                @NotNull final LocalDateTime postDate,
+                                @NotNull final ZonedDateTime postDate,
                                 @NotNull final Locale locale) {
         final var components = getComponentsByClassName(postView, "footer");
         assertEquals(1, components.size());
@@ -172,7 +172,7 @@ class PostViewTest {
     }
 
     private void assertDateTime(@NotNull final Footer footer,
-                                @NotNull final LocalDateTime postDate,
+                                @NotNull final ZonedDateTime postDate,
                                 @NotNull final Locale locale) {
         final var components = getComponentsByClassName(footer, "datetime");
         assertEquals(1, components.size());

@@ -37,7 +37,7 @@ import swiss.fihlon.apus.social.Post;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -223,7 +223,7 @@ class SocialServiceTest {
         @NotNull
         public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
             final Faker faker = new Faker();
-            final var now = LocalDateTime.now();
+            final var now = ZonedDateTime.now();
             final List<Post> posts = new ArrayList<>();
             for (int i = 10; i > 0; i--) {
                 final var images = new ArrayList<String>();

@@ -19,7 +19,7 @@ package swiss.fihlon.apus.social;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +30,7 @@ class PostTest {
 
     @Test
     void compareTo() {
-        final var now = LocalDateTime.now();
+        final var now = ZonedDateTime.now();
 
         final var postOne = new Post("P1", now, "", "", "", "", List.of(), false, false, "");
         final var postTwo = new Post("P2", now.minusHours(1), "", "", "", "", List.of(), false, false, "");
@@ -61,7 +61,7 @@ class PostTest {
     @Test
     void create() {
         final var id = "P1";
-        final var date = LocalDateTime.now();
+        final var date = ZonedDateTime.now();
         final var author = "Test Author";
         final var avatar = "Test Avatar";
         final var profile = "Test Profile";

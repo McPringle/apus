@@ -97,7 +97,7 @@ public final class MastodonPlugin implements SocialPlugin {
     @NotNull
     private Post createPost(final @NotNull JSONObject post) {
         final var id = post.getString("id");
-        final var date = ZonedDateTime.parse(post.getString("created_at")).toLocalDateTime();
+        final var date = ZonedDateTime.parse(post.getString("created_at"));
         final var account = post.getJSONObject("account");
         final var author = account.getString("display_name");
         final var avatar = account.getString("avatar");

@@ -24,7 +24,7 @@ import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.social.SocialPlugin;
 import swiss.fihlon.apus.social.Post;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -102,8 +102,8 @@ public final class SocialDemoPlugin implements SocialPlugin {
         return faker.name().fullName();
     }
 
-    private static @NotNull LocalDateTime getRandomDateTime() {
-        return LocalDateTime.now().minusMinutes(RANDOM.nextLong(10_000));
+    private static @NotNull ZonedDateTime getRandomDateTime() {
+        return ZonedDateTime.now().minusMinutes(RANDOM.nextLong(10_000));
     }
 
     private static @NotNull String generateId(final int number) {

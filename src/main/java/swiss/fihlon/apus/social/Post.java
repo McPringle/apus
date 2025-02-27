@@ -19,10 +19,10 @@ package swiss.fihlon.apus.social;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
-public record Post(@NotNull String id, @NotNull LocalDateTime date,
+public record Post(@NotNull String id, @NotNull ZonedDateTime date,
                    @NotNull String author, @NotNull String avatar, @NotNull String profile,
                    @NotNull String html, @NotNull List<String> images,
                    boolean isReply, boolean isSensitive, @NotNull String sourceLogo)

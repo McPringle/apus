@@ -129,7 +129,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
         final var postRecord = post.getJSONObject("record");
         final var text = postRecord.getString("text");
         final var isReply = postRecord.has("reply");
-        final var date = ZonedDateTime.parse(postRecord.getString("createdAt")).toLocalDateTime();
+        final var date = ZonedDateTime.parse(postRecord.getString("createdAt"));
 
         final var imageLinks = new ArrayList<String>();
         if (post.has("embed")) {
