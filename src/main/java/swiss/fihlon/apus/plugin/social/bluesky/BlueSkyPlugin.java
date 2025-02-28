@@ -72,19 +72,24 @@ public final class BlueSkyPlugin implements SocialPlugin {
     @Override
     @NotNull
     public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
+        return hashtags.parallelStream()
+                .filter(hashtag -> !hashtag.isBlank())
+                .flatMap(this::getPosts);
+    }
+
+    @NotNull
+    public Stream<Post> getPosts(@NotNull final String hashtag) {
         try {
             final var posts = new ArrayList<Post>();
 
-            for (final String hashtag : hashtags) {
-                LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
-                final var jsonPosts = blueSkyLoader.getPosts(instance, hashtag.trim(), postAPI, postLimit);
-                LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", jsonPosts.length(), hashtag, instance);
+            LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
+            final var jsonPosts = blueSkyLoader.getPosts(instance, hashtag.trim(), postAPI, postLimit);
+            LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", jsonPosts.length(), hashtag, instance);
 
-                for (var i = 0; i < jsonPosts.length(); i++) {
-                    final var post = jsonPosts.getJSONObject(i);
-                    if (hasTag(post, hashtag)) {
-                        posts.add(createPost(post));
-                    }
+            for (var i = 0; i < jsonPosts.length(); i++) {
+                final var post = jsonPosts.getJSONObject(i);
+                if (hasTag(post, hashtag)) {
+                    posts.add(createPost(post));
                 }
             }
 

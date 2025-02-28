@@ -187,7 +187,8 @@ class MastodonPluginTest {
 
         memoryAppender.start();
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
-        mastodonPlugin.getPosts(List.of("broken"));
+        //noinspection ResultOfMethodCallIgnored
+        mastodonPlugin.getPosts(List.of("broken")).toList();
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.searchMessages("This is an expected exception.", Level.ERROR).size();

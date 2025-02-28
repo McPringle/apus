@@ -192,7 +192,8 @@ class BlueSkyPluginTest {
 
         memoryAppender.start();
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
-        blueSkyPlugin.getPosts(List.of("broken"));
+        //noinspection ResultOfMethodCallIgnored
+        blueSkyPlugin.getPosts(List.of("broken")).toList();
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.searchMessages("This is an expected exception.", Level.ERROR).size();
