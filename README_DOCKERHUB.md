@@ -184,7 +184,7 @@ docker run \
     -v $HOME/.apus:/home/apus/.apus \
     -e APUS_ADMIN_PASSWORD=sEcrEt \
     -e APUS_DEMO_ROOM_COUNT=12 \
-    -e APUS_HASHTAGS=java \
+    -e APUS_SOCIAL_HASHTAGS=java \
     -e APUS_MASTODON_INSTANCE=mastodon.social \
     -e TZ=CET \
     -d \
