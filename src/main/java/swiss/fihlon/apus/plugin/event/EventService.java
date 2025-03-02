@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ScheduledFuture;
 import swiss.fihlon.apus.configuration.AppConfig;
+import swiss.fihlon.apus.plugin.event.demo.EventDemoPlugin;
 
 @Service
 public final class EventService {
@@ -50,8 +51,9 @@ public final class EventService {
     public EventService(@NotNull final TaskScheduler taskScheduler,
                         @NotNull final AppConfig appConfig,
                         @NotNull final List<EventPlugin> eventPlugins) {
-        this.eventPlugins = eventPlugins;
-        this.dateAdjust = appConfig.event().dateAdjust();
+        final var demoMode = appConfig.demoMode();
+        this.eventPlugins = demoMode ? List.of(new EventDemoPlugin(appConfig)) : eventPlugins;
+        this.dateAdjust = demoMode ? Period.ZERO : appConfig.event().dateAdjust();
         if (isEnabled()) {
             updateSessions();
             final var updateFrequency = Duration.ofMinutes(appConfig.event().updateFrequency());

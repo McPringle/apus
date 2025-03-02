@@ -21,6 +21,11 @@
       "description" : "The limit for the number of BlueSky posts when accessing the API."
     },
     {
+      "name" : "apus.demoMode",
+      "type" : "java.lang.Boolean",
+      "description" : "Enable (true) or disable (false) the demo mode to show demo data only."
+    },
+    {
       "name" : "apus.devoxx.eventApi",
       "type" : "java.lang.String",
       "description" : "The URL of the Devoxx API to read the conference agenda."
@@ -49,11 +54,6 @@
       "name" : "apus.event.dateAdjust",
       "type" : "java.lang.String",
       "description" : "Adjust the date of the event in days (empty = disabled)."
-    },
-    {
-      "name" : "apus.event.demoRoomCount",
-      "type" : "java.lang.Integer",
-      "description" : "Number of rooms for the event demo plugin."
     },
     {
       "name" : "apus.event.image",
@@ -139,11 +139,6 @@
       "name" : "apus.sessionize.SpeakerApi",
       "type" : "java.lang.String",
       "description" : "The URL of the Sessionize API to read the speaker information."
-    },
-    {
-      "name" : "apus.social.demoPostCount",
-      "type" : "java.lang.Integer",
-      "description" : "Number of posts for the social demo plugin (0 = disabled)."
     },
     {
       "name" : "apus.social.hashtags",

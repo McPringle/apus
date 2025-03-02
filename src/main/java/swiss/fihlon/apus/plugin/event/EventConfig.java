@@ -21,5 +21,5 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Period;
 
-public record EventConfig(Period dateAdjust, int demoRoomCount, @NotNull String image, int nextSessionTimeout, boolean showEmptyRooms,
-                          boolean showLegend, int updateFrequency) { }
+public record EventConfig(@NotNull Period dateAdjust, @NotNull String image, int nextSessionTimeout, boolean showEmptyRooms, boolean showLegend,
+                          int updateFrequency) { }
