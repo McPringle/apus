@@ -20,9 +20,6 @@ package swiss.fihlon.apus.plugin.event.demo;
 import org.junit.jupiter.api.Test;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Session;
-import swiss.fihlon.apus.plugin.event.EventConfig;
-
-import java.time.Period;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -32,53 +29,41 @@ import static org.mockito.Mockito.when;
 
 class EventDemoPluginTest {
 
-    private AppConfig mockConfiguration(final int demoRoomCount) {
-        final var eventConfig = new EventConfig(Period.ZERO, demoRoomCount, "", 60,
-                true, true, 0);
-        final var appConfig = mock(AppConfig.class);
-        when(appConfig.event()).thenReturn(eventConfig);
-        return appConfig;
-    }
-
     @Test
     void isEnabled() {
-        final var demoEventPlugin = new EventDemoPlugin(mockConfiguration(1));
+        final var appConfig = mock(AppConfig.class);
+        when(appConfig.demoMode()).thenReturn(true);
+
+        final var demoEventPlugin = new EventDemoPlugin(appConfig);
         assertTrue(demoEventPlugin.isEnabled());
     }
 
     @Test
     void isDisabled() {
-        final var demoEventPlugin = new EventDemoPlugin(mockConfiguration(0));
+        final var appConfig = mock(AppConfig.class);
+        when(appConfig.demoMode()).thenReturn(false);
+
+        final var demoEventPlugin = new EventDemoPlugin(appConfig);
         assertFalse(demoEventPlugin.isEnabled());
     }
 
-    @Test
-    void getSessionsForOneRoom() {
-        final var demoEventPlugin = new EventDemoPlugin(mockConfiguration(1));
-        final var sessions = demoEventPlugin.getSessions().toList();
-        assertEquals(24, sessions.size());
-
-        // no duplicate ids and speaker, exactly 24 entries (one room, each hour one session for 24 hours)
-        assertEquals(24, sessions.stream().map(Session::id).distinct().count());
-        assertEquals(24, sessions.stream().flatMap(session -> session.speakers().stream()).distinct().count());
-        assertEquals(1, sessions.stream().map(Session::room).distinct().count());
-    }
-
     /**
-     * This test is run with three rooms. The plugin creates closed rooms
-     * (rooms without a session) every even hour in every even room number.
-     * Therefore, with 3 rooms we'll end up with 60 sessions instead of 72.
-     * 12 session slots not assigned (see `continue` statement in plugin).
+     * The plugin creates fake data for four rooms. It creates closed rooms
+     * (rooms without a session), too. Therefore, with 4 rooms we'll end up
+     * with 84 sessions instead of 96. 12 session slots not assigned (see
+     * `continue` statement in plugin).
      */
     @Test
-    void getSessionsForMultipleRooms() {
-        final var demoEventPlugin = new EventDemoPlugin(mockConfiguration(3));
-        final var sessions = demoEventPlugin.getSessions().toList();
-        assertEquals(60, sessions.size());
+    void getSessions() {
+        final var appConfig = mock(AppConfig.class);
+        when(appConfig.demoMode()).thenReturn(true);
 
-        // no duplicate ids and speaker, exactly 240 entries (three rooms, each hour one session for 24 hours)
-        assertEquals(60, sessions.stream().map(Session::id).distinct().count());
-        assertEquals(60, sessions.stream().flatMap(session -> session.speakers().stream()).distinct().count());
-        assertEquals(3, sessions.stream().map(Session::room).distinct().count());
+        final var demoEventPlugin = new EventDemoPlugin(appConfig);
+        final var sessions = demoEventPlugin.getSessions().toList();
+        assertEquals(84, sessions.size());
+
+        assertEquals(84, sessions.stream().map(Session::id).distinct().count());
+        assertEquals(84, sessions.stream().flatMap(session -> session.speakers().stream()).distinct().count());
+        assertEquals(4, sessions.stream().map(Session::room).distinct().count());
     }
 }
