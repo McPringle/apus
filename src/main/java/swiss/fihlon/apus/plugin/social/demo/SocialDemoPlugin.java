@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
@@ -42,11 +43,14 @@ public final class SocialDemoPlugin implements SocialPlugin {
 
     private static final Locale LOCALE = Locale.getDefault();
     private static final Random RANDOM = new Random();
+    private static final int POST_COUNT = 50;
 
-    private final int postCount;
+    private final boolean demoMode;
+    private final List<Post> posts;
 
     public SocialDemoPlugin(@NotNull final AppConfig appConfig) {
-        this.postCount = appConfig.social().demoPostCount();
+        demoMode = appConfig.demoMode();
+        posts = demoMode ? createFakePosts(POST_COUNT) : List.of();
     }
 
     @Override
@@ -57,17 +61,22 @@ public final class SocialDemoPlugin implements SocialPlugin {
 
     @Override
     public boolean isEnabled() {
-        return postCount > 0;
+        return demoMode;
     }
 
     @Override
     @NotNull
     public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
+        return posts.stream();
+    }
+
+    @NotNull
+    public List<Post> createFakePosts(final int postCount) {
         final Faker faker = new Faker(LOCALE, RANDOM);
-        final var posts = new ArrayList<Post>();
+        final var fakePosts = new ArrayList<Post>();
         for (int number = 1; number <= postCount; number++) {
-            posts.add(
-                    new Post(generateId(number),
+            fakePosts.add(
+                    new Post(generateId(),
                             getRandomDateTime(),
                             getRandomAuthor(faker),
                             getRandomAvatar(faker),
@@ -79,7 +88,7 @@ public final class SocialDemoPlugin implements SocialPlugin {
                             DEMO_LOGO)
             );
         }
-        return posts.stream();
+        return fakePosts;
     }
 
     private @NotNull List<String> getRandomImage(@NotNull final Faker faker) {
@@ -106,7 +115,7 @@ public final class SocialDemoPlugin implements SocialPlugin {
         return ZonedDateTime.now().minusMinutes(RANDOM.nextLong(10_000));
     }
 
-    private static @NotNull String generateId(final int number) {
-        return String.format("SOCIAL-DEMO-ID-%d", number);
+    private static @NotNull String generateId() {
+        return String.format("DEMO:%s", UUID.randomUUID());
     }
 }

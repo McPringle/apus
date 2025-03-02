@@ -61,13 +61,13 @@ To modify the default configuration values, just specify environment variables w
 | APUS_BLUESKY_INSTANCE           | api.bsky.app | The BlueSky instance used to read the posts from (empty = disabled).          |
 | APUS_BLUESKY_POST_API           | [1]          | The URL of the BlueSky API to read the posts (empty = disabled).              |
 | APUS_BLUESKY_POST_LIMIT         | 30           | The limit for the number of BlueSky posts when accessing the API.             |
+| APUS_DEMO                       | false        | Enable (true) or disable (false) the demo mode to show demo data only.        |
 | APUS_DEVOXX_EVENT_API           | [2]          | The URL of the Devoxx API to read the conference agenda.                      |
 | APUS_DEVOXX_EVENT_ID            |              | The ID of the Devoxx event to read the conference agenda.                     |
 | APUS_DEVOXX_WEEKDAY             |              | The day of the week of the Devoxx event to read the conference agenda.        |
 | APUS_DOAG_EVENT_API             | [3]          | The URL of the DOAG event API to read the conference agenda.                  |
 | APUS_DOAG_EVENT_ID              | 0            | The ID of the DOAG event to read the conference agenda (0 = disabled).        |
 | APUS_EVENT_DATE_ADJUST          |              | Adjust the date of the event in days, ISO-8601 formatted (empty = disabled).  |
-| APUS_EVENT_DEMO_ROOM_COUNT      | 0            | Number of rooms for the event demo plugin (0 = disabled).                     |
 | APUS_EVENT_IMAGE_URL            |              | The URL of the image to be shown below the event agenda (empty = no image).   |
 | APUS_EVENT_NEXT_SESSION_TIMEOUT | 60           | Number of minutes a session is shown before it starts (0 = disabled).         |
 | APUS_EVENT_SHOW_EMPTY_ROOMS     | true         | Show (true) or hide (false) empty event rooms.                                |
@@ -85,7 +85,6 @@ To modify the default configuration values, just specify environment variables w
 | APUS_MASTODON_POST_API          | [4]          | The URL of the Mastodon API to read the posts (empty = disabled).             |
 | APUS_MASTODON_POST_LIMIT        | 30           | The limit for the number of Mastodon posts when accessing the API.            |
 | APUS_SOCIAL_COLUMNS             | 3            | How many columns to be used for social media posts.                           |
-| APUS_SOCIAL_DEMO_POST_COUNT     | 0            | Number of posts for the social demo plugin (0 = disabled).                    |
 | APUS_SOCIAL_HASHTAGS            |              | A list of comma separated hashtags for social media posts (empty = disabled). |
 | APUS_SOCIAL_HEADLINE            |              | Overwrite the headline for social media posts (empty = don't overwrite).      |
 | APUS_SESSIONIZE_EVENT_API       | [5]          | The URL of the Sessionize API to read the conference agenda.                  |
@@ -181,12 +180,8 @@ It is highly recommended to use [Docker](https://www.docker.com/) or [Podman](ht
 docker run \
     --name apus \
     -p 80:8080 \
-    -v $HOME/.apus:/home/apus/.apus \
-    -e APUS_ADMIN_PASSWORD=sEcrEt \
-    -e APUS_DEMO_ROOM_COUNT=12 \
     -e APUS_SOCIAL_HASHTAGS=java \
-    -e APUS_MASTODON_INSTANCE=mastodon.social \
-    -e TZ=CET \
+    -e TZ=Europe/Zurich \
     -d \
     --rm \
     mcpringle/apus

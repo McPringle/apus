@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.configuration.AppConfig;
+import swiss.fihlon.apus.plugin.social.demo.SocialDemoPlugin;
 import swiss.fihlon.apus.social.Post;
 import swiss.fihlon.apus.util.HtmlUtil;
 
@@ -66,7 +67,8 @@ public final class SocialService {
     public SocialService(@NotNull final TaskScheduler taskScheduler,
                          @NotNull final AppConfig appConfig,
                          @NotNull final List<SocialPlugin> socialPlugins) {
-        this.socialPlugins = socialPlugins;
+        final var demoMode = appConfig.demoMode();
+        this.socialPlugins = demoMode ? List.of(new SocialDemoPlugin(appConfig)) : socialPlugins;
         hashtags = Arrays.stream(appConfig.social().hashtags().split(","))
                 .filter(hashtag -> !hashtag.isBlank())
                 .map(String::trim)

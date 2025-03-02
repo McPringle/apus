@@ -45,20 +45,21 @@ public final class EventDemoPlugin implements EventPlugin {
     private static final Locale LOCALE = Locale.getDefault();
     private static final Random RANDOM = new Random();
     private static final int AROUND_THE_CLOCK = 24;
+    private static final int ROOM_COUNT = 4;
     private static final List<Track> DEFAULT_TRACKS =
             List.of(Track.ARCHITECTURE, Track.CLOUD, Track.CORE, Track.INFRASTRUCTURE, Track.SECURITY, Track.TOOLS);
 
-    private final int roomCount;
+    private final boolean demoMode;
     private final List<Session> sessions;
 
     public EventDemoPlugin(@NotNull final AppConfig appConfig) {
-        roomCount = appConfig.event().demoRoomCount();
-        sessions = roomCount > 0 ? createFakeSessions() : List.of();
+        demoMode = appConfig.demoMode();
+        sessions = demoMode ? createFakeSessions() : List.of();
     }
 
     @Override
     public boolean isEnabled() {
-        return roomCount > 0;
+        return demoMode;
     }
 
     @Override
@@ -68,15 +69,15 @@ public final class EventDemoPlugin implements EventPlugin {
 
     private @NotNull List<Session> createFakeSessions() {
         final List<Room> fakeRooms = createFakeRooms();
-        final List<Session> fakeSessions = new ArrayList<>(AROUND_THE_CLOCK * roomCount);
+        final List<Session> fakeSessions = new ArrayList<>(AROUND_THE_CLOCK * ROOM_COUNT);
 
         final var todayAtMidnight = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
         final Faker faker = new Faker(LOCALE, RANDOM);
         for (int hourCount = 0; hourCount < AROUND_THE_CLOCK; hourCount++) {
             final var startDateTime = todayAtMidnight.plusHours(hourCount);
             final var endDateTime = startDateTime.plusMinutes(50);
-            for (int numberOfRoom = 0; numberOfRoom < roomCount; numberOfRoom++) {
-                if (numberOfRoom > roomCount / 2 && hourCount % 2 == 0) {
+            for (int numberOfRoom = 0; numberOfRoom < ROOM_COUNT; numberOfRoom++) {
+                if (numberOfRoom > ROOM_COUNT / 2 && hourCount % 2 == 0) {
                     continue;
                 }
                 final Room fakeRoom = fakeRooms.get(numberOfRoom);
@@ -91,9 +92,9 @@ public final class EventDemoPlugin implements EventPlugin {
     }
 
     private @NotNull List<Room> createFakeRooms() {
-        final HashSet<Room> rooms = HashSet.newHashSet(roomCount);
+        final HashSet<Room> rooms = HashSet.newHashSet(ROOM_COUNT);
         final Faker faker = new Faker(LOCALE, RANDOM);
-        while (rooms.size() < roomCount) {
+        while (rooms.size() < ROOM_COUNT) {
             rooms.add(new Room(faker.address().cityName()));
         }
         return List.copyOf(rooms);
