@@ -48,7 +48,7 @@ import static org.mockito.Mockito.when;
 class EventServiceTest {
 
     static AppConfig mockConfiguration(@NotNull final Period dateAdjust) {
-        final var eventConfig = new EventConfig(dateAdjust, 0, "", 60,
+        final var eventConfig = new EventConfig(dateAdjust, "", 60,
                 true, true, 0);
         final var appConfig = mock(AppConfig.class);
         when(appConfig.event()).thenReturn(eventConfig);

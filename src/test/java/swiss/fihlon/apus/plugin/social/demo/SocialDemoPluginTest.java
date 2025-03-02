@@ -45,10 +45,8 @@ class SocialDemoPluginTest {
 
     @Test
     void isEnabled() {
-        final var socialConfig = mock(SocialConfig.class);
-        when(socialConfig.demoPostCount()).thenReturn(1);
         final var appConfig = mock(AppConfig.class);
-        when(appConfig.social()).thenReturn(socialConfig);
+        when(appConfig.demoMode()).thenReturn(true);
 
         final var demoSocialPlugin = new SocialDemoPlugin(appConfig);
         assertTrue(demoSocialPlugin.isEnabled());
@@ -56,10 +54,8 @@ class SocialDemoPluginTest {
 
     @Test
     void isDisabled() {
-        final var socialConfig = mock(SocialConfig.class);
-        when(socialConfig.demoPostCount()).thenReturn(0);
         final var appConfig = mock(AppConfig.class);
-        when(appConfig.social()).thenReturn(socialConfig);
+        when(appConfig.demoMode()).thenReturn(false);
 
         final var demoSocialPlugin = new SocialDemoPlugin(appConfig);
         assertFalse(demoSocialPlugin.isEnabled());
@@ -67,19 +63,17 @@ class SocialDemoPluginTest {
 
     @Test
     void getPosts() {
-        final var socialConfig = mock(SocialConfig.class);
-        when(socialConfig.demoPostCount()).thenReturn(1);
         final var appConfig = mock(AppConfig.class);
-        when(appConfig.social()).thenReturn(socialConfig);
+        when(appConfig.demoMode()).thenReturn(true);
 
         final var socialDemoPlugin = new SocialDemoPlugin(appConfig);
         final List<Post> posts = socialDemoPlugin.getPosts(List.of()).toList();
 
         assertNotNull(posts);
-        assertEquals(1, posts.size());
+        assertEquals(50, posts.size());
 
         final var firstPost = posts.getFirst();
-        assertEquals("SOCIAL-DEMO-ID-1", firstPost.id());
+        assertTrue(firstPost.id().startsWith("DEMO:"));
         assertTrue(firstPost.author().trim().length() > 5);
         assertTrue(firstPost.avatar().startsWith("https://"));
         assertTrue(firstPost.profile().contains("@"));
