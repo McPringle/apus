@@ -46,6 +46,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and push Docker image
     needs: [check-build, check-secrets]
+    env:
+      DOCKERHUB_README: "README_DOCKERHUB.md"
 
     steps:
       - name: Check out the repo
@@ -86,10 +88,24 @@ jobs:
           tags: ${{ steps.lowercase-repo.outputs.repository }}:nightly
           platforms: linux/amd64,linux/arm64
 
+      - id: extract-docker-hub-readme
+        name: Extract Docker Hub README
+        uses: sean0x42/markdown-extract@v2
+        with:
+          file: README.md
+          pattern: 'Apus|Features|Configuration|Production|Communication|Copyright'
+          include-all: true
+
+      - name: Write Docker Hub README to file
+        run: |
+          cat <<'EOF' > $DOCKERHUB_README
+          ${{ steps.extract-docker-hub-readme.outputs.markdown }}
+          EOF
+
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ steps.lowercase-repo.outputs.repository }}
-          readme-filepath: README_DOCKERHUB.md
+          readme-filepath: ${{ env.DOCKERHUB_README }}
