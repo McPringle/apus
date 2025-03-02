@@ -152,7 +152,7 @@ class SocialServiceTest {
     void getErrorWithoutPlugin() {
         final MemoryAppender memoryAppender = new MemoryAppender();
         memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
-        @SuppressWarnings("LoggerInitializedWithForeignClass") final Logger logger = (Logger) LoggerFactory.getLogger(SocialService.class);
+        final Logger logger = (Logger) LoggerFactory.getLogger(SocialService.class);
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
