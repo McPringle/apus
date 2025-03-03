@@ -93,12 +93,13 @@ jobs:
         uses: sean0x42/markdown-extract@v2
         with:
           file: README.md
-          pattern: 'Apus|Features|Configuration|Production|Communication|Copyright'
+          pattern: 'About|Mission|Features|Running|Configuration|Communication|Copyright'
           include-all: true
 
       - name: Write Docker Hub README to file
         run: |
           cat <<'EOF' > $DOCKERHUB_README
+          # Apus
           ${{ steps.extract-docker-hub-readme.outputs.markdown }}
           EOF
 

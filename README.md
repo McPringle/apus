@@ -1,9 +1,11 @@
-## Apus
+# Apus
 
 [![All Tests](https://github.com/McPringle/apus/actions/workflows/all-tests.yml/badge.svg)](https://github.com/McPringle/apus/actions/workflows/all-tests.yml)
 [![codecov](https://codecov.io/gh/McPringle/apus/graph/badge.svg?token=OPDR66ID7D)](https://codecov.io/gh/McPringle/apus)
 
-**A social wall for conferences.**
+## About
+
+***Apus* is a social media wall for conferences.**
 
 The name *Apus* is based on Apus Apus, Latin for common swift. This is a bird species that is extremely adapted to a life in the air and can stay in the air for around ten months almost without interruption and can reach speeds of more than 200 km/h during flight maneuvers. This bird breeds in a wall, flies reliably for extremely long periods without crashing and is also extremely fast. Hopefully all of this also applies to Apus: fast execution, uninterrupted and reliable operation!
 
@@ -67,51 +69,48 @@ See:
 | Show sponsor information  | SUPPORTED |
 | Use event based styling   | SUPPORTED |
 
-## Build
+## Running in Production
 
-### Maven
+It is highly recommended to use [Docker](https://www.docker.com/) or [Podman](https://podman.io/) to run *Apus* in production. Here follows a very short explanation of the example commands below. Consult the Docker or Podman documentation for more information about all available options for running an image.
 
-*Apus* uses [Maven](https://maven.apache.org/) to build the project. Please use standard Maven commands to build what you need:
+| Option         | Explanation                                   |
+|----------------|-----------------------------------------------|
+| --name apus    | Specify the name for the running instance.    |
+| -p 80:8080     | Make *Apus* available on host port 80         |
+| -e KEY=value   | Configure *Apus* using environment variables. |
+| -d             | Run *Apus* in daemon mode (background).       |
+| --rm           | Remove the container when stopping *Apus*.    |
+| mcpringle/apus | The Docker image to be started.               |
 
-| Command          | What it does                                                      |
-|------------------|-------------------------------------------------------------------|
-| `./mvnw`         | compile and run the app                                           |
-| `./mvnw clean`   | cleanup generated files and build artefacts                       |
-| `./mvnw compile` | compile the code without running the tests                        |
-| `./mvnw test`    | compile and run all tests                                         |
-| `./mvnw package` | compile, test, and create a JAR file to run it with Java directly |
-| `./mvnw verify`  | compile, test, package, and run analysis tools                    |
+Modify the following commands according to your needs and consult the [configuration section](#configuration) below for more information about how to configure *Apus*. The Docker image of *Apus* will be pulled from [Docker Hub](https://hub.docker.com/) automatically when not available locally.
 
-There is *no need* to run the `install` or `deploy` tasks. They will just run longer, produce unnecessary output, burn energy, and occupy your disk space. [Don't just blindly run mvn clean install...](https://www.andreaseisele.com/posts/mvn-clean-install/)
+### Using Docker
 
-### Docker
+```shell
+docker run \
+    --name apus \
+    -p 80:8080 \
+    -e APUS_SOCIAL_HASHTAGS=java \
+    -e TZ=Europe/Zurich \
+    -d \
+    --rm \
+    mcpringle/apus
+```
 
-*Apus* comes with a complete dockerized build for production use. It is not recommended to use the self-contained build for development purposes. Please take a look at the section about [Production Build](#production-build) below.
+### Using Podman
 
-## Running and debugging
+The parameters are the same like in in the Docker example, but the image must be prefixed with `docker.io/`:
 
-### Running from the command line.
-
-To run from the command line, run `./mvnw` and open http://localhost:8080 in your browser.
-
-### Running and debugging in Intellij IDEA
-
-- Locate the `Application.java` class in the project view. It is in the `src` folder, under the main package's root.
-- Right-click on the `Application` class
-- Select "Debug 'Application.main()'" from the list
-
-After the server has started, you can view the UI at http://localhost:8080/ in your browser.
-You can now also attach breakpoints in code for debugging purposes, by clicking next to a line number in any source file.
-
-### Running and debugging in Eclipse
-
-- Locate the `Application.java` class in the package explorer. It is in `src/main/java`, under the main package.
-- Right-click on the file and select `Debug As` --> `Java Application`.
-
-Do not worry if the debugger breaks at a `SilentExitException`. This is a Spring Boot feature and happens on every startup.
-
-After the server has started, you can view it at http://localhost:8080/ in your browser.
-You can now also attach breakpoints in code for debugging purposes, by clicking next to a line number in any source file.
+```shell
+podman run \
+    --name apus \
+    -p 80:8080 \
+    -e APUS_SOCIAL_HASHTAGS=java \
+    -e TZ=Europe/Zurich \
+    -d \
+    --rm \
+    docker.io/mcpringle/apus
+```
 
 ## Configuration
 
@@ -296,105 +295,6 @@ All configuration files are completely optional and stored in an `.apus` subdire
 | `blockedProfiles` | This file contains blocked profiles, one per line.    |
 | `hiddenPostIds`   | This file contains IDs of hidden posts, one per line. |
 
-## Production
-
-### Production Build
-
-#### Maven
-
-You can use [Maven](https://maven.apache.org/) to build *Apus* for production. Just specify the `production` profile. Example:
-
-```shell
-./mvnw clean package -Pproduction
-```
-
-#### Docker
-
-To create a production build for *Apus* it is highly recommended to use [Docker](https://www.docker.com/) or [Podman](https://podman.io/). *Apus* comes with a complete dockerized self-contained build. You don't need to have Maven or Java installed, [Docker](https://www.docker.com/) or [Podman](https://podman.io/) is enough. The Docker build file contains everything needed, just start a standard Docker build with the following command:
-
-```shell
-docker build -t apus .
-```
-
-This might run for a while and will produce a Docker image tagged `apus` on your local system.
-
-### Run in Production
-
-It is highly recommended to use [Docker](https://www.docker.com/) or [Podman](https://podman.io/) to run *Apus* in production. Use the following command line as an example:
-
-```shell
-docker run \
-    --name apus \
-    -p 80:8080 \
-    -e APUS_SOCIAL_HASHTAGS=java \
-    -e TZ=Europe/Zurich \
-    -d \
-    --rm \
-    mcpringle/apus
-```
-
-Short explanation, consult the Docker or Podman documentation for more information about all available options for running an image.
-
-| Option         | Explanation                                   |
-|----------------|-----------------------------------------------|
-| --name apus    | Specify the name for the running instance.    |
-| -p 80:8080     | Make *Apus* available on host port 80         |
-| -e KEY=value   | Configure *Apus* using environment variables. |
-| -d             | Run *Apus* in daemon mode (background).       |
-| --rm           | Remove the container when stopping *Apus*.    |
-| mcpringle/apus | The Docker image to be started.               |
-
-Modify this command according your needs and consult the [configuration section](#configuration) above for more information about how to configure *Apus*. The Docker image of *Apus* will be pulled from [Docker Hub](https://hub.docker.com/) automatically when not available locally.
-
-## Plugin Support
-
-### Event Plugins
-
-*Apus* uses a simple plugin technology to import the agenda of various events. Plugins are currently available for the following events:
-
-| Plugin                     | Supported Events                             |
-|----------------------------|----------------------------------------------|
-| `EventDemoPlugin`          | Creates fake session data for demo purposes. |
-| `DevoxxPlugin`             | Devoxx and Voxxed Days conferences           |
-| `DoagPlugin`               | CloudLand, CyberLand, JavaLand, KI Navigator |
-| `JavaForumStuttgartPlugin` | Java Forum Stuttgart                         |
-| `SessionizePlugin`         | BaselOne, Java Forum Nord                    |
-
-Plugins for other events are planned.
-
-### Social Plugins
-
-*Apus* uses a simple plugin technology to import posts from various social media services. Plugins are currently available for the following services:
-
-| Plugin             | Supported Services                          |
-|--------------------|---------------------------------------------|
-| `BlueSkyPlugin`    | BlueSky Social                              |
-| `MastodonPlugin`   | Mastodon                                    |
-| `SocialDemoPlugin` | Creates fake social posts for demo purposes |
-
-Plugins for more social media services are planned.
-
-### Plugin Development
-
-Everyone is welcome to contribute a plugin themselves. The implementation is very simple. There are two types of plugins: `EventPlugin` and `SocialPlugin`. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.event` or `swiss.fihlon.apus.plugin.social`, based on the plugin type. The implementation is carried out in this new package. Implement one of these two interfaces depending on the plugin type you want to contribute and annotate the class with `@Service`.
-
-If your implementation requires a configuration, the `Configuration` class must be extended accordingly. Add a property and corresponding setters and getters in the marked sections. Implement the settings object as a `record` in your new plugin package. Take one of the existing plugins as a template. Default settings belong in the file `application.properties` and the corresponding schema is stored in `additional-spring-configuration-metadata.json`. Of course, this `README.md` must also be adapted.
-
-## Communication
-
-### Matrix Chat
-
-There is a channel at Matrix for quick and easy communication. This is publicly accessible for everyone. For developers as well as users. The communication in this chat is to be regarded as short-lived and has no documentary character.
-
-You can find our Matrix channel here: [@project-apus:ijug.eu](https://matrix.to/#/%23project-apus:ijug.eu)
-
-### GitHub Discussions
-
-We use the corresponding GitHub function for discussions. The discussions held here are long-lived and divided into categories for the sake of clarity. One important category, for example, is that for questions and answers.
-
-Discussions on GitHub: https://github.com/McPringle/apus/discussions  
-Questions and Answers: https://github.com/McPringle/apus/discussions/categories/q-a
-
 ## Contributing
 
 ### Good First Issues
@@ -418,6 +318,120 @@ We love to add an emoji to the beginning of every commit message which relates t
 ### AI Generated Code
 
 AI generated source code is based on real existing source code, which is copied in whole or in part into the generated code. The license of the original source code with which the AI was trained is not taken into account. It is not clear which license conditions apply and how these can be complied with. For legal reasons, we therefore do not allow AI-generated source code at all.
+
+### Build
+
+*Apus* uses [Maven](https://maven.apache.org/) to build the project. Please use standard Maven commands to build what you need:
+
+| Command          | What it does                                                      |
+|------------------|-------------------------------------------------------------------|
+| `./mvnw`         | compile and run the app                                           |
+| `./mvnw clean`   | cleanup generated files and build artefacts                       |
+| `./mvnw compile` | compile the code without running the tests                        |
+| `./mvnw test`    | compile and run all tests                                         |
+| `./mvnw package` | compile, test, and create a JAR file to run it with Java directly |
+| `./mvnw verify`  | compile, test, package, and run analysis tools                    |
+
+There is *no need* to run the `install` or `deploy` tasks. They will just run longer, produce unnecessary output, burn energy, and occupy your disk space. [Don't just blindly run mvn clean install...](https://www.andreaseisele.com/posts/mvn-clean-install/)
+
+> [!NOTE]  
+> *Apus* comes with a complete dockerized build for production use. It is not recommended to use the self-contained build for development purposes. Please take a look at the section about [Production Build](#production-build) below.
+
+### Debugging
+
+#### Command Line
+
+To run from the command line, run `./mvnw` and open http://localhost:8080 in your browser.
+
+#### Intellij IDEA
+
+- Locate the `Application.java` class in the project view. It is in the `src` folder, under the main package's root.
+- Right-click on the `Application` class
+- Select "Debug 'Application.main()'" from the list
+
+After the server has started, you can view the UI at http://localhost:8080/ in your browser.
+You can now also attach breakpoints in code for debugging purposes, by clicking next to a line number in any source file.
+
+#### Eclipse
+
+- Locate the `Application.java` class in the package explorer. It is in `src/main/java`, under the main package.
+- Right-click on the file and select `Debug As` --> `Java Application`.
+
+Do not worry if the debugger breaks at a `SilentExitException`. This is a Spring Boot feature and happens on every startup.
+
+After the server has started, you can view it at http://localhost:8080/ in your browser.
+You can now also attach breakpoints in code for debugging purposes, by clicking next to a line number in any source file.
+
+### Packaging
+
+#### Maven
+
+You can use [Maven](https://maven.apache.org/) to build *Apus* for production. Just specify the `production` profile. Example:
+
+```shell
+./mvnw clean package -Pproduction
+```
+
+Once completed successfully, you will find the artifact in the `target` directory. The file is named `apus-VERSION.jar`.
+
+#### Docker
+
+To create a production build for *Apus* it is highly recommended to use [Docker](https://www.docker.com/) or [Podman](https://podman.io/). *Apus* comes with a complete dockerized self-contained build. You don't need to have Maven or Java installed, [Docker](https://www.docker.com/) or [Podman](https://podman.io/) is enough. The Docker build file contains everything needed, just start a standard Docker build with the following command:
+
+```shell
+docker build -t apus .
+```
+
+This might run for a while and will produce a Docker image tagged `apus` on your local system.
+
+### Plugin Support
+
+#### Event Plugins
+
+*Apus* uses a simple plugin technology to import the agenda of various events. Plugins are currently available for the following events:
+
+| Plugin                     | Supported Events                             |
+|----------------------------|----------------------------------------------|
+| `EventDemoPlugin`          | Creates fake session data for demo purposes. |
+| `DevoxxPlugin`             | Devoxx and Voxxed Days conferences           |
+| `DoagPlugin`               | CloudLand, CyberLand, JavaLand, KI Navigator |
+| `JavaForumStuttgartPlugin` | Java Forum Stuttgart                         |
+| `SessionizePlugin`         | BaselOne, Java Forum Nord                    |
+
+Plugins for other events are planned.
+
+#### Social Plugins
+
+*Apus* uses a simple plugin technology to import posts from various social media services. Plugins are currently available for the following services:
+
+| Plugin             | Supported Services                          |
+|--------------------|---------------------------------------------|
+| `BlueSkyPlugin`    | BlueSky Social                              |
+| `MastodonPlugin`   | Mastodon                                    |
+| `SocialDemoPlugin` | Creates fake social posts for demo purposes |
+
+Plugins for more social media services are planned.
+
+#### Plugin Development
+
+Everyone is welcome to contribute a plugin themselves. The implementation is very simple. There are two types of plugins: `EventPlugin` and `SocialPlugin`. For a new plugin, a new package is created under `swiss.fihlon.apus.plugin.event` or `swiss.fihlon.apus.plugin.social`, based on the plugin type. The implementation is carried out in this new package. Implement one of these two interfaces depending on the plugin type you want to contribute and annotate the class with `@Service`.
+
+If your implementation requires a configuration, the `Configuration` class must be extended accordingly. Add a property and corresponding setters and getters in the marked sections. Implement the settings object as a `record` in your new plugin package. Take one of the existing plugins as a template. Default settings belong in the file `application.properties` and the corresponding schema is stored in `additional-spring-configuration-metadata.json`. Of course, this `README.md` must also be adapted.
+
+## Communication
+
+### Matrix Chat
+
+There is a channel at Matrix for quick and easy communication. This is publicly accessible for everyone. For developers as well as users. The communication in this chat is to be regarded as short-lived and has no documentary character.
+
+You can find our Matrix channel here: [@project-apus:ijug.eu](https://matrix.to/#/%23project-apus:ijug.eu)
+
+### GitHub Discussions
+
+We use the corresponding GitHub function for discussions. The discussions held here are long-lived and divided into categories for the sake of clarity. One important category, for example, is that for questions and answers.
+
+Discussions on GitHub: https://github.com/McPringle/apus/discussions  
+Questions and Answers: https://github.com/McPringle/apus/discussions/categories/q-a
 
 ## Contributors
 
