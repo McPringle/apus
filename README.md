@@ -306,6 +306,30 @@ The following table contains the CSS variables you can modify to change the user
 --social-post-border: none;
 ```
 
+##### Voxxed Days Zürich
+
+```
+--event-background-color: #4c4f53;
+--event-title-color: #8ed1fc;
+--event-text-color: #000000;
+--event-running-session-color: #ebfffc;
+--event-next-session-color: #ebfffc;
+--event-closed-room-color: #ebfffc;
+--event-room-border: none;
+--event-image-position-bottom: 10px;
+--event-image-position-left: 10px;
+--event-image-width: 425px;
+
+--social-background-color: #58c3f0;
+--social-title-color: #ffffff;
+--social-text-color: #000000;
+--social-post-background-color: #ebf7ff;
+--social-post-border: none;
+
+--speaker-avatar-background-color: transparent;
+--speaker-avatar-border: none;
+```
+
 ### Create Hashed Password
 
 For security reasons the password is not stored in cleartext. *Apus* requires the password to be hashed using [bcrypt](https://en.wikipedia.org/wiki/Bcrypt). Of course, *Apus* can do this for you. Start the JAR file providing the parameter `-p` followed by the password you want to create a hash for. The output will show you two lines of code. The first line contains the hashed password and the second line contains the same hashed password, but with the dollar signs escaped ready to copy and paste it into a `docker-compose.yaml`. Example:
