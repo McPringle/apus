@@ -244,7 +244,9 @@ The following table contains the CSS variables you can modify to change the user
 > [!NOTE]  
 > Default values may change in newer versions of *Apus*. Compare your custom styles before and after an update.
 
-#### BaselOne
+#### Example Styles
+
+##### BaselOne
 
 ```
 --event-background-color: #9a1445;
@@ -268,7 +270,7 @@ The following table contains the CSS variables you can modify to change the user
 --speaker-avatar-border: none;
 ```
 
-#### Java Forum Stuttgart
+##### Java Forum Stuttgart
 
 ```
 --event-background-color: #fcb913;
@@ -286,7 +288,7 @@ The following table contains the CSS variables you can modify to change the user
 --social-post-border: 1px solid #fcb913;
 ```
 
-#### JavaLand
+##### JavaLand
 
 ```
 --event-background-color: #000000;
