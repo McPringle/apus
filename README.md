@@ -425,8 +425,6 @@ This might run for a while and will produce a Docker image tagged `apus` on your
 | `JavaForumStuttgartPlugin` | Java Forum Stuttgart                         |
 | `SessionizePlugin`         | BaselOne, Java Forum Nord                    |
 
-Plugins for other events are planned.
-
 #### Social Plugins
 
 *Apus* uses a simple plugin technology to import posts from various social media services. Plugins are currently available for the following services:
@@ -436,8 +434,6 @@ Plugins for other events are planned.
 | `BlueSkyPlugin`    | BlueSky Social                              |
 | `MastodonPlugin`   | Mastodon                                    |
 | `SocialDemoPlugin` | Creates fake social posts for demo purposes |
-
-Plugins for more social media services are planned.
 
 #### Plugin Development
 
