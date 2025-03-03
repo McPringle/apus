@@ -241,7 +241,8 @@ The following table contains the CSS variables you can modify to change the user
 | --speaker-avatar-background-color | transparent       | The color for the background of speaker avatars.                   |
 | --speaker-avatar-border           | none              | The border for the speaker avatars.                                |
 
-Default values may change in newer versions of *Apus*. The custom styles of some events are documented below.
+> [!NOTE]  
+> Default values may change in newer versions of *Apus*. Compare your custom styles before and after an update.
 
 #### BaselOne
 
