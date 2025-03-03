@@ -10,8 +10,22 @@
 * [Screenshots](#screenshots)
 * [Features](#features)
 * [Running in Production](#running-in-production)
+  * [Using Docker](#using-docker)
+  * [Using Podman](#using-podman)
 * [Configuration](#configuration)
+  * [Configuration Options](#configuration-options)
+  * [Custom Styles](#custom-styles)
+  * [Create Hashed Password](#create-hashed-password)
+  * [Configuration Files](#configuration-files)
 * [Contributing](#contributing)
+  * [Good First Issues](#good-first-issues)
+  * [Sign-off your commits](#sign-off-your-commits)
+  * [Add an emoji to your commit](#add-an-emoji-to-your-commit)
+  * [AI Generated Code](#ai-generated-code)
+  * [Build](#build)
+  * [Debugging](#debugging)
+  * [Packaging](#packaging)
+  * [Plugin Support](#plugin-support)
 * [Communication](#communication)
 * [Contributors](#contributors)
 * [Copyright and License](#copyright-and-license)
@@ -196,7 +210,7 @@ The `APUS_EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` a
 | `P-1Y2M`    | -1 year, +2 months (minus is valid for the year only)        |
 | `-P1Y2M`    | -1 year, -2 months (minus is valid for the whole expression) |
 
-#### Custom Styles
+### Custom Styles
 
 You can modify the styles of the user interface using CSS variables. The CSS variables must be set using the environment variable `APUS_STYLES` in key and value pairs. The key is the variable to be set and must start with two dashes (`--`). Keys and values must be separated by a colon (`:`). Multiple key and value pairs are separated by a semicolon (`;`). Example:
 
