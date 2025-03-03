@@ -3,6 +3,19 @@
 [![All Tests](https://github.com/McPringle/apus/actions/workflows/all-tests.yml/badge.svg)](https://github.com/McPringle/apus/actions/workflows/all-tests.yml)
 [![codecov](https://codecov.io/gh/McPringle/apus/graph/badge.svg?token=OPDR66ID7D)](https://codecov.io/gh/McPringle/apus)
 
+## Contents
+
+* [About](#about)
+* [Mission Statement](#mission-statement)
+* [Screenshots](#screenshots)
+* [Features](#features)
+* [Running in Production](#running-in-production)
+* [Configuration](#configuration)
+* [Contributing](#contributing)
+* [Communication](#communication)
+* [Contributors](#contributors)
+* [Copyright and License](#copyright-and-license)
+
 ## About
 
 ***Apus* is a social media wall for conferences.**
