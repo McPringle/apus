@@ -25,7 +25,7 @@
   * [Build](#build)
   * [Debugging](#debugging)
   * [Packaging](#packaging)
-  * [Plugin Support](#plugin-support)
+  * [Writing Plugins](#writing-plugins)
 * [Communication](#communication)
 * [Contributors](#contributors)
 * [Copyright and License](#copyright-and-license)
@@ -411,7 +411,7 @@ docker build -t apus .
 
 This might run for a while and will produce a Docker image tagged `apus` on your local system.
 
-### Plugin Support
+### Writing Plugins
 
 #### Event Plugins
 
