@@ -183,7 +183,7 @@ To modify the default configuration values, just specify environment variables w
 | APUS_SESSIONIZE_EVENT_ID        | 0            | The ID of the Sessionize event to read the conference agenda (0 = disabled).  |
 | APUS_SESSIONIZE_SPEAKER_API     | [6]          | The URL of the Sessionize API to read the speaker information.                |
 | APUS_STYLES                     |              | Inject custom styles into the user interface (see explanations below).        |
-| TZ                              | UTC          | The timezone used for date and time calculations.                             |
+| TZ                              |              | The timezone used for date and time calculations.                             |
 
 > [!NOTE]  
 > The `TZ` environment variable is not specific to *Apus*, it is a system variable and therefore has no `APUS` prefix!
