@@ -78,7 +78,7 @@ public final class SocialWallView extends Div {
                         if (!customStyle.isBlank()) {
                             final var style = customStyle.split(":", 2);
                             if (style.length == 2) {
-                                currentStyle.set(style[0].trim(), style[1].trim());
+                                currentStyle.set(style[0], style[1]);
                             } else {
                                 LOGGER.warn("Custom style has incorrect format: missing ':' (delimiter between key and value)");
                             }

@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
@@ -48,7 +47,6 @@ public final class SocialService {
 
     private static final Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
     private static final int MAX_POSTS = 50;
-    private static final Locale DEFAULT_LOCALE = Locale.getDefault();
     private static final Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
 
     private final ScheduledFuture<?> updateScheduler;
@@ -77,7 +75,8 @@ public final class SocialService {
         filterReplies = appConfig.filter().replies();
         filterSensitive = appConfig.filter().sensitive();
         filterWords = appConfig.filter().words().stream()
-                .map(filterWord -> filterWord.toLowerCase(DEFAULT_LOCALE).trim())
+                .map(String::toLowerCase)
+                .map(String::trim)
                 .toList();
         loadHiddenPostIds();
         loadBlockedProfiles();
@@ -135,7 +134,7 @@ public final class SocialService {
     }
 
     private boolean checkWordFilter(@NotNull final Post post) {
-        final String postText = Jsoup.parse(post.html()).text().toLowerCase(DEFAULT_LOCALE);
+        final String postText = Jsoup.parse(post.html()).text().toLowerCase();
         for (final String filterWord : filterWords) {
             if (postText.contains(filterWord)) {
                 return false;

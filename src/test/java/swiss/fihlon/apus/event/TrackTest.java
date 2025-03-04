@@ -34,10 +34,12 @@ class TrackTest {
     void defaultTracks(@NotNull final Track testee) {
         final String message = String.format("Error while testing track '%s'!", testee);
         assertNotNull(testee, message);
-        assertNotNull(testee.svgCode(), message);
-        assertTrue(testee.svgCode().startsWith("<?xml"), message);
-        assertTrue(testee.svgCode().contains("<svg"), message);
-        assertTrue(testee.svgCode().endsWith("</svg>"), message);
+
+        final var svgCode = testee.svgCode().trim();
+        assertNotNull(svgCode, message);
+        assertTrue(svgCode.startsWith("<?xml"), message);
+        assertTrue(svgCode.contains("<svg"), message);
+        assertTrue(svgCode.endsWith("</svg>"), message);
     }
 
     private static Stream<Arguments> provideArgumentsForDefaultTrack() {

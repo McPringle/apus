@@ -82,7 +82,7 @@ public final class MastodonPlugin implements SocialPlugin {
     public Stream<Post> getPosts(@NotNull final String hashtag) {
         try {
             LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
-            final var jsonPosts = mastodonLoader.getPosts(instance, hashtag.trim(), postAPI, postLimit);
+            final var jsonPosts = mastodonLoader.getPosts(instance, hashtag, postAPI, postLimit);
             LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", jsonPosts.length(), hashtag, instance);
 
             final var posts = new ArrayList<Post>();

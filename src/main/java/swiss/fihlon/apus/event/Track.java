@@ -48,7 +48,7 @@ public record Track(String svgCode) {
             final URI uri = Objects.requireNonNull(url).toURI();
             final Path path = Path.of(uri);
             final String svgCode = Files.readString(path);
-            return new Track(svgCode.trim());
+            return new Track(svgCode);
         } catch (final Exception e) {
             LOGGER.error("Unable to load default track icon '{}': {}", svgFileName, e.getMessage(), e);
         }

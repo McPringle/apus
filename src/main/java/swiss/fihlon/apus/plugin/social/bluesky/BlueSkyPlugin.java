@@ -83,7 +83,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
             final var posts = new ArrayList<Post>();
 
             LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
-            final var jsonPosts = blueSkyLoader.getPosts(instance, hashtag.trim(), postAPI, postLimit);
+            final var jsonPosts = blueSkyLoader.getPosts(instance, hashtag, postAPI, postLimit);
             LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", jsonPosts.length(), hashtag, instance);
 
             for (var i = 0; i < jsonPosts.length(); i++) {
