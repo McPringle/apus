@@ -349,9 +349,9 @@ All configuration files are completely optional and stored in an `.apus` subdire
 | `blockedProfiles` | This file contains blocked profiles, one per line.    |
 | `hiddenPostIds`   | This file contains IDs of hidden posts, one per line. |
 
-If you are running *Apus* in a Docker or Podman container and want to keep your configuration files between restarts, you can mount the `.apus` directory of the running container to an existing directory on your host system. Important: The directory on your host system must exist and must be writeable by the *Apus* user inside the container (which is user ID 1000 and group ID 1000). Consult the documentation of your host operating system if you need information about how to set the correct access rights.
+If you are running *Apus* in a Docker or Podman container and want to keep your configuration files between restarts, you can bind the `.apus` directory of the running container to an existing directory on your host system. Important: The directory on your host system must exist and must be writeable by the *Apus* user inside the container (which is user ID 1000 and group ID 1000). Consult the documentation of your host operating system if you need information about how to set the correct access rights.
 
-Examples for mounting the `.apus` directory of the running container to an existing directory on your host system using the `-v` option:
+Examples for binding the `.apus` directory of the running container to an existing directory on your host system using the `-v` option:
 
 #### Using Docker
 
