@@ -349,6 +349,38 @@ All configuration files are completely optional and stored in an `.apus` subdire
 | `blockedProfiles` | This file contains blocked profiles, one per line.    |
 | `hiddenPostIds`   | This file contains IDs of hidden posts, one per line. |
 
+If you are running *Apus* in a Docker or Podman container and want to keep your configuration files, you can mount the `.apus` directory of the running container to an existing directory on your host system. Important: The directory on your host system must exist and must be writeable by the *Apus* user inside the container (which is user ID 1000 and group ID 1000). Consult the documentation of your host operating system if you need information about how to set the correct access rights.
+
+Examples for mounting the `.apus` directory of the running container to an existing directory on your host system using the `-v` option:
+
+#### Using Docker
+
+```shell
+docker run \
+    --name apus \
+    -p 80:8080 \
+    -v $HOME/mydir:/home/apus/.apus \
+    -e APUS_SOCIAL_HASHTAGS=java \
+    -e TZ=Europe/Zurich \
+    -d \
+    --rm \
+    mcpringle/apus
+```
+
+#### Using Podman
+
+```shell
+podman run \
+    --name apus \
+    -p 80:8080 \
+    -v $HOME/mydir:/home/apus/.apus \
+    -e APUS_SOCIAL_HASHTAGS=java \
+    -e TZ=Europe/Zurich \
+    -d \
+    --rm \
+    docker.io/mcpringle/apus
+```
+
 ## Contributing
 
 ### Good First Issues
