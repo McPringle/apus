@@ -17,4 +17,4 @@
  */
 package swiss.fihlon.apus.configuration;
 
-public record SocialConfig(String hashtags, String headline, int numberOfColumns, boolean imagesEnabled, int imageLimit) { }
+public record SocialConfig(String hashtags, String headline, int numberOfColumns, boolean imagesEnabled, int imageLimit, FilterConfig filter) { }
