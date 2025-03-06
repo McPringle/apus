@@ -71,10 +71,10 @@ public final class SocialService {
                 .filter(hashtag -> !hashtag.isBlank())
                 .map(String::trim)
                 .toList();
-        filterLength = appConfig.filter().length();
-        filterReplies = appConfig.filter().replies();
-        filterSensitive = appConfig.filter().sensitive();
-        filterWords = appConfig.filter().words().stream()
+        filterLength = appConfig.social().filter().length();
+        filterReplies = appConfig.social().filter().replies();
+        filterSensitive = appConfig.social().filter().sensitive();
+        filterWords = appConfig.social().filter().words().stream()
                 .map(String::toLowerCase)
                 .map(String::trim)
                 .toList();

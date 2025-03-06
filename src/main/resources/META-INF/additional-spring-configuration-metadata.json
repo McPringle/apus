@@ -81,26 +81,6 @@
       "description" : "How often (in minutes) to update event data."
     },
     {
-      "name" : "apus.filter.length",
-      "type" : "java.lang.Integer",
-      "description" : "Hide social media messages which exceed this length."
-    },
-    {
-      "name" : "apus.filter.replies",
-      "type" : "java.lang.Boolean",
-      "description" : "Hide social media messages which are replies."
-    },
-    {
-      "name" : "apus.filter.sensitive",
-      "type" : "java.lang.Boolean",
-      "description" : "Hide social media messages which contain sensitive information."
-    },
-    {
-      "name" : "apus.filter.words",
-      "type" : "java.lang.String",
-      "description" : "Hide social media messages which contain these words."
-    },
-    {
       "name" : "apus.jfs.dbUrl",
       "type" : "java.lang.String",
       "description" : "The URL of the database file for Java Forum Stuttgart."
@@ -164,6 +144,26 @@
       "name" : "apus.social.numberOfColumns",
       "type" : "java.lang.Integer",
       "description" : "How many columns to be used for social media posts."
+    },
+    {
+      "name" : "apus.social.filter.length",
+      "type" : "java.lang.Integer",
+      "description" : "Hide social media messages which exceed this length."
+    },
+    {
+      "name" : "apus.social.filter.replies",
+      "type" : "java.lang.Boolean",
+      "description" : "Hide social media messages which are replies."
+    },
+    {
+      "name" : "apus.social.filter.sensitive",
+      "type" : "java.lang.Boolean",
+      "description" : "Hide social media messages which contain sensitive information."
+    },
+    {
+      "name" : "apus.social.filter.words",
+      "type" : "java.lang.String",
+      "description" : "Hide social media messages which contain these words."
     },
     {
       "name" : "apus.styles",

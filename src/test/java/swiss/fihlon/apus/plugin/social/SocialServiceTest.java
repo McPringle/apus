@@ -167,9 +167,9 @@ class SocialServiceTest {
 
     private AppConfig createModifiedImageConfig(final boolean imagesEnabled, final int imageLimit) {
         final var newSocialConfig = new SocialConfig(appConfig.social().hashtags(), appConfig.social().headline(),
-                appConfig.social().numberOfColumns(), imagesEnabled, imageLimit);
+                appConfig.social().numberOfColumns(), imagesEnabled, imageLimit, appConfig.social().filter());
         return new AppConfig(appConfig.version(), appConfig.language(), appConfig.styles(), appConfig.demoMode(),
-                appConfig.admin(), appConfig.event(), newSocialConfig, appConfig.filter(),
+                appConfig.admin(), appConfig.event(), newSocialConfig,
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
                 appConfig.blueSky(), appConfig.mastodon());
     }
