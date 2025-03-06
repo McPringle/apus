@@ -170,15 +170,15 @@ To modify the default configuration values, just specify environment variables w
 | APUS_MASTODON_INSTANCE          | mastodon.social | The Mastodon instance used to read the posts from (empty = disabled).         |
 | APUS_MASTODON_POST_API          | [4]             | The URL of the Mastodon API to read the posts (empty = disabled).             |
 | APUS_MASTODON_POST_LIMIT        | 30              | The limit for the number of Mastodon posts when accessing the API.            |
+| APUS_SOCIAL_FILTER_LENGTH       | 500             | Hide social media posts which exceed this length (0 = disabled).              |
+| APUS_SOCIAL_FILTER_REPLIES      | true            | Hide social media posts which are replies.                                    |
+| APUS_SOCIAL_FILTER_SENSITIVE    | true            | Hide social media posts which contain sensitive information.                  |
+| APUS_SOCIAL_FILTER_WORDS        |                 | Hide social media posts which contain these words.                            |
 | APUS_SOCIAL_COLUMNS             | 3               | How many columns to be used for social media posts.                           |
 | APUS_SOCIAL_HASHTAGS            |                 | A list of comma separated hashtags for social media posts (empty = disabled). |
 | APUS_SOCIAL_HEADLINE            |                 | Overwrite the headline for social media posts (empty = don't overwrite).      |
 | APUS_SOCIAL_IMAGE_LIMIT         | 1               | Limit number of images per social media post (0 = no limit).                  |
 | APUS_SOCIAL_IMAGES_ENABLED      | true            | Enable or disable images in social media posts.                               |
-| APUS_SOCIAL_FILTER_LENGTH       | 500             | Hide social media posts which exceed this length (0 = disabled).              |
-| APUS_SOCIAL_FILTER_REPLIES      | true            | Hide social media posts which are replies.                                    |
-| APUS_SOCIAL_FILTER_SENSITIVE    | true            | Hide social media posts which contain sensitive information.                  |
-| APUS_SOCIAL_FILTER_WORDS        |                 | Hide social media posts which contain these words.                            |
 | APUS_SESSIONIZE_EVENT_API       | [5]             | The URL of the Sessionize API to read the conference agenda.                  |
 | APUS_SESSIONIZE_EVENT_ID        | 0               | The ID of the Sessionize event to read the conference agenda (0 = disabled).  |
 | APUS_SESSIONIZE_SPEAKER_API     | [6]             | The URL of the Sessionize API to read the speaker information.                |

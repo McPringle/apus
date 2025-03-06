@@ -121,6 +121,26 @@
       "description" : "The URL of the Sessionize API to read the speaker information."
     },
     {
+      "name" : "apus.social.filter.length",
+      "type" : "java.lang.Integer",
+      "description" : "Hide social media messages which exceed this length."
+    },
+    {
+      "name" : "apus.social.filter.replies",
+      "type" : "java.lang.Boolean",
+      "description" : "Hide social media messages which are replies."
+    },
+    {
+      "name" : "apus.social.filter.sensitive",
+      "type" : "java.lang.Boolean",
+      "description" : "Hide social media messages which contain sensitive information."
+    },
+    {
+      "name" : "apus.social.filter.words",
+      "type" : "java.lang.String",
+      "description" : "Hide social media messages which contain these words."
+    },
+    {
       "name" : "apus.social.hashtags",
       "type" : "java.lang.String",
       "description" : "A list of comma separated hashtags for social media posts."
@@ -144,26 +164,6 @@
       "name" : "apus.social.numberOfColumns",
       "type" : "java.lang.Integer",
       "description" : "How many columns to be used for social media posts."
-    },
-    {
-      "name" : "apus.social.filter.length",
-      "type" : "java.lang.Integer",
-      "description" : "Hide social media messages which exceed this length."
-    },
-    {
-      "name" : "apus.social.filter.replies",
-      "type" : "java.lang.Boolean",
-      "description" : "Hide social media messages which are replies."
-    },
-    {
-      "name" : "apus.social.filter.sensitive",
-      "type" : "java.lang.Boolean",
-      "description" : "Hide social media messages which contain sensitive information."
-    },
-    {
-      "name" : "apus.social.filter.words",
-      "type" : "java.lang.String",
-      "description" : "Hide social media messages which contain these words."
     },
     {
       "name" : "apus.styles",
