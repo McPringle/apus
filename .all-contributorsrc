@@ -178,6 +178,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "tobias-kuendig",
+      "name": "Tobias Kündig",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8600029?v=4",
+      "profile": "https://offline.ch/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
