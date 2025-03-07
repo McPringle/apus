@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -93,7 +94,8 @@ public final class SocialService {
 
         if (!hashtags.isEmpty() && socialPlugins.stream().anyMatch(SocialPlugin::isEnabled)) {
             updatePosts();
-            updateScheduler = taskScheduler.scheduleAtFixedRate(this::updatePosts, UPDATE_FREQUENCY);
+            final var startTime = Instant.now().plus(UPDATE_FREQUENCY);
+            updateScheduler = taskScheduler.scheduleAtFixedRate(this::updatePosts, startTime, UPDATE_FREQUENCY);
         } else {
             LOGGER.warn("No social plugin is enabled. No posts will be displayed.");
             updateScheduler = null;

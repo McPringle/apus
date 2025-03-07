@@ -28,6 +28,7 @@ import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
@@ -58,7 +59,8 @@ public final class EventService {
             updateSessions();
             final var updateFrequency = Duration.ofMinutes(appConfig.event().updateFrequency());
             if (updateFrequency.isPositive()) {
-                updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, updateFrequency);
+                final var startTime = Instant.now().plus(updateFrequency);
+                updateScheduler = taskScheduler.scheduleAtFixedRate(this::updateSessions, startTime, updateFrequency);
             } else {
                 updateScheduler = null;
             }
