@@ -103,9 +103,10 @@ public final class BlueSkyPlugin implements SocialPlugin {
         final var id = post.getString("uri");
 
         final var author = post.getJSONObject("author");
-        final var displayName = author.getString("displayName");
-        final var avatar = author.getString("avatar");
         final var handle = author.getString("handle");
+
+        final var avatar = getStringOrDefault(author, "avatar", "");
+        final var displayName = getStringOrDefault(author, "displayName", handle);
 
         final var postRecord = post.getJSONObject("record");
         final var text = postRecord.getString("text");
@@ -126,5 +127,16 @@ public final class BlueSkyPlugin implements SocialPlugin {
         }
 
         return new Post(id, date, displayName, avatar, handle, text, imageLinks, isReply, false, BLUESKY_LOGO);
+    }
+
+    private String getStringOrDefault(@NotNull final JSONObject jsonObject, @NotNull final String key, @NotNull final String defaultValue) {
+        if (jsonObject.has(key)) {
+            final var value = jsonObject.getString(key);
+            if (value != null && !value.isBlank()) {
+                return value;
+            }
+        }
+
+        return defaultValue;
     }
 }
