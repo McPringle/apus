@@ -87,7 +87,7 @@ public final class SocialService {
         if (demoMode) {
             postsByPlugin.put(new SocialDemoPlugin(appConfig), List.of());
         } else {
-            socialPlugins.parallelStream()
+            socialPlugins.stream()
                     .filter(SocialPlugin::isEnabled)
                     .forEach(plugin -> postsByPlugin.put(plugin, List.of()));
         }
@@ -103,9 +103,11 @@ public final class SocialService {
     }
 
     public Stream<String> getServiceNames() {
-        return postsByPlugin.keySet().stream()
-                .filter(SocialPlugin::isEnabled)
-                .map(SocialPlugin::getServiceName);
+        synchronized (postsByPlugin) {
+            return postsByPlugin.keySet().stream()
+                    .filter(SocialPlugin::isEnabled)
+                    .map(SocialPlugin::getServiceName);
+        }
     }
 
     @PreDestroy
@@ -129,7 +131,9 @@ public final class SocialService {
                             .map(this::checkImages)
                             .toList();
                     if (!posts.isEmpty()) {
-                        postsByPlugin.put(socialPlugin, List.copyOf(posts));
+                        synchronized(postsByPlugin) {
+                            postsByPlugin.put(socialPlugin, List.copyOf(posts));
+                        }
                     }
                 });
     }
@@ -157,23 +161,27 @@ public final class SocialService {
     }
 
     public List<Post> getPosts(final int limit) {
-        return postsByPlugin.values()
-                .parallelStream()
-                .flatMap(List::stream)
-                .sorted()
-                .limit(limit <= 0 ? MAX_POSTS : limit)
-                .collect(Collectors.toCollection(ArrayList::new));
+        synchronized (postsByPlugin) {
+            return postsByPlugin.values()
+                    .parallelStream()
+                    .flatMap(List::stream)
+                    .sorted()
+                    .limit(limit <= 0 ? MAX_POSTS : limit)
+                    .collect(Collectors.toCollection(ArrayList::new));
+        }
     }
 
     public void hidePost(@NotNull final Post postToHide) {
         LOGGER.warn("Hiding post (id={}, profile={}, author={})",
                 postToHide.id(), postToHide.profile(), postToHide.author());
-        for (final Map.Entry<SocialPlugin, List<Post>> entrySet : postsByPlugin.entrySet()) {
-            final var posts = entrySet.getValue()
-                    .parallelStream()
-                    .filter(post -> !post.id().equals(postToHide.id()))
-                    .toList();
-            postsByPlugin.put(entrySet.getKey(), posts);
+        synchronized (postsByPlugin) {
+            for (final Map.Entry<SocialPlugin, List<Post>> entrySet : postsByPlugin.entrySet()) {
+                final var posts = entrySet.getValue()
+                        .parallelStream()
+                        .filter(post -> !post.id().equals(postToHide.id()))
+                        .toList();
+                postsByPlugin.put(entrySet.getKey(), posts);
+            }
         }
         hiddenPosts.add(postToHide.id());
         saveHiddenPostIds();
@@ -182,12 +190,14 @@ public final class SocialService {
     public void blockProfile(@NotNull final Post postToHide) {
         LOGGER.warn("Block profile (id={}, profile={}, author={})",
                 postToHide.id(), postToHide.profile(), postToHide.author());
-        for (final Map.Entry<SocialPlugin, List<Post>> entrySet : postsByPlugin.entrySet()) {
-            final var posts = entrySet.getValue()
-                    .parallelStream()
-                    .filter(post -> !post.profile().equals(postToHide.profile()))
-                    .toList();
-            postsByPlugin.put(entrySet.getKey(), posts);
+        synchronized (postsByPlugin) {
+            for (final Map.Entry<SocialPlugin, List<Post>> entrySet : postsByPlugin.entrySet()) {
+                final var posts = entrySet.getValue()
+                        .parallelStream()
+                        .filter(post -> !post.profile().equals(postToHide.profile()))
+                        .toList();
+                postsByPlugin.put(entrySet.getKey(), posts);
+            }
         }
         blockedProfiles.add(postToHide.profile());
         saveBlockedProfiles();
