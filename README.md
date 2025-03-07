@@ -190,12 +190,12 @@ To modify the default configuration values, just specify environment variables w
 
 The environment variables will override the default values. Some default values might be too long to be displayed in this table. They are marked with a number in square brackets and can be looked up in the following list:
 
-1. `https://%s/xrpc/app.bsky.feed.searchPosts?q=%s&limit=%d`
-2. `https://%s.cfp.dev/api/public/schedules/%s`
-3. `https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.%d/`
-4. `https://%s/api/v1/timelines/tag/%s?limit=%d`
-5. `https://sessionize.com/api/v2/%s/view/Sessions`
-6. `https://sessionize.com/api/v2/%s/view/Speakers`
+1. `https://${instance}/xrpc/app.bsky.feed.searchPosts?q=%23${hashtag}&tag=${hashtag}&limit=${limit}`
+2. `https://${event}.cfp.dev/api/public/schedules/${weekday}`
+3. `https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.${event}`
+4. `https://${instance}/api/v1/timelines/tag/${hashtag}?limit=${limit}`
+5. `https://sessionize.com/api/v2/${event}/view/Sessions`
+6. `https://sessionize.com/api/v2/${event}/view/Speakers`
 
 The `APUS_EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` and `PnW`. Examples:
 

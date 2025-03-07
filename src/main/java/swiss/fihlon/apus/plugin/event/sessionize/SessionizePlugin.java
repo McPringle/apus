@@ -33,6 +33,7 @@ import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
 import swiss.fihlon.apus.util.DownloadUtil;
+import swiss.fihlon.apus.util.TemplateUtil;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -57,8 +58,8 @@ public final class SessionizePlugin implements EventPlugin {
 
     public SessionizePlugin(@NotNull final AppConfig appConfig) {
         this.eventId = appConfig.sessionize().eventId();
-        this.eventApi = appConfig.sessionize().eventApi();
-        this.speakerApi = appConfig.sessionize().speakerApi();
+        this.eventApi = TemplateUtil.replaceVariables(appConfig.sessionize().eventApi(), Map.of("event", eventId));
+        this.speakerApi = TemplateUtil.replaceVariables(appConfig.sessionize().speakerApi(), Map.of("event", eventId));
     }
 
     @Override
@@ -74,7 +75,7 @@ public final class SessionizePlugin implements EventPlugin {
         final ArrayList<Session> sessions = new ArrayList<>();
         String lastSessionId = "";
         try {
-            final String json = DownloadUtil.getString(String.format(eventApi, eventId));
+            final String json = DownloadUtil.getString(eventApi);
             final JSONObject jsonObject = new JSONArray(json).getJSONObject(0);
             final JSONArray sessionizeSessions = jsonObject.getJSONArray("sessions");
             for (int counter = 0; counter < sessionizeSessions.length(); counter++) {
@@ -94,7 +95,7 @@ public final class SessionizePlugin implements EventPlugin {
         final Map<String, Speaker> allSpeakers = new HashMap<>();
         String lastSpeakerId = "";
         try {
-            final String json = DownloadUtil.getString(String.format(speakerApi, eventId));
+            final String json = DownloadUtil.getString(speakerApi);
             final JSONArray speakerArray = new JSONArray(json);
             for (int counter = 0; counter < speakerArray.length(); counter++) {
                 final JSONObject speakerData = speakerArray.getJSONObject(counter);

@@ -33,6 +33,7 @@ import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
 import swiss.fihlon.apus.util.DownloadUtil;
+import swiss.fihlon.apus.util.TemplateUtil;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -44,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Stream;
 
 @Service
@@ -56,7 +58,7 @@ public final class DoagPlugin implements EventPlugin {
 
     public DoagPlugin(@NotNull final AppConfig appConfig) {
         this.eventId = appConfig.doag().eventId();
-        this.eventApi = appConfig.doag().eventApi();
+        this.eventApi = TemplateUtil.replaceVariables(appConfig.doag().eventApi(), Map.of("event", Integer.toString(eventId)));
     }
 
     @Override
@@ -69,7 +71,7 @@ public final class DoagPlugin implements EventPlugin {
         final ArrayList<Session> sessions = new ArrayList<>();
         int lastSlotId = 0;
         try {
-            final String json = DownloadUtil.getString(String.format(eventApi, eventId));
+            final String json = DownloadUtil.getString(eventApi);
             final JSONObject jsonObject = new JSONObject(json);
             final JSONObject schedule = jsonObject.getJSONObject("schedule");
             final JSONObject conference = schedule.getJSONObject("conference");

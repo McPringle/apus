@@ -59,7 +59,7 @@ class DoagPluginTest {
     @Test
     void getSessions() {
         final var appConfig = mock(AppConfig.class);
-        final var doagConfig = new DoagConfig(1, "file:src/test/resources/testdata/DOAG.json?eventId=%d");
+        final var doagConfig = new DoagConfig(1, "file:src/test/resources/testdata/DOAG.json?eventId=${event}");
         when(appConfig.doag()).thenReturn(doagConfig);
 
         final var doagPlugin = new DoagPlugin(appConfig);
@@ -88,7 +88,7 @@ class DoagPluginTest {
     @Test
     void exceptionWithBrokenTitle() {
         final var appConfig = mock(AppConfig.class);
-        final var doagConfig = new DoagConfig(1, "file:src/test/resources/testdata/DOAG-broken-title.json?eventId=%d");
+        final var doagConfig = new DoagConfig(1, "file:src/test/resources/testdata/DOAG-broken-title.json?eventId=${event}");
         when(appConfig.doag()).thenReturn(doagConfig);
 
         final var doagPlugin = new DoagPlugin(appConfig);
@@ -99,7 +99,7 @@ class DoagPluginTest {
     @Test
     void exceptionWithBlankTitle() {
         final var appConfig = mock(AppConfig.class);
-        final var doagConfig = new DoagConfig(1, "file:src/test/resources/testdata/DOAG-blank-title.json?eventId=%d");
+        final var doagConfig = new DoagConfig(1, "file:src/test/resources/testdata/DOAG-blank-title.json?eventId=${event}");
         when(appConfig.doag()).thenReturn(doagConfig);
 
         final var doagPlugin = new DoagPlugin(appConfig);

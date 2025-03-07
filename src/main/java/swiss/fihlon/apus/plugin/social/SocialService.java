@@ -105,8 +105,7 @@ public final class SocialService {
     public Stream<String> getServiceNames() {
         return postsByPlugin.keySet().stream()
                 .filter(SocialPlugin::isEnabled)
-                .map(SocialPlugin::getServiceName)
-                .sorted();
+                .map(SocialPlugin::getServiceName);
     }
 
     @PreDestroy

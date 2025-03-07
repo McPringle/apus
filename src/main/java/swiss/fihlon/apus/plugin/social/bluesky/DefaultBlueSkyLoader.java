@@ -22,6 +22,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.util.DownloadUtil;
+import swiss.fihlon.apus.util.TemplateUtil;
+
+import java.util.Map;
 
 @Service
 public final class DefaultBlueSkyLoader implements BlueSkyLoader {
@@ -31,10 +34,11 @@ public final class DefaultBlueSkyLoader implements BlueSkyLoader {
     public JSONArray getPosts(@NotNull final String instance,
                               @NotNull final String hashtag,
                               @NotNull final String postAPI,
-                              final int postLimit)
+                              final int limit)
             throws BlueSkyException {
         try {
-            final var url = String.format(postAPI, instance, hashtag, postLimit);
+            final var url = TemplateUtil.replaceVariables(
+                    postAPI, Map.of("instance", instance, "hashtag", hashtag, "limit", Integer.toString(limit)));
             final var json = DownloadUtil.getString(url);
             return new JSONObject(json).getJSONArray("posts");
         } catch (final Exception e) {

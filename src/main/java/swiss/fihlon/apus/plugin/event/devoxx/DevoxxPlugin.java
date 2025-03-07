@@ -32,6 +32,7 @@ import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
 import swiss.fihlon.apus.util.DownloadUtil;
+import swiss.fihlon.apus.util.TemplateUtil;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -39,6 +40,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Stream;
 
 
@@ -71,7 +73,9 @@ public final class DevoxxPlugin implements EventPlugin {
         final var sessions = new ArrayList<Session>();
         var lastSessionId = "";
         try {
-            final var json = DownloadUtil.getString(String.format(eventApi, eventId, weekday.toLowerCase(Locale.getDefault())));
+            final var url = TemplateUtil.replaceVariables(
+                    eventApi, Map.of("event", eventId, "weekday", weekday.toLowerCase(Locale.getDefault())));
+            final var json = DownloadUtil.getString(url);
             final var devoxxSessions = new JSONArray(json);
             for (int counter = 0; counter < devoxxSessions.length(); counter++) {
                 final var sessionData = devoxxSessions.getJSONObject(counter);

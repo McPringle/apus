@@ -38,6 +38,7 @@ For questions and support requests, please use
 * Image configuration is now applied for all social media plugins
 * To enable/disable demo mode, use `APUS_DEMO` instead of `APUS_EVENT_DEMO_ROOM_COUNT` and `APUS_SOCIAL_DEMO_POST_COUNT`
 * The `APUS_FILTER_*` environment variables have been renamed to `APUS_SOCIAL_FILTER_*`
+* Replaced placeholders in URL templates with variable names
 
 ---
 
