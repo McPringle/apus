@@ -88,9 +88,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
 
             for (var i = 0; i < jsonPosts.length(); i++) {
                 final var post = jsonPosts.getJSONObject(i);
-                if (hasTag(post, hashtag)) {
-                    posts.add(createPost(post));
-                }
+                posts.add(createPost(post));
             }
 
             return posts.stream();
@@ -98,28 +96,6 @@ public final class BlueSkyPlugin implements SocialPlugin {
             LOGGER.error(e.getMessage(), e);
             return Stream.of();
         }
-    }
-
-    private boolean hasTag(final @NotNull JSONObject post, @NotNull final String hashtag) {
-        final var postRecord = post.getJSONObject("record");
-        if (postRecord.has("facets")) {
-            final var facets = postRecord.getJSONArray("facets");
-            for (var i = 0; i < facets.length(); i++) {
-                final var facet = facets.getJSONObject(i);
-                final var features = facet.getJSONArray("features");
-                for (var j = 0; j < features.length(); j++) {
-                    final var feature = features.getJSONObject(j);
-                    final var type = feature.getString("$type");
-                    if (type.equals("app.bsky.richtext.facet#tag")) {
-                        final var tag = feature.getString("tag");
-                        if (tag.equalsIgnoreCase(hashtag)) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     @NotNull
