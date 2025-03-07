@@ -35,8 +35,10 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
@@ -50,7 +52,6 @@ public final class SocialService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
 
     private final ScheduledFuture<?> updateScheduler;
-    private final List<SocialPlugin> socialPlugins;
     private final List<String> hashtags;
     private final int filterLength;
     private final boolean filterReplies;
@@ -60,13 +61,12 @@ public final class SocialService {
     private final int imageLimit;
     private final Set<String> hiddenPosts = new HashSet<>();
     private final Set<String> blockedProfiles = new HashSet<>();
-    private List<Post> posts = List.of();
+    private final Map<SocialPlugin, List<Post>> postsByPlugin = new HashMap<>();
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
                          @NotNull final AppConfig appConfig,
                          @NotNull final List<SocialPlugin> socialPlugins) {
         final var demoMode = appConfig.demoMode();
-        this.socialPlugins = demoMode ? List.of(new SocialDemoPlugin(appConfig)) : socialPlugins;
         hashtags = Arrays.stream(appConfig.social().hashtags().split(","))
                 .filter(hashtag -> !hashtag.isBlank())
                 .map(String::trim)
@@ -82,6 +82,15 @@ public final class SocialService {
         loadBlockedProfiles();
         imagesEnabled = appConfig.social().imagesEnabled();
         imageLimit = appConfig.social().imageLimit();
+
+        if (demoMode) {
+            postsByPlugin.put(new SocialDemoPlugin(appConfig), List.of());
+        } else {
+            socialPlugins.parallelStream()
+                    .filter(SocialPlugin::isEnabled)
+                    .forEach(plugin -> postsByPlugin.put(plugin, List.of()));
+        }
+
         if (!hashtags.isEmpty() && socialPlugins.stream().anyMatch(SocialPlugin::isEnabled)) {
             updatePosts();
             updateScheduler = taskScheduler.scheduleAtFixedRate(this::updatePosts, UPDATE_FREQUENCY);
@@ -92,7 +101,7 @@ public final class SocialService {
     }
 
     public Stream<String> getServiceNames() {
-        return socialPlugins.stream()
+        return postsByPlugin.keySet().stream()
                 .filter(SocialPlugin::isEnabled)
                 .map(SocialPlugin::getServiceName)
                 .sorted();
@@ -104,24 +113,27 @@ public final class SocialService {
     }
 
     private void updatePosts() {
-        posts = Stream.concat(
-                posts.stream(),
-                socialPlugins.parallelStream()
-                        .filter(SocialPlugin::isEnabled)
-                        .flatMap(plugin -> plugin.getPosts(hashtags))
-                        .filter(post -> !hiddenPosts.contains(post.id()))
-                        .filter(post -> !blockedProfiles.contains(post.profile()))
-                        .filter(post -> !filterSensitive || !post.isSensitive())
-                        .filter(post -> !filterReplies || !post.isReply())
-                        .filter(post -> filterLength <= 0 || HtmlUtil.extractText(post.html()).length() <= filterLength)
-                        .filter(this::checkWordFilter)
-                        .map(this::checkImages))
-                .sorted()
-                .distinct()
-                .limit(MAX_POSTS)
-                .collect(Collectors.toCollection(ArrayList::new));
+        postsByPlugin.keySet()
+                .parallelStream()
+                .forEach(socialPlugin -> {
+                    final var posts = socialPlugin.getPosts(hashtags)
+                            .filter(post -> !hiddenPosts.contains(post.id()))
+                            .filter(post -> !blockedProfiles.contains(post.profile()))
+                            .filter(post -> !filterSensitive || !post.isSensitive())
+                            .filter(post -> !filterReplies || !post.isReply())
+                            .filter(post -> filterLength <= 0 || HtmlUtil.extractText(post.html()).length() <= filterLength)
+                            .filter(this::checkWordFilter)
+                            .sorted()
+                            .limit(MAX_POSTS)
+                            .map(this::checkImages)
+                            .toList();
+                    if (!posts.isEmpty()) {
+                        postsByPlugin.put(socialPlugin, List.copyOf(posts));
+                    }
+                });
     }
 
+    @NotNull
     private Post checkImages(@NotNull final Post post) {
         if (imagesEnabled && imageLimit == 0 || post.images().isEmpty()) {
             return post;
@@ -144,28 +156,39 @@ public final class SocialService {
     }
 
     public List<Post> getPosts(final int limit) {
-        synchronized (this) {
-            if (limit <= 0 || posts.isEmpty()) {
-                return List.copyOf(posts);
-            }
-            final int toIndex = Math.min(limit, posts.size());
-            return List.copyOf(posts.subList(0, toIndex));
-        }
+        return postsByPlugin.values()
+                .parallelStream()
+                .flatMap(List::stream)
+                .sorted()
+                .limit(limit <= 0 ? MAX_POSTS : limit)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public void hidePost(@NotNull final Post post) {
+    public void hidePost(@NotNull final Post postToHide) {
         LOGGER.warn("Hiding post (id={}, profile={}, author={})",
-                post.id(), post.profile(), post.author());
-        posts.remove(post);
-        hiddenPosts.add(post.id());
+                postToHide.id(), postToHide.profile(), postToHide.author());
+        for (final Map.Entry<SocialPlugin, List<Post>> entrySet : postsByPlugin.entrySet()) {
+            final var posts = entrySet.getValue()
+                    .parallelStream()
+                    .filter(post -> !post.id().equals(postToHide.id()))
+                    .toList();
+            postsByPlugin.put(entrySet.getKey(), posts);
+        }
+        hiddenPosts.add(postToHide.id());
         saveHiddenPostIds();
     }
 
-    public void blockProfile(@NotNull final Post post) {
+    public void blockProfile(@NotNull final Post postToHide) {
         LOGGER.warn("Block profile (id={}, profile={}, author={})",
-                post.id(), post.profile(), post.author());
-        posts.removeIf(p -> p.profile().equals(post.profile()));
-        blockedProfiles.add(post.profile());
+                postToHide.id(), postToHide.profile(), postToHide.author());
+        for (final Map.Entry<SocialPlugin, List<Post>> entrySet : postsByPlugin.entrySet()) {
+            final var posts = entrySet.getValue()
+                    .parallelStream()
+                    .filter(post -> !post.profile().equals(postToHide.profile()))
+                    .toList();
+            postsByPlugin.put(entrySet.getKey(), posts);
+        }
+        blockedProfiles.add(postToHide.profile());
         saveBlockedProfiles();
     }
 
