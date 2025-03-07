@@ -131,7 +131,7 @@ public final class SocialService {
                             .map(this::checkImages)
                             .toList();
                     if (!posts.isEmpty()) {
-                        synchronized(postsByPlugin) {
+                        synchronized (postsByPlugin) {
                             postsByPlugin.put(socialPlugin, List.copyOf(posts));
                         }
                     }
