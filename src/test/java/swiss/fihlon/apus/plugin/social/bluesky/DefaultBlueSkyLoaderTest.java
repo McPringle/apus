@@ -31,7 +31,7 @@ class DefaultBlueSkyLoaderTest {
     @RetryingTest(3)
     void getPosts() throws BlueSkyException {
         final JSONArray jsonPosts = new DefaultBlueSkyLoader()
-                .getPosts("api.bsky.app", "java",
+                .getPostsWithHashtag("api.bsky.app", "java",
                         "https://${instance}/xrpc/app.bsky.feed.searchPosts?q=%23${hashtag}&tag=${hashtag}&limit=${limit}", 30);
         assertNotNull(jsonPosts);
         assertFalse(jsonPosts.isEmpty());
@@ -41,7 +41,7 @@ class DefaultBlueSkyLoaderTest {
     void throwException() {
         final var exception = assertThrows(BlueSkyException.class,
                 () -> new DefaultBlueSkyLoader()
-                        .getPosts("non.existent.server", "java",
+                        .getPostsWithHashtag("non.existent.server", "java",
                                 "https://${instance}/xrpc/app.bsky.feed.searchPosts?q=%23${hashtag}&tag=${hashtag}&limit=${limit}", 30));
         assertEquals("Unable to load posts with hashtag 'java' from BlueSky instance 'non.existent.server'", exception.getMessage());
     }

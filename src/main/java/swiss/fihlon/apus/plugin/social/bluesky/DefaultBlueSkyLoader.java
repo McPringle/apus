@@ -31,18 +31,35 @@ public final class DefaultBlueSkyLoader implements BlueSkyLoader {
 
     @Override
     @NotNull
-    public JSONArray getPosts(@NotNull final String instance,
-                              @NotNull final String hashtag,
-                              @NotNull final String postAPI,
-                              final int limit)
+    public JSONArray getPostsWithHashtag(@NotNull final String instance,
+                                         @NotNull final String hashtag,
+                                         @NotNull final String hashtagUrl,
+                                         final int limit)
             throws BlueSkyException {
         try {
             final var url = TemplateUtil.replaceVariables(
-                    postAPI, Map.of("instance", instance, "hashtag", hashtag, "limit", Integer.toString(limit)));
+                    hashtagUrl, Map.of("instance", instance, "hashtag", hashtag, "limit", Integer.toString(limit)));
             final var json = DownloadUtil.getString(url);
             return new JSONObject(json).getJSONArray("posts");
         } catch (final Exception e) {
             throw new BlueSkyException(String.format("Unable to load posts with hashtag '%s' from BlueSky instance '%s'", hashtag, instance), e);
+        }
+    }
+
+    @Override
+    @NotNull
+    public JSONArray getPostsWithMention(@NotNull final String instance,
+                                         @NotNull final String profile,
+                                         @NotNull final String mentionsUrl,
+                                         final int limit)
+            throws BlueSkyException {
+        try {
+            final var url = TemplateUtil.replaceVariables(
+                    mentionsUrl, Map.of("instance", instance, "profile", profile, "limit", Integer.toString(limit)));
+            final var json = DownloadUtil.getString(url);
+            return new JSONObject(json).getJSONArray("posts");
+        } catch (final Exception e) {
+            throw new BlueSkyException(String.format("Unable to load posts with profile '%s' from BlueSky instance '%s'", profile, instance), e);
         }
     }
 

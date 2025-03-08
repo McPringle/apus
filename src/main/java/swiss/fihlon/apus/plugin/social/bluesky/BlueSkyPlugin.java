@@ -44,7 +44,9 @@ public final class BlueSkyPlugin implements SocialPlugin {
 
     private final BlueSkyLoader blueSkyLoader;
     private final String instance;
-    private final String postAPI;
+    private final String hashtagUrl;
+    private final String mentionsUrl;
+    private final String profile;
     private final int postLimit;
 
     public BlueSkyPlugin(@NotNull final BlueSkyLoader blueSkyLoader,
@@ -52,7 +54,9 @@ public final class BlueSkyPlugin implements SocialPlugin {
         this.blueSkyLoader = blueSkyLoader;
         final var blueSkyConfig = appConfig.blueSky();
         this.instance = blueSkyConfig.instance();
-        this.postAPI = blueSkyConfig.postAPI();
+        this.hashtagUrl = blueSkyConfig.hashtagUrl();
+        this.mentionsUrl = blueSkyConfig.mentionsUrl();
+        this.profile = blueSkyConfig.profile();
         this.postLimit = blueSkyConfig.postLimit();
     }
 
@@ -65,26 +69,55 @@ public final class BlueSkyPlugin implements SocialPlugin {
     @Override
     public boolean isEnabled() {
         final var instanceOk = instance != null && !instance.isBlank();
-        final var postAPIOk = postAPI != null && !postAPI.isBlank();
-        return instanceOk && postAPIOk;
+        final var hashtagUrlOk = hashtagUrl != null && !hashtagUrl.isBlank();
+        return instanceOk && hashtagUrlOk;
     }
 
     @Override
     @NotNull
     public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
-        return hashtags.parallelStream()
-                .filter(hashtag -> !hashtag.isBlank())
-                .flatMap(this::getPosts);
+        return Stream.concat(
+                        hashtags.parallelStream()
+                                .filter(hashtag -> !hashtag.isBlank())
+                                .flatMap(this::getPostsWithHashtag),
+                        getPostsWithMention()
+                )
+                .distinct();
     }
 
     @NotNull
-    public Stream<Post> getPosts(@NotNull final String hashtag) {
+    private Stream<Post> getPostsWithHashtag(@NotNull final String hashtag) {
         try {
             final var posts = new ArrayList<Post>();
 
             LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
-            final var jsonPosts = blueSkyLoader.getPosts(instance, hashtag, postAPI, postLimit);
+            final var jsonPosts = blueSkyLoader.getPostsWithHashtag(instance, hashtag, hashtagUrl, postLimit);
             LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", jsonPosts.length(), hashtag, instance);
+
+            for (var i = 0; i < jsonPosts.length(); i++) {
+                final var post = jsonPosts.getJSONObject(i);
+                posts.add(createPost(post));
+            }
+
+            return posts.stream();
+        } catch (final BlueSkyException e) {
+            LOGGER.error(e.getMessage(), e);
+            return Stream.of();
+        }
+    }
+
+    @NotNull
+    private Stream<Post> getPostsWithMention() {
+        if (mentionsUrl.isBlank() || profile.isBlank()) {
+            return Stream.of();
+        }
+
+        try {
+            final var posts = new ArrayList<Post>();
+
+            LOGGER.info("Starting download of posts with mention '{}' from instance '{}'", profile, instance);
+            final var jsonPosts = blueSkyLoader.getPostsWithMention(instance, profile, mentionsUrl, postLimit);
+            LOGGER.info("Successfully downloaded {} posts with mention '{}' from instance '{}'", jsonPosts.length(), profile, instance);
 
             for (var i = 0; i < jsonPosts.length(); i++) {
                 final var post = jsonPosts.getJSONObject(i);

@@ -22,6 +22,12 @@ import org.json.JSONArray;
 
 public interface BlueSkyLoader {
 
-    @NotNull JSONArray getPosts(@NotNull String instance, @NotNull String hashtag, @NotNull String postAPI, int postLimit) throws BlueSkyException;
+    @NotNull
+    JSONArray getPostsWithHashtag(@NotNull String instance, @NotNull String hashtag, @NotNull String hashtagUrl, int postLimit)
+            throws BlueSkyException;
+
+    @NotNull
+    JSONArray getPostsWithMention(@NotNull String instance, @NotNull String profile, @NotNull String mentionsUrl, int postLimit)
+            throws BlueSkyException;
 
 }

@@ -6,19 +6,29 @@
       "description" : "The password to get admin access (empty = disabled)."
     },
     {
+      "name" : "apus.bluesky.hashtagURL",
+      "type" : "java.lang.String",
+      "description" : "The URL of the BlueSky API to get the posts containing a hashtag."
+    },
+    {
       "name" : "apus.bluesky.instance",
       "type" : "java.lang.String",
       "description" : "The BlueSky instance used to read the posts from."
     },
     {
-      "name" : "apus.bluesky.postAPI",
+      "name" : "apus.bluesky.mentionsURL",
       "type" : "java.lang.String",
-      "description" : "The URL of the BlueSky API to read the posts."
+      "description" : "The URL of the BlueSky API to get the posts mentioning a profile."
     },
     {
       "name" : "apus.bluesky.postLimit",
       "type" : "java.lang.Integer",
       "description" : "The limit for the number of BlueSky posts when accessing the API."
+    },
+    {
+      "name" : "apus.bluesky.profile",
+      "type" : "java.lang.String",
+      "description" : "The profile (without the @) of a BlueSky user to get the mentions (empty = disabled)."
     },
     {
       "name" : "apus.demoMode",

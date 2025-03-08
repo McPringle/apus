@@ -55,7 +55,7 @@ class BlueSkyPluginTest {
     @Test
     void getServiceName() {
         final var appConfig = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "", "", "", 0);
         when(appConfig.blueSky()).thenReturn(blueSkyConfig);
 
         final var blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
@@ -83,9 +83,9 @@ class BlueSkyPluginTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(@Nullable final String instance, @Nullable final String postAPI) {
+    void isDisabled(@Nullable final String instance, @Nullable final String hashtagUrl) {
         final var appConfig = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig(instance, postAPI, 30);
+        final var blueSkyConfig = new BlueSkyConfig(instance, hashtagUrl, "", "", 30);
         when(appConfig.blueSky()).thenReturn(blueSkyConfig);
 
         final var blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
@@ -95,7 +95,7 @@ class BlueSkyPluginTest {
     @Test
     void isEnabled() {
         final var appConfig = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "test", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "test", "", "", 30);
         when(appConfig.blueSky()).thenReturn(blueSkyConfig);
 
         final var blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
@@ -121,7 +121,7 @@ class BlueSkyPluginTest {
     @MethodSource("provideDataForHashtagsTest")
     void getPostsWithHashtags(@NotNull final List<String> hashtags, final int expectedNumberOfPosts) {
         final var appConfig = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", "", "", 30);
         when(appConfig.blueSky()).thenReturn(blueSkyConfig);
 
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
@@ -134,7 +134,7 @@ class BlueSkyPluginTest {
     @Test
     void getPostsWithUnlimitedImages() {
         final var appConfig = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", "", "", 30);
         when(appConfig.blueSky()).thenReturn(blueSkyConfig);
 
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
@@ -159,7 +159,7 @@ class BlueSkyPluginTest {
     @Test
     void getPostsWithVideos() {
         final var appConfig = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", "", "", 30);
         when(appConfig.blueSky()).thenReturn(blueSkyConfig);
 
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
@@ -182,7 +182,7 @@ class BlueSkyPluginTest {
     @Test
     void getPostsCatchesException() {
         final var appConfig = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", "", "", 30);
         when(appConfig.blueSky()).thenReturn(blueSkyConfig);
 
         final MemoryAppender memoryAppender = new MemoryAppender();
@@ -203,7 +203,7 @@ class BlueSkyPluginTest {
     @Test
     void testReplyConversion() {
         final var appConfig = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", "", "", 30);
         when(appConfig.blueSky()).thenReturn(blueSkyConfig);
 
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
@@ -223,7 +223,11 @@ class BlueSkyPluginTest {
     private static final class TestBlueSkyLoader implements BlueSkyLoader {
 
         @Override
-        @NotNull public JSONArray getPosts(@NotNull String instance, @NotNull String hashtag, @NotNull String postAPI, int postLimit)
+        @NotNull
+        public JSONArray getPostsWithHashtag(@NotNull final String instance,
+                                             @NotNull final String hashtag,
+                                             @NotNull final String postAPI,
+                                             final int postLimit)
                 throws BlueSkyException {
             return switch (hashtag) {
                 case "foobar" -> new JSONArray(List.of(
@@ -250,6 +254,15 @@ class BlueSkyPluginTest {
                 case "broken" -> throw new BlueSkyException("This is an expected exception.", new RuntimeException("This is a faked cause."));
                 default -> new JSONArray(List.of());
             };
+        }
+
+        @Override
+        @NotNull
+        public JSONArray getPostsWithMention(@NotNull final String instance,
+                                             @NotNull final String profile,
+                                             @NotNull final String mentionsUrl,
+                final int postLimit) {
+            return new JSONArray();
         }
 
         private JSONObject createPost(final int i, @NotNull final String hashtag, boolean withVideo) {
@@ -314,7 +327,7 @@ class BlueSkyPluginTest {
     @Test
     void getPostsWithoutEmbed() {
         final var appConfig = mock(AppConfig.class);
-        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", 30);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", "", "", 30);
         when(appConfig.blueSky()).thenReturn(blueSkyConfig);
 
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new NoEmbedBlueSkyLoader(), appConfig);
@@ -332,12 +345,24 @@ class BlueSkyPluginTest {
     private static final class NoEmbedBlueSkyLoader implements BlueSkyLoader {
 
         @Override
-        @NotNull public JSONArray getPosts(@NotNull String instance, @NotNull String hashtag, @NotNull String postAPI, int postLimit) {
+        @NotNull public JSONArray getPostsWithHashtag(@NotNull final String instance,
+                                                      @NotNull final String hashtag,
+                                                      @NotNull final String postAPI,
+                                                      final int postLimit) {
             return new JSONArray(List.of(
                     createPost(1, hashtag),
                     createPost(2, hashtag),
                     createPost(3, hashtag)
             ));
+        }
+
+        @Override
+        @NotNull
+        public JSONArray getPostsWithMention(@NotNull final String instance,
+                                             @NotNull final String profile,
+                                             @NotNull final String mentionsUrl,
+                                             final int postLimit) {
+            return new JSONArray();
         }
 
         private JSONObject createPost(final int i, @NotNull final String hashtag) {
