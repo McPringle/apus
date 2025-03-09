@@ -1,7 +1,6 @@
 package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Svg;
 import com.vaadin.flow.component.html.Footer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,6 +8,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.ocpsoft.prettytime.PrettyTime;
 import swiss.fihlon.apus.social.Post;
+import swiss.fihlon.apus.util.TestUtil;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -162,12 +162,14 @@ class PostViewTest {
         final var components = getComponentsByClassName(footer, "source-logo");
         assertEquals(1, components.size());
 
-        final var svg = (Svg) components.getFirst();
-        // TODO find out how to identify the correct SVG was used #291
+        final var component = components.getFirst();
+        final var html = component.getElement().getOuterHTML();
         if (sourceLogo.isBlank()) {
-            assertFalse(svg.getElement().getOuterHTML().contains("<svg"));
+            assertFalse(html.contains("<svg"));
         } else {
-            assertTrue(svg.getElement().getOuterHTML().contains("<svg"));
+            final var svgCode = TestUtil.extractFirstHtmlTag(html, "svg");
+            final var expectedSvgCode = TestUtil.extractFirstHtmlTag(sourceLogo, "svg");
+            assertEquals(expectedSvgCode, svgCode);
         }
     }
 

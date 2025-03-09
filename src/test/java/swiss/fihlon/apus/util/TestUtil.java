@@ -19,6 +19,7 @@ package swiss.fihlon.apus.util;
 
 import com.vaadin.flow.component.Component;
 import org.jetbrains.annotations.NotNull;
+import org.jsoup.Jsoup;
 
 import java.util.List;
 
@@ -34,6 +35,14 @@ public final class TestUtil {
         return component.getChildren()
                 .filter(c -> c.getElement().getTag().equals(tagName))
                 .toList();
+    }
+
+    @NotNull
+    @SuppressWarnings("DataFlowIssue")
+    public static String extractFirstHtmlTag(@NotNull final String html, @NotNull final String tagName) {
+        final var document = Jsoup.parse(html);
+        final var svgElement = document.selectFirst(tagName);
+        return svgElement.html();
     }
 
     private TestUtil() {

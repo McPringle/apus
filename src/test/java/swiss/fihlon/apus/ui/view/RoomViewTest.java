@@ -28,6 +28,7 @@ import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
+import swiss.fihlon.apus.util.TestUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -128,7 +129,11 @@ class RoomViewTest {
                 assertEquals(0, trackChildren.size());
             } else {
                 assertEquals(1, trackChildren.size());
-                // TODO find out how to identify the correct SVG was used #291
+                final var component = trackChildren.getFirst();
+                final var html = component.getElement().getOuterHTML();
+                final var svgCode = TestUtil.extractFirstHtmlTag(html, "svg");
+                final var expectedSvgCode = TestUtil.extractFirstHtmlTag(track.svgCode(), "svg");
+                assertEquals(expectedSvgCode, svgCode);
             }
         }
     }
