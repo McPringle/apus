@@ -77,9 +77,6 @@ public final class EventDemoPlugin implements EventPlugin {
             final var startDateTime = todayAtMidnight.plusHours(hourCount);
             final var endDateTime = startDateTime.plusMinutes(50);
             for (int numberOfRoom = 0; numberOfRoom < ROOM_COUNT; numberOfRoom++) {
-                if (numberOfRoom > ROOM_COUNT / 2 && hourCount % 2 == 0) {
-                    continue;
-                }
                 final Room fakeRoom = fakeRooms.get(numberOfRoom);
                 final Speaker fakeSpeaker = new Speaker(faker.name().fullName(), faker.avatar().image());
                 final Session fakeSession = new Session(String.format("DEMO-%d-%d", hourCount, numberOfRoom),

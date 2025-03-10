@@ -48,10 +48,7 @@ class EventDemoPluginTest {
     }
 
     /**
-     * The plugin creates fake data for four rooms. It creates closed rooms
-     * (rooms without a session), too. Therefore, with 4 rooms we'll end up
-     * with 84 sessions instead of 96. 12 session slots not assigned (see
-     * `continue` statement in plugin).
+     * The plugin creates fake data for four rooms. Each room has 24 sessions.
      */
     @Test
     void getSessions() {
@@ -60,10 +57,9 @@ class EventDemoPluginTest {
 
         final var demoEventPlugin = new EventDemoPlugin(appConfig);
         final var sessions = demoEventPlugin.getSessions().toList();
-        assertEquals(84, sessions.size());
-
-        assertEquals(84, sessions.stream().map(Session::id).distinct().count());
-        assertEquals(84, sessions.stream().flatMap(session -> session.speakers().stream()).distinct().count());
+        assertEquals(96, sessions.size());
+        assertEquals(96, sessions.stream().map(Session::id).distinct().count());
+        assertEquals(96, sessions.stream().flatMap(session -> session.speakers().stream()).distinct().count());
         assertEquals(4, sessions.stream().map(Session::room).distinct().count());
     }
 }

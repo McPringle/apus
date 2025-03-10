@@ -63,17 +63,25 @@ class EventServiceTest {
                 new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, true), List.of(new TestEventPlugin()));
         final var roomsWithSessions = eventService.getRoomsWithSessions();
 
-        // The result should be four rooms
+        // There should be four rooms
         assertEquals(4, roomsWithSessions.size());
 
-        // There should be exactly 32 sessions from the EventDemoPlugin
-        final var sessionCount = roomsWithSessions.values()
+        // There should be only sessions from the EventDemoPlugin
+        final var nonDemoSessionCount = roomsWithSessions.values()
                 .stream()
                 .flatMap(List::stream)
                 .map(Session::id)
-                .filter(id -> id.startsWith("DEMO-"))
+                .filter(id -> !id.startsWith("DEMO-"))
                 .count();
-        assertEquals(32, sessionCount);
+        assertEquals(0, nonDemoSessionCount);
+
+        // There should be exactly 4 sessions per hour until the end of the day
+        final var sessionCount = roomsWithSessions.values()
+                .stream()
+                .mapToLong(List::size)
+                .sum();
+        final var expectedSessionCount = 4 * (24 - LocalDateTime.now().getHour());
+        assertEquals(expectedSessionCount, sessionCount);
     }
 
     @Test
