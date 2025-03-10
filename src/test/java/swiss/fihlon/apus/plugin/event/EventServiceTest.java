@@ -75,12 +75,12 @@ class EventServiceTest {
                 .count();
         assertEquals(0, nonDemoSessionCount);
 
-        // There should be exactly 4 sessions per hour until the end of the day
+        // There should be exactly 4 sessions per hour until the end of the day (talks are 50 minutes long)
         final var sessionCount = roomsWithSessions.values()
                 .stream()
                 .mapToLong(List::size)
                 .sum();
-        final var expectedSessionCount = 4 * (24 - LocalDateTime.now().getHour());
+        final var expectedSessionCount = 4 * (24 - LocalDateTime.now().getHour()) - (LocalDateTime.now().getMinute() >= 50 ? 4 : 0);
         assertEquals(expectedSessionCount, sessionCount);
     }
 
