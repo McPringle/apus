@@ -47,18 +47,40 @@ import static org.mockito.Mockito.when;
 
 class EventServiceTest {
 
-    static AppConfig mockConfiguration(@NotNull final Period dateAdjust) {
+    static AppConfig mockConfiguration(@NotNull final Period dateAdjust, boolean demoMode) {
         final var eventConfig = new EventConfig(dateAdjust, "", 60,
                 true, true, 0);
         final var appConfig = mock(AppConfig.class);
+        when(appConfig.demoMode()).thenReturn(demoMode);
         when(appConfig.event()).thenReturn(eventConfig);
         return appConfig;
     }
 
     @Test
+    void getRoomsWithSessionsInDemoMode() {
+        // TestEventPlugin should be ignored and replaced by EventDemoPlugin
+        final EventService eventService = new EventService(
+                new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, true), List.of(new TestEventPlugin()));
+        final var roomsWithSessions = eventService.getRoomsWithSessions();
+
+        // The result should be four rooms
+        assertEquals(4, roomsWithSessions.size());
+
+        // There should be exactly 32 sessions from the EventDemoPlugin
+        final var sessionCount = roomsWithSessions.values()
+                .stream()
+                .flatMap(List::stream)
+                .map(Session::id)
+                .filter(id -> id.startsWith("DEMO-"))
+                .count();
+        assertEquals(32, sessionCount);
+    }
+
+    @Test
     void getRoomsWithSessions() {
         // TestEventPlugin creates a shuffled list of sessions...
-        final EventService eventService = new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ZERO), List.of(new TestEventPlugin()));
+        final EventService eventService = new EventService(
+                new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, false), List.of(new TestEventPlugin()));
 
         // ...which is sorted and grouped by the EventService.
         final var roomsWithSessions = eventService.getRoomsWithSessions();
@@ -85,7 +107,8 @@ class EventServiceTest {
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
-        final var eventService = new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ZERO), List.of(new DisabledEventPlugin()));
+        final var eventService = new EventService(
+                new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, false), List.of(new DisabledEventPlugin()));
         eventService.stopUpdateScheduler();
         memoryAppender.stop();
 
@@ -96,7 +119,8 @@ class EventServiceTest {
     @Test
     void getSessionsWithDateAdjust() {
         final var expectedDate = LocalDate.now().plusDays(10);
-        final var eventService = new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ofDays(10)), List.of(new NowEventPlugin()));
+        final var eventService = new EventService(
+                new NoOpTaskScheduler(), mockConfiguration(Period.ofDays(10), false), List.of(new NowEventPlugin()));
         final var roomsWithSessions = eventService.getRoomsWithSessions();
         for (final var sessions : roomsWithSessions.values()) {
             for (final var session : sessions) {
@@ -113,7 +137,7 @@ class EventServiceTest {
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
-        new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ZERO), List.of(new ExceptionEventPlugin()));
+        new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, false), List.of(new ExceptionEventPlugin()));
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.searchMessages("Failed to import sessions", Level.ERROR).size();
