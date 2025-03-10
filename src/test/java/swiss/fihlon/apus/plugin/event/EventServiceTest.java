@@ -103,7 +103,7 @@ class EventServiceTest {
     void noEventPluginEnabled() {
         final MemoryAppender memoryAppender = new MemoryAppender();
         memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
-        @SuppressWarnings("LoggerInitializedWithForeignClass") final Logger logger = (Logger) LoggerFactory.getLogger(EventService.class);
+        final Logger logger = (Logger) LoggerFactory.getLogger(EventService.class);
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
@@ -133,7 +133,7 @@ class EventServiceTest {
     void importExceptionHandling() {
         final MemoryAppender memoryAppender = new MemoryAppender();
         memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
-        @SuppressWarnings("LoggerInitializedWithForeignClass") final Logger logger = (Logger) LoggerFactory.getLogger(EventService.class);
+        final Logger logger = (Logger) LoggerFactory.getLogger(EventService.class);
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
