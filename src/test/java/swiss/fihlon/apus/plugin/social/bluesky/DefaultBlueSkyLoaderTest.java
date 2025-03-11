@@ -20,30 +20,52 @@ package swiss.fihlon.apus.plugin.social.bluesky;
 import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.RetryingTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import swiss.fihlon.apus.configuration.AppConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@SpringBootTest
 class DefaultBlueSkyLoaderTest {
 
+    @Autowired
+    private AppConfig appConfig;
+
     @RetryingTest(3)
-    void getPosts() throws BlueSkyException {
+    void getPostsWithHashtag() throws BlueSkyException {
         final JSONArray jsonPosts = new DefaultBlueSkyLoader()
-                .getPostsWithHashtag("api.bsky.app", "java",
-                        "https://${instance}/xrpc/app.bsky.feed.searchPosts?q=%23${hashtag}&tag=${hashtag}&limit=${limit}", 30);
+                .getPostsWithHashtag(appConfig.blueSky().instance(), "java", appConfig.blueSky().hashtagUrl(), 30);
         assertNotNull(jsonPosts);
         assertFalse(jsonPosts.isEmpty());
     }
 
     @Test
-    void throwException() {
+    void getPostsWithHashtagShouldThrowException() {
         final var exception = assertThrows(BlueSkyException.class,
                 () -> new DefaultBlueSkyLoader()
-                        .getPostsWithHashtag("non.existent.server", "java",
-                                "https://${instance}/xrpc/app.bsky.feed.searchPosts?q=%23${hashtag}&tag=${hashtag}&limit=${limit}", 30));
+                        .getPostsWithHashtag("non.existent.server", "java", appConfig.blueSky().hashtagUrl(), 30));
         assertEquals("Unable to load posts with hashtag 'java' from BlueSky instance 'non.existent.server'", exception.getMessage());
+    }
+
+
+    @RetryingTest(3)
+    void getPostsWithMention() throws BlueSkyException {
+        final JSONArray jsonPosts = new DefaultBlueSkyLoader()
+                .getPostsWithMention(appConfig.blueSky().instance(), "jugch.bsky.social", appConfig.blueSky().mentionsUrl(), 30);
+        assertNotNull(jsonPosts);
+        assertFalse(jsonPosts.isEmpty());
+    }
+
+    @Test
+    void getPostsWithMentionShouldThrowException() {
+        final var exception = assertThrows(BlueSkyException.class,
+                () -> new DefaultBlueSkyLoader()
+                        .getPostsWithMention("non.existent.server", "jugch.bsky.social", appConfig.blueSky().mentionsUrl(), 30));
+        assertEquals("Unable to load posts with profile 'jugch.bsky.social' from BlueSky instance 'non.existent.server'", exception.getMessage());
     }
 
 }
