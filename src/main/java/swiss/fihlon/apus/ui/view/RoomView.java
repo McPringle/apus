@@ -38,46 +38,54 @@ import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 
 import java.time.Duration;
-import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @CssImport(value = "./themes/apus/views/room-view.css")
 public final class RoomView extends Div {
 
+    private final ZoneId timezone;
     private final transient Room room;
     private final String title;
     private final transient List<Speaker> speakers;
-    private final LocalTime startTime;
-    private final LocalTime endTime;
+    private final ZonedDateTime startTime;
+    private final ZonedDateTime endTime;
     private final Language language;
     private final transient Track track;
 
     private RoomStyle roomStyle = RoomStyle.NONE;
 
-    public RoomView(@NotNull final Room room) {
-        this(room, null, List.of(), null, null, null, null);
+    public RoomView(@NotNull final ZoneId timezone,
+                    @NotNull final Room room) {
+        this(timezone, room, null, List.of(), null, null, null, null);
     }
 
-    public RoomView(@NotNull final Session session) {
+    public RoomView(@NotNull final ZoneId timezone,
+                    @NotNull final Session session) {
         this(
+                timezone,
                 session.room(),
                 session.title(),
                 session.speakers(),
-                session.startDate().toLocalTime(),
-                session.endDate().toLocalTime(),
+                session.startDate(),
+                session.endDate(),
                 session.language(),
                 session.track()
         );
     }
 
-    public RoomView(@NotNull final Room room,
+    @SuppressWarnings({ "java:S107", "ParameterNumber" })
+    public RoomView(@NotNull final ZoneId timezone,
+                    @NotNull final Room room,
                     @Nullable final String title,
                     @NotNull final List<Speaker> speakers,
-                    @Nullable final LocalTime startTime,
-                    @Nullable final LocalTime endTime,
+                    @Nullable final ZonedDateTime startTime,
+                    @Nullable final ZonedDateTime endTime,
                     @Nullable final Language language,
                     @Nullable final Track track) {
+        this.timezone = timezone;
         this.room = room;
         this.title = title;
         this.speakers = speakers;
@@ -140,14 +148,16 @@ public final class RoomView extends Div {
     private Component createTimeComponent() {
         final var timeComponent = new Div();
         timeComponent.addClassName("time");
-        final var now = LocalTime.now().withSecond(59).withNano(999);
+        final var now = ZonedDateTime.now(timezone).withSecond(59).withNano(999);
         if (startTime == null || endTime == null) { // empty session
             timeComponent.add(nbsp());
             roomStyle = RoomStyle.EMPTY;
         } else if (startTime.isAfter(now)) { // next session
             timeComponent.add(
                     new Icon(VaadinIcon.ALARM),
-                    new Text(String.format("%s - %s", startTime, endTime))
+                    new Text(String.format("%s - %s",
+                            startTime.withZoneSameInstant(timezone).toLocalTime(),
+                            endTime.withZoneSameInstant(timezone).toLocalTime()))
             );
             roomStyle = RoomStyle.NEXT;
         } else { // running session

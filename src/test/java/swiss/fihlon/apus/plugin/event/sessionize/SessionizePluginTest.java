@@ -25,7 +25,8 @@ import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -58,11 +59,13 @@ class SessionizePluginTest {
 
     @Test
     void getSessions() {
+        final var timezone = ZoneId.of("Europe/Zurich");
         final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("BBAD",
                 "file:src/test/resources/testdata/sessionize.json?eventId=${event}",
                 "file:src/test/resources/testdata/sessionize-speakers.json?eventId=${event}");
         when(appConfig.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.timezone()).thenReturn(timezone);
 
         final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var sessions = sessionizePlugin.getSessions().toList();
@@ -77,8 +80,8 @@ class SessionizePluginTest {
         // full check of session with ID "BBAD:5"
         final var session = sessions.get(4);
         assertEquals("BBAD:5", session.id());
-        assertEquals(LocalDateTime.of(2024, 1, 3, 19, 0), session.startDate());
-        assertEquals(LocalDateTime.of(2024, 1, 3, 19, 45), session.endDate());
+        assertEquals(ZonedDateTime.of(2024, 1, 3, 19, 0, 0, 0, timezone), session.startDate());
+        assertEquals(ZonedDateTime.of(2024, 1, 3, 19, 45, 0, 0, timezone), session.endDate());
         assertEquals(new Room("Room A"), session.room());
         assertEquals("Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat", session.title());
         assertEquals(2, session.speakers().size());
@@ -91,11 +94,13 @@ class SessionizePluginTest {
 
     @Test
     void parseExceptionSessions() {
+        final var timezone = ZoneId.of("Europe/Zurich");
         final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/testdata/sessionize-broken.json?eventId=${event}",
                 "file:src/test/resources/testdata/sessionize-speakers.json?eventId=${event}");
         when(appConfig.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.timezone()).thenReturn(timezone);
 
         final var sessionizePlugin = new SessionizePlugin(appConfig);
         assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
@@ -103,11 +108,13 @@ class SessionizePluginTest {
 
     @Test
     void parseExceptionSpeakers() {
+        final var timezone = ZoneId.of("Europe/Zurich");
         final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/testdata/sessionize.json?eventId=${event}",
                 "file:src/test/resources/testdata/sessionize-speakers-broken.json?eventId=${event}");
         when(appConfig.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.timezone()).thenReturn(timezone);
 
         final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
@@ -116,11 +123,13 @@ class SessionizePluginTest {
 
     @Test
     void parseExceptionUnknownSpeaker() {
+        final var timezone = ZoneId.of("Europe/Zurich");
         final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/testdata/sessionize-unknown-speaker.json?eventId=${event}",
                 "file:src/test/resources/testdata/sessionize-speakers.json?eventId=${event}");
         when(appConfig.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.timezone()).thenReturn(timezone);
 
         final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
@@ -129,11 +138,13 @@ class SessionizePluginTest {
 
     @Test
     void parseExceptionUnknownLanguage() {
+        final var timezone = ZoneId.of("Europe/Zurich");
         final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/testdata/sessionize-unknown-language.json?eventId=${event}",
                 "file:src/test/resources/testdata/sessionize-speakers.json?eventId=${event}");
         when(appConfig.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.timezone()).thenReturn(timezone);
 
         final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
@@ -142,11 +153,13 @@ class SessionizePluginTest {
 
     @Test
     void unknownLanguage() {
+        final var timezone = ZoneId.of("Europe/Zurich");
         final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/testdata/sessionize-no-categories.json?eventId=${event}",
                 "file:src/test/resources/testdata/sessionize-speakers.json?eventId=${event}");
         when(appConfig.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.timezone()).thenReturn(timezone);
 
         final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var sessions = sessionizePlugin.getSessions().toList();
@@ -158,11 +171,13 @@ class SessionizePluginTest {
 
     @Test
     void noLanguage() {
+        final var timezone = ZoneId.of("Europe/Zurich");
         final var appConfig = mock(AppConfig.class);
         final var sessionizeConfig = new SessionizeConfig("1",
                 "file:src/test/resources/testdata/sessionize-no-language.json?eventId=${event}",
                 "file:src/test/resources/testdata/sessionize-speakers.json?eventId=${event}");
         when(appConfig.sessionize()).thenReturn(sessionizeConfig);
+        when(appConfig.timezone()).thenReturn(timezone);
 
         final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var sessions = sessionizePlugin.getSessions().toList();

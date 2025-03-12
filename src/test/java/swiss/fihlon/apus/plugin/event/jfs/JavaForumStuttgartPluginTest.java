@@ -9,8 +9,9 @@ import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,9 +55,11 @@ class JavaForumStuttgartPluginTest {
 
     @Test
     void getSessions() {
+        final var timezone = ZoneId.of("Europe/Zurich");
         final var appConfig = mock(AppConfig.class);
         final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/jfs.db");
         when(appConfig.jfs()).thenReturn(jfsConfig);
+        when(appConfig.timezone()).thenReturn(timezone);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
         final var sessions = jfsPlugin.getSessions().toList();
@@ -72,8 +75,8 @@ class JavaForumStuttgartPluginTest {
         final var session = sessions.get(5);
         final var today = LocalDate.now();
         assertEquals("JFS:A5", session.id());
-        assertEquals(LocalDateTime.of(today, LocalTime.of(16, 0)), session.startDate());
-        assertEquals(LocalDateTime.of(today, LocalTime.of(16, 45)), session.endDate());
+        assertEquals(ZonedDateTime.of(today, LocalTime.of(16, 0), timezone), session.startDate());
+        assertEquals(ZonedDateTime.of(today, LocalTime.of(16, 45), timezone), session.endDate());
         assertEquals(new Room("Room A"), session.room());
         assertEquals("Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat", session.title());
         assertEquals(2, session.speakers().size());

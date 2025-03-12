@@ -23,21 +23,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
+import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
+import swiss.fihlon.apus.plugin.event.demo.EventDemoPlugin;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ScheduledFuture;
-import swiss.fihlon.apus.configuration.AppConfig;
-import swiss.fihlon.apus.plugin.event.demo.EventDemoPlugin;
 
 @Service
 public final class EventService {
@@ -47,6 +48,7 @@ public final class EventService {
     private final List<EventPlugin> eventPlugins;
     private final ScheduledFuture<?> updateScheduler;
     private final Period dateAdjust;
+    private final ZoneId timezone;
     private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
 
     public EventService(@NotNull final TaskScheduler taskScheduler,
@@ -55,6 +57,7 @@ public final class EventService {
         final var demoMode = appConfig.demoMode();
         this.eventPlugins = demoMode ? List.of(new EventDemoPlugin(appConfig)) : eventPlugins;
         this.dateAdjust = demoMode ? Period.ZERO : appConfig.event().dateAdjust();
+        this.timezone = appConfig.timezone();
         if (isEnabled()) {
             updateSessions();
             final var updateFrequency = Duration.ofMinutes(appConfig.event().updateFrequency());
@@ -92,7 +95,7 @@ public final class EventService {
                     .sorted()
                     .toList();
 
-            final LocalDateTime now = LocalDateTime.now();
+            final ZonedDateTime now = ZonedDateTime.now(timezone);
             final Map<Room, List<Session>> newRoomsWithSessions = new TreeMap<>();
             for (final Room room : rooms) {
                 newRoomsWithSessions.put(room, new ArrayList<>());

@@ -28,9 +28,11 @@ import swiss.fihlon.apus.plugin.event.sessionize.SessionizeConfig;
 import swiss.fihlon.apus.plugin.social.bluesky.BlueSkyConfig;
 import swiss.fihlon.apus.plugin.social.mastodon.MastodonConfig;
 
+import java.time.ZoneId;
+
 @ConfigurationProperties(prefix = "apus")
-public record AppConfig(@NotNull String version, @NotNull String language, @NotNull String styles, @NotNull Boolean demoMode,
-                        @NotNull AdminConfig admin, @NotNull EventConfig event, @NotNull SocialConfig social,
+public record AppConfig(@NotNull String version, @NotNull String language, @NotNull ZoneId timezone, @NotNull String styles,
+                        @NotNull Boolean demoMode, @NotNull AdminConfig admin, @NotNull EventConfig event, @NotNull SocialConfig social,
                         @NotNull DevoxxConfig devoxx, @NotNull DoagConfig doag, @NotNull JavaForumStuttgartConfig jfs,
                         @NotNull SessionizeConfig sessionize, @NotNull BlueSkyConfig blueSky, @NotNull MastodonConfig mastodon) {
 

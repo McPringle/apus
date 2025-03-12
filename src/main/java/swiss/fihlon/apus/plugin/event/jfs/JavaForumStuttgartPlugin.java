@@ -45,6 +45,8 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,9 +59,11 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     private static final Logger LOGGER = LoggerFactory.getLogger(JavaForumStuttgartPlugin.class);
 
     private final String dbUrl;
+    private final ZoneId timezone;
 
     public JavaForumStuttgartPlugin(@NotNull final AppConfig appConfig) {
         dbUrl = appConfig.jfs().dbUrl();
+        timezone = appConfig.timezone();
     }
 
     @Override
@@ -184,8 +188,8 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         final Room room = new Room(talk.room());
         final String title = talk.title();
         final List<Speaker> speakers = getSpeakersForTalk(talk, allAssignments, allSpeakers);
-        final LocalDateTime startDate = getStartDate(talk);
-        final LocalDateTime endDate = getEndDate(talk);
+        final ZonedDateTime startDate = getStartDate(talk).atZone(timezone);
+        final ZonedDateTime endDate = getEndDate(talk).atZone(timezone);
         final Track track = getTrack(talk, allTracks);
         return new Session(id, startDate, endDate, room, title, speakers, Language.UNKNOWN, track);
     }

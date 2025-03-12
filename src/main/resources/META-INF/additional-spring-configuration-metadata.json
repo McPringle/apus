@@ -179,6 +179,11 @@
       "name" : "apus.styles",
       "type" : "java.lang.String",
       "description" : "Inject custom styles into the user interface."
+    },
+    {
+      "name" : "apus.timezone",
+      "type" : "java.time.ZoneId",
+      "description" : "The timezone used for date and time calculations."
     }
   ]
 }

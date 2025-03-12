@@ -38,6 +38,7 @@ import swiss.fihlon.apus.util.TemplateUtil;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,11 +56,13 @@ public final class SessionizePlugin implements EventPlugin {
     private final String eventId;
     private final String eventApi;
     private final String speakerApi;
+    private final ZoneId timezone;
 
     public SessionizePlugin(@NotNull final AppConfig appConfig) {
         this.eventId = appConfig.sessionize().eventId();
         this.eventApi = TemplateUtil.replaceVariables(appConfig.sessionize().eventApi(), Map.of("event", eventId));
         this.speakerApi = TemplateUtil.replaceVariables(appConfig.sessionize().speakerApi(), Map.of("event", eventId));
+        this.timezone = appConfig.timezone();
     }
 
     @Override
@@ -126,10 +129,13 @@ public final class SessionizePlugin implements EventPlugin {
             }
         }
 
+        final var startsAt = LocalDateTime.parse(sessionData.getString("startsAt"));
+        final var endsAt = LocalDateTime.parse(sessionData.getString("endsAt"));
+
         return new Session(
                 String.format("%s:%s", eventId, sessionData.getString("id")),
-                LocalDateTime.parse(sessionData.getString("startsAt")),
-                LocalDateTime.parse(sessionData.getString("endsAt")),
+                startsAt.atZone(timezone),
+                endsAt.atZone(timezone),
                 new Room(sessionData.getString("room")),
                 sessionData.getString("title"),
                 speakers,

@@ -35,7 +35,8 @@ import swiss.fihlon.apus.plugin.event.EventService;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -54,11 +55,13 @@ public final class EventView extends Div {
     private final boolean showEmptyRooms;
     private final Div roomContainer = new Div();
     private final Span legend = new Span();
+    private final ZoneId timezone;
 
     public EventView(@NotNull final EventService eventService,
                      @NotNull final TaskScheduler taskScheduler,
                      @NotNull final AppConfig appConfig) {
         this.eventService = eventService;
+        this.timezone = appConfig.timezone();
         this.nextSessionTimeout = Duration.ofMinutes(appConfig.event().nextSessionTimeout());
         this.showLegend = appConfig.event().showLegend();
         this.showEmptyRooms = appConfig.event().showEmptyRooms();
@@ -85,14 +88,13 @@ public final class EventView extends Div {
 
     private void updateConferenceSessions() {
         roomContainer.removeAll();
-        final var today = LocalDate.now();
         final var roomsWithSessions = eventService.getRoomsWithSessions().entrySet();
         if (roomsWithSessions.isEmpty()) {
             Notification.show(getTranslation("event.error.nosessions"));
         }
         final var roomStylesInUse = new HashSet<RoomStyle>();
         for (final Map.Entry<Room, List<Session>> roomWithSession : roomsWithSessions) {
-            final RoomView roomView = createRoomView(roomWithSession, today);
+            final RoomView roomView = createRoomView(roomWithSession);
             if (!showEmptyRooms && RoomStyle.EMPTY.equals(roomView.getRoomStyle())) {
                 continue; // don't show empty rooms when configured to do so
             }
@@ -135,12 +137,12 @@ public final class EventView extends Div {
     }
 
     @NotNull
-    private RoomView createRoomView(@NotNull final Map.Entry<Room, List<Session>> roomWithSession,
-                                              @NotNull final LocalDate today) {
-        final LocalDateTime timeLimitNextSession = LocalDateTime.now().plus(nextSessionTimeout);
+    private RoomView createRoomView(@NotNull final Map.Entry<Room, List<Session>> roomWithSession) {
+        final LocalDate today = LocalDate.now();
+        final ZonedDateTime timeLimitNextSession = ZonedDateTime.now(timezone).plus(nextSessionTimeout);
         final Room room = roomWithSession.getKey();
         final List<Session> sessions = roomWithSession.getValue();
-        final LocalDateTime now = LocalDateTime.now().withSecond(59).withNano(999);
+        final ZonedDateTime now = ZonedDateTime.now(timezone).withSecond(59).withNano(999);
         final Session session = sessions.isEmpty() ? null : sessions.stream()
                 .filter(s -> s.endDate().isAfter(now))
                 .findFirst()
@@ -149,9 +151,9 @@ public final class EventView extends Div {
         if (session != null
                 && session.startDate().toLocalDate().isEqual(today)
                 && session.startDate().isBefore(timeLimitNextSession)) {
-            roomView = new RoomView(session);
+            roomView = new RoomView(timezone, session);
         } else {
-            roomView = new RoomView(room);
+            roomView = new RoomView(timezone, room);
         }
         return roomView;
     }

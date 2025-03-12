@@ -33,6 +33,7 @@ import swiss.fihlon.apus.util.TestUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -40,6 +41,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static swiss.fihlon.apus.util.TestUtil.getComponentsByClassName;
 
 class RoomViewTest {
+
+    private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
 
     private static void assertTitle(@NotNull final RoomView roomView, @NotNull final String title, @NotNull final Language language) {
         final var components = getComponentsByClassName(roomView, "title");
@@ -170,7 +173,7 @@ class RoomViewTest {
     @MethodSource("provideArgumentsForRoomTest")
     void constructorWithRoom(@NotNull final String roomName) {
         final var room = new Room(roomName);
-        final var roomView = new RoomView(room);
+        final var roomView = new RoomView(TEST_TIMEZONE, room);
         assertEquals(5, roomView.getChildren().count());
         assertTitle(roomView, "!{event.room.empty}!", Language.UNKNOWN);
         assertSpeakers(roomView, "");
@@ -183,12 +186,12 @@ class RoomViewTest {
     void constructorWithSession() {
         final var today = LocalDate.now();
         final var session = new Session("42",
-                LocalDateTime.of(today, LocalTime.MIDNIGHT),
-                LocalDateTime.of(today, LocalTime.MAX),
+                LocalDateTime.of(today, LocalTime.MIDNIGHT).atZone(TEST_TIMEZONE),
+                LocalDateTime.of(today, LocalTime.MAX).atZone(TEST_TIMEZONE),
                 new Room("My Room"), "My Session",
                 List.of(new Speaker("Speaker One"), new Speaker("Speaker Two")),
                 Language.EN, Track.CORE);
-        final var roomView = new RoomView(session);
+        final var roomView = new RoomView(TEST_TIMEZONE, session);
         assertEquals(5, roomView.getChildren().count());
         assertTitle(roomView, "My Session", Language.EN);
         assertSpeakers(roomView, "Speaker One, Speaker Two");
@@ -201,12 +204,12 @@ class RoomViewTest {
     void sessionWithUnknownLanguage() {
         final var today = LocalDate.now();
         final var session = new Session("42",
-                LocalDateTime.of(today, LocalTime.MIDNIGHT),
-                LocalDateTime.of(today, LocalTime.MAX),
+                LocalDateTime.of(today, LocalTime.MIDNIGHT).atZone(TEST_TIMEZONE),
+                LocalDateTime.of(today, LocalTime.MAX).atZone(TEST_TIMEZONE),
                 new Room("My Room"), "My Session",
                 List.of(new Speaker("Speaker One"), new Speaker("Speaker Two")),
                 Language.UNKNOWN, Track.CORE);
-        final var roomView = new RoomView(session);
+        final var roomView = new RoomView(TEST_TIMEZONE, session);
         assertEquals(5, roomView.getChildren().count());
         assertTitle(roomView, "My Session", Language.UNKNOWN);
         assertSpeakers(roomView, "Speaker One, Speaker Two");
@@ -219,12 +222,12 @@ class RoomViewTest {
     void sessionWithNoTrack() {
         final var today = LocalDate.now();
         final var session = new Session("42",
-                LocalDateTime.of(today, LocalTime.MIDNIGHT),
-                LocalDateTime.of(today, LocalTime.MAX),
+                LocalDateTime.of(today, LocalTime.MIDNIGHT).atZone(TEST_TIMEZONE),
+                LocalDateTime.of(today, LocalTime.MAX).atZone(TEST_TIMEZONE),
                 new Room("My Room"), "My Session",
                 List.of(new Speaker("Speaker One"), new Speaker("Speaker Two")),
                 Language.EN, Track.NONE);
-        final var roomView = new RoomView(session);
+        final var roomView = new RoomView(TEST_TIMEZONE, session);
         assertEquals(5, roomView.getChildren().count());
         assertTitle(roomView, "My Session", Language.EN);
         assertSpeakers(roomView, "Speaker One, Speaker Two");
@@ -237,14 +240,14 @@ class RoomViewTest {
     void sessionWithSpeakerAvatarAndTrack() {
         final var today = LocalDate.now();
         final var session = new Session("42",
-                LocalDateTime.of(today, LocalTime.MIDNIGHT),
-                LocalDateTime.of(today, LocalTime.MAX),
+                LocalDateTime.of(today, LocalTime.MIDNIGHT).atZone(TEST_TIMEZONE),
+                LocalDateTime.of(today, LocalTime.MAX).atZone(TEST_TIMEZONE),
                 new Room("My Room"), "My Session",
                 List.of(
                         new Speaker("Speaker One", "https://localhost/avatar1.png"),
                         new Speaker("Speaker Two", "https://localhost/avatar2.svg")),
                 Language.EN, Track.CORE);
-        final var roomView = new RoomView(session);
+        final var roomView = new RoomView(TEST_TIMEZONE, session);
         assertEquals(5, roomView.getChildren().count());
         assertTitle(roomView, "My Session", Language.EN);
         assertSpeakers(roomView, "Speaker One, Speaker Two");
@@ -258,14 +261,14 @@ class RoomViewTest {
     void sessionWithSpeakerAvatarWithoutTrack() {
         final var today = LocalDate.now();
         final var session = new Session("42",
-                LocalDateTime.of(today, LocalTime.MIDNIGHT),
-                LocalDateTime.of(today, LocalTime.MAX),
+                LocalDateTime.of(today, LocalTime.MIDNIGHT).atZone(TEST_TIMEZONE),
+                LocalDateTime.of(today, LocalTime.MAX).atZone(TEST_TIMEZONE),
                 new Room("My Room"), "My Session",
                 List.of(
                         new Speaker("Speaker One", "https://localhost/avatar1.png"),
                         new Speaker("Speaker Two", "https://localhost/avatar2.svg")),
                 Language.EN, Track.NONE);
-        final var roomView = new RoomView(session);
+        final var roomView = new RoomView(TEST_TIMEZONE, session);
         assertEquals(5, roomView.getChildren().count());
         assertTitle(roomView, "My Session", Language.EN);
         assertSpeakers(roomView, "Speaker One, Speaker Two");

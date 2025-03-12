@@ -29,7 +29,8 @@ import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -87,11 +88,13 @@ class DevoxxPluginTest {
 
     @Test
     void getSessions() {
+        final var timezone = ZoneId.of("Z");
         final var appConfig = mock(AppConfig.class);
         final var devoxxConfig = new DevoxxConfig(
                 "file:src/test/resources/testdata/devoxx.json?eventId=${event}&weekday=${weekday}",
                 "BBAD", "monday");
         when(appConfig.devoxx()).thenReturn(devoxxConfig);
+        when(appConfig.timezone()).thenReturn(timezone);
 
         final var devoxxPlugin = new DevoxxPlugin(appConfig);
         final var sessions = devoxxPlugin.getSessions().toList();
@@ -106,8 +109,8 @@ class DevoxxPluginTest {
         // full check of session with ID "BBAD:5"
         final var session = sessions.get(4);
         assertEquals("BBAD:5", session.id());
-        assertEquals(LocalDateTime.of(2024, 1, 3, 19, 0), session.startDate());
-        assertEquals(LocalDateTime.of(2024, 1, 3, 19, 45), session.endDate());
+        assertEquals(ZonedDateTime.of(2024, 1, 3, 19, 0, 0, 0, timezone), session.startDate());
+        assertEquals(ZonedDateTime.of(2024, 1, 3, 19, 45, 0, 0, timezone), session.endDate());
         assertEquals(new Room("Room A"), session.room());
         assertEquals("Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat", session.title());
         assertEquals(2, session.speakers().size());

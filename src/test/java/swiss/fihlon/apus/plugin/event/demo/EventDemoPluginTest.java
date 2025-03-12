@@ -21,6 +21,8 @@ import org.junit.jupiter.api.Test;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Session;
 
+import java.time.ZoneId;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,6 +35,7 @@ class EventDemoPluginTest {
     void isEnabled() {
         final var appConfig = mock(AppConfig.class);
         when(appConfig.demoMode()).thenReturn(true);
+        when(appConfig.timezone()).thenReturn(ZoneId.of("Europe/Zurich"));
 
         final var demoEventPlugin = new EventDemoPlugin(appConfig);
         assertTrue(demoEventPlugin.isEnabled());
@@ -54,6 +57,7 @@ class EventDemoPluginTest {
     void getSessions() {
         final var appConfig = mock(AppConfig.class);
         when(appConfig.demoMode()).thenReturn(true);
+        when(appConfig.timezone()).thenReturn(ZoneId.of("Europe/Zurich"));
 
         final var demoEventPlugin = new EventDemoPlugin(appConfig);
         final var sessions = demoEventPlugin.getSessions().toList();

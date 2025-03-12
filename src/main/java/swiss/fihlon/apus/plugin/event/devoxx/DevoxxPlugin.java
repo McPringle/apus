@@ -86,8 +86,8 @@ public final class DevoxxPlugin implements EventPlugin {
                 var proposal = sessionData.getJSONObject("proposal");
                 var session = new Session(
                         lastSessionId,
-                        ZonedDateTime.parse(sessionData.getString("fromDate")).toLocalDateTime(),
-                        ZonedDateTime.parse(sessionData.getString("toDate")).toLocalDateTime(),
+                        ZonedDateTime.parse(sessionData.getString("fromDate")),
+                        ZonedDateTime.parse(sessionData.getString("toDate")),
                         new Room(sessionData.getJSONObject("room").getString("name")),
                         proposal.getString("title"),
                         getSpeakers(proposal.getJSONArray("speakers")),

@@ -25,7 +25,8 @@ import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -58,9 +59,11 @@ class DoagPluginTest {
 
     @Test
     void getSessions() {
+        final var timezone = ZoneId.of("+02:00");
         final var appConfig = mock(AppConfig.class);
         final var doagConfig = new DoagConfig(1, "file:src/test/resources/testdata/DOAG.json?eventId=${event}");
         when(appConfig.doag()).thenReturn(doagConfig);
+        when(appConfig.timezone()).thenReturn(timezone);
 
         final var doagPlugin = new DoagPlugin(appConfig);
         final var sessions = doagPlugin.getSessions().toList();
@@ -75,8 +78,8 @@ class DoagPluginTest {
         // full check of session with ID "BBAD:5"
         final var session = sessions.get(5);
         assertEquals("BBAD:5", session.id());
-        assertEquals(LocalDateTime.of(2024, 1, 3, 19, 0), session.startDate());
-        assertEquals(LocalDateTime.of(2024, 1, 3, 19, 45), session.endDate());
+        assertEquals(ZonedDateTime.of(2024, 1, 3, 19, 0, 0, 0, timezone), session.startDate());
+        assertEquals(ZonedDateTime.of(2024, 1, 3, 19, 45, 0, 0, timezone), session.endDate());
         assertEquals(new Room("Room A"), session.room());
         assertEquals("Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat", session.title());
         assertEquals(2, session.speakers().size());

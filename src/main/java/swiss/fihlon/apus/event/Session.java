@@ -19,10 +19,10 @@ package swiss.fihlon.apus.event;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
-public record Session(@NotNull String id, @NotNull LocalDateTime startDate, @NotNull LocalDateTime endDate,
+public record Session(@NotNull String id, @NotNull ZonedDateTime startDate, @NotNull ZonedDateTime endDate,
                       @NotNull Room room, @NotNull String title, @NotNull List<Speaker> speakers,
                       @NotNull Language language, @NotNull Track track)
         implements Comparable<Session> {

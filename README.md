@@ -118,7 +118,7 @@ docker run \
     --name apus \
     -p 80:8080 \
     -e APUS_SOCIAL_HASHTAGS=java \
-    -e TZ=Europe/Zurich \
+    -e APUS_TIMEZONE=Europe/Zurich \
     -d \
     --rm \
     mcpringle/apus
@@ -133,7 +133,7 @@ podman run \
     --name apus \
     -p 80:8080 \
     -e APUS_SOCIAL_HASHTAGS=java \
-    -e TZ=Europe/Zurich \
+    -e APUS_TIMEZONE=Europe/Zurich \
     -d \
     --rm \
     docker.io/mcpringle/apus
@@ -185,10 +185,7 @@ To modify the default configuration values, just specify environment variables w
 | APUS_SESSIONIZE_EVENT_ID        | 0               | The ID of the Sessionize event to read the conference agenda (0 = disabled).          |
 | APUS_SESSIONIZE_SPEAKER_API     | [7]             | The URL of the Sessionize API to read the speaker information.                        |
 | APUS_STYLES                     |                 | Inject custom styles into the user interface (see explanations below).                |
-| TZ                              |                 | The timezone used for date and time calculations.                                     |
-
-> [!NOTE]  
-> The `TZ` environment variable is not specific to *Apus*, it is a system variable and therefore has no `APUS` prefix!
+| APUS_TIMEZONE                   | Europe/Zurich   | The timezone used for date and time calculations.                                     |
 
 The environment variables will override the default values. Some default values might be too long to be displayed in this table. They are marked with a number in square brackets and can be looked up in the following list:
 
@@ -382,7 +379,7 @@ docker run \
     -p 80:8080 \
     -v $HOME/mydir:/home/apus/.apus \
     -e APUS_SOCIAL_HASHTAGS=java \
-    -e TZ=Europe/Zurich \
+    -e APUS_TIMEZONE=Europe/Zurich \
     -d \
     --rm \
     mcpringle/apus
@@ -396,7 +393,7 @@ podman run \
     -p 80:8080 \
     -v $HOME/mydir:/home/apus/.apus \
     -e APUS_SOCIAL_HASHTAGS=java \
-    -e TZ=Europe/Zurich \
+    -e APUS_TIMEZONE=Europe/Zurich \
     -d \
     --rm \
     docker.io/mcpringle/apus

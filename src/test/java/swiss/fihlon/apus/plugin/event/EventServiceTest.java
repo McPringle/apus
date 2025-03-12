@@ -36,6 +36,8 @@ import swiss.fihlon.apus.event.Track;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,11 +50,13 @@ import static org.mockito.Mockito.when;
 class EventServiceTest {
 
     static AppConfig mockConfiguration(@NotNull final Period dateAdjust, boolean demoMode) {
+        final var timezone = ZoneId.of("Europe/Zurich");
         final var eventConfig = new EventConfig(dateAdjust, "", 60,
                 true, true, 0);
         final var appConfig = mock(AppConfig.class);
         when(appConfig.demoMode()).thenReturn(demoMode);
         when(appConfig.event()).thenReturn(eventConfig);
+        when(appConfig.timezone()).thenReturn(timezone);
         return appConfig;
     }
 
@@ -166,13 +170,13 @@ class EventServiceTest {
         public @NotNull Stream<Session> getSessions() {
             final List<Session> sessions = new ArrayList<>();
             for (int i = -5; i <= 5; i++) {
-                sessions.add(createSession(i, LocalDateTime.now().minusHours(i)));
+                sessions.add(createSession(i, ZonedDateTime.now().minusHours(i)));
             }
             Collections.shuffle(sessions);
             return sessions.stream();
         }
 
-        private @NotNull Session createSession(final int i, @NotNull final LocalDateTime startDate) {
+        private @NotNull Session createSession(final int i, @NotNull final ZonedDateTime startDate) {
             final var id = "TEST" + i;
             final var endDate = startDate.plusHours(1);
             final var room = new Room("Room " + (Math.abs(i) % 2));
@@ -223,7 +227,7 @@ class EventServiceTest {
         @Override
         public @NotNull Stream<Session> getSessions() {
             final var id = "TEST-0";
-            final var startDate = LocalDateTime.now();
+            final var startDate = ZonedDateTime.now();
             final var endDate = startDate.plusHours(1);
             final var room = new Room("Room X");
             final var title = "Test Session";

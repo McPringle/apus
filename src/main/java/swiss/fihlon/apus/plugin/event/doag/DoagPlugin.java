@@ -38,9 +38,7 @@ import swiss.fihlon.apus.util.TemplateUtil;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -79,7 +77,6 @@ public final class DoagPlugin implements EventPlugin {
             final JSONArray days = conference.getJSONArray("days");
             for (int dayCounter = 0; dayCounter < days.length(); dayCounter++) {
                 final JSONObject day = days.getJSONObject(dayCounter);
-                final LocalDate date = LocalDate.parse(day.getString("date"));
 
                 final JSONObject rooms = day.getJSONObject("rooms");
                 final Iterator<String> roomKeys = rooms.keys();
@@ -96,7 +93,7 @@ public final class DoagPlugin implements EventPlugin {
                         if (!"lecture".equalsIgnoreCase(type)) {
                             continue;
                         }
-                        final Session session = createSession(slot, acronym, date, roomName);
+                        final Session session = createSession(slot, acronym, roomName);
                         sessions.add(session);
                     }
                 }
@@ -110,11 +107,10 @@ public final class DoagPlugin implements EventPlugin {
 
     private @NotNull Session createSession(@NotNull final JSONObject slot,
                                            @NotNull final String acronym,
-                                           @NotNull final LocalDate date,
                                            @NotNull final String roomName) {
         final Language language = getLanguage(slot);
         final String title = getTitle(slot, language.getLanguageCode());
-        final LocalTime startTime = LocalTime.parse(slot.getString("start"));
+        final ZonedDateTime date = ZonedDateTime.parse(slot.getString("date"));
         final Duration duration = parseDuration(slot.getString("duration"));
         final JSONArray persons = slot.getJSONArray("persons");
         final ArrayList<String> speakers = new ArrayList<>(persons.length());
@@ -125,8 +121,8 @@ public final class DoagPlugin implements EventPlugin {
         }
         return new Session(
                 String.format("%s:%d", acronym, slot.getInt("id")),
-                LocalDateTime.of(date, startTime),
-                LocalDateTime.of(date, startTime).plus(duration),
+                date,
+                date.plus(duration),
                 new Room(roomName),
                 title,
                 speakers.stream().map(Speaker::new).toList(),

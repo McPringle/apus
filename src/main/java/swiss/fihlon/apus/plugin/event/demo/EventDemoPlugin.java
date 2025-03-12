@@ -28,9 +28,8 @@ import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -49,10 +48,12 @@ public final class EventDemoPlugin implements EventPlugin {
     private static final List<Track> DEFAULT_TRACKS =
             List.of(Track.ARCHITECTURE, Track.CLOUD, Track.CORE, Track.INFRASTRUCTURE, Track.SECURITY, Track.TOOLS);
 
+    private final ZoneId timezone;
     private final boolean demoMode;
     private final List<Session> sessions;
 
     public EventDemoPlugin(@NotNull final AppConfig appConfig) {
+        timezone = appConfig.timezone();
         demoMode = appConfig.demoMode();
         sessions = demoMode ? createFakeSessions() : List.of();
     }
@@ -71,7 +72,7 @@ public final class EventDemoPlugin implements EventPlugin {
         final List<Room> fakeRooms = createFakeRooms();
         final List<Session> fakeSessions = new ArrayList<>(AROUND_THE_CLOCK * ROOM_COUNT);
 
-        final var todayAtMidnight = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
+        final var todayAtMidnight = ZonedDateTime.now(timezone).withHour(0).withMinute(0).withSecond(0).withNano(0);
         final Faker faker = new Faker(LOCALE, RANDOM);
         for (int hourCount = 0; hourCount < AROUND_THE_CLOCK; hourCount++) {
             final var startDateTime = todayAtMidnight.plusHours(hourCount);
