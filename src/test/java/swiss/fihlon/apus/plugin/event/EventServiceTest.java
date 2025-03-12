@@ -34,7 +34,6 @@ import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -49,14 +48,15 @@ import static org.mockito.Mockito.when;
 
 class EventServiceTest {
 
+    private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
+
     static AppConfig mockConfiguration(@NotNull final Period dateAdjust, boolean demoMode) {
-        final var timezone = ZoneId.of("Europe/Zurich");
         final var eventConfig = new EventConfig(dateAdjust, "", 60,
                 true, true, 0);
         final var appConfig = mock(AppConfig.class);
         when(appConfig.demoMode()).thenReturn(demoMode);
         when(appConfig.event()).thenReturn(eventConfig);
-        when(appConfig.timezone()).thenReturn(timezone);
+        when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
         return appConfig;
     }
 
@@ -84,7 +84,8 @@ class EventServiceTest {
                 .stream()
                 .mapToLong(List::size)
                 .sum();
-        final var expectedSessionCount = 4 * (24 - LocalDateTime.now().getHour()) - (LocalDateTime.now().getMinute() >= 50 ? 4 : 0);
+        final var now = ZonedDateTime.now(TEST_TIMEZONE);
+        final var expectedSessionCount = 4 * (24 - now.getHour()) - (now.getMinute() >= 50 ? 4 : 0);
         assertEquals(expectedSessionCount, sessionCount);
     }
 
