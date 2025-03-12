@@ -52,6 +52,8 @@ class BlueSkyPluginTest {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
+    private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
+
     @Test
     void getServiceName() {
         final var appConfig = mock(AppConfig.class);
@@ -266,7 +268,7 @@ class BlueSkyPluginTest {
         }
 
         private JSONObject createPost(final int i, @NotNull final String hashtag, boolean withVideo) {
-            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), ZoneId.systemDefault());
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), TEST_TIMEZONE);
             final var fakeReply = """
                     "reply": {
                       "parent": {
@@ -366,7 +368,7 @@ class BlueSkyPluginTest {
         }
 
         private JSONObject createPost(final int i, @NotNull final String hashtag) {
-            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), ZoneId.systemDefault());
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), TEST_TIMEZONE);
             final var postJSON = """
                 {
                   "uri": "ID ${i}",
