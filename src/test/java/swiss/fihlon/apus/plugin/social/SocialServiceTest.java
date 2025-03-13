@@ -31,6 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.scheduling.support.NoOpTaskScheduler;
 import swiss.fihlon.apus.MemoryAppender;
 import swiss.fihlon.apus.configuration.AppConfig;
+import swiss.fihlon.apus.configuration.FilterConfig;
 import swiss.fihlon.apus.configuration.SocialConfig;
 import swiss.fihlon.apus.social.Post;
 
@@ -70,6 +71,18 @@ class SocialServiceTest {
     private AppConfig appConfig;
 
     @Test
+    void getPostsInDemoMode() {
+        final var demoConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
+                appConfig.styles(), true, appConfig.admin(), appConfig.event(), appConfig.social(),
+                appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
+                appConfig.blueSky(), appConfig.mastodon());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), demoConfig, List.of());
+        final List<Post> posts = socialService.getPosts(0);
+        assertEquals(50, posts.size());
+        assertEquals(50, posts.stream().filter(post -> post.id().startsWith("DEMO:")).count());
+    }
+
+    @Test
     void getPostsWithoutLimit() {
         final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of(new TestSocialPlugin()));
         final List<Post> posts = socialService.getPosts(0);
@@ -93,6 +106,90 @@ class SocialServiceTest {
         assertEquals("P3", posts.get(2).id());
         assertEquals("P4", posts.get(3).id());
         assertEquals("P5", posts.get(4).id());
+    }
+
+    @Test
+    void getPostsWithSensitive() {
+        final var filterConfig = new FilterConfig(appConfig.social().filter().length(), appConfig.social().filter().replies(), false,
+                appConfig.social().filter().words());
+        final var socialConfig = new SocialConfig(appConfig.social().hashtags(), appConfig.social().headline(), appConfig.social().numberOfColumns(),
+                appConfig.social().imagesEnabled(), appConfig.social().imageLimit(), filterConfig);
+        final var sensitiveConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
+                appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
+                appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
+                appConfig.blueSky(), appConfig.mastodon());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), sensitiveConfig, List.of(new TestSocialPlugin()));
+        final List<Post> posts = socialService.getPosts(0);
+        assertEquals(11, posts.size());
+        assertEquals(1, posts.stream().filter(Post::isSensitive).count());
+    }
+
+    @Test
+    void getPostsWithReplies() {
+        final var filterConfig = new FilterConfig(appConfig.social().filter().length(), false, appConfig.social().filter().sensitive(),
+                appConfig.social().filter().words());
+        final var socialConfig = new SocialConfig(appConfig.social().hashtags(), appConfig.social().headline(), appConfig.social().numberOfColumns(),
+                appConfig.social().imagesEnabled(), appConfig.social().imageLimit(), filterConfig);
+        final var repliesConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
+                appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
+                appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
+                appConfig.blueSky(), appConfig.mastodon());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), repliesConfig, List.of(new TestSocialPlugin()));
+        final List<Post> posts = socialService.getPosts(0);
+        assertEquals(11, posts.size());
+        assertEquals(1, posts.stream().filter(Post::isReply).count());
+    }
+
+    @Test
+    void getPostsWithLongerContent() {
+        final var filterConfig = new FilterConfig(1000, appConfig.social().filter().replies(), appConfig.social().filter().sensitive(),
+                appConfig.social().filter().words());
+        final var socialConfig = new SocialConfig(appConfig.social().hashtags(), appConfig.social().headline(), appConfig.social().numberOfColumns(),
+                appConfig.social().imagesEnabled(), appConfig.social().imageLimit(), filterConfig);
+        final var repliesConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
+                appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
+                appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
+                appConfig.blueSky(), appConfig.mastodon());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), repliesConfig, List.of(new TestSocialPlugin()));
+        final List<Post> posts = socialService.getPosts(0);
+        assertEquals(11, posts.size());
+        assertEquals(1, posts.stream().filter(post -> post.html().length() > 500).count());
+    }
+
+    @Test
+    void getPostsWithoutLengthFilter() {
+        final var filterConfig = new FilterConfig(0, appConfig.social().filter().replies(), appConfig.social().filter().sensitive(),
+                appConfig.social().filter().words());
+        final var socialConfig = new SocialConfig(appConfig.social().hashtags(), appConfig.social().headline(), appConfig.social().numberOfColumns(),
+                appConfig.social().imagesEnabled(), appConfig.social().imageLimit(), filterConfig);
+        final var repliesConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
+                appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
+                appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
+                appConfig.blueSky(), appConfig.mastodon());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), repliesConfig, List.of(new TestSocialPlugin()));
+        final List<Post> posts = socialService.getPosts(0);
+        assertEquals(11, posts.size());
+        assertEquals(1, posts.stream().filter(post -> post.html().length() > 500).count());
+    }
+
+    @Test
+    void getPostsWithoutHashtag() {
+        final var socialConfig = new SocialConfig("", appConfig.social().headline(), appConfig.social().numberOfColumns(),
+                appConfig.social().imagesEnabled(), appConfig.social().imageLimit(), appConfig.social().filter());
+        final var hashtagConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
+                appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
+                appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
+                appConfig.blueSky(), appConfig.mastodon());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), hashtagConfig, List.of(new NoHashtagSocialPlugin()));
+        final List<Post> posts = socialService.getPosts(10);
+        assertTrue(posts.isEmpty());
+    }
+
+    @Test
+    void getPostsWithoutPlugins() {
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of());
+        final List<Post> posts = socialService.getPosts(10);
+        assertTrue(posts.isEmpty());
     }
 
     @Test
@@ -239,8 +336,35 @@ class SocialServiceTest {
             posts.add(new Post("PL", now, "Writer", "","writer@localhost",
                     "<p>" + faker.lorem().characters(501) + "</p>", List.of(),
                     false, false, ""));
+            posts.add(new Post("PS", now, "Sensitive", "","sensitive@localhost",
+                    "<p>This post contains sensitive content!</p>", List.of(), false, true, ""));
+            posts.add(new Post("PR", now, "Reply", "","reply@localhost",
+                    "<p>This post is a reply!</p>", List.of(), true, false, ""));
             Collections.shuffle(posts);
             return posts.stream();
+        }
+    }
+
+    private static final class NoHashtagSocialPlugin implements SocialPlugin {
+
+        @Override
+        @NotNull
+        public String getServiceName() {
+            return "Hashtag";
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
+
+        @Override
+        @NotNull
+        public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
+            if (hashtags.isEmpty()) {
+                return Stream.of();
+            }
+            throw new IllegalArgumentException("Expected no hashtags");
         }
     }
 
@@ -263,4 +387,5 @@ class SocialServiceTest {
             return Stream.<Post>of();
         }
     }
+
 }
