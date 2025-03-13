@@ -30,9 +30,9 @@ public final class TemplateUtil {
                                           @Nullable final Map<String, String> variables) {
         String returnValue = text;
         if (variables != null) {
-            for (final String key : variables.keySet()) {
-                final var value = Matcher.quoteReplacement(variables.get(key));
-                final var regex = Pattern.quote("${%s}".formatted(key));
+            for (final var entrySet : variables.entrySet()) {
+                final var value = Matcher.quoteReplacement(entrySet.getValue());
+                final var regex = Pattern.quote("${%s}".formatted(entrySet.getKey()));
                 returnValue = returnValue.replaceAll(regex, value);
             }
         }
