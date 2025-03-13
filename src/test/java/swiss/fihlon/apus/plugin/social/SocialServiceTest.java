@@ -110,11 +110,11 @@ class SocialServiceTest {
 
     @NotNull
     private List<Post> getPostsWithConfig(@NotNull final SocialConfig socialConfig) {
-        final var sensitiveConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
+        final var config = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
                 appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
                 appConfig.blueSky(), appConfig.mastodon());
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), sensitiveConfig, List.of(new TestSocialPlugin()));
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), config, List.of(new TestSocialPlugin()));
         return socialService.getPosts(0);
     }
 
@@ -164,11 +164,11 @@ class SocialServiceTest {
 
     @NotNull
     private SocialService getSocialService(@NotNull final SocialConfig socialConfig) {
-        final var hashtagConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
+        final var config = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
                 appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
                 appConfig.blueSky(), appConfig.mastodon());
-        return new SocialService(new NoOpTaskScheduler(), hashtagConfig, List.of(new NoHashtagSocialPlugin()));
+        return new SocialService(new NoOpTaskScheduler(), config, List.of(new NoHashtagSocialPlugin()));
     }
 
     @Test
