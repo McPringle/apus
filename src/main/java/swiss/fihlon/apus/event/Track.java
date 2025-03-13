@@ -24,6 +24,10 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -58,6 +62,19 @@ public record Track(String svgCode) {
     public static Track fromPath(@NotNull final Path path) throws IOException {
         final String svgCode = Files.readString(path);
         return new Track(svgCode);
+    }
+
+    public static Track fromURI(@NotNull final URI uri) throws IOException, InterruptedException {
+        try (var client = HttpClient.newHttpClient()) {
+            final var request = HttpRequest.newBuilder()
+                    .uri(uri)
+                    .GET()
+                    .build();
+
+            final var response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+            final var  svgCode = response.body();
+            return new Track(svgCode);
+        }
     }
 
 }
