@@ -17,20 +17,27 @@
  */
 package swiss.fihlon.apus.plugin.event.devoxx;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.testcontainers.utility.MountableFile;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
+import swiss.fihlon.apus.event.Track;
+import swiss.fihlon.apus.util.FixedPortContainer;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,6 +48,33 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class DevoxxPluginTest {
+
+    private static final String NGINX_IMAGE_NAME = "nginx:latest";
+    private static final int NGINX_FIXED_PORT = 8088;
+    private static final int NGINX_CONTAINER_PORT = 80;
+    private static FixedPortContainer nginxContainer;
+
+    @BeforeAll
+    static void setUp() {
+        nginxContainer = new FixedPortContainer(NGINX_IMAGE_NAME, NGINX_FIXED_PORT, NGINX_CONTAINER_PORT)
+                .withExposedPorts(NGINX_CONTAINER_PORT)
+                .withCopyFileToContainer(
+                        MountableFile.forClasspathResource("testdata/test.svg"),
+                        "/usr/share/nginx/html/test.svg"
+                )
+                .withCopyFileToContainer(
+                        MountableFile.forClasspathResource("testdata/test.png"),
+                        "/usr/share/nginx/html/test.png"
+                );
+        nginxContainer.start();
+    }
+
+    @AfterAll
+    static void tearDown() {
+        if (nginxContainer != null) {
+            nginxContainer.stop();
+        }
+    }
 
     private static Stream<Arguments> provideDataForDisabledTest() {
         return Stream.of(
@@ -119,6 +153,32 @@ class DevoxxPluginTest {
         assertEquals(new Speaker("Mike Ehrmantraut", "https://foo.bar/0ad4f2e3-36c6-4093-b492-8098fa7e5560.png"),
                 session.speakers().get(1));
         assertEquals(Language.UNKNOWN, session.language());
+
+        assertTracks(sessions);
+    }
+
+    private void assertTracks(@NotNull final List<Session> sessions) {
+        // the first session contains a PNG wrapped in an SVG
+        final var expectedPNG = """
+                <svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+                    <image href="http://localhost:8088/test.png" x="0" y="0" width="40" height="40"/>
+                </svg>""";
+        assertEquals(expectedPNG, sessions.get(0).track().svgCode().trim());
+
+        // the second session contains an SVG
+        final var expectedSVG = """
+                <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="blue" />
+                </svg>""";
+        assertEquals(expectedSVG, sessions.get(1).track().svgCode().trim());
+
+        // all other sessions should return none
+        assertEquals(Track.NONE, sessions.get(2).track());
+        assertEquals(Track.NONE, sessions.get(3).track());
+        assertEquals(Track.NONE, sessions.get(4).track());
+        assertEquals(Track.NONE, sessions.get(5).track());
+        assertEquals(Track.NONE, sessions.get(6).track());
+        assertEquals(Track.NONE, sessions.get(7).track());
     }
 
     @Test
