@@ -20,6 +20,7 @@ package swiss.fihlon.apus.plugin.event.devoxx;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ import swiss.fihlon.apus.util.DownloadUtil;
 import swiss.fihlon.apus.util.TemplateUtil;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -47,6 +49,10 @@ import java.util.stream.Stream;
 @Service
 public final class DevoxxPlugin implements EventPlugin {
     public static final Logger LOGGER = LoggerFactory.getLogger(DevoxxPlugin.class);
+    private static final String PNG_SVG_WRAPPER_TEMPLATE = """
+            <svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+                <image href="${PNG_URL}" x="0" y="0" width="40" height="40"/>
+            </svg>""";
 
     private final String eventApi;
     private final String eventId;
@@ -69,6 +75,7 @@ public final class DevoxxPlugin implements EventPlugin {
 
     @Override
     @NotNull
+    @SuppressWarnings("java:S2142") // InterruptedException is caught and stops session loading
     public Stream<Session> getSessions() {
         final var sessions = new ArrayList<Session>();
         var lastSessionId = "";
@@ -92,11 +99,11 @@ public final class DevoxxPlugin implements EventPlugin {
                         proposal.getString("title"),
                         getSpeakers(proposal.getJSONArray("speakers")),
                         Language.UNKNOWN, // TODO parse language #292
-                        Track.NONE); // TODO parse track #293
+                        getTrack(proposal));
                 sessions.add(session);
             }
             LOGGER.info("Successfully loaded {} sessions for event ID {} on {}", sessions.size(), eventId, weekday);
-        } catch (final IOException | URISyntaxException | JSONException e) {
+        } catch (final IOException | URISyntaxException | JSONException | InterruptedException e) {
             throw new SessionImportException(String.format("Error parsing session %s: %s", lastSessionId, e.getMessage()), e);
         }
         return sessions.stream();
@@ -110,6 +117,41 @@ public final class DevoxxPlugin implements EventPlugin {
             speakers.add(new Speaker(speakerData.getString("fullName"), speakerData.getString("imageUrl")));
         }
         return speakers;
+    }
+
+    @NotNull
+    private Track getTrack(@NotNull final JSONObject proposal) throws IOException, InterruptedException {
+        if (proposal.has("track")) {
+            if (!proposal.isNull("track")) {
+                final var trackData = proposal.getJSONObject("track");
+                if (trackData.has("imageURL")) {
+                    if (!trackData.isNull("imageURL")) {
+                        final var imageURL = trackData.getString("imageURL");
+                        if (imageURL.length() > 4) {
+                            final var extension = imageURL.substring(imageURL.length() - 4).toLowerCase(Locale.getDefault());
+                            return switch (extension) {
+                                case ".png" -> trackWithPNG(imageURL);
+                                case ".svg" -> trackWithSVG(imageURL);
+                                default -> Track.NONE;
+                            };
+                        }
+                    }
+                }
+            }
+        }
+        return Track.NONE;
+    }
+
+    @NotNull
+    private Track trackWithPNG(@NotNull final String imageURL) {
+        final var svgCode = TemplateUtil.replaceVariables(PNG_SVG_WRAPPER_TEMPLATE, Map.of("PNG_URL", imageURL));
+        return new Track(svgCode);
+    }
+
+    @NotNull
+    private Track trackWithSVG(@NotNull final String imageURL) throws IOException, InterruptedException {
+        final URI uri = URI.create(imageURL);
+        return Track.fromURI(uri);
     }
 
 }
