@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
@@ -47,11 +48,16 @@ public record Track(String svgCode) {
             final URL url = Track.class.getResource(fileName);
             final URI uri = Objects.requireNonNull(url).toURI();
             final Path path = Path.of(uri);
-            final String svgCode = Files.readString(path);
-            return new Track(svgCode);
+            return Track.fromPath(path);
         } catch (final Exception e) {
             LOGGER.error("Unable to load default track icon '{}': {}", svgFileName, e.getMessage(), e);
         }
         return NONE;
     }
+
+    public static Track fromPath(@NotNull final Path path) throws IOException {
+        final String svgCode = Files.readString(path);
+        return new Track(svgCode);
+    }
+
 }
