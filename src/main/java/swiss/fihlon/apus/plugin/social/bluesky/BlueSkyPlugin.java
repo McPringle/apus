@@ -163,9 +163,9 @@ public final class BlueSkyPlugin implements SocialPlugin {
     }
 
     private String getStringOrDefault(@NotNull final JSONObject jsonObject, @NotNull final String key, @NotNull final String defaultValue) {
-        if (jsonObject.has(key)) {
+        if (jsonObject.has(key) && !jsonObject.isNull(key)) {
             final var value = jsonObject.getString(key);
-            if (value != null && !value.isBlank()) {
+            if (!value.isBlank()) {
                 return value;
             }
         }
