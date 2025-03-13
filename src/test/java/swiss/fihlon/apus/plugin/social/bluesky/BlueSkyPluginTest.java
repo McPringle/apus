@@ -222,6 +222,71 @@ class BlueSkyPluginTest {
         assertTrue(posts.getLast().isReply());
     }
 
+    @Test
+    void testMentions() {
+        final var appConfig = mock(AppConfig.class);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "", "https://%s/q=%s&limit=%d",
+                "foobar.bsky.social", 30);
+        when(appConfig.blueSky()).thenReturn(blueSkyConfig);
+
+        final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
+        final List<Post> posts = blueSkyPlugin.getPosts(List.of("empty")).toList();
+
+        assertNotNull(posts);
+        assertEquals(5, posts.size());
+        assertEquals(5, posts.stream()
+                .map(Post::html)
+                .filter(html -> html.contains("which mentions @foobar.bsky.social"))
+                .count());
+    }
+
+    @Test
+    void testMentionsNoUrl() {
+        final var appConfig = mock(AppConfig.class);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "", "", "foobar.bsky.social", 30);
+        when(appConfig.blueSky()).thenReturn(blueSkyConfig);
+
+        final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
+        final List<Post> posts = blueSkyPlugin.getPosts(List.of("empty")).toList();
+
+        assertNotNull(posts);
+        assertEquals(0, posts.size());
+    }
+
+    @Test
+    void testMentionsNoProfile() {
+        final var appConfig = mock(AppConfig.class);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "", "https://%s/q=%s&limit=%d", "", 30);
+        when(appConfig.blueSky()).thenReturn(blueSkyConfig);
+
+        final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
+        final List<Post> posts = blueSkyPlugin.getPosts(List.of("empty")).toList();
+
+        assertNotNull(posts);
+        assertEquals(0, posts.size());
+    }
+
+    @Test
+    void getMentionsCatchesException() {
+        final var appConfig = mock(AppConfig.class);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "", "https://%s/q=%s&limit=%d", "broken", 30);
+        when(appConfig.blueSky()).thenReturn(blueSkyConfig);
+
+        final MemoryAppender memoryAppender = new MemoryAppender();
+        memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
+        final Logger logger = (Logger) LoggerFactory.getLogger(BlueSkyPlugin.class);
+        logger.addAppender(memoryAppender);
+
+        memoryAppender.start();
+        final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
+        //noinspection ResultOfMethodCallIgnored
+        blueSkyPlugin.getPosts(List.of("foobar")).toList();
+        memoryAppender.stop();
+
+        final int errorCount = memoryAppender.searchMessages("This is an expected exception.", Level.ERROR).size();
+        assertEquals(1, errorCount);
+    }
+
     private static final class TestBlueSkyLoader implements BlueSkyLoader {
 
         @Override
@@ -263,8 +328,19 @@ class BlueSkyPluginTest {
         public JSONArray getPostsWithMention(@NotNull final String instance,
                                              @NotNull final String profile,
                                              @NotNull final String mentionsUrl,
-                final int postLimit) {
-            return new JSONArray();
+                                             final int postLimit)
+                throws BlueSkyException {
+            return switch (profile) {
+                case "foobar.bsky.social" -> new JSONArray(List.of(
+                        createPostWithMention(100, profile),
+                        createPostWithMention(101, profile),
+                        createPostWithMention(102, profile),
+                        createPostWithMention(103, profile),
+                        createPostWithMention(104, profile)
+                ));
+                case "broken" -> throw new BlueSkyException("This is an expected exception.", new RuntimeException("This is a faked cause."));
+                default -> new JSONArray(List.of());
+            };
         }
 
         private JSONObject createPost(final int i, @NotNull final String hashtag, boolean withVideo) {
@@ -324,6 +400,46 @@ class BlueSkyPluginTest {
 
             return new JSONObject(postJSON);
         }
+
+        private JSONObject createPostWithMention(final int i, @NotNull final String profile) {
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), TEST_TIMEZONE);
+            final var postJSON = """
+                {
+                  "uri": "ID ${i}",
+                  "author": {
+                    "handle": "profile${i}",
+                    "displayName": "Display Name ${i}",
+                    "avatar": "Avatar ${i}"
+                  },
+                  "record": {
+                    "createdAt": "${createdAt}",
+                    "text": "Content for post #${i} which mentions @${profile}",
+                    "facets": [
+                      {
+                        "features": [
+                          {
+                            "$type": "app.bsky.richtext.facet#tag",
+                            "tag": "test"
+                          }
+                        ]
+                      },
+                      {
+                        "features": [
+                          {
+                            "$type": "app.bsky.richtext.facet#mention"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+                """
+                    .replaceAll(Pattern.quote("${i}"), Integer.toString(i))
+                    .replaceAll(Pattern.quote("${createdAt}"), createdAt.format(DATE_TIME_FORMATTER))
+                    .replaceAll(Pattern.quote("${profile}"), profile);
+
+            return new JSONObject(postJSON);
+        }
     }
 
     @Test
@@ -376,6 +492,232 @@ class BlueSkyPluginTest {
                     "handle": "profile${i}",
                     "displayName": "Display Name ${i}",
                     "avatar": "Avatar ${i}"
+                  },
+                  "record": {
+                    "createdAt": "${createdAt}",
+                    "text": "Content for post #${i}",
+                    "facets": [
+                      {
+                        "features": [
+                          {
+                            "$type": "app.bsky.richtext.facet#tag",
+                            "tag": "${tag}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+                """
+                    .replaceAll(Pattern.quote("${i}"), Integer.toString(i))
+                    .replaceAll(Pattern.quote("${tag}"), hashtag)
+                    .replaceAll(Pattern.quote("${createdAt}"), createdAt.format(DATE_TIME_FORMATTER));
+
+            return new JSONObject(postJSON);
+        }
+    }
+
+    @Test
+    void getPostsWithOptionalDataBlank() {
+        final var appConfig = mock(AppConfig.class);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", "", "", 30);
+        when(appConfig.blueSky()).thenReturn(blueSkyConfig);
+
+        final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new OptionalDataBlankBlueSkyLoader(), appConfig);
+        final List<Post> posts = blueSkyPlugin.getPosts(List.of("foobar")).toList();
+
+        assertNotNull(posts);
+        assertEquals(3, posts.size());
+
+        for (int i = 0; i < posts.size() - 1; i++) {
+            final Post post = posts.get(i);
+            assertEquals(post.profile(), post.author());
+            assertTrue(post.avatar().isBlank());
+        }
+    }
+
+    private static final class OptionalDataBlankBlueSkyLoader implements BlueSkyLoader {
+
+        @Override
+        @NotNull public JSONArray getPostsWithHashtag(@NotNull final String instance,
+                                                      @NotNull final String hashtag,
+                                                      @NotNull final String postAPI,
+                                                      final int postLimit) {
+            return new JSONArray(List.of(
+                    createPost(1, hashtag),
+                    createPost(2, hashtag),
+                    createPost(3, hashtag)
+            ));
+        }
+
+        @Override
+        @NotNull
+        public JSONArray getPostsWithMention(@NotNull final String instance,
+                                             @NotNull final String profile,
+                                             @NotNull final String mentionsUrl,
+                                             final int postLimit) {
+            return new JSONArray();
+        }
+
+        private JSONObject createPost(final int i, @NotNull final String hashtag) {
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), TEST_TIMEZONE);
+            final var postJSON = """
+                {
+                  "uri": "ID ${i}",
+                  "author": {
+                    "handle": "profile${i}",
+                    "displayName": "",
+                    "avatar": ""
+                  },
+                  "record": {
+                    "createdAt": "${createdAt}",
+                    "text": "Content for post #${i}",
+                    "facets": [
+                      {
+                        "features": [
+                          {
+                            "$type": "app.bsky.richtext.facet#tag",
+                            "tag": "${tag}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+                """
+                    .replaceAll(Pattern.quote("${i}"), Integer.toString(i))
+                    .replaceAll(Pattern.quote("${tag}"), hashtag)
+                    .replaceAll(Pattern.quote("${createdAt}"), createdAt.format(DATE_TIME_FORMATTER));
+
+            return new JSONObject(postJSON);
+        }
+    }
+
+    @Test
+    void getPostsWithOptionalDataNull() {
+        final var appConfig = mock(AppConfig.class);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", "", "", 30);
+        when(appConfig.blueSky()).thenReturn(blueSkyConfig);
+
+        final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new OptionalDataNullBlueSkyLoader(), appConfig);
+        final List<Post> posts = blueSkyPlugin.getPosts(List.of("foobar")).toList();
+
+        assertNotNull(posts);
+        assertEquals(3, posts.size());
+
+        for (int i = 0; i < posts.size() - 1; i++) {
+            final Post post = posts.get(i);
+            assertEquals(post.profile(), post.author());
+            assertTrue(post.avatar().isBlank());
+        }
+    }
+
+    private static final class OptionalDataNullBlueSkyLoader implements BlueSkyLoader {
+
+        @Override
+        @NotNull public JSONArray getPostsWithHashtag(@NotNull final String instance,
+                                                      @NotNull final String hashtag,
+                                                      @NotNull final String postAPI,
+                                                      final int postLimit) {
+            return new JSONArray(List.of(
+                    createPost(1, hashtag),
+                    createPost(2, hashtag),
+                    createPost(3, hashtag)
+            ));
+        }
+
+        @Override
+        @NotNull
+        public JSONArray getPostsWithMention(@NotNull final String instance,
+                                             @NotNull final String profile,
+                                             @NotNull final String mentionsUrl,
+                                             final int postLimit) {
+            return new JSONArray();
+        }
+
+        private JSONObject createPost(final int i, @NotNull final String hashtag) {
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), TEST_TIMEZONE);
+            final var postJSON = """
+                {
+                  "uri": "ID ${i}",
+                  "author": {
+                    "handle": "profile${i}",
+                    "displayName": null,
+                    "avatar": null
+                  },
+                  "record": {
+                    "createdAt": "${createdAt}",
+                    "text": "Content for post #${i}",
+                    "facets": [
+                      {
+                        "features": [
+                          {
+                            "$type": "app.bsky.richtext.facet#tag",
+                            "tag": "${tag}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+                """
+                    .replaceAll(Pattern.quote("${i}"), Integer.toString(i))
+                    .replaceAll(Pattern.quote("${tag}"), hashtag)
+                    .replaceAll(Pattern.quote("${createdAt}"), createdAt.format(DATE_TIME_FORMATTER));
+
+            return new JSONObject(postJSON);
+        }
+    }
+
+    @Test
+    void getPostsWithOptionalDataMissing() {
+        final var appConfig = mock(AppConfig.class);
+        final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", "", "", 30);
+        when(appConfig.blueSky()).thenReturn(blueSkyConfig);
+
+        final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new OptionalDataMissingBlueSkyLoader(), appConfig);
+        final List<Post> posts = blueSkyPlugin.getPosts(List.of("foobar")).toList();
+
+        assertNotNull(posts);
+        assertEquals(3, posts.size());
+
+        for (int i = 0; i < posts.size() - 1; i++) {
+            final Post post = posts.get(i);
+            assertEquals(post.profile(), post.author());
+            assertTrue(post.avatar().isBlank());
+        }
+    }
+
+    private static final class OptionalDataMissingBlueSkyLoader implements BlueSkyLoader {
+
+        @Override
+        @NotNull public JSONArray getPostsWithHashtag(@NotNull final String instance,
+                                                      @NotNull final String hashtag,
+                                                      @NotNull final String postAPI,
+                                                      final int postLimit) {
+            return new JSONArray(List.of(
+                    createPost(1, hashtag),
+                    createPost(2, hashtag),
+                    createPost(3, hashtag)
+            ));
+        }
+
+        @Override
+        @NotNull
+        public JSONArray getPostsWithMention(@NotNull final String instance,
+                                             @NotNull final String profile,
+                                             @NotNull final String mentionsUrl,
+                                             final int postLimit) {
+            return new JSONArray();
+        }
+
+        private JSONObject createPost(final int i, @NotNull final String hashtag) {
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), TEST_TIMEZONE);
+            final var postJSON = """
+                {
+                  "uri": "ID ${i}",
+                  "author": {
+                    "handle": "profile${i}"
                   },
                   "record": {
                     "createdAt": "${createdAt}",
