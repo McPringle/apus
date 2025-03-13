@@ -162,15 +162,20 @@ class SocialServiceTest {
         assertEquals(1, posts.stream().filter(post -> post.html().length() > 500).count());
     }
 
-    @Test
-    void getPostsWithoutHashtag() {
-        final var socialConfig = new SocialConfig("", appConfig.social().headline(), appConfig.social().numberOfColumns(),
-                appConfig.social().imagesEnabled(), appConfig.social().imageLimit(), appConfig.social().filter());
+    @NotNull
+    private SocialService getSocialService(@NotNull final SocialConfig socialConfig) {
         final var hashtagConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
                 appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
                 appConfig.blueSky(), appConfig.mastodon());
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), hashtagConfig, List.of(new NoHashtagSocialPlugin()));
+        return new SocialService(new NoOpTaskScheduler(), hashtagConfig, List.of(new NoHashtagSocialPlugin()));
+    }
+
+    @Test
+    void getPostsWithoutHashtag() {
+        final var socialConfig = new SocialConfig("", appConfig.social().headline(), appConfig.social().numberOfColumns(),
+                appConfig.social().imagesEnabled(), appConfig.social().imageLimit(), appConfig.social().filter());
+        final SocialService socialService = getSocialService(socialConfig);
         final List<Post> posts = socialService.getPosts(10);
         assertTrue(posts.isEmpty());
     }
