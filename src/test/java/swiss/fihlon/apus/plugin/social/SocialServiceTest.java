@@ -108,18 +108,23 @@ class SocialServiceTest {
         assertEquals("P5", posts.get(4).id());
     }
 
+    @NotNull
+    private List<Post> getPostsWithConfig(@NotNull final SocialConfig socialConfig) {
+        final var sensitiveConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
+                appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
+                appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
+                appConfig.blueSky(), appConfig.mastodon());
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), sensitiveConfig, List.of(new TestSocialPlugin()));
+        return socialService.getPosts(0);
+    }
+
     @Test
     void getPostsWithSensitive() {
         final var filterConfig = new FilterConfig(appConfig.social().filter().length(), appConfig.social().filter().replies(), false,
                 appConfig.social().filter().words());
         final var socialConfig = new SocialConfig(appConfig.social().hashtags(), appConfig.social().headline(), appConfig.social().numberOfColumns(),
                 appConfig.social().imagesEnabled(), appConfig.social().imageLimit(), filterConfig);
-        final var sensitiveConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
-                appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
-                appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
-                appConfig.blueSky(), appConfig.mastodon());
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), sensitiveConfig, List.of(new TestSocialPlugin()));
-        final List<Post> posts = socialService.getPosts(0);
+        final List<Post> posts = getPostsWithConfig(socialConfig);
         assertEquals(11, posts.size());
         assertEquals(1, posts.stream().filter(Post::isSensitive).count());
     }
@@ -130,12 +135,7 @@ class SocialServiceTest {
                 appConfig.social().filter().words());
         final var socialConfig = new SocialConfig(appConfig.social().hashtags(), appConfig.social().headline(), appConfig.social().numberOfColumns(),
                 appConfig.social().imagesEnabled(), appConfig.social().imageLimit(), filterConfig);
-        final var repliesConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
-                appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
-                appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
-                appConfig.blueSky(), appConfig.mastodon());
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), repliesConfig, List.of(new TestSocialPlugin()));
-        final List<Post> posts = socialService.getPosts(0);
+        final List<Post> posts = getPostsWithConfig(socialConfig);
         assertEquals(11, posts.size());
         assertEquals(1, posts.stream().filter(Post::isReply).count());
     }
@@ -146,12 +146,7 @@ class SocialServiceTest {
                 appConfig.social().filter().words());
         final var socialConfig = new SocialConfig(appConfig.social().hashtags(), appConfig.social().headline(), appConfig.social().numberOfColumns(),
                 appConfig.social().imagesEnabled(), appConfig.social().imageLimit(), filterConfig);
-        final var repliesConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
-                appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
-                appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
-                appConfig.blueSky(), appConfig.mastodon());
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), repliesConfig, List.of(new TestSocialPlugin()));
-        final List<Post> posts = socialService.getPosts(0);
+        final List<Post> posts = getPostsWithConfig(socialConfig);
         assertEquals(11, posts.size());
         assertEquals(1, posts.stream().filter(post -> post.html().length() > 500).count());
     }
@@ -162,12 +157,7 @@ class SocialServiceTest {
                 appConfig.social().filter().words());
         final var socialConfig = new SocialConfig(appConfig.social().hashtags(), appConfig.social().headline(), appConfig.social().numberOfColumns(),
                 appConfig.social().imagesEnabled(), appConfig.social().imageLimit(), filterConfig);
-        final var repliesConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
-                appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
-                appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
-                appConfig.blueSky(), appConfig.mastodon());
-        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), repliesConfig, List.of(new TestSocialPlugin()));
-        final List<Post> posts = socialService.getPosts(0);
+        final List<Post> posts = getPostsWithConfig(socialConfig);
         assertEquals(11, posts.size());
         assertEquals(1, posts.stream().filter(post -> post.html().length() > 500).count());
     }
@@ -384,7 +374,7 @@ class SocialServiceTest {
         @Override
         @NotNull
         public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
-            return Stream.<Post>of();
+            return Stream.of();
         }
     }
 
