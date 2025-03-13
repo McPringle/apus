@@ -92,7 +92,7 @@ public final class SocialService {
                     .forEach(plugin -> postsByPlugin.put(plugin, List.of()));
         }
 
-        if (!hashtags.isEmpty() && socialPlugins.stream().anyMatch(SocialPlugin::isEnabled)) {
+        if (!hashtags.isEmpty() && !postsByPlugin.isEmpty()) {
             updatePosts();
             final var startTime = Instant.now().plus(UPDATE_FREQUENCY);
             updateScheduler = taskScheduler.scheduleAtFixedRate(this::updatePosts, startTime, UPDATE_FREQUENCY);
