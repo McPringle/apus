@@ -17,6 +17,7 @@
  */
 package swiss.fihlon.apus.util;
 
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
@@ -34,6 +35,22 @@ class TemplateUtilTest {
         final var variables = Map.of("name", "World");
         final var expected = "Hello, World!";
         final var actual = TemplateUtil.replaceVariables(template, variables);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void replaceEmpty() {
+        final var template = "Hello, ${name}!";
+        final var expected = "Hello, ${name}!";
+        final var actual = TemplateUtil.replaceVariables(template, Map.of());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void replaceWithNull() {
+        final var template = "Hello, ${name}!";
+        final var expected = "Hello, ${name}!";
+        final var actual = TemplateUtil.replaceVariables(template, null);
         assertEquals(expected, actual);
     }
 
