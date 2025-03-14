@@ -111,6 +111,8 @@ public final class EventService {
                 newRoomsWithSessions.get(session.room()).add(session);
             }
 
+            newRoomsWithSessions.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+
             synchronized (this) {
                 roomsWithSessions = newRoomsWithSessions;
             }
