@@ -26,6 +26,7 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import org.jetbrains.annotations.NotNull;
@@ -128,7 +129,7 @@ public final class RoomView extends Div {
                     .collect(Collectors.joining(", "));
             speakersComponent.add(
                     new Icon(VaadinIcon.USER),
-                    new Text(joinedSpeakers)
+                    new Span(joinedSpeakers)
             );
         }
         return speakersComponent;

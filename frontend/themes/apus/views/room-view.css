@@ -71,6 +71,21 @@
     height: 16px;
 }
 
+.speakers {
+    width: 400px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.speakers span {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .room-view .track,
 .room-view .avatar{
     position: relative;
