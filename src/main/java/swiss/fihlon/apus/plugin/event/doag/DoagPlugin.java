@@ -82,18 +82,14 @@ public final class DoagPlugin implements EventPlugin {
                 final Iterator<String> roomKeys = rooms.keys();
                 while (roomKeys.hasNext()) {
                     final String roomName = roomKeys.next();
-                    if (roomName.contains("info°center") || roomName.contains("ring°kartbahn") || roomName.contains("ring°boulevard")) {
-                        continue;
-                    }
                     final JSONArray slots = rooms.getJSONArray(roomName);
                     for (int slotCounter = 0; slotCounter < slots.length(); slotCounter++) {
                         final JSONObject slot = slots.getJSONObject(slotCounter);
                         lastSlotId = slot.getInt("id");
-                        final String type = slot.getString("type");
-                        if (!"lecture".equalsIgnoreCase(type)) {
+                        final Session session = createSession(slot, acronym, roomName);
+                        if (checkSkipSession(slot, session)) {
                             continue;
                         }
-                        final Session session = createSession(slot, acronym, roomName);
                         sessions.add(session);
                     }
                 }
@@ -103,6 +99,21 @@ public final class DoagPlugin implements EventPlugin {
             throw new SessionImportException(String.format("Error parsing slot %d: %s", lastSlotId, e.getMessage()), e);
         }
         return sessions.stream();
+    }
+
+    private static boolean checkSkipSession(@NotNull final JSONObject slot, @NotNull final Session session) {
+        final var type = slot.getString("type");
+        final var title = session.title();
+        final var roomName = session.room().name();
+        return !type.equalsIgnoreCase("lecture")
+                || title.contains("Trackwalk")
+                || roomName.contains("info°center")
+                || roomName.contains("ring°kartbahn")
+                || roomName.contains("ring°boulevard")
+                || roomName.contains("Restaurant")
+                || roomName.contains("Gasthaus")
+                || roomName.contains("Race Room")
+                || roomName.contains("Eclipse Foundation Business Lounge");
     }
 
     private @NotNull Session createSession(@NotNull final JSONObject slot,
