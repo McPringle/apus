@@ -419,6 +419,26 @@ You can find more information about why this is important and how to do it easil
 
 We love to add an emoji to the beginning of every commit message which relates to the nature of the change. You can find a searchable list of possible emojis and their meaning in the overview on the [gitmoji](https://gitmoji.dev/) website. If you prefer, you can also install one of the plugins that are available for almost all common IDEs.
 
+### JSpecify, NullAway, and Error Prone
+
+In this project we use [JSpecify](https://jspecify.dev/) together with [NullAway](https://github.com/uber/NullAway) and [Error Prone](https://errorprone.info/) to eliminate possible `NullPointerException`s. To make this work, each package must contain a `package-info.java` file with the following content:
+
+```java
+/**
+ * LICENSE HEADER
+ */
+@NullMarked
+package swiss.fihlon.apus.PACKAGE;
+
+import org.jspecify.annotations.NullMarked;
+```
+
+Please use the same license header as in each other Java file. The annotation `@NullMarked` comes from [JSpecify](https://jspecify.dev/) and ensures that all reference types within a package are treated as `@NonNull` by default, unless they are explicitly annotated with `@Nullable`.
+
+Please make extensive use of the `@Nullable` and `@NotNull` annotations in the while *Apus* code base. Annotate every method, method parameter, and return type with the appropriate annotation.As a result, every major IDE will warn you if you access something that can be `null` without checking it first. As additional protection, the [Error Prone Plugin](https://errorprone.info/) ensures that the build fails with a corresponding error.
+
+This way, no more `NullPointerException`s should be thrown at runtime.
+
 ### AI Generated Code
 
 AI generated source code is based on real existing source code, which is copied in whole or in part into the generated code. The license of the original source code with which the AI was trained is not taken into account. It is not clear which license conditions apply and how these can be complied with. For legal reasons, we therefore do not allow AI-generated source code at all.
