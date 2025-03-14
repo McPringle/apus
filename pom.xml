@@ -447,6 +447,7 @@
                     <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
                     <fork>true</fork>
+                    <failOnWarning>true</failOnWarning>
                     <compilerArgs>
                         <arg>-XDcompilePolicy=simple</arg>
                         <arg>--should-stop=ifError=FLOW</arg>
