@@ -21,12 +21,12 @@
     border: var(--event-room-border);
     display: inline-block;
     width: 400px;
-    height: 138px;
+    height: 124px;
     margin-left: 10px;
     margin-bottom: 10px;
     padding: 10px;
     overflow: clip;
-    font-size: var(--lumo-font-size-m);
+    font-size: var(--lumo-font-size-s);
 }
 
 .running-session {
@@ -53,11 +53,11 @@
 }
 
 .room-view .title h3 {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 10px;
     float: left;
-    width: 376px;
-    height: 47px;
+    width: 374px;
+    height: 43px;
 
     display: -webkit-box;
     -webkit-line-clamp: 2;
