@@ -121,6 +121,7 @@ class DevoxxPluginTest {
     }
 
     @Test
+    @SuppressWarnings("ZoneIdOfZ") // because that is what the JSON interface in production uses
     void getSessions() {
         final var timezone = ZoneId.of("Z");
         final var appConfig = mock(AppConfig.class);

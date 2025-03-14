@@ -194,12 +194,12 @@ class BlueSkyPluginTest {
 
         memoryAppender.start();
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
-        //noinspection ResultOfMethodCallIgnored
-        blueSkyPlugin.getPosts(List.of("broken")).toList();
+        final var posts = blueSkyPlugin.getPosts(List.of("broken")).toList();
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.searchMessages("This is an expected exception.", Level.ERROR).size();
         assertEquals(1, errorCount);
+        assertEquals(0, posts.size());
     }
 
     @Test
@@ -279,12 +279,12 @@ class BlueSkyPluginTest {
 
         memoryAppender.start();
         final BlueSkyPlugin blueSkyPlugin = new BlueSkyPlugin(new TestBlueSkyLoader(), appConfig);
-        //noinspection ResultOfMethodCallIgnored
-        blueSkyPlugin.getPosts(List.of("foobar")).toList();
+        final var posts = blueSkyPlugin.getPosts(List.of("foobar")).toList();
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.searchMessages("This is an expected exception.", Level.ERROR).size();
         assertEquals(1, errorCount);
+        assertEquals(5, posts.size());
     }
 
     private static final class TestBlueSkyLoader implements BlueSkyLoader {
@@ -344,7 +344,7 @@ class BlueSkyPluginTest {
         }
 
         private JSONObject createPost(final int i, @NotNull final String hashtag, boolean withVideo) {
-            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), TEST_TIMEZONE);
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now(TEST_TIMEZONE).minusMinutes(i), TEST_TIMEZONE);
             final var fakeReply = """
                     "reply": {
                       "parent": {
@@ -402,7 +402,7 @@ class BlueSkyPluginTest {
         }
 
         private JSONObject createPostWithMention(final int i, @NotNull final String profile) {
-            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), TEST_TIMEZONE);
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now(TEST_TIMEZONE).minusMinutes(i), TEST_TIMEZONE);
             final var postJSON = """
                 {
                   "uri": "ID ${i}",
@@ -484,7 +484,7 @@ class BlueSkyPluginTest {
         }
 
         private JSONObject createPost(final int i, @NotNull final String hashtag) {
-            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), TEST_TIMEZONE);
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now(TEST_TIMEZONE).minusMinutes(i), TEST_TIMEZONE);
             final var postJSON = """
                 {
                   "uri": "ID ${i}",
@@ -560,7 +560,7 @@ class BlueSkyPluginTest {
         }
 
         private JSONObject createPost(final int i, @NotNull final String hashtag) {
-            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), TEST_TIMEZONE);
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now(TEST_TIMEZONE).minusMinutes(i), TEST_TIMEZONE);
             final var postJSON = """
                 {
                   "uri": "ID ${i}",
@@ -636,7 +636,7 @@ class BlueSkyPluginTest {
         }
 
         private JSONObject createPost(final int i, @NotNull final String hashtag) {
-            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), TEST_TIMEZONE);
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now(TEST_TIMEZONE).minusMinutes(i), TEST_TIMEZONE);
             final var postJSON = """
                 {
                   "uri": "ID ${i}",
@@ -712,7 +712,7 @@ class BlueSkyPluginTest {
         }
 
         private JSONObject createPost(final int i, @NotNull final String hashtag) {
-            final var createdAt = ZonedDateTime.of(LocalDateTime.now().minusMinutes(i), TEST_TIMEZONE);
+            final var createdAt = ZonedDateTime.of(LocalDateTime.now(TEST_TIMEZONE).minusMinutes(i), TEST_TIMEZONE);
             final var postJSON = """
                 {
                   "uri": "ID ${i}",

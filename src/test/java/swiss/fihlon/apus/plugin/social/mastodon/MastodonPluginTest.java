@@ -187,12 +187,12 @@ class MastodonPluginTest {
 
         memoryAppender.start();
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
-        //noinspection ResultOfMethodCallIgnored
-        mastodonPlugin.getPosts(List.of("broken")).toList();
+        final var posts = mastodonPlugin.getPosts(List.of("broken")).toList();
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.searchMessages("This is an expected exception.", Level.ERROR).size();
         assertEquals(1, errorCount);
+        assertEquals(0, posts.size());
     }
 
     @Test
@@ -255,6 +255,7 @@ class MastodonPluginTest {
             return posts;
         }
 
+        @SuppressWarnings("ZoneIdOfZ") // because that is what the JSON interface in production uses
         private JSONObject createPost(final int i, boolean invalidImageType) {
             final var post = new JSONObject();
             post.put("id", "ID " + i);
