@@ -29,10 +29,11 @@ import swiss.fihlon.apus.plugin.social.bluesky.BlueSkyConfig;
 import swiss.fihlon.apus.plugin.social.mastodon.MastodonConfig;
 
 import java.time.ZoneId;
+import java.util.Locale;
 
 @ConfigurationProperties(prefix = "apus")
-public record AppConfig(@NotNull String version, @NotNull String language, @NotNull ZoneId timezone, @NotNull String styles,
-                        @NotNull Boolean demoMode, @NotNull AdminConfig admin, @NotNull EventConfig event, @NotNull SocialConfig social,
+public record AppConfig(@NotNull String version, @NotNull String language, @NotNull ZoneId timezone, @NotNull String password,
+                        @NotNull Boolean demoMode, @NotNull String styles, @NotNull EventConfig event, @NotNull SocialConfig social,
                         @NotNull DevoxxConfig devoxx, @NotNull DoagConfig doag, @NotNull JavaForumStuttgartConfig jfs,
                         @NotNull SessionizeConfig sessionize, @NotNull BlueSkyConfig blueSky, @NotNull MastodonConfig mastodon) {
 
@@ -41,4 +42,7 @@ public record AppConfig(@NotNull String version, @NotNull String language, @NotN
     // needed to add the `@ConstructorBinding` annotation
     public AppConfig { }
 
+    public Locale locale() {
+        return language().toLowerCase(Locale.getDefault()).equals("de") ? Locale.GERMAN : Locale.ENGLISH;
+    }
 }

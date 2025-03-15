@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class HtmlUtilTest {
 
     @Test
+    @SuppressWarnings("HttpUrlsUsage") // testing sanitizer removing HTTP links
     void sanitize() {
         assertEquals("<p>AB<strong>CD</strong></p>",
                 HtmlUtil.sanitize("<p>A<span>B<strong>C<a href=\"http://example.com\">D</a></span></p>"));
@@ -46,9 +47,9 @@ class HtmlUtilTest {
     @Test
     void extractText() {
         assertEquals("ABCD",
-                HtmlUtil.extractText("<p>A<span>B<strong>C<a href=\"http://example.com\">D</a></span></p>"));
+                HtmlUtil.extractText("<p>A<span>B<strong>C<a href=\"https://example.com\">D</a></span></p>"));
         assertEquals("Test",
-                HtmlUtil.extractText("<a href=\"http://example.com\" onclick=\"alert('Test');\">Test</a>"));
+                HtmlUtil.extractText("<a href=\"https://example.com\" onclick=\"alert('Test');\">Test</a>"));
         assertEquals("Test Test",
                 HtmlUtil.extractText("Test <script>alert('Test');</script> Test"));
         assertEquals("Test Test",

@@ -48,7 +48,7 @@ import swiss.fihlon.apus.util.PasswordUtil;
 @PageTitle("Apus – Social Media Wall with Event Agenda")
 @PWA(name = "Apus", shortName = "Apus")
 @Theme("apus")
-@SuppressWarnings({"FinalClass", "HideUtilityClassConstructor", "RegexpSingleline", "java:S106"})
+@SuppressWarnings({"HideUtilityClassConstructor", "RegexpSingleline", "java:S106"})
 public class Application implements AppShellConfigurator {
 
     private static final Option HASH_PASSWORD_OPTION = new Option("p", "password", true, "Hash password and exit");

@@ -65,8 +65,8 @@ public final class MastodonPlugin implements SocialPlugin {
 
     @Override
     public boolean isEnabled() {
-        final var instanceOk = instance != null && !instance.isBlank();
-        final var postAPIOk = postAPI != null && !postAPI.isBlank();
+        final var instanceOk = !instance.isBlank();
+        final var postAPIOk = !postAPI.isBlank();
         return instanceOk && postAPIOk;
     }
 

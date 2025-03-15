@@ -94,7 +94,7 @@ public final class SocialView extends Div {
             postsColumnsDiv.add(postsContainer);
         }
 
-        if (adminModeEnabled || appConfig.admin().password().isBlank()) {
+        if (adminModeEnabled || appConfig.password().isBlank()) {
             contextMenu = null;
         } else {
             contextMenu = new ContextMenu();
@@ -147,7 +147,7 @@ public final class SocialView extends Div {
     }
 
     private void handleLogin(@NotNull final String password) {
-        if (contextMenu != null && PasswordUtil.matches(password, appConfig.admin().password())) {
+        if (contextMenu != null && PasswordUtil.matches(password, appConfig.password())) {
             adminModeEnabled = true;
             contextMenu.setTarget(null);
             updatePosts();

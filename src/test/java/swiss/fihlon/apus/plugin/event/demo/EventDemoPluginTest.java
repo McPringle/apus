@@ -22,6 +22,7 @@ import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Session;
 
 import java.time.ZoneId;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -31,11 +32,15 @@ import static org.mockito.Mockito.when;
 
 class EventDemoPluginTest {
 
+    private static final Locale TEST_LOCALE = Locale.ENGLISH;
+    private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
+
     @Test
     void isEnabled() {
         final var appConfig = mock(AppConfig.class);
+        when(appConfig.locale()).thenReturn(TEST_LOCALE);
+        when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
         when(appConfig.demoMode()).thenReturn(true);
-        when(appConfig.timezone()).thenReturn(ZoneId.of("Europe/Zurich"));
 
         final var demoEventPlugin = new EventDemoPlugin(appConfig);
         assertTrue(demoEventPlugin.isEnabled());
@@ -44,6 +49,8 @@ class EventDemoPluginTest {
     @Test
     void isDisabled() {
         final var appConfig = mock(AppConfig.class);
+        when(appConfig.locale()).thenReturn(TEST_LOCALE);
+        when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
         when(appConfig.demoMode()).thenReturn(false);
 
         final var demoEventPlugin = new EventDemoPlugin(appConfig);
@@ -56,8 +63,9 @@ class EventDemoPluginTest {
     @Test
     void getSessions() {
         final var appConfig = mock(AppConfig.class);
+        when(appConfig.locale()).thenReturn(TEST_LOCALE);
+        when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
         when(appConfig.demoMode()).thenReturn(true);
-        when(appConfig.timezone()).thenReturn(ZoneId.of("Europe/Zurich"));
 
         final var demoEventPlugin = new EventDemoPlugin(appConfig);
         final var sessions = demoEventPlugin.getSessions().toList();

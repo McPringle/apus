@@ -68,7 +68,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
 
     @Override
     public boolean isEnabled() {
-        return dbUrl != null && !dbUrl.isEmpty();
+        return !dbUrl.isEmpty();
     }
 
     @Override

@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.util;
 
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;

@@ -49,10 +49,10 @@ import static org.mockito.Mockito.when;
 
 class DevoxxPluginTest {
 
-    private static final String NGINX_IMAGE_NAME = "nginx:latest";
+    private static final @NotNull String NGINX_IMAGE_NAME = "nginx:latest";
     private static final int NGINX_FIXED_PORT = 8088;
     private static final int NGINX_CONTAINER_PORT = 80;
-    private static FixedPortContainer nginxContainer;
+    private static @Nullable FixedPortContainer nginxContainer;
 
     @BeforeAll
     static void setUp() {

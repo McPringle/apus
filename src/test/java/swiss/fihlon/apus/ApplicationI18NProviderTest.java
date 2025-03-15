@@ -26,20 +26,23 @@ import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class ApplicationI18NProviderTest {
 
-    private AppConfig createLanguageConfig(@NotNull final String language) {
+    private @NotNull AppConfig createLanguageConfig(@NotNull final String language) {
         final var appConfig = mock(AppConfig.class);
         when(appConfig.language()).thenReturn(language);
+        when(appConfig.locale()).thenReturn(language.equals("de") ? Locale.GERMAN : Locale.ENGLISH);
         return appConfig;
     }
 
     @Test
     void getProvidedLocales() {
         final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig(""));
+        assertNotNull(i18nProvider);
         assertEquals(2, i18nProvider.getProvidedLocales().size());
         assertIterableEquals(List.of(Locale.ENGLISH, Locale.GERMAN), i18nProvider.getProvidedLocales());
     }
@@ -47,36 +50,42 @@ class ApplicationI18NProviderTest {
     @Test
     void englishTranslationWithoutParameters() {
         final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig("en"));
+        assertNotNull(i18nProvider);
         assertEquals("Rooms & Sessions", i18nProvider.getTranslation("event.heading", null));
     }
 
     @Test
     void englishTranslationWithStringParameter() {
         final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig("en"));
+        assertNotNull(i18nProvider);
         assertEquals("ends in 42 minutes", i18nProvider.getTranslation("event.session.countdown.minutes", null, "42"));
     }
 
     @Test
     void englishTranslationWithIntParameter() {
         final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig("en"));
+        assertNotNull(i18nProvider);
         assertEquals("ends in 42 minutes", i18nProvider.getTranslation("event.session.countdown.minutes", null, 42));
     }
 
     @Test
     void germanTranslationWithoutParameters() {
         final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig("de"));
+        assertNotNull(i18nProvider);
         assertEquals("Räume & Vorträge", i18nProvider.getTranslation("event.heading", null));
     }
 
     @Test
     void germanTranslationWithStringParameter() {
         final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig("de"));
+        assertNotNull(i18nProvider);
         assertEquals("endet in 42 Minuten", i18nProvider.getTranslation("event.session.countdown.minutes", null, "42"));
     }
 
     @Test
     void germanTranslationWithIntParameter() {
         final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig("de"));
+        assertNotNull(i18nProvider);
         assertEquals("endet in 42 Minuten", i18nProvider.getTranslation("event.session.countdown.minutes", null, 42));
     }
 

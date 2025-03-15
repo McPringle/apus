@@ -40,6 +40,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,15 +50,17 @@ import static org.mockito.Mockito.when;
 
 class EventServiceTest {
 
+    private static final Locale TEST_LOCALE = Locale.ENGLISH;
     private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
 
     static AppConfig mockConfiguration(@NotNull final Period dateAdjust, boolean demoMode) {
         final var eventConfig = new EventConfig(dateAdjust, "", 60,
                 true, true, 0);
         final var appConfig = mock(AppConfig.class);
+        when(appConfig.locale()).thenReturn(TEST_LOCALE);
+        when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
         when(appConfig.demoMode()).thenReturn(demoMode);
         when(appConfig.event()).thenReturn(eventConfig);
-        when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
         return appConfig;
     }
 

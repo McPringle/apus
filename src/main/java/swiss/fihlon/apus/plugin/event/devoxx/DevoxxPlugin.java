@@ -66,9 +66,9 @@ public final class DevoxxPlugin implements EventPlugin {
 
     @Override
     public boolean isEnabled() {
-        final var eventApiOk = eventApi != null && !eventApi.isBlank();
-        final var eventIdOk = eventId != null && !eventId.isBlank();
-        final var weekdayOk = weekday != null && !weekday.isBlank();
+        final var eventApiOk = !eventApi.isBlank();
+        final var eventIdOk = !eventId.isBlank();
+        final var weekdayOk = !weekday.isBlank();
         return eventApiOk && eventIdOk && weekdayOk;
     }
 

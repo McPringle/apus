@@ -41,18 +41,19 @@ import java.util.stream.Stream;
 @Service
 public final class EventDemoPlugin implements EventPlugin {
 
-    private static final Locale LOCALE = Locale.getDefault();
     private static final Random RANDOM = new Random();
     private static final int AROUND_THE_CLOCK = 24;
     private static final int ROOM_COUNT = 4;
     private static final List<Track> DEFAULT_TRACKS =
             List.of(Track.ARCHITECTURE, Track.CLOUD, Track.CORE, Track.INFRASTRUCTURE, Track.SECURITY, Track.TOOLS);
 
+    private final Locale locale;
     private final ZoneId timezone;
     private final boolean demoMode;
     private final List<Session> sessions;
 
     public EventDemoPlugin(@NotNull final AppConfig appConfig) {
+        locale = appConfig.locale();
         timezone = appConfig.timezone();
         demoMode = appConfig.demoMode();
         sessions = demoMode ? createFakeSessions() : List.of();
@@ -73,7 +74,7 @@ public final class EventDemoPlugin implements EventPlugin {
         final List<Session> fakeSessions = new ArrayList<>(AROUND_THE_CLOCK * ROOM_COUNT);
 
         final var todayAtMidnight = ZonedDateTime.now(timezone).withHour(0).withMinute(0).withSecond(0).withNano(0);
-        final Faker faker = new Faker(LOCALE, RANDOM);
+        final Faker faker = new Faker(locale, RANDOM);
         for (int hourCount = 0; hourCount < AROUND_THE_CLOCK; hourCount++) {
             final var startDateTime = todayAtMidnight.plusHours(hourCount);
             final var endDateTime = startDateTime.plusMinutes(50);
@@ -91,7 +92,7 @@ public final class EventDemoPlugin implements EventPlugin {
 
     private @NotNull List<Room> createFakeRooms() {
         final HashSet<Room> rooms = HashSet.newHashSet(ROOM_COUNT);
-        final Faker faker = new Faker(LOCALE, RANDOM);
+        final Faker faker = new Faker(locale, RANDOM);
         while (rooms.size() < ROOM_COUNT) {
             rooms.add(new Room(faker.address().cityName()));
         }

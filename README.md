@@ -149,7 +149,6 @@ To modify the default configuration values, just specify environment variables w
 
 | Environment Variable            | Default         | Description                                                                           |
 |---------------------------------|-----------------|---------------------------------------------------------------------------------------|
-| APUS_ADMIN_PASSWORD             |                 | The hashed password to get admin access (empty = disabled).                           |
 | APUS_BLUESKY_HASHTAG_URL        | [1]             | The URL of the BlueSky API to get the posts containing a hashtag (empty = disabled).  |
 | APUS_BLUESKY_INSTANCE           | api.bsky.app    | The BlueSky instance used to read the posts from (empty = disabled).                  |
 | APUS_BLUESKY_MENTIONS_URL       | [2]             | The URL of the BlueSky API to get the posts mentioning a profile (empty = disabled).  |
@@ -172,6 +171,7 @@ To modify the default configuration values, just specify environment variables w
 | APUS_MASTODON_INSTANCE          | mastodon.social | The Mastodon instance used to read the posts from (empty = disabled).                 |
 | APUS_MASTODON_POST_API          | [5]             | The URL of the Mastodon API to read the posts (empty = disabled).                     |
 | APUS_MASTODON_POST_LIMIT        | 30              | The limit for the number of Mastodon posts when accessing the API.                    |
+| APUS_PASSWORD                   |                 | The hashed password to get admin access (empty = disabled).                           |
 | APUS_SOCIAL_FILTER_LENGTH       | 500             | Hide social media posts which exceed this length (0 = disabled).                      |
 | APUS_SOCIAL_FILTER_REPLIES      | true            | Hide social media posts which are replies.                                            |
 | APUS_SOCIAL_FILTER_SENSITIVE    | true            | Hide social media posts which contain sensitive information.                          |
@@ -459,7 +459,7 @@ AI generated source code is based on real existing source code, which is copied 
 There is *no need* to run the `install` or `deploy` tasks. They will just run longer, produce unnecessary output, burn energy, and occupy your disk space. [Don't just blindly run mvn clean install...](https://www.andreaseisele.com/posts/mvn-clean-install/)
 
 > [!NOTE]  
-> *Apus* comes with a complete dockerized build for production use. It is not recommended to use the self-contained build for development purposes. Please take a look at the section about [Production Build](#production-build) below.
+> *Apus* comes with a complete dockerized build for production use. It is **not** recommended to use the self-contained build for development purposes.
 
 ### Debugging
 

@@ -1,11 +1,6 @@
 {
   "properties" : [
     {
-      "name" : "apus.admin.password",
-      "type" : "java.lang.String",
-      "description" : "The password to get admin access (empty = disabled)."
-    },
-    {
       "name" : "apus.bluesky.hashtagURL",
       "type" : "java.lang.String",
       "description" : "The URL of the BlueSky API to get the posts containing a hashtag."
@@ -114,6 +109,11 @@
       "name" : "apus.mastodon.postLimit",
       "type" : "java.lang.Integer",
       "description" : "The limit for the number of Mastodon posts when accessing the API."
+    },
+    {
+      "name" : "apus.password",
+      "type" : "java.lang.String",
+      "description" : "The password to get admin access (empty = disabled)."
     },
     {
       "name" : "apus.sessionize.eventApi",

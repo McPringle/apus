@@ -18,6 +18,7 @@
 package swiss.fihlon.apus;
 
 import com.vaadin.flow.i18n.I18NProvider;
+import com.vaadin.flow.server.InvalidI18NConfigurationException;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,11 +38,13 @@ public final class ApplicationI18NProvider implements I18NProvider {
     private final transient @NotNull ResourceBundle resourceBundle;
 
     public ApplicationI18NProvider(@NotNull final AppConfig appConfig) {
-        locale = switch (appConfig.language()) {
-            case "de" -> Locale.GERMAN;
-            default -> Locale.ENGLISH;
-        };
-        resourceBundle = ResourceBundle.getBundle("i18n/translations", locale);
+        locale = appConfig.locale();
+        if (SUPPORTED_LOCALES.contains(locale)) {
+            resourceBundle = ResourceBundle.getBundle("i18n/translations", locale);
+        } else {
+            final var language = appConfig.language();
+            throw new InvalidI18NConfigurationException("Unsupported locale '%s' for language '%s'!".formatted(locale, language));
+        }
     }
 
     @NotNull

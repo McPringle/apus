@@ -21,7 +21,6 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -249,34 +248,39 @@ class MastodonPluginTest {
         }
 
         @SuppressWarnings("ZoneIdOfZ") // because that is what the JSON interface in production uses
-        private JSONObject createPost(final int i, boolean invalidImageType) {
+        private JSONObject createPost(final int index, boolean invalidImageType) {
             final var post = new JSONObject();
-            post.put("id", "ID " + i);
-            post.put("in_reply_to_id", i == 1 ? null : i == 5 ? "ID 4" : " ");
+            post.put("id", "ID " + index);
+            post.put("in_reply_to_id", index == 1 ? null : index == 5 ? "ID 4" : " ");
             post.put("sensitive", false);
-            post.put("content", "Content for post #" + i);
+            post.put("content", "Content for post #" + index);
 
             final var account = new JSONObject();
-            account.put("display_name", "Display Name " + i);
-            account.put("avatar", "Avatar " + i);
-            account.put("acct", "profile" + i + "@localhost");
+            account.put("display_name", "Display Name " + index);
+            account.put("avatar", "Avatar " + index);
+            account.put("acct", "profile" + index + "@localhost");
             post.put("account", account);
 
-            final var createdAt = ZonedDateTime.ofInstant(Instant.now().minus(i, ChronoUnit.MINUTES), ZoneId.of("Z"));
+            final var createdAt = ZonedDateTime.ofInstant(Instant.now().minus(index, ChronoUnit.MINUTES), ZoneId.of("Z"));
             post.put("created_at", createdAt.format(DateTimeFormatter.ISO_INSTANT));
 
-            final var mediaAttachments = new JSONArray();
-            final var mediaAttachmentA = new JSONObject();
-            mediaAttachmentA.put("type", invalidImageType ? "video" : "image");
-            mediaAttachmentA.put("preview_url", "http://localhost/image" + i + "a.webp");
-            mediaAttachments.put(mediaAttachmentA);
-            final var mediaAttachmentB = new JSONObject();
-            mediaAttachmentB.put("type", "image");
-            mediaAttachmentB.put("preview_url", "http://localhost/image" + i + "b.webp");
-            mediaAttachments.put(mediaAttachmentB);
+            final var mediaAttachments = getMediaAttachments(index, invalidImageType);
             post.put("media_attachments", mediaAttachments);
 
             return post;
+        }
+
+        private static @NotNull JSONArray getMediaAttachments(final int index, final boolean invalidImageType) {
+            final var mediaAttachments = new JSONArray();
+            final var mediaAttachmentA = new JSONObject();
+            mediaAttachmentA.put("type", invalidImageType ? "video" : "image");
+            mediaAttachmentA.put("preview_url", "http://localhost/image" + index + "a.webp");
+            mediaAttachments.put(mediaAttachmentA);
+            final var mediaAttachmentB = new JSONObject();
+            mediaAttachmentB.put("type", "image");
+            mediaAttachmentB.put("preview_url", "http://localhost/image" + index + "b.webp");
+            mediaAttachments.put(mediaAttachmentB);
+            return mediaAttachments;
         }
     }
 }

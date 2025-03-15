@@ -26,7 +26,6 @@ import org.springframework.boot.SpringApplication;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertTrue;

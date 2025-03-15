@@ -68,8 +68,8 @@ public final class BlueSkyPlugin implements SocialPlugin {
 
     @Override
     public boolean isEnabled() {
-        final var instanceOk = instance != null && !instance.isBlank();
-        final var hashtagUrlOk = hashtagUrl != null && !hashtagUrl.isBlank();
+        final var instanceOk = !instance.isBlank();
+        final var hashtagUrlOk = !hashtagUrl.isBlank();
         return instanceOk && hashtagUrlOk;
     }
 

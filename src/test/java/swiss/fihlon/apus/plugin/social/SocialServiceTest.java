@@ -75,8 +75,8 @@ class SocialServiceTest {
 
     @Test
     void getPostsInDemoMode() {
-        final var demoConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
-                appConfig.styles(), true, appConfig.admin(), appConfig.event(), appConfig.social(),
+        final var demoConfig = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(), appConfig.password(),
+                true, appConfig.styles(), appConfig.event(), appConfig.social(),
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
                 appConfig.blueSky(), appConfig.mastodon());
         final SocialService socialService = new SocialService(new NoOpTaskScheduler(), demoConfig, List.of());
@@ -113,8 +113,8 @@ class SocialServiceTest {
 
     @NotNull
     private List<Post> getPostsWithConfig(@NotNull final SocialConfig socialConfig) {
-        final var config = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
-                appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
+        final var config = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(), appConfig.password(),
+                appConfig.demoMode(), appConfig.styles(), appConfig.event(), socialConfig,
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
                 appConfig.blueSky(), appConfig.mastodon());
         final SocialService socialService = new SocialService(new NoOpTaskScheduler(), config, List.of(new TestSocialPlugin()));
@@ -167,8 +167,8 @@ class SocialServiceTest {
 
     @NotNull
     private SocialService getSocialService(@NotNull final SocialConfig socialConfig) {
-        final var config = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(),
-                appConfig.styles(), appConfig.demoMode(), appConfig.admin(), appConfig.event(), socialConfig,
+        final var config = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(), appConfig.password(),
+                appConfig.demoMode(), appConfig.styles(), appConfig.event(), socialConfig,
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
                 appConfig.blueSky(), appConfig.mastodon());
         return new SocialService(new NoOpTaskScheduler(), config, List.of(new NoHashtagSocialPlugin()));
@@ -263,8 +263,8 @@ class SocialServiceTest {
     private AppConfig createModifiedImageConfig(final boolean imagesEnabled, final int imageLimit) {
         final var newSocialConfig = new SocialConfig(appConfig.social().hashtags(), appConfig.social().headline(),
                 appConfig.social().numberOfColumns(), imagesEnabled, imageLimit, appConfig.social().filter());
-        return new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(), appConfig.styles(),
-                appConfig.demoMode(), appConfig.admin(), appConfig.event(), newSocialConfig,
+        return new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(), appConfig.password(),
+                appConfig.demoMode(), appConfig.styles(), appConfig.event(), newSocialConfig,
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
                 appConfig.blueSky(), appConfig.mastodon());
     }

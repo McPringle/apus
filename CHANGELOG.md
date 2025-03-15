@@ -28,18 +28,22 @@ For questions and support requests, please use
 ### Maintenance Work
 
 * Add SBOM (Software Bill of Materials) generation
-* Shorten README for DockerHub
+* Automatic generation of README for DockerHub
 * Add `latest` tag to Docker release builds
 * Add a lot of new automated tests
+* Add more checks for common errors during the build process
+* Fixed dozens of coding issues
 
 ### Breaking Changes
 
-* Prefix all environment variables with `APUS`
 * Image configuration is now applied for all social media plugins
-* To enable/disable demo mode, use `APUS_DEMO` instead of `APUS_EVENT_DEMO_ROOM_COUNT` and `APUS_SOCIAL_DEMO_POST_COUNT`
-* The `APUS_FILTER_*` environment variables have been renamed to `APUS_SOCIAL_FILTER_*`
 * Replaced placeholders in URL templates with variable names
+* Prefix all environment variables with `APUS`
+* To enable/disable demo mode, use `APUS_DEMO` with `true` or `false`
+* Remove `EVENT_DEMO_ROOM_COUNT` and `SOCIAL_DEMO_POST_COUNT`
+* The `FILTER_*` environment variables have been renamed to `APUS_SOCIAL_FILTER_*`
 * The timezone has to be specified in the `APUS_TIMEZONE` environment variable (instead of just `TZ`)
+* The admin password has to be specified in the `APUS_PASSWORD` environment variable (instead of `ADMIN_PASSWORD`)
 
 ---
 

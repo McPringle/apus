@@ -79,7 +79,7 @@ public final class EventView extends Div {
         addDetachListener(event -> updateScheduler.cancel(true));
 
         final var imageUrl = appConfig.event().image();
-        if (imageUrl != null && !imageUrl.isBlank()) {
+        if (!imageUrl.isBlank()) {
             add(createImage(imageUrl));
         }
     }
