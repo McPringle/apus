@@ -73,7 +73,8 @@ class TrackTest {
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.searchFormattedMessages(
-                "Unable to load default track icon 'non-existing-file.svg':", Level.ERROR).size();
+                "Unable to load default track icon 'non-existing-file.svg': Resource not found!",
+                Level.ERROR).size();
         assertEquals(1, errorCount);
     }
 

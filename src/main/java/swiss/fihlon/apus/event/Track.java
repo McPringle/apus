@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
@@ -50,6 +51,9 @@ public record Track(String svgCode) {
         try {
             final String fileName = FILE_NAME_TEMPLATE.formatted(svgFileName);
             final URL url = Track.class.getResource(fileName);
+            if (url == null) {
+                throw new FileNotFoundException("Resource not found!");
+            }
             final URI uri = Objects.requireNonNull(url).toURI();
             final Path path = Path.of(uri);
             return Track.fromPath(path);
