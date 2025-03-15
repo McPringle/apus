@@ -24,6 +24,7 @@ import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.social.SocialPlugin;
 import swiss.fihlon.apus.social.Post;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +46,12 @@ public final class SocialDemoPlugin implements SocialPlugin {
     private static final Random RANDOM = new Random();
     private static final int POST_COUNT = 50;
 
+    private final ZoneId timezone;
     private final boolean demoMode;
     private final List<Post> posts;
 
     public SocialDemoPlugin(@NotNull final AppConfig appConfig) {
+        timezone = appConfig.timezone();
         demoMode = appConfig.demoMode();
         posts = demoMode ? createFakePosts(POST_COUNT) : List.of();
     }
@@ -77,7 +80,7 @@ public final class SocialDemoPlugin implements SocialPlugin {
         for (int number = 1; number <= postCount; number++) {
             fakePosts.add(
                     new Post(generateId(),
-                            getRandomDateTime(),
+                            getRandomDateTime(timezone),
                             getRandomAuthor(faker),
                             getRandomAvatar(faker),
                             getRandomProfile(faker),
@@ -111,8 +114,8 @@ public final class SocialDemoPlugin implements SocialPlugin {
         return faker.name().fullName();
     }
 
-    private static @NotNull ZonedDateTime getRandomDateTime() {
-        return ZonedDateTime.now().minusMinutes(RANDOM.nextLong(10_000));
+    private static @NotNull ZonedDateTime getRandomDateTime(final @NotNull ZoneId timezone) {
+        return ZonedDateTime.now(timezone).minusMinutes(RANDOM.nextLong(10_000));
     }
 
     private static @NotNull String generateId() {

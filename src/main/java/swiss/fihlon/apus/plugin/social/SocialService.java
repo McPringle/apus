@@ -19,6 +19,7 @@ package swiss.fihlon.apus.plugin.social;
 
 import jakarta.annotation.PreDestroy;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
@@ -52,7 +54,7 @@ public final class SocialService {
     private static final int MAX_POSTS = 50;
     private static final Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
 
-    private final ScheduledFuture<?> updateScheduler;
+    private final @Nullable ScheduledFuture<?> updateScheduler;
     private final List<String> hashtags;
     private final int filterLength;
     private final boolean filterReplies;
@@ -112,7 +114,9 @@ public final class SocialService {
 
     @PreDestroy
     public void stopUpdateScheduler() {
-        updateScheduler.cancel(true);
+        if (updateScheduler != null) {
+            updateScheduler.cancel(true);
+        }
     }
 
     private void updatePosts() {
@@ -140,7 +144,7 @@ public final class SocialService {
 
     @NotNull
     private Post checkImages(@NotNull final Post post) {
-        if (imagesEnabled && imageLimit == 0 || post.images().isEmpty()) {
+        if ((imagesEnabled && imageLimit == 0) || post.images().isEmpty()) {
             return post;
         } else if (!imagesEnabled) {
             return post.withImages(List.of());
@@ -151,7 +155,7 @@ public final class SocialService {
     }
 
     private boolean checkWordFilter(@NotNull final Post post) {
-        final String postText = Jsoup.parse(post.html()).text().toLowerCase();
+        final String postText = Jsoup.parse(post.html()).text().toLowerCase(Locale.getDefault());
         for (final String filterWord : filterWords) {
             if (postText.contains(filterWord)) {
                 return false;
@@ -175,12 +179,16 @@ public final class SocialService {
         LOGGER.warn("Hiding post (id={}, profile={}, author={})",
                 postToHide.id(), postToHide.profile(), postToHide.author());
         synchronized (postsByPlugin) {
-            for (final Map.Entry<SocialPlugin, List<Post>> entrySet : postsByPlugin.entrySet()) {
-                final var posts = entrySet.getValue()
-                        .parallelStream()
-                        .filter(post -> !post.id().equals(postToHide.id()))
-                        .toList();
-                postsByPlugin.put(entrySet.getKey(), posts);
+            final var socialPlugins = postsByPlugin.keySet();
+            for (final var socialPlugin : socialPlugins) {
+                final var posts = postsByPlugin.get(socialPlugin);
+                if (posts != null) {
+                    final var filteredPosts = posts
+                            .parallelStream()
+                            .filter(post -> !post.id().equals(postToHide.id()))
+                            .toList();
+                    postsByPlugin.put(socialPlugin, filteredPosts);
+                }
             }
         }
         hiddenPosts.add(postToHide.id());
@@ -191,12 +199,16 @@ public final class SocialService {
         LOGGER.warn("Block profile (id={}, profile={}, author={})",
                 postToHide.id(), postToHide.profile(), postToHide.author());
         synchronized (postsByPlugin) {
-            for (final Map.Entry<SocialPlugin, List<Post>> entrySet : postsByPlugin.entrySet()) {
-                final var posts = entrySet.getValue()
-                        .parallelStream()
-                        .filter(post -> !post.profile().equals(postToHide.profile()))
-                        .toList();
-                postsByPlugin.put(entrySet.getKey(), posts);
+            final var socialPlugins = postsByPlugin.keySet();
+            for (final var socialPlugin : socialPlugins) {
+                final var posts = postsByPlugin.get(socialPlugin);
+                if (posts != null) {
+                    final var filteredPosts = posts
+                            .parallelStream()
+                            .filter(post -> !post.profile().equals(postToHide.profile()))
+                            .toList();
+                    postsByPlugin.put(socialPlugin, filteredPosts);
+                }
             }
         }
         blockedProfiles.add(postToHide.profile());

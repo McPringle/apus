@@ -10,6 +10,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 import swiss.fihlon.apus.social.Post;
 import swiss.fihlon.apus.util.TestUtil;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Locale;
@@ -24,11 +25,13 @@ import static swiss.fihlon.apus.util.TestUtil.getComponentsByTagName;
 
 class PostViewTest {
 
+    private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
+
     private static Stream<Arguments> provideDataForPostViewTest() {
         return Stream.of(
                 Arguments.of(
                         "TEST:1",
-                        ZonedDateTime.now().minusHours(1),
+                        ZonedDateTime.now(TEST_TIMEZONE).minusHours(1),
                         "Firstname Lastname",
                         "http://localhost/avatar.png",
                         "@nickname",
@@ -37,7 +40,7 @@ class PostViewTest {
                         ""),
                 Arguments.of(
                         "TEST:FOOBAR",
-                        ZonedDateTime.now().minusDays(3),
+                        ZonedDateTime.now(TEST_TIMEZONE).minusDays(3),
                         "Foobar",
                         "file://foobar.svg",
                         "@foobar",

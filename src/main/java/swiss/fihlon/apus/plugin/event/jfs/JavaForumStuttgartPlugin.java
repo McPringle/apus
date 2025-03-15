@@ -197,19 +197,22 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     private @NotNull List<Speaker> getSpeakersForTalk(@NotNull final Talk talk,
                                              @NotNull final Map<String, List<String>> allAssignments,
                                              @NotNull final Map<String, Speaker> allSpeakers) {
-        return allAssignments.get(talk.id()).stream()
+        final var assignments = allAssignments.get(talk.id());
+        return assignments == null ? List.of() : assignments.stream()
                 .map(allSpeakers::get)
                 .toList();
     }
 
+    @SuppressWarnings("StringSplitter") // safe to ignore here
     private @NotNull LocalDateTime getStartDate(@NotNull final Talk talk) {
         final LocalTime time = LocalTime.parse(talk.timeSlot().split("-")[0].trim());
-        return LocalDateTime.of(LocalDate.now(), time);
+        return LocalDateTime.of(LocalDate.now(timezone), time);
     }
 
+    @SuppressWarnings("StringSplitter") // safe to ignore here
     private @NotNull LocalDateTime getEndDate(@NotNull final Talk talk) {
         final LocalTime time = LocalTime.parse(talk.timeSlot().split("-")[1].replace("Uhr", "").trim());
-        return LocalDateTime.of(LocalDate.now(), time);
+        return LocalDateTime.of(LocalDate.now(timezone), time);
     }
 
     private Map<String, Track> getTracks() {

@@ -19,6 +19,7 @@ package swiss.fihlon.apus.event;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,9 +29,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SessionTest {
 
+    private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
+
     @Test
     void compareTo() {
-        final var now = ZonedDateTime.now();
+        final var now = ZonedDateTime.now(TEST_TIMEZONE);
         final var roomA = new Room("Room A");
         final var roomB = new Room("Room B");
 
@@ -62,7 +65,7 @@ class SessionTest {
     @Test
     void create() {
         final var id = "S1";
-        final var startDate = ZonedDateTime.now();
+        final var startDate = ZonedDateTime.now(TEST_TIMEZONE);
         final var endDate = startDate.plusHours(1);
         final var room = new Room("Room A");
         final var title = "Test Session A";

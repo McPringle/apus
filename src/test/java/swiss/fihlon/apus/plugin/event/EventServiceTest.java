@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -103,11 +104,13 @@ class EventServiceTest {
 
         // ... where the first room starts with session 0 ...
         final var room0 = roomsWithSessions.get(new Room("Room 0"));
+        assertNotNull(room0);
         assertEquals(3, room0.size());
         assertEquals("TEST0", room0.getFirst().id());
 
         // ... and the second room starts with session -1.
         final var room1 = roomsWithSessions.get(new Room("Room 1"));
+        assertNotNull(room1);
         assertEquals(3, room1.size());
         assertEquals("TEST-1", room1.getFirst().id());
     }
@@ -131,7 +134,7 @@ class EventServiceTest {
 
     @Test
     void getSessionsWithDateAdjust() {
-        final var expectedDate = LocalDate.now().plusDays(10);
+        final var expectedDate = LocalDate.now(TEST_TIMEZONE).plusDays(10);
         final var eventService = new EventService(
                 new NoOpTaskScheduler(), mockConfiguration(Period.ofDays(10), false), List.of(new NowEventPlugin()));
         final var roomsWithSessions = eventService.getRoomsWithSessions();
@@ -171,7 +174,7 @@ class EventServiceTest {
         public @NotNull Stream<Session> getSessions() {
             final List<Session> sessions = new ArrayList<>();
             for (int i = -5; i <= 5; i++) {
-                sessions.add(createSession(i, ZonedDateTime.now().minusHours(i)));
+                sessions.add(createSession(i, ZonedDateTime.now(TEST_TIMEZONE).minusHours(i)));
             }
             Collections.shuffle(sessions);
             return sessions.stream();
@@ -228,7 +231,7 @@ class EventServiceTest {
         @Override
         public @NotNull Stream<Session> getSessions() {
             final var id = "TEST-0";
-            final var startDate = ZonedDateTime.now();
+            final var startDate = ZonedDateTime.now(TEST_TIMEZONE);
             final var endDate = startDate.plusHours(1);
             final var room = new Room("Room X");
             final var title = "Test Session";

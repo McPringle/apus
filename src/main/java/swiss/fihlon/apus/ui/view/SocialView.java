@@ -30,6 +30,9 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.social.SocialService;
@@ -41,21 +44,25 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
 @CssImport(value = "./themes/apus/views/social-view.css")
 public final class SocialView extends Div {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SocialView.class);
     private static final Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
 
     private final Locale locale;
     private final transient SocialService socialService;
     private final transient AppConfig appConfig;
     private final List<Div> postsColumns;
-    private final ContextMenu contextMenu;
+    private final @Nullable ContextMenu contextMenu;
     private boolean adminModeEnabled = false;
 
+    @SuppressWarnings("StringSplitter") // that behaviour is exactly what we need
     public SocialView(@NotNull final SocialService socialService,
                       @NotNull final TaskScheduler taskScheduler,
                       @NotNull final AppConfig appConfig,
@@ -143,7 +150,7 @@ public final class SocialView extends Div {
     }
 
     private void handleLogin(@NotNull final String password) {
-        if (PasswordUtil.matches(password, appConfig.admin().password())) {
+        if (contextMenu != null && PasswordUtil.matches(password, appConfig.admin().password())) {
             adminModeEnabled = true;
             contextMenu.setTarget(null);
             updatePosts();
@@ -153,8 +160,21 @@ public final class SocialView extends Div {
         }
     }
 
+    @SuppressWarnings("java:S2142") // logging the exceptions is enough
     private void updateScheduler() {
-        getUI().ifPresent(ui -> ui.access(this::updatePosts));
+        getUI().ifPresent(ui -> {
+            CompletableFuture.supplyAsync(() -> {
+                try {
+                    ui.access(this::updatePosts).get();
+                } catch (final InterruptedException | ExecutionException e) {
+                    LOGGER.error("Exception thrown while updating the UI: {}", e.getMessage(), e);
+                }
+                return null; // return type is Void
+            }).exceptionally(throwable -> {
+                LOGGER.error("Exception thrown while updating the UI: {}", throwable.getMessage(), throwable);
+                return null; // return type is Void
+            });
+        });
     }
 
     private void updatePosts() {

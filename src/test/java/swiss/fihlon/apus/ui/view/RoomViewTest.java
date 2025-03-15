@@ -128,7 +128,7 @@ class RoomViewTest {
             final var trackComponent = components.getFirst();
             final var trackChildren = trackComponent.getChildren().toList();
 
-            if (track == Track.NONE) {
+            if (track.equals(Track.NONE)) {
                 assertEquals(0, trackChildren.size());
             } else {
                 assertEquals(1, trackChildren.size());
@@ -184,7 +184,7 @@ class RoomViewTest {
 
     @Test
     void constructorWithSession() {
-        final var today = LocalDate.now();
+        final var today = LocalDate.now(TEST_TIMEZONE);
         final var session = new Session("42",
                 LocalDateTime.of(today, LocalTime.MIDNIGHT).atZone(TEST_TIMEZONE),
                 LocalDateTime.of(today, LocalTime.MAX).atZone(TEST_TIMEZONE),
@@ -202,7 +202,7 @@ class RoomViewTest {
 
     @Test
     void sessionWithUnknownLanguage() {
-        final var today = LocalDate.now();
+        final var today = LocalDate.now(TEST_TIMEZONE);
         final var session = new Session("42",
                 LocalDateTime.of(today, LocalTime.MIDNIGHT).atZone(TEST_TIMEZONE),
                 LocalDateTime.of(today, LocalTime.MAX).atZone(TEST_TIMEZONE),
@@ -220,7 +220,7 @@ class RoomViewTest {
 
     @Test
     void sessionWithNoTrack() {
-        final var today = LocalDate.now();
+        final var today = LocalDate.now(TEST_TIMEZONE);
         final var session = new Session("42",
                 LocalDateTime.of(today, LocalTime.MIDNIGHT).atZone(TEST_TIMEZONE),
                 LocalDateTime.of(today, LocalTime.MAX).atZone(TEST_TIMEZONE),
@@ -238,7 +238,7 @@ class RoomViewTest {
 
     @Test
     void sessionWithSpeakerAvatarAndTrack() {
-        final var today = LocalDate.now();
+        final var today = LocalDate.now(TEST_TIMEZONE);
         final var session = new Session("42",
                 LocalDateTime.of(today, LocalTime.MIDNIGHT).atZone(TEST_TIMEZONE),
                 LocalDateTime.of(today, LocalTime.MAX).atZone(TEST_TIMEZONE),
@@ -259,7 +259,7 @@ class RoomViewTest {
 
     @Test
     void sessionWithSpeakerAvatarWithoutTrack() {
-        final var today = LocalDate.now();
+        final var today = LocalDate.now(TEST_TIMEZONE);
         final var session = new Session("42",
                 LocalDateTime.of(today, LocalTime.MIDNIGHT).atZone(TEST_TIMEZONE),
                 LocalDateTime.of(today, LocalTime.MAX).atZone(TEST_TIMEZONE),

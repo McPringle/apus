@@ -38,6 +38,7 @@ import swiss.fihlon.apus.social.Post;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,6 +52,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
 class SocialServiceTest {
+
+    private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
 
     private static Path getConfigDir() {
         return Path.of(System.getProperty("user.home"), ".apus");
@@ -315,7 +318,7 @@ class SocialServiceTest {
         @NotNull
         public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
             final Faker faker = new Faker();
-            final var now = ZonedDateTime.now();
+            final var now = ZonedDateTime.now(TEST_TIMEZONE);
             final List<Post> posts = new ArrayList<>();
             for (int i = 10; i > 0; i--) {
                 final var images = new ArrayList<String>();

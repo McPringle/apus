@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -45,7 +46,10 @@ class SessionImportExceptionTest {
         });
         assertInstanceOf(SessionImportException.class, exception);
         assertEquals("Session Import Exception", exception.getMessage());
-        assertEquals("Runtime Exception", exception.getCause().getMessage());
+
+        final var cause = exception.getCause();
+        assertNotNull(cause);
+        assertEquals("Runtime Exception", cause.getMessage());
     }
 
 }

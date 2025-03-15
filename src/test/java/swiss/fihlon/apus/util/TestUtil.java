@@ -23,6 +23,8 @@ import org.jsoup.Jsoup;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public final class TestUtil {
 
     public static List<Component> getComponentsByClassName(@NotNull final Component component, @NotNull final String className) {
@@ -38,11 +40,11 @@ public final class TestUtil {
     }
 
     @NotNull
-    @SuppressWarnings("DataFlowIssue")
     public static String extractFirstHtmlTag(@NotNull final String html, @NotNull final String tagName) {
         final var document = Jsoup.parse(html);
-        final var svgElement = document.selectFirst(tagName);
-        return svgElement.html();
+        final var element = document.selectFirst(tagName);
+        assertNotNull(element);
+        return element.html();
     }
 
     private TestUtil() {

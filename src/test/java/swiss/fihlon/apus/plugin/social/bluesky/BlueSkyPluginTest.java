@@ -21,7 +21,6 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -66,26 +65,16 @@ class BlueSkyPluginTest {
 
     private static Stream<Arguments> provideDataForDisabledTest() {
         return Stream.of(
-                Arguments.of(null, null),
-                Arguments.of(null, ""),
-                Arguments.of("", null),
                 Arguments.of("", ""),
-
-                Arguments.of(null, " "),
                 Arguments.of(" ", " "),
-                Arguments.of(" ", null),
-
-                Arguments.of(null, "test"),
-
-                Arguments.of("test", null),
-                Arguments.of("test", ""),
-                Arguments.of("test", " ")
+                Arguments.of("localhost", ""),
+                Arguments.of("localhost", " ")
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(@Nullable final String instance, @Nullable final String hashtagUrl) {
+    void isDisabled(@NotNull final String instance, @NotNull final String hashtagUrl) {
         final var appConfig = mock(AppConfig.class);
         final var blueSkyConfig = new BlueSkyConfig(instance, hashtagUrl, "", "", 30);
         when(appConfig.blueSky()).thenReturn(blueSkyConfig);

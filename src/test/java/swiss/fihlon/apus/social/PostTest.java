@@ -19,6 +19,7 @@ package swiss.fihlon.apus.social;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,9 +29,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PostTest {
 
+    private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
+
     @Test
     void compareTo() {
-        final var now = ZonedDateTime.now();
+        final var now = ZonedDateTime.now(TEST_TIMEZONE);
 
         final var postOne = new Post("P1", now, "", "", "", "", List.of(), false, false, "");
         final var postTwo = new Post("P2", now.minusHours(1), "", "", "", "", List.of(), false, false, "");
@@ -61,7 +64,7 @@ class PostTest {
     @Test
     void create() {
         final var id = "P1";
-        final var date = ZonedDateTime.now();
+        final var date = ZonedDateTime.now(TEST_TIMEZONE);
         final var author = "Test Author";
         final var avatar = "Test Avatar";
         final var profile = "Test Profile";

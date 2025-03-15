@@ -16,12 +16,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class JavaForumStuttgartPluginTest {
+
+    private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
 
     @Test
     void isEnabled() {
@@ -31,16 +34,6 @@ class JavaForumStuttgartPluginTest {
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
         assertTrue(jfsPlugin.isEnabled());
-    }
-
-    @Test
-    void isDisabledBecauseNull() {
-        final var appConfig = mock(AppConfig.class);
-        final var jfsConfig = new JavaForumStuttgartConfig(null);
-        when(appConfig.jfs()).thenReturn(jfsConfig);
-
-        final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
-        assertFalse(jfsPlugin.isEnabled());
     }
 
     @Test
@@ -55,11 +48,10 @@ class JavaForumStuttgartPluginTest {
 
     @Test
     void getSessions() {
-        final var timezone = ZoneId.of("Europe/Zurich");
         final var appConfig = mock(AppConfig.class);
         final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/jfs.db");
         when(appConfig.jfs()).thenReturn(jfsConfig);
-        when(appConfig.timezone()).thenReturn(timezone);
+        when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
         final var sessions = jfsPlugin.getSessions().toList();
@@ -73,10 +65,10 @@ class JavaForumStuttgartPluginTest {
 
         // full check of session with ID "JFS:5"
         final var session = sessions.get(5);
-        final var today = LocalDate.now();
+        final var today = LocalDate.now(TEST_TIMEZONE);
         assertEquals("JFS:A5", session.id());
-        assertEquals(ZonedDateTime.of(today, LocalTime.of(16, 0), timezone), session.startDate());
-        assertEquals(ZonedDateTime.of(today, LocalTime.of(16, 45), timezone), session.endDate());
+        assertEquals(ZonedDateTime.of(today, LocalTime.of(16, 0), TEST_TIMEZONE), session.startDate());
+        assertEquals(ZonedDateTime.of(today, LocalTime.of(16, 45), TEST_TIMEZONE), session.endDate());
         assertEquals(new Room("Room A"), session.room());
         assertEquals("Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat", session.title());
         assertEquals(2, session.speakers().size());
@@ -93,7 +85,9 @@ class JavaForumStuttgartPluginTest {
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, jfsPlugin::getSessions);
-        assertTrue(exception.getMessage().startsWith("Error downloading database file from 'file:src/test/resources/testdata/non-existing.db': "));
+        final var message = exception.getMessage();
+        assertNotNull(message);
+        assertTrue(message.startsWith("Error downloading database file from 'file:src/test/resources/testdata/non-existing.db': "));
     }
 
 
@@ -105,7 +99,9 @@ class JavaForumStuttgartPluginTest {
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, jfsPlugin::getSessions);
-        assertTrue(exception.getMessage().startsWith("Error importing session data for Java Forum Stuttgart: "));
+        final var message = exception.getMessage();
+        assertNotNull(message);
+        assertTrue(message.startsWith("Error importing session data for Java Forum Stuttgart: "));
     }
 
 }

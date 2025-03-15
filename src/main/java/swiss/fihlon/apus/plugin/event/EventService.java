@@ -19,6 +19,7 @@ package swiss.fihlon.apus.plugin.event;
 
 import jakarta.annotation.PreDestroy;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
@@ -46,7 +47,7 @@ public final class EventService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
 
     private final List<EventPlugin> eventPlugins;
-    private final ScheduledFuture<?> updateScheduler;
+    private final @Nullable ScheduledFuture<?> updateScheduler;
     private final Period dateAdjust;
     private final ZoneId timezone;
     private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
@@ -89,22 +90,18 @@ public final class EventService {
                     .sorted()
                     .toList();
 
-            final var rooms = sessions.stream()
-                    .map(Session::room)
-                    .distinct()
-                    .sorted()
-                    .toList();
-
             final ZonedDateTime now = ZonedDateTime.now(timezone);
             final Map<Room, List<Session>> newRoomsWithSessions = new TreeMap<>();
-            for (final Room room : rooms) {
-                newRoomsWithSessions.put(room, new ArrayList<>());
-            }
             final List<Session> runningAndNextSessions = sessions.stream()
                     .filter(session -> session.endDate().isAfter(now))
                     .toList();
             for (final Session session : runningAndNextSessions) {
-                newRoomsWithSessions.get(session.room()).add(session);
+                final var roomWithSessions = newRoomsWithSessions.get(session.room());
+                if (roomWithSessions != null) {
+                    roomWithSessions.add(session);
+                } else {
+                    newRoomsWithSessions.put(session.room(), new ArrayList<>(List.of(session)));
+                }
             }
 
             newRoomsWithSessions.entrySet().removeIf(entry -> entry.getValue().isEmpty());

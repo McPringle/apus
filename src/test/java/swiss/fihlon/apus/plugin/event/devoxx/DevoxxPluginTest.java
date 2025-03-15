@@ -78,22 +78,11 @@ class DevoxxPluginTest {
 
     private static Stream<Arguments> provideDataForDisabledTest() {
         return Stream.of(
-                Arguments.of(null, null, null),
-                Arguments.of(null, null, ""),
-                Arguments.of(null, null, " "),
-                Arguments.of(null, null, "Monday"),
-                Arguments.of(null, "", "Monday"),
-                Arguments.of("", null, "Monday"),
                 Arguments.of("", "", "Monday"),
-                Arguments.of(" ", null, "Monday"),
-                Arguments.of(null, " ", "Monday"),
                 Arguments.of(" ", " ", "Monday"),
-                Arguments.of(null, "foobar", "Monday"),
                 Arguments.of("", "foobar", "Monday"),
                 Arguments.of(" ", "foobar", "Monday"),
-                Arguments.of("localhost", null, "Monday"),
                 Arguments.of("localhost", "", "Monday"),
-                Arguments.of("localhost", "foobar", null),
                 Arguments.of("localhost", "foobar", ""),
                 Arguments.of("localhost", "foobar", " ")
         );
@@ -101,7 +90,7 @@ class DevoxxPluginTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(@Nullable final String eventApi, @Nullable final String eventId, @Nullable final String weekday) {
+    void isDisabled(@NotNull final String eventApi, @NotNull final String eventId, @NotNull final String weekday) {
         final var appConfig = mock(AppConfig.class);
         final var devoxxConfig = new DevoxxConfig(eventApi, eventId, weekday);
         when(appConfig.devoxx()).thenReturn(devoxxConfig);

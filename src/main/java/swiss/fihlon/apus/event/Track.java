@@ -36,7 +36,7 @@ public record Track(String svgCode) {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Track.class);
 
-    public static final Track NONE = new Track(null);
+    public static final Track NONE = new Track("");
     public static final Track ARCHITECTURE = defaultTrack("architecture.svg");
     public static final Track CLOUD = defaultTrack("cloud.svg");
     public static final Track CORE = defaultTrack("core.svg");

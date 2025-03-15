@@ -51,13 +51,6 @@ class ApplicationI18NProviderTest {
     }
 
     @Test
-    @SuppressWarnings("DataFlowIssue")
-    void englishTranslationWithNullParameters() {
-        final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig("en"));
-        assertEquals("Rooms & Sessions", i18nProvider.getTranslation("event.heading", null, (Object) null));
-    }
-
-    @Test
     void englishTranslationWithStringParameter() {
         final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig("en"));
         assertEquals("ends in 42 minutes", i18nProvider.getTranslation("event.session.countdown.minutes", null, "42"));
@@ -73,13 +66,6 @@ class ApplicationI18NProviderTest {
     void germanTranslationWithoutParameters() {
         final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig("de"));
         assertEquals("Räume & Vorträge", i18nProvider.getTranslation("event.heading", null));
-    }
-
-    @Test
-    @SuppressWarnings("DataFlowIssue")
-    void germanTranslationWithNullParameters() {
-        final var i18nProvider = new ApplicationI18NProvider(createLanguageConfig("de"));
-        assertEquals("Räume & Vorträge", i18nProvider.getTranslation("event.heading", null, (Object) null));
     }
 
     @Test

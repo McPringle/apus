@@ -26,7 +26,9 @@ import org.springframework.boot.SpringApplication;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
@@ -51,7 +53,7 @@ class ApplicationTest {
         final String[] args = new String[] { "-p", "12345" };
         Application.main(args);
 
-        final String out = outputStreamCaptor.toString();
+        final String out = outputStreamCaptor.toString(UTF_8);
         assertTrue(out.contains("Hashed password for environment variable:"));
         assertTrue(out.contains("Hashed password for Docker Compose file:"));
     }
@@ -61,7 +63,7 @@ class ApplicationTest {
         final String[] args = new String[] { "--password", "12345" };
         Application.main(args);
 
-        final String out = outputStreamCaptor.toString();
+        final String out = outputStreamCaptor.toString(UTF_8);
         assertTrue(out.contains("Hashed password for environment variable:"));
         assertTrue(out.contains("Hashed password for Docker Compose file:"));
     }
@@ -71,7 +73,7 @@ class ApplicationTest {
         final String[] args = new String[] { "-h" };
         Application.main(args);
 
-        final String out = outputStreamCaptor.toString();
+        final String out = outputStreamCaptor.toString(UTF_8);
         assertTrue(out.startsWith("usage:"));
         assertTrue(out.contains("Show help and exit"));
         assertTrue(out.contains("Hash password and exit"));
@@ -82,7 +84,7 @@ class ApplicationTest {
         final String[] args = new String[] { "--help" };
         Application.main(args);
 
-        final String out = outputStreamCaptor.toString();
+        final String out = outputStreamCaptor.toString(UTF_8);
         assertTrue(out.startsWith("usage:"));
         assertTrue(out.contains("Show help and exit"));
         assertTrue(out.contains("Hash password and exit"));

@@ -49,9 +49,6 @@ public abstract class KaribuTest {
     @Autowired
     private ApplicationContext applicationContext;
 
-    /**
-     * @see org.junit.jupiter.api.BeforeEach
-     */
     @BeforeEach
     public void setup() {
         final Function0<UI> uiFactory = UI::new;
@@ -59,9 +56,6 @@ public abstract class KaribuTest {
         MockVaadin.setup(uiFactory, servlet);
     }
 
-    /**
-     * @see org.junit.jupiter.api.AfterEach
-     */
     @AfterEach
     public void tearDown() {
         MockVaadin.tearDown();

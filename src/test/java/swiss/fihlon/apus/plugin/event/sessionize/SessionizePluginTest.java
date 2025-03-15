@@ -30,6 +30,7 @@ import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -118,7 +119,9 @@ class SessionizePluginTest {
 
         final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
-        assertTrue(exception.getMessage().startsWith("Error parsing speaker"));
+        final var message = exception.getMessage();
+        assertNotNull(message);
+        assertTrue(message.startsWith("Error parsing speaker"));
     }
 
     @Test

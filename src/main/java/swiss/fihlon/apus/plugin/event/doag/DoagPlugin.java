@@ -167,6 +167,7 @@ public final class DoagPlugin implements EventPlugin {
         throw new JSONException(String.format("No title with language 'de' or 'en' for session '%s'", slot.getInt("id")));
     }
 
+    @SuppressWarnings("StringSplitter") // safe to ignore here
     private Duration parseDuration(@NotNull final String duration) {
         final String minutes = duration.split(":")[1];
         return Duration.ofMinutes(Long.parseLong(minutes));

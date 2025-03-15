@@ -17,16 +17,15 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TrackTest {
 
     @Test
     void noneTrack() {
-        final Track testee = new Track(null);
+        final Track testee = new Track("");
         assertEquals(Track.NONE, testee);
-        assertNull(testee.svgCode());
+        assertTrue(testee.svgCode().isEmpty());
     }
 
     @ParameterizedTest
@@ -63,7 +62,7 @@ class TrackTest {
     void customTrackLogException() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         final MemoryAppender memoryAppender = new MemoryAppender();
         memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
-        @SuppressWarnings("LoggerInitializedWithForeignClass") final Logger logger = (Logger) LoggerFactory.getLogger(Track.class);
+        final Logger logger = (Logger) LoggerFactory.getLogger(Track.class);
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();

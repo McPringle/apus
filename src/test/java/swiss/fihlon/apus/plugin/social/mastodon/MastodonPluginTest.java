@@ -65,15 +65,8 @@ class MastodonPluginTest {
 
     private static Stream<Arguments> provideDataForDisabledTest() {
         return Stream.of(
-                Arguments.of(null, null),
-                Arguments.of(null, ""),
-                Arguments.of(null, " "),
-                Arguments.of(null, "api"),
-                Arguments.of(null, "api"),
                 Arguments.of("", "api"),
                 Arguments.of(" ", "api"),
-                Arguments.of(null, "api"),
-                Arguments.of("localhost", null),
                 Arguments.of("localhost", ""),
                 Arguments.of("localhost", " ")
         );
@@ -81,7 +74,7 @@ class MastodonPluginTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(@Nullable final String instance, @Nullable final String postApi) {
+    void isDisabled(@NotNull final String instance, @NotNull final String postApi) {
         final var appConfig = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig(instance, postApi, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);

@@ -22,6 +22,7 @@ import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.configuration.SocialConfig;
 import swiss.fihlon.apus.social.Post;
 
+import java.time.ZoneId;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,10 +34,13 @@ import static org.mockito.Mockito.when;
 
 class SocialDemoPluginTest {
 
+    private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
+
     @Test
     void getServiceName() {
         final var socialConfig = mock(SocialConfig.class);
         final var appConfig = mock(AppConfig.class);
+        when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
         when(appConfig.social()).thenReturn(socialConfig);
 
         final var demoSocialPlugin = new SocialDemoPlugin(appConfig);
@@ -46,6 +50,7 @@ class SocialDemoPluginTest {
     @Test
     void isEnabled() {
         final var appConfig = mock(AppConfig.class);
+        when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
         when(appConfig.demoMode()).thenReturn(true);
 
         final var demoSocialPlugin = new SocialDemoPlugin(appConfig);
@@ -55,6 +60,7 @@ class SocialDemoPluginTest {
     @Test
     void isDisabled() {
         final var appConfig = mock(AppConfig.class);
+        when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
         when(appConfig.demoMode()).thenReturn(false);
 
         final var demoSocialPlugin = new SocialDemoPlugin(appConfig);
@@ -64,6 +70,7 @@ class SocialDemoPluginTest {
     @Test
     void getPosts() {
         final var appConfig = mock(AppConfig.class);
+        when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
         when(appConfig.demoMode()).thenReturn(true);
 
         final var socialDemoPlugin = new SocialDemoPlugin(appConfig);

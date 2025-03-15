@@ -25,6 +25,8 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Room;
@@ -41,6 +43,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 
 @CssImport(value = "./themes/apus/views/event-view.css")
@@ -48,6 +52,7 @@ public final class EventView extends Div {
 
     public static final String LABEL_THEME = "badge";
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventView.class);
 
     private final transient EventService eventService;
     private final Duration nextSessionTimeout;
@@ -82,8 +87,21 @@ public final class EventView extends Div {
         }
     }
 
+    @SuppressWarnings("java:S2142") // logging the exceptions is enough
     private void updateScheduler() {
-        getUI().ifPresent(ui -> ui.access(this::updateConferenceSessions));
+        getUI().ifPresent(ui -> {
+            CompletableFuture.supplyAsync(() -> {
+                try {
+                    ui.access(this::updateConferenceSessions).get();
+                } catch (final InterruptedException | ExecutionException e) {
+                    LOGGER.error("Exception thrown while updating the UI: {}", e.getMessage(), e);
+                }
+                return null; // return type is Void
+            }).exceptionally(throwable -> {
+                LOGGER.error("Exception thrown while updating the UI: {}", throwable.getMessage(), throwable);
+                return null; // return type is Void
+            });
+        });
     }
 
     private void updateConferenceSessions() {
@@ -138,7 +156,7 @@ public final class EventView extends Div {
 
     @NotNull
     private RoomView createRoomView(@NotNull final Map.Entry<Room, List<Session>> roomWithSession) {
-        final LocalDate today = LocalDate.now();
+        final LocalDate today = LocalDate.now(timezone);
         final ZonedDateTime timeLimitNextSession = ZonedDateTime.now(timezone).plus(nextSessionTimeout);
         final Room room = roomWithSession.getKey();
         final List<Session> sessions = roomWithSession.getValue();

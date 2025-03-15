@@ -47,16 +47,16 @@ import java.util.stream.Collectors;
 @CssImport(value = "./themes/apus/views/room-view.css")
 public final class RoomView extends Div {
 
-    private final ZoneId timezone;
-    private final transient Room room;
-    private final String title;
-    private final transient List<Speaker> speakers;
-    private final ZonedDateTime startTime;
-    private final ZonedDateTime endTime;
-    private final Language language;
-    private final transient Track track;
+    private final @NotNull ZoneId timezone;
+    private final transient @NotNull Room room;
+    private final @Nullable String title;
+    private final transient @NotNull List<Speaker> speakers;
+    private final @Nullable ZonedDateTime startTime;
+    private final @Nullable ZonedDateTime endTime;
+    private final @Nullable Language language;
+    private final transient @Nullable Track track;
 
-    private RoomStyle roomStyle = RoomStyle.NONE;
+    private @NotNull RoomStyle roomStyle = RoomStyle.NONE;
 
     public RoomView(@NotNull final ZoneId timezone,
                     @NotNull final Room room) {
@@ -163,7 +163,7 @@ public final class RoomView extends Div {
             roomStyle = RoomStyle.NEXT;
         } else { // running session
             final Duration duration = Duration.between(now, endTime);
-            final int minutesLeft = Math.round(duration.getSeconds() / 60f);
+            final int minutesLeft = Math.round(duration.toSeconds() / 60f);
             timeComponent.add(new Icon(VaadinIcon.HOURGLASS));
             if (minutesLeft <= 0) {
                 timeComponent.add(new Text(getTranslation("event.session.countdown.now")));
@@ -201,7 +201,7 @@ public final class RoomView extends Div {
     private Component createTrackComponent() {
         final var trackComponent = new Div();
         trackComponent.addClassName("track");
-        if (track != null && track != Track.NONE) {
+        if (track != null && !track.equals(Track.NONE)) {
             final var trackImage = new Svg(track.svgCode());
             trackComponent.add(trackImage);
         }
