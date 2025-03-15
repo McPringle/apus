@@ -143,14 +143,15 @@ public final class DoagPlugin implements EventPlugin {
     }
 
     private Language getLanguage(@NotNull final JSONObject slot) {
-        String languageCode = "de";
         try {
-            languageCode = slot.getJSONArray("language").getString(0).toLowerCase(Locale.getDefault());
+            final var languageArray = slot.getJSONArray("language");
+            final var languageString = languageArray.getString(0);
+            final var languageCode = languageString.toLowerCase(Locale.getDefault());
+            return Language.languageWithCode(languageCode);
         } catch (final JSONException e) {
-            LOGGER.error("Error reading language from slot '{}': {}",
-                    slot.getInt("id"), e.getMessage());
+            LOGGER.warn("Error reading language from slot '{}': {}", slot.getInt("id"), e.getMessage());
         }
-        return Language.languageWithCode(languageCode);
+        return Language.UNKNOWN;
     }
 
     private String getTitle(@NotNull final JSONObject slot, @NotNull final String defaultLanguage) throws JSONException {
