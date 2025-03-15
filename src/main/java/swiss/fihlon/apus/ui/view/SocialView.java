@@ -31,28 +31,24 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.social.SocialService;
 import swiss.fihlon.apus.social.Post;
 import swiss.fihlon.apus.util.PasswordUtil;
+import swiss.fihlon.apus.util.VaadinUtil;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
 @CssImport(value = "./themes/apus/views/social-view.css")
 public final class SocialView extends Div {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SocialView.class);
     private static final Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
 
     private final Locale locale;
@@ -107,7 +103,8 @@ public final class SocialView extends Div {
         }
 
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(
-                this::updateScheduler, Instant.now().plusSeconds(1), UPDATE_FREQUENCY);
+                () -> getUI().ifPresent(ui -> VaadinUtil.updateUI(ui, this::updatePosts)),
+                Instant.now().plusSeconds(1), UPDATE_FREQUENCY);
         addDetachListener(event -> updateScheduler.cancel(true));
     }
 
@@ -158,23 +155,6 @@ public final class SocialView extends Div {
         } else {
             Notification.show(getTranslation("social.admin.login.rejected"));
         }
-    }
-
-    @SuppressWarnings("java:S2142") // logging the exceptions is enough
-    private void updateScheduler() {
-        getUI().ifPresent(ui -> {
-            CompletableFuture.supplyAsync(() -> {
-                try {
-                    ui.access(this::updatePosts).get();
-                } catch (final InterruptedException | ExecutionException e) {
-                    LOGGER.error("Exception thrown while updating the UI: {}", e.getMessage(), e);
-                }
-                return null; // return type is Void
-            }).exceptionally(throwable -> {
-                LOGGER.error("Exception thrown while updating the UI: {}", throwable.getMessage(), throwable);
-                return null; // return type is Void
-            });
-        });
     }
 
     private void updatePosts() {

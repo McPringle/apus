@@ -25,14 +25,13 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.RoomStyle;
 import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.plugin.event.EventService;
+import swiss.fihlon.apus.util.VaadinUtil;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -43,8 +42,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 
 @CssImport(value = "./themes/apus/views/event-view.css")
@@ -52,7 +49,6 @@ public final class EventView extends Div {
 
     public static final String LABEL_THEME = "badge";
     private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventView.class);
 
     private final transient EventService eventService;
     private final Duration nextSessionTimeout;
@@ -78,30 +74,14 @@ public final class EventView extends Div {
         add(roomContainer);
         roomContainer.addClassName("room-container");
         final ScheduledFuture<?> updateScheduler = taskScheduler.scheduleAtFixedRate(
-                this::updateScheduler, Instant.now().plusSeconds(1), UPDATE_FREQUENCY);
+                () -> getUI().ifPresent(ui -> VaadinUtil.updateUI(ui, this::updateConferenceSessions)),
+                Instant.now().plusSeconds(1), UPDATE_FREQUENCY);
         addDetachListener(event -> updateScheduler.cancel(true));
 
         final var imageUrl = appConfig.event().image();
         if (imageUrl != null && !imageUrl.isBlank()) {
             add(createImage(imageUrl));
         }
-    }
-
-    @SuppressWarnings("java:S2142") // logging the exceptions is enough
-    private void updateScheduler() {
-        getUI().ifPresent(ui -> {
-            CompletableFuture.supplyAsync(() -> {
-                try {
-                    ui.access(this::updateConferenceSessions).get();
-                } catch (final InterruptedException | ExecutionException e) {
-                    LOGGER.error("Exception thrown while updating the UI: {}", e.getMessage(), e);
-                }
-                return null; // return type is Void
-            }).exceptionally(throwable -> {
-                LOGGER.error("Exception thrown while updating the UI: {}", throwable.getMessage(), throwable);
-                return null; // return type is Void
-            });
-        });
     }
 
     private void updateConferenceSessions() {
