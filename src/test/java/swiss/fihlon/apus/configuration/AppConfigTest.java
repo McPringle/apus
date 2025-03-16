@@ -18,11 +18,14 @@
 package swiss.fihlon.apus.configuration;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Locale;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -30,7 +33,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class AppConfigTest {
 
     @Autowired
-    private AppConfig appConfig;
+    private @NotNull AppConfig appConfig;
+
+    private static @NotNull Stream<Arguments> provideDataForLocaleTest() {
+        return Stream.of(
+                Arguments.of(Locale.GERMAN, "DE"),
+                Arguments.of(Locale.GERMAN, "de"),
+                Arguments.of(Locale.ENGLISH, "EN"),
+                Arguments.of(Locale.ENGLISH, "en"),
+                Arguments.of(Locale.ENGLISH, "FR"),
+                Arguments.of(Locale.ENGLISH, "fr"),
+                Arguments.of(Locale.ENGLISH, " "),
+                Arguments.of(Locale.ENGLISH, "")
+        );
+    }
 
     private @NotNull AppConfig createAppConfig(final @NotNull String language) {
         return new AppConfig(appConfig.version(), language, appConfig.timezone(), appConfig.password(),
@@ -39,16 +55,10 @@ class AppConfigTest {
                 appConfig.blueSky(), appConfig.mastodon());
         }
 
-    @Test
-    void locale() {
-        assertEquals(Locale.GERMAN, createAppConfig("DE").locale());
-        assertEquals(Locale.GERMAN, createAppConfig("de").locale());
-        assertEquals(Locale.ENGLISH, createAppConfig("EN").locale());
-        assertEquals(Locale.ENGLISH, createAppConfig("en").locale());
-        assertEquals(Locale.ENGLISH, createAppConfig("FR").locale());
-        assertEquals(Locale.ENGLISH, createAppConfig("fr").locale());
-        assertEquals(Locale.ENGLISH, createAppConfig("  ").locale());
-        assertEquals(Locale.ENGLISH, createAppConfig("").locale());
+    @ParameterizedTest
+    @MethodSource("provideDataForLocaleTest")
+    void locale(final @NotNull Locale expectedLocale, final @NotNull String language) {
+        assertEquals(expectedLocale, createAppConfig(language).locale());
     }
 
 }
