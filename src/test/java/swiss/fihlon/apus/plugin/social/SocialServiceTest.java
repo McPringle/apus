@@ -45,6 +45,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -299,6 +300,21 @@ class SocialServiceTest {
             final var number = Integer.parseInt(id.substring(1));
             assertEquals(number, post.images().size());
         }
+    }
+
+    private AppConfig createEmptyHashtagConfig() {
+        final var newSocialConfig = new SocialConfig("", appConfig.social().headline(), appConfig.social().numberOfColumns(),
+                appConfig.social().imagesEnabled(), appConfig.social().imageLimit(), appConfig.social().filter());
+        return new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(), appConfig.password(),
+                appConfig.demoMode(), appConfig.styles(), appConfig.event(), newSocialConfig,
+                appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
+                appConfig.blueSky(), appConfig.mastodon());
+    }
+
+    @Test
+    void stopNullUpdateSchedulerShouldPass() {
+        final SocialService socialService = new SocialService(new NoOpTaskScheduler(), createEmptyHashtagConfig(), List.of(new TestSocialPlugin()));
+        assertThatCode(socialService::stopUpdateScheduler).doesNotThrowAnyException();
     }
 
     private static final class TestSocialPlugin implements SocialPlugin {
