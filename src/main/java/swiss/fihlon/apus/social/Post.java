@@ -24,17 +24,17 @@ import java.util.List;
 
 public record Post(@NotNull String id, @NotNull ZonedDateTime date,
                    @NotNull String author, @NotNull String avatar, @NotNull String profile,
-                   @NotNull String html, @NotNull List<String> images,
+                   @NotNull String html, @NotNull List<@NotNull String> images,
                    boolean isReply, boolean isSensitive, @NotNull String sourceLogo)
         implements Comparable<Post> {
 
     @Override
-    public int compareTo(@NotNull final Post other) {
+    public int compareTo(final @NotNull Post other) {
         final int dateCompareResult = other.date.compareTo(date);
         return dateCompareResult == 0 ? id.compareTo(other.id) : dateCompareResult;
     }
 
-    public Post withImages(@NotNull final List<String> newImages) {
+    public @NotNull Post withImages(final @NotNull List<@NotNull String> newImages) {
         return new Post(id, date, author, avatar, profile, html, List.copyOf(newImages), isReply, isSensitive, sourceLogo);
     }
 

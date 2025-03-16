@@ -95,8 +95,7 @@ public final class MastodonPlugin implements SocialPlugin {
         }
     }
 
-    @NotNull
-    private Post createPost(final @NotNull JSONObject post) {
+    private @NotNull Post createPost(final @NotNull JSONObject post) {
         final var id = post.getString("id");
         final var date = ZonedDateTime.parse(post.getString("created_at"));
         final var account = post.getJSONObject("account");
@@ -110,8 +109,7 @@ public final class MastodonPlugin implements SocialPlugin {
         return new Post(id, date, author, avatar, profile, html, images, isReply, isSensitive, MASTODON_LOGO);
     }
 
-    @NotNull
-    private List<String> getImages(final @NotNull JSONArray mediaAttachments) {
+    private @NotNull List<@NotNull String> getImages(final @NotNull JSONArray mediaAttachments) {
         final List<String> images = new ArrayList<>();
         for (var i = 0; i < mediaAttachments.length(); i++) {
             final var mediaAttachment = mediaAttachments.getJSONObject(i);

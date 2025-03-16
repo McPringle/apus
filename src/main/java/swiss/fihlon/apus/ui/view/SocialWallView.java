@@ -36,13 +36,13 @@ import java.util.Arrays;
 @CssImport(value = "./themes/apus/views/social-wall-view.css")
 public final class SocialWallView extends Div {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SocialWallView.class);
+    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(SocialWallView.class);
 
-    public SocialWallView(@NotNull final EventService eventService,
-                          @NotNull final SocialService socialService,
-                          @NotNull final TaskScheduler taskScheduler,
-                          @NotNull final AppConfig appConfig,
-                          @NotNull final ApplicationI18NProvider i18NProvider) {
+    public SocialWallView(final @NotNull EventService eventService,
+                          final @NotNull SocialService socialService,
+                          final @NotNull TaskScheduler taskScheduler,
+                          final @NotNull AppConfig appConfig,
+                          final @NotNull ApplicationI18NProvider i18NProvider) {
         setId("social-wall-view");
         addDynamicStyles(appConfig, eventService);
         addCustomStyles(appConfig);
@@ -53,7 +53,7 @@ public final class SocialWallView extends Div {
         add(new SocialView(socialService, taskScheduler, appConfig, locale));
     }
 
-    private static void addDynamicStyles(@NotNull final AppConfig appConfig, @NotNull final EventService eventService) {
+    private static void addDynamicStyles(final @NotNull AppConfig appConfig, final @NotNull EventService eventService) {
         final var currentStyle = UI.getCurrent().getElement().getStyle();
         currentStyle.set("--social-post-column-count", Integer.toString(appConfig.social().numberOfColumns()));
         if (eventService.isEnabled()) {
@@ -69,7 +69,7 @@ public final class SocialWallView extends Div {
         }
     }
 
-    private static void addCustomStyles(@NotNull final AppConfig appConfig) {
+    private static void addCustomStyles(final @NotNull AppConfig appConfig) {
         final String styles = appConfig.styles();
         if (!styles.isBlank()) {
             final var currentStyle = UI.getCurrent().getElement().getStyle();

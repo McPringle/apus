@@ -47,16 +47,16 @@ import java.util.stream.Stream;
 
 @Service
 public final class SessionizePlugin implements EventPlugin {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SessionizePlugin.class);
+    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(SessionizePlugin.class);
 
     private static final int CATEGORY_ID_LANGUAGE = 68911;
     private static final int LANGUAGE_ID_ENGLISH = 242155;
     private static final int LANGUAGE_ID_GERMAN = 242156;
 
-    private final String eventId;
-    private final String eventApi;
-    private final String speakerApi;
-    private final ZoneId timezone;
+    private final @NotNull String eventId;
+    private final @NotNull String eventApi;
+    private final @NotNull String speakerApi;
+    private final @NotNull ZoneId timezone;
 
     public SessionizePlugin(@NotNull final AppConfig appConfig) {
         this.eventId = appConfig.sessionize().eventId();
@@ -72,8 +72,7 @@ public final class SessionizePlugin implements EventPlugin {
 
 
     @Override
-    @NotNull
-    public Stream<Session> getSessions() {
+    public @NotNull Stream<@NotNull Session> getSessions() {
         final Map<String, Speaker> allSpeakers = getAllSpeakers();
         final ArrayList<Session> sessions = new ArrayList<>();
         String lastSessionId = "";
@@ -93,8 +92,7 @@ public final class SessionizePlugin implements EventPlugin {
         return sessions.stream();
     }
 
-    @NotNull
-    private Map<String, Speaker> getAllSpeakers() {
+    private @NotNull Map<@NotNull String, @NotNull Speaker> getAllSpeakers() {
         final Map<String, Speaker> allSpeakers = new HashMap<>();
         String lastSpeakerId = "";
         try {
@@ -114,18 +112,17 @@ public final class SessionizePlugin implements EventPlugin {
         return allSpeakers;
     }
 
-    @NotNull
-    private Session getSession(@NotNull final JSONObject sessionData, @NotNull final Map<String, Speaker> allSpeakers) {
+    private @NotNull Session getSession(final @NotNull JSONObject sessionData, final @NotNull Map<@NotNull String, @NotNull Speaker> allSpeakers) {
         final JSONArray speakersData = sessionData.getJSONArray("speakers");
         final ArrayList<Speaker> speakers = new ArrayList<>(speakersData.length());
         for (int speakerCounter = 0; speakerCounter < speakersData.length(); speakerCounter++) {
             final JSONObject speakerData = speakersData.getJSONObject(speakerCounter);
             final String speakerId = speakerData.getString("id");
-            final Speaker speaker = allSpeakers.get(speakerId);
-            if (speaker == null) {
-                throw new SessionImportException(String.format("Error parsing sessions: Can't find speaker with id %s!", speakerId));
-            } else {
+            if (allSpeakers.containsKey(speakerId)) {
+                final Speaker speaker = allSpeakers.get(speakerId);
                 speakers.add(speaker);
+            } else {
+                throw new SessionImportException(String.format("Error parsing sessions: Can't find speaker with id %s!", speakerId));
             }
         }
 
@@ -143,8 +140,7 @@ public final class SessionizePlugin implements EventPlugin {
                 Track.NONE);
     }
 
-    @NotNull
-    private Language getLanguage(@NotNull final JSONObject singleSession) {
+    private @NotNull Language getLanguage(final @NotNull JSONObject singleSession) {
         final JSONArray categories = singleSession.getJSONArray("categories");
         for (int categoryCounter = 0; categoryCounter < categories.length(); categoryCounter++) {
             final JSONObject category = categories.getJSONObject(categoryCounter);

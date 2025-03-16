@@ -49,20 +49,20 @@ import java.util.stream.Collectors;
 @CssImport(value = "./themes/apus/views/social-view.css")
 public final class SocialView extends Div {
 
-    private static final Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
+    private static final @NotNull Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
 
-    private final Locale locale;
-    private final transient SocialService socialService;
-    private final transient AppConfig appConfig;
-    private final List<Div> postsColumns;
+    private final @NotNull Locale locale;
+    private final transient @NotNull SocialService socialService;
+    private final transient @NotNull AppConfig appConfig;
+    private final @NotNull List<@NotNull Div> postsColumns;
     private final @Nullable ContextMenu contextMenu;
     private boolean adminModeEnabled = false;
 
     @SuppressWarnings("StringSplitter") // that behaviour is exactly what we need
-    public SocialView(@NotNull final SocialService socialService,
-                      @NotNull final TaskScheduler taskScheduler,
-                      @NotNull final AppConfig appConfig,
-                      @NotNull final Locale locale) {
+    public SocialView(final @NotNull SocialService socialService,
+                      final @NotNull TaskScheduler taskScheduler,
+                      final @NotNull AppConfig appConfig,
+                      final @NotNull Locale locale) {
         this.locale = locale;
         this.socialService = socialService;
         this.appConfig = appConfig;
@@ -146,7 +146,7 @@ public final class SocialView extends Div {
         passwordField.focus();
     }
 
-    private void handleLogin(@NotNull final String password) {
+    private void handleLogin(final @NotNull String password) {
         if (contextMenu != null && PasswordUtil.matches(password, appConfig.password())) {
             adminModeEnabled = true;
             contextMenu.setTarget(null);
@@ -172,13 +172,13 @@ public final class SocialView extends Div {
         }
     }
 
-    private void hidePost(@NotNull final Post post) {
+    private void hidePost(final @NotNull Post post) {
         socialService.hidePost(post);
         Notification.show(getTranslation("social.post.contextmenu.hide.post.done"));
         updatePosts();
     }
 
-    private void blockProfile(@NotNull final Post post) {
+    private void blockProfile(final @NotNull Post post) {
         socialService.blockProfile(post);
         Notification.show(getTranslation("social.post.contextmenu.block.profile.done"));
         updatePosts();

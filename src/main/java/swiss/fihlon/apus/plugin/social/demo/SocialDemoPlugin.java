@@ -91,7 +91,7 @@ public final class SocialDemoPlugin implements SocialPlugin {
         return fakePosts;
     }
 
-    private @NotNull List<String> getRandomImage(final @NotNull Faker faker) {
+    private @NotNull List<@NotNull String> getRandomImage(final @NotNull Faker faker) {
         return List.of(faker.image().base64SVG());
     }
 

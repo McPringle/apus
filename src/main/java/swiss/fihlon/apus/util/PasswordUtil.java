@@ -22,13 +22,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public final class PasswordUtil {
 
-    private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+    private static final @NotNull BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
-    public static String hashPassword(@NotNull final String password) {
+    public static @NotNull String hashPassword(final @NotNull String password) {
         return PASSWORD_ENCODER.encode(password);
     }
 
-    public static boolean matches(@NotNull final String password, @NotNull final String hashedPassword) {
+    public static boolean matches(final @NotNull String password, final @NotNull String hashedPassword) {
         return PASSWORD_ENCODER.matches(password, hashedPassword);
     }
 

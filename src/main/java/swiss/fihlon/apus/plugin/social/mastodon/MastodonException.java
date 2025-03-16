@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MastodonException extends Exception {
 
-    public MastodonException(@NotNull final String message, @NotNull final Exception e) {
+    public MastodonException(final @NotNull String message, final @NotNull Exception e) {
         super(message, e);
     }
 

@@ -47,20 +47,20 @@ import java.util.concurrent.ScheduledFuture;
 @CssImport(value = "./themes/apus/views/event-view.css")
 public final class EventView extends Div {
 
-    public static final String LABEL_THEME = "badge";
-    private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
+    public static final @NotNull String LABEL_THEME = "badge";
+    private static final @NotNull Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
 
-    private final transient EventService eventService;
-    private final Duration nextSessionTimeout;
+    private final transient @NotNull EventService eventService;
+    private final @NotNull Duration nextSessionTimeout;
     private final boolean showLegend;
     private final boolean showEmptyRooms;
-    private final Div roomContainer = new Div();
-    private final Span legend = new Span();
-    private final ZoneId timezone;
+    private final @NotNull Div roomContainer = new Div();
+    private final @NotNull Span legend = new Span();
+    private final @NotNull ZoneId timezone;
 
-    public EventView(@NotNull final EventService eventService,
-                     @NotNull final TaskScheduler taskScheduler,
-                     @NotNull final AppConfig appConfig) {
+    public EventView(final @NotNull EventService eventService,
+                     final @NotNull TaskScheduler taskScheduler,
+                     final @NotNull AppConfig appConfig) {
         this.eventService = eventService;
         this.timezone = appConfig.timezone();
         this.nextSessionTimeout = Duration.ofMinutes(appConfig.event().nextSessionTimeout());
@@ -104,13 +104,11 @@ public final class EventView extends Div {
         }
     }
 
-    @NotNull
-    private H2 createTitle() {
+    private @NotNull H2 createTitle() {
         return new H2(getTranslation("event.heading"));
     }
 
-    @NotNull
-    private Component createLegend() {
+    private @NotNull Component createLegend() {
         legend.addClassName("legend");
         return legend;
     }
@@ -122,7 +120,7 @@ public final class EventView extends Div {
      *
      * @param roomStylesInUse a <code>Set</code> of all <code>RoomStyle</code>s in use
      */
-    private void updateLegend(@NotNull final Set<RoomStyle> roomStylesInUse) {
+    private void updateLegend(final @NotNull Set<@NotNull RoomStyle> roomStylesInUse) {
         legend.removeAll();
         for (final RoomStyle roomStyle : RoomStyle.values()) {
             if (roomStylesInUse.contains(roomStyle)) {
@@ -134,8 +132,7 @@ public final class EventView extends Div {
         }
     }
 
-    @NotNull
-    private RoomView createRoomView(@NotNull final Map.Entry<Room, List<Session>> roomWithSession) {
+    private @NotNull RoomView createRoomView(final @NotNull Map.Entry<@NotNull Room, @NotNull List<@NotNull Session>> roomWithSession) {
         final LocalDate today = LocalDate.now(timezone);
         final ZonedDateTime timeLimitNextSession = ZonedDateTime.now(timezone).plus(nextSessionTimeout);
         final Room room = roomWithSession.getKey();
@@ -156,8 +153,7 @@ public final class EventView extends Div {
         return roomView;
     }
 
-    @NotNull
-    private Component createImage(@NotNull final String imageUrl) {
+    private @NotNull Component createImage(final @NotNull String imageUrl) {
         final var image = new Image(imageUrl, "Event Image");
         image.setId("event-image");
         return image;

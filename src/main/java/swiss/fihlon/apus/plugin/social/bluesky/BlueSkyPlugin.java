@@ -49,8 +49,8 @@ public final class BlueSkyPlugin implements SocialPlugin {
     private final @NotNull String profile;
     private final int postLimit;
 
-    public BlueSkyPlugin(@NotNull final BlueSkyLoader blueSkyLoader,
-                         @NotNull final AppConfig appConfig) {
+    public BlueSkyPlugin(final @NotNull BlueSkyLoader blueSkyLoader,
+                         final @NotNull AppConfig appConfig) {
         this.blueSkyLoader = blueSkyLoader;
         final var blueSkyConfig = appConfig.blueSky();
         this.instance = blueSkyConfig.instance();
@@ -157,7 +157,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
         return new Post(id, date, displayName, avatar, handle, text, imageLinks, isReply, false, BLUESKY_LOGO);
     }
 
-    private @NotNull String getStringOrDefault(@NotNull final JSONObject jsonObject, @NotNull final String key, @NotNull final String defaultValue) {
+    private @NotNull String getStringOrDefault(final @NotNull JSONObject jsonObject, final @NotNull String key, final @NotNull String defaultValue) {
         if (jsonObject.has(key) && !jsonObject.isNull(key)) {
             final var value = jsonObject.getString(key);
             if (!value.isBlank()) {

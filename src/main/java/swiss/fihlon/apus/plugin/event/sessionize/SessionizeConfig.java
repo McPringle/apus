@@ -17,5 +17,7 @@
  */
 package swiss.fihlon.apus.plugin.event.sessionize;
 
-public record SessionizeConfig(String eventId, String eventApi, String speakerApi) {
+import org.jetbrains.annotations.NotNull;
+
+public record SessionizeConfig(@NotNull String eventId, @NotNull String eventApi, @NotNull String speakerApi) {
 }

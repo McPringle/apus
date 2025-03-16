@@ -40,7 +40,7 @@ public final class PostView extends Div {
     @NotNull
     private final Locale locale;
 
-    public PostView(@NotNull final Post post, @NotNull final Locale locale) {
+    public PostView(final @NotNull Post post, final @NotNull Locale locale) {
         this.locale = locale;
         setId("post-" + post.id());
         addClassName("post-view");
@@ -50,8 +50,7 @@ public final class PostView extends Div {
         add(createFooterComponent(post));
     }
 
-    @NotNull
-    private Component createHeaderComponent(@NotNull final Post post) {
+    private @NotNull Component createHeaderComponent(final @NotNull Post post) {
         final var avatar = createAvatarComponent(post);
         final var author = new Div(new Text(post.author()));
         author.addClassName("author");
@@ -64,28 +63,25 @@ public final class PostView extends Div {
         return header;
     }
 
-    private Component createAvatarComponent(@NotNull final Post post) {
+    private @NotNull Component createAvatarComponent(final @NotNull Post post) {
         final var avatar = new Avatar(post.author(), post.avatar());
         avatar.addClassName("avatar");
         return avatar;
     }
 
-    @NotNull
-    private Component createTextComponent(@NotNull final Post post) {
+    private @NotNull Component createTextComponent(final @NotNull Post post) {
         final String unsafeHtml = post.html();
         final String safeHtml = HtmlUtil.sanitize(unsafeHtml);
         return new Html(String.format("<div class=\"content\">%s</div>", safeHtml));
     }
 
-    @NotNull
-    private Component[] createImageComponents(@NotNull final Post post) {
+    private @NotNull Component[] createImageComponents(final @NotNull Post post) {
         return post.images().stream()
                 .map(image -> new Image(image, image))
                 .toArray(Image[]::new);
     }
 
-    @NotNull
-    private Component createFooterComponent(@NotNull final Post post) {
+    private @NotNull Component createFooterComponent(final @NotNull Post post) {
         final var sourceLogoComponent = createSourceLogoComponent(post);
         final var dateTimeComponent = createDateTimeComponent(post);
         final var footer = new Footer(sourceLogoComponent, dateTimeComponent);
@@ -93,15 +89,13 @@ public final class PostView extends Div {
         return footer;
     }
 
-    @NotNull
-    private Component createSourceLogoComponent(@NotNull final Post post) {
+    private @NotNull Component createSourceLogoComponent(final @NotNull Post post) {
         final var svg = new Svg(post.sourceLogo());
         svg.addClassName("source-logo");
         return svg;
     }
 
-    @NotNull
-    private Component createDateTimeComponent(@NotNull final Post post) {
+    private @NotNull Component createDateTimeComponent(final @NotNull Post post) {
         final var dateTimeComponent = new Footer();
         dateTimeComponent.addClassName("datetime");
         final var prettyTime = new PrettyTime(locale);

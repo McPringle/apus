@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class BlueSkyException extends Exception {
 
-    public BlueSkyException(@NotNull final String message, @NotNull final Exception e) {
+    public BlueSkyException(final @NotNull String message, final @NotNull Exception e) {
         super(message, e);
     }
 

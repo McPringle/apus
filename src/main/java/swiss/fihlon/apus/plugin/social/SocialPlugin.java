@@ -25,12 +25,10 @@ import java.util.stream.Stream;
 
 public interface SocialPlugin {
 
-    @NotNull
-    String getServiceName();
+    @NotNull String getServiceName();
 
     boolean isEnabled();
 
-    @NotNull
-    Stream<Post> getPosts(@NotNull List<String> hashtags);
+    @NotNull Stream<@NotNull Post> getPosts(@NotNull List<@NotNull String> hashtags);
 
 }

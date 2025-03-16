@@ -64,11 +64,11 @@ public final class SocialService {
     private final int imageLimit;
     private final @NotNull Set<@NotNull String> hiddenPosts = new HashSet<>();
     private final @NotNull Set<@NotNull String> blockedProfiles = new HashSet<>();
-    private final @NotNull Map<@NotNull SocialPlugin, @NotNull List<Post>> postsByPlugin = new HashMap<>();
+    private final @NotNull Map<@NotNull SocialPlugin, @NotNull List<@NotNull Post>> postsByPlugin = new HashMap<>();
 
-    public SocialService(@NotNull final TaskScheduler taskScheduler,
-                         @NotNull final AppConfig appConfig,
-                         @NotNull final List<SocialPlugin> socialPlugins) {
+    public SocialService(final @NotNull TaskScheduler taskScheduler,
+                         final @NotNull AppConfig appConfig,
+                         final @NotNull List<@NotNull SocialPlugin> socialPlugins) {
         final var demoMode = appConfig.demoMode();
         hashtags = Arrays.stream(appConfig.social().hashtags().split(","))
                 .filter(hashtag -> !hashtag.isBlank())
@@ -104,7 +104,7 @@ public final class SocialService {
         }
     }
 
-    public Stream<String> getServiceNames() {
+    public @NotNull Stream<@NotNull String> getServiceNames() {
         synchronized (postsByPlugin) {
             return postsByPlugin.keySet().stream()
                     .filter(SocialPlugin::isEnabled)
@@ -142,8 +142,7 @@ public final class SocialService {
                 });
     }
 
-    @NotNull
-    private Post checkImages(@NotNull final Post post) {
+    private @NotNull Post checkImages(final @NotNull Post post) {
         if ((imagesEnabled && imageLimit == 0) || post.images().isEmpty()) {
             return post;
         } else if (!imagesEnabled) {
@@ -154,7 +153,7 @@ public final class SocialService {
         }
     }
 
-    private boolean checkWordFilter(@NotNull final Post post) {
+    private boolean checkWordFilter(final @NotNull Post post) {
         final String postText = Jsoup.parse(post.html()).text().toLowerCase(Locale.getDefault());
         for (final String filterWord : filterWords) {
             if (postText.contains(filterWord)) {
@@ -164,7 +163,7 @@ public final class SocialService {
         return true;
     }
 
-    public List<Post> getPosts(final int limit) {
+    public @NotNull List<@NotNull Post> getPosts(final int limit) {
         synchronized (postsByPlugin) {
             return postsByPlugin.values()
                     .parallelStream()
@@ -175,7 +174,7 @@ public final class SocialService {
         }
     }
 
-    public void hidePost(@NotNull final Post postToHide) {
+    public void hidePost(final @NotNull Post postToHide) {
         LOGGER.warn("Hiding post (id={}, profile={}, author={})",
                 postToHide.id(), postToHide.profile(), postToHide.author());
         synchronized (postsByPlugin) {
@@ -192,7 +191,7 @@ public final class SocialService {
         saveHiddenPostIds();
     }
 
-    public void blockProfile(@NotNull final Post postToHide) {
+    public void blockProfile(final @NotNull Post postToHide) {
         LOGGER.warn("Block profile (id={}, profile={}, author={})",
                 postToHide.id(), postToHide.profile(), postToHide.author());
         synchronized (postsByPlugin) {
@@ -209,7 +208,7 @@ public final class SocialService {
         saveBlockedProfiles();
     }
 
-    private Path getConfigDir() {
+    private @NotNull Path getConfigDir() {
         final Path configDir = Path.of(System.getProperty("user.home"), ".apus");
         if (!configDir.toFile().exists()) {
             try {

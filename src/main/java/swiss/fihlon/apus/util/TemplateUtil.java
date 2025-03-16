@@ -26,8 +26,8 @@ import java.util.regex.Pattern;
 
 public final class TemplateUtil {
 
-    public static String replaceVariables(@NotNull final String text,
-                                          @Nullable final Map<String, String> variables) {
+    public static @NotNull String replaceVariables(final @NotNull String text,
+                                                   final @Nullable Map<@NotNull String, @NotNull String> variables) {
         String returnValue = text;
         if (variables != null) {
             for (final var entrySet : variables.entrySet()) {

@@ -58,13 +58,13 @@ public final class RoomView extends Div {
 
     private @NotNull RoomStyle roomStyle = RoomStyle.NONE;
 
-    public RoomView(@NotNull final ZoneId timezone,
-                    @NotNull final Room room) {
+    public RoomView(final @NotNull ZoneId timezone,
+                    final @NotNull Room room) {
         this(timezone, room, null, List.of(), null, null, null, null);
     }
 
-    public RoomView(@NotNull final ZoneId timezone,
-                    @NotNull final Session session) {
+    public RoomView(final @NotNull ZoneId timezone,
+                    final @NotNull Session session) {
         this(
                 timezone,
                 session.room(),
@@ -78,14 +78,14 @@ public final class RoomView extends Div {
     }
 
     @SuppressWarnings({ "java:S107", "ParameterNumber" })
-    public RoomView(@NotNull final ZoneId timezone,
-                    @NotNull final Room room,
-                    @Nullable final String title,
-                    @NotNull final List<Speaker> speakers,
-                    @Nullable final ZonedDateTime startTime,
-                    @Nullable final ZonedDateTime endTime,
-                    @Nullable final Language language,
-                    @Nullable final Track track) {
+    public RoomView(final @NotNull ZoneId timezone,
+                    final @NotNull Room room,
+                    final @Nullable String title,
+                    final @NotNull List<Speaker> speakers,
+                    final @Nullable ZonedDateTime startTime,
+                    final @Nullable ZonedDateTime endTime,
+                    final @Nullable Language language,
+                    final @Nullable Track track) {
         this.timezone = timezone;
         this.room = room;
         this.title = title;
@@ -104,8 +104,7 @@ public final class RoomView extends Div {
         addClassName(roomStyle.getCssStyle());
     }
 
-    @NotNull
-    private Component createTitleComponent() {
+    private @NotNull Component createTitleComponent() {
         final var titleComponent = new Div();
         titleComponent.addClassName("title");
         titleComponent.add(new H3(new Text(title == null ? getTranslation("event.room.empty") : title)));
@@ -117,8 +116,7 @@ public final class RoomView extends Div {
         return titleComponent;
     }
 
-    @NotNull
-    private Component createSpeakersComponent() {
+    private @NotNull Component createSpeakersComponent() {
         final var speakersComponent = new Div();
         speakersComponent.addClassName("speakers");
         if (speakers.isEmpty()) {
@@ -135,8 +133,7 @@ public final class RoomView extends Div {
         return speakersComponent;
     }
 
-    @NotNull
-    private Component createRoomComponent() {
+    private @NotNull Component createRoomComponent() {
         final var roomComponent = new Div(
                 new Icon(VaadinIcon.LOCATION_ARROW_CIRCLE),
                 new Text(room.name())
@@ -145,8 +142,7 @@ public final class RoomView extends Div {
         return roomComponent;
     }
 
-    @NotNull
-    private Component createTimeComponent() {
+    private @NotNull Component createTimeComponent() {
         final var timeComponent = new Div();
         timeComponent.addClassName("time");
         final var now = ZonedDateTime.now(timezone).withSecond(59).withNano(999);
@@ -177,8 +173,7 @@ public final class RoomView extends Div {
         return timeComponent;
     }
 
-    @NotNull
-    private Component createImageComponent() {
+    private @NotNull Component createImageComponent() {
         final var speakerAvatars = speakers.stream()
                 .filter(speaker -> speaker.imageUrl() != null && !speaker.imageUrl().isBlank())
                 .map(speaker -> new Avatar(speaker.fullName(), speaker.imageUrl()))
@@ -197,8 +192,7 @@ public final class RoomView extends Div {
         return avatarComponent;
     }
 
-    @NotNull
-    private Component createTrackComponent() {
+    private @NotNull Component createTrackComponent() {
         final var trackComponent = new Div();
         trackComponent.addClassName("track");
         if (track != null && !track.equals(Track.NONE)) {
@@ -208,13 +202,11 @@ public final class RoomView extends Div {
         return trackComponent;
     }
 
-    @NotNull
-    private static Component nbsp() {
+    private static @NotNull Component nbsp() {
         return new Html("<span>&nbsp;</span>");
     }
 
-    @NotNull
-    public RoomStyle getRoomStyle() {
+    public @NotNull RoomStyle getRoomStyle() {
         return roomStyle;
     }
 }

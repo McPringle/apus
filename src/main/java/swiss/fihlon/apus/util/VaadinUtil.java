@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 
 public final class VaadinUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(VaadinUtil.class);
+    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(VaadinUtil.class);
 
     @SuppressWarnings("java:S2142") // logging the exceptions is enough
     public static void updateUI(final @NotNull UI ui, final @NotNull Command command) {

@@ -27,7 +27,7 @@ import java.nio.charset.StandardCharsets;
 
 public final class DownloadUtil {
 
-    public static String getString(@NotNull final String location) throws IOException, URISyntaxException {
+    public static @NotNull String getString(final @NotNull String location) throws IOException, URISyntaxException {
         try (InputStream in = new URI(location).toURL().openStream()) {
             return new String(in.readAllBytes(), StandardCharsets.UTF_8);
         }
