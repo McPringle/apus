@@ -56,18 +56,27 @@ class SocialServiceTest {
 
     private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
 
-    private static Path getConfigDir() {
-        return Path.of(System.getProperty("user.home"), ".apus");
+    private static Path getConfigDir(final boolean createIfNotExisting) throws IOException {
+        final var configDir = Path.of(System.getProperty("user.home"), ".apus");
+        if (createIfNotExisting && !configDir.toFile().exists()) {
+            Files.createDirectories(configDir);
+        }
+        return configDir;
     }
 
     @BeforeEach
     @AfterEach
-    void cleanUp() {
+    void cleanUp() throws IOException {
         for (String fileName : List.of("hiddenPosts", "blockedProfiles")) {
-            final var file = getConfigDir().resolve(fileName).toFile();
+            final var file = getConfigDir(false).resolve(fileName).toFile();
             if (file.exists() && !file.delete()) {
-                fail("Could not delete " + file);
+                fail("Could not delete configuration file" + file);
             }
+        }
+
+        final var directory = getConfigDir(false).toFile();
+        if (directory.exists() && !directory.delete()) {
+            fail("Could not delete configuration directory: " + directory);
         }
     }
 
@@ -223,7 +232,7 @@ class SocialServiceTest {
 
     @Test
     void loadHiddenPosts() throws IOException {
-        final var filePath = getConfigDir().resolve("hiddenPosts");
+        final var filePath = getConfigDir(true).resolve("hiddenPosts");
         Files.writeString(filePath, "P5\nP6");
 
         final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of(new TestSocialPlugin()));
@@ -235,7 +244,7 @@ class SocialServiceTest {
 
     @Test
     void loadBlockedProfiles() throws IOException {
-        final var filePath = getConfigDir().resolve("blockedProfiles");
+        final var filePath = getConfigDir(true).resolve("blockedProfiles");
         Files.writeString(filePath, "profile1@localhost");
 
         final SocialService socialService = new SocialService(new NoOpTaskScheduler(), appConfig, List.of(new TestSocialPlugin()));
