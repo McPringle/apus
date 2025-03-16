@@ -213,8 +213,19 @@ class SocialServiceTest {
         final List<Post> postsBefore = socialService.getPosts(10);
         assertEquals(10, postsBefore.size());
 
+        final MemoryAppender memoryAppender = new MemoryAppender();
+        memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
+        final Logger logger = (Logger) LoggerFactory.getLogger(SocialService.class);
+        logger.addAppender(memoryAppender);
+
+        memoryAppender.start();
         socialService.hidePost(postsBefore.get(3));
         socialService.hidePost(postsBefore.get(7));
+        memoryAppender.stop();
+
+        final int errorCount = memoryAppender.getMessages(Level.ERROR).size();
+        assertEquals(0, errorCount); // save hidden posts to a file did not fail
+
         final List<Post> postsAfter = socialService.getPosts(10);
         assertEquals(8, postsAfter.size());
     }
@@ -225,7 +236,18 @@ class SocialServiceTest {
         final List<Post> postsBefore = socialService.getPosts(10);
         assertEquals(10, postsBefore.size());
 
+        final MemoryAppender memoryAppender = new MemoryAppender();
+        memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
+        final Logger logger = (Logger) LoggerFactory.getLogger(SocialService.class);
+        logger.addAppender(memoryAppender);
+
+        memoryAppender.start();
         socialService.blockProfile(postsBefore.get(5));
+        memoryAppender.stop();
+
+        final int errorCount = memoryAppender.getMessages(Level.ERROR).size();
+        assertEquals(0, errorCount); // save blocked profiles to a file did not fail
+
         final List<Post> postsAfter = socialService.getPosts(10);
         assertEquals(5, postsAfter.size());
     }

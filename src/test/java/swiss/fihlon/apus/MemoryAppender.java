@@ -25,6 +25,12 @@ import java.util.List;
 
 public final class MemoryAppender extends ListAppender<ILoggingEvent> {
 
+    public List<ILoggingEvent> getMessages(final Level level) {
+        return this.list.stream()
+                .filter(event -> event.getLevel().equals(level))
+                .toList();
+    }
+
     public List<ILoggingEvent> searchMessages(final String string, final Level level) {
         return this.list.stream()
                 .filter(event -> event.getMessage().contains(string) && event.getLevel().equals(level))
