@@ -64,7 +64,7 @@ public final class SocialService {
     private final int imageLimit;
     private final Set<String> hiddenPosts = new HashSet<>();
     private final Set<String> blockedProfiles = new HashSet<>();
-    private final Map<SocialPlugin, List<Post>> postsByPlugin = new HashMap<>();
+    private final @NotNull Map<@NotNull SocialPlugin, @NotNull List<Post>> postsByPlugin = new HashMap<>();
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,
                          @NotNull final AppConfig appConfig,
@@ -181,14 +181,11 @@ public final class SocialService {
         synchronized (postsByPlugin) {
             final var socialPlugins = postsByPlugin.keySet();
             for (final var socialPlugin : socialPlugins) {
-                final var posts = postsByPlugin.get(socialPlugin);
-                if (posts != null) {
-                    final var filteredPosts = posts
-                            .parallelStream()
-                            .filter(post -> !post.id().equals(postToHide.id()))
-                            .toList();
-                    postsByPlugin.put(socialPlugin, filteredPosts);
-                }
+                final var filteredPosts = postsByPlugin.get(socialPlugin)
+                        .parallelStream()
+                        .filter(post -> !post.id().equals(postToHide.id()))
+                        .toList();
+                postsByPlugin.put(socialPlugin, filteredPosts);
             }
         }
         hiddenPosts.add(postToHide.id());
@@ -201,14 +198,11 @@ public final class SocialService {
         synchronized (postsByPlugin) {
             final var socialPlugins = postsByPlugin.keySet();
             for (final var socialPlugin : socialPlugins) {
-                final var posts = postsByPlugin.get(socialPlugin);
-                if (posts != null) {
-                    final var filteredPosts = posts
-                            .parallelStream()
-                            .filter(post -> !post.profile().equals(postToHide.profile()))
-                            .toList();
-                    postsByPlugin.put(socialPlugin, filteredPosts);
-                }
+                final var filteredPosts = postsByPlugin.get(socialPlugin)
+                        .parallelStream()
+                        .filter(post -> !post.profile().equals(postToHide.profile()))
+                        .toList();
+                postsByPlugin.put(socialPlugin, filteredPosts);
             }
         }
         blockedProfiles.add(postToHide.profile());
