@@ -20,8 +20,10 @@ package swiss.fihlon.apus.event;
 import org.jetbrains.annotations.NotNull;
 
 public record Room(@NotNull String name) implements Comparable<Room> {
+
     @Override
     public int compareTo(@NotNull final Room other) {
         return name.compareTo(other.name);
     }
+
 }

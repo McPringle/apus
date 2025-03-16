@@ -44,17 +44,17 @@ import java.util.concurrent.ScheduledFuture;
 @Service
 public final class EventService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
+    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(EventService.class);
 
-    private final List<EventPlugin> eventPlugins;
+    private final @NotNull List<@NotNull EventPlugin> eventPlugins;
     private final @Nullable ScheduledFuture<?> updateScheduler;
-    private final Period dateAdjust;
-    private final ZoneId timezone;
-    private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
+    private final @NotNull Period dateAdjust;
+    private final @NotNull ZoneId timezone;
+    private @NotNull Map<@NotNull Room, @NotNull List<@NotNull Session>> roomsWithSessions = new TreeMap<>();
 
-    public EventService(@NotNull final TaskScheduler taskScheduler,
-                        @NotNull final AppConfig appConfig,
-                        @NotNull final List<EventPlugin> eventPlugins) {
+    public EventService(final @NotNull TaskScheduler taskScheduler,
+                        final @NotNull AppConfig appConfig,
+                        final @NotNull List<@NotNull EventPlugin> eventPlugins) {
         final var demoMode = appConfig.demoMode();
         this.eventPlugins = demoMode ? List.of(new EventDemoPlugin(appConfig)) : eventPlugins;
         this.dateAdjust = demoMode ? Period.ZERO : appConfig.event().dateAdjust();
@@ -114,7 +114,7 @@ public final class EventService {
         }
     }
 
-    private Session dateAdjust(@NotNull final Session session) {
+    private @NotNull Session dateAdjust(@NotNull final Session session) {
         if (dateAdjust.isZero()) {
             return session;
         }
@@ -130,7 +130,7 @@ public final class EventService {
         );
     }
 
-    public Map<Room, List<Session>> getRoomsWithSessions() {
+    public @NotNull Map<@NotNull Room, @NotNull List<@NotNull Session>> getRoomsWithSessions() {
         synchronized (this) {
             return new TreeMap<>(roomsWithSessions);
         }

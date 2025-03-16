@@ -17,4 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.social.mastodon;
 
-public record MastodonConfig(String instance, String postAPI, int postLimit) { }
+import org.jetbrains.annotations.NotNull;
+
+public record MastodonConfig(@NotNull String instance, @NotNull String postAPI, int postLimit) { }

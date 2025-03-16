@@ -50,20 +50,20 @@ import java.util.stream.Stream;
 @Service
 public final class SocialService {
 
-    private static final Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
+    private static final @NotNull Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
     private static final int MAX_POSTS = 50;
-    private static final Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
+    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
 
     private final @Nullable ScheduledFuture<?> updateScheduler;
-    private final List<String> hashtags;
+    private final @NotNull List<@NotNull String> hashtags;
     private final int filterLength;
     private final boolean filterReplies;
     private final boolean filterSensitive;
-    private final List<String> filterWords;
+    private final @NotNull List<@NotNull String> filterWords;
     private final boolean imagesEnabled;
     private final int imageLimit;
-    private final Set<String> hiddenPosts = new HashSet<>();
-    private final Set<String> blockedProfiles = new HashSet<>();
+    private final @NotNull Set<@NotNull String> hiddenPosts = new HashSet<>();
+    private final @NotNull Set<@NotNull String> blockedProfiles = new HashSet<>();
     private final @NotNull Map<@NotNull SocialPlugin, @NotNull List<Post>> postsByPlugin = new HashMap<>();
 
     public SocialService(@NotNull final TaskScheduler taskScheduler,

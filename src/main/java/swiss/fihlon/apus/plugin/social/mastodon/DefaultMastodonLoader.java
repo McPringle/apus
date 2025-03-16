@@ -29,11 +29,10 @@ import java.util.Map;
 public final class DefaultMastodonLoader implements MastodonLoader {
 
     @Override
-    @NotNull
-    public JSONArray getPosts(@NotNull final String instance,
-                              @NotNull final String hashtag,
-                              @NotNull final String postAPI,
-                              final int limit)
+    public @NotNull JSONArray getPosts(final @NotNull String instance,
+                                       final @NotNull String hashtag,
+                                       final @NotNull String postAPI,
+                                       final int limit)
             throws MastodonException {
         try {
             final var url = TemplateUtil.replaceVariables(

@@ -27,19 +27,19 @@ public enum RoomStyle {
     NEXT("next-session", "event.legend.next-session"),
     EMPTY("empty-room", "event.legend.empty-room");
 
-    private final String cssStyle;
-    private final String translationKey;
+    private final @NotNull String cssStyle;
+    private final @NotNull String translationKey;
 
     RoomStyle(@NotNull final String cssStyle, @NotNull final String translationKey) {
         this.cssStyle = cssStyle;
         this.translationKey = translationKey;
     }
 
-    public String getCssStyle() {
+    public @NotNull String getCssStyle() {
         return cssStyle;
     }
 
-    public String getTranslationKey() {
+    public @NotNull String getTranslationKey() {
         return translationKey;
     }
 }

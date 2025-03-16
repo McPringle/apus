@@ -23,7 +23,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 public record Session(@NotNull String id, @NotNull ZonedDateTime startDate, @NotNull ZonedDateTime endDate,
-                      @NotNull Room room, @NotNull String title, @NotNull List<Speaker> speakers,
+                      @NotNull Room room, @NotNull String title, @NotNull List<@NotNull Speaker> speakers,
                       @NotNull Language language, @NotNull Track track)
         implements Comparable<Session> {
 

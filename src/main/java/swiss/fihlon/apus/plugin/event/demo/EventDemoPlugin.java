@@ -41,16 +41,16 @@ import java.util.stream.Stream;
 @Service
 public final class EventDemoPlugin implements EventPlugin {
 
-    private static final Random RANDOM = new Random();
+    private static final @NotNull Random RANDOM = new Random();
     private static final int AROUND_THE_CLOCK = 24;
     private static final int ROOM_COUNT = 4;
-    private static final List<Track> DEFAULT_TRACKS =
+    private static final @NotNull List<@NotNull Track> DEFAULT_TRACKS =
             List.of(Track.ARCHITECTURE, Track.CLOUD, Track.CORE, Track.INFRASTRUCTURE, Track.SECURITY, Track.TOOLS);
 
-    private final Locale locale;
-    private final ZoneId timezone;
+    private final @NotNull Locale locale;
+    private final @NotNull ZoneId timezone;
     private final boolean demoMode;
-    private final List<Session> sessions;
+    private final @NotNull List<@NotNull Session> sessions;
 
     public EventDemoPlugin(@NotNull final AppConfig appConfig) {
         locale = appConfig.locale();
@@ -65,11 +65,11 @@ public final class EventDemoPlugin implements EventPlugin {
     }
 
     @Override
-    public @NotNull Stream<Session> getSessions() {
+    public @NotNull Stream<@NotNull Session> getSessions() {
         return sessions.stream();
     }
 
-    private @NotNull List<Session> createFakeSessions() {
+    private @NotNull List<@NotNull Session> createFakeSessions() {
         final List<Room> fakeRooms = createFakeRooms();
         final List<Session> fakeSessions = new ArrayList<>(AROUND_THE_CLOCK * ROOM_COUNT);
 
@@ -90,7 +90,7 @@ public final class EventDemoPlugin implements EventPlugin {
         return fakeSessions;
     }
 
-    private @NotNull List<Room> createFakeRooms() {
+    private @NotNull List<@NotNull Room> createFakeRooms() {
         final HashSet<Room> rooms = HashSet.newHashSet(ROOM_COUNT);
         final Faker faker = new Faker(locale, RANDOM);
         while (rooms.size() < ROOM_COUNT) {

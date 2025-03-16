@@ -30,11 +30,10 @@ import java.util.Map;
 public final class DefaultBlueSkyLoader implements BlueSkyLoader {
 
     @Override
-    @NotNull
-    public JSONArray getPostsWithHashtag(@NotNull final String instance,
-                                         @NotNull final String hashtag,
-                                         @NotNull final String hashtagUrl,
-                                         final int limit)
+    public @NotNull JSONArray getPostsWithHashtag(final @NotNull String instance,
+                                                  final @NotNull String hashtag,
+                                                  final @NotNull String hashtagUrl,
+                                                  final int limit)
             throws BlueSkyException {
         try {
             final var url = TemplateUtil.replaceVariables(
@@ -47,11 +46,10 @@ public final class DefaultBlueSkyLoader implements BlueSkyLoader {
     }
 
     @Override
-    @NotNull
-    public JSONArray getPostsWithMention(@NotNull final String instance,
-                                         @NotNull final String profile,
-                                         @NotNull final String mentionsUrl,
-                                         final int limit)
+    public @NotNull JSONArray getPostsWithMention(final @NotNull String instance,
+                                                  final @NotNull String profile,
+                                                  final @NotNull String mentionsUrl,
+                                                  final int limit)
             throws BlueSkyException {
         try {
             final var url = TemplateUtil.replaceVariables(

@@ -37,18 +37,18 @@ import java.util.stream.Stream;
 public final class SocialDemoPlugin implements SocialPlugin {
 
     @SuppressWarnings("LineLength")
-    private static final String DEMO_LOGO = """
+    private static final @NotNull String DEMO_LOGO = """
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path d="M64 0C28.7 0 0 28.7 0 64L0 352c0 35.3 28.7 64 64 64l96 0 0 80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416 448 416c35.3 0 64-28.7 64-64l0-288c0-35.3-28.7-64-64-64L64 0z"/>
             </svg>""";
 
-    private static final Locale LOCALE = Locale.getDefault();
-    private static final Random RANDOM = new Random();
+    private static final @NotNull Locale LOCALE = Locale.getDefault();
+    private static final @NotNull Random RANDOM = new Random();
     private static final int POST_COUNT = 50;
 
-    private final ZoneId timezone;
+    private final @NotNull ZoneId timezone;
     private final boolean demoMode;
-    private final List<Post> posts;
+    private final @NotNull List<@NotNull Post> posts;
 
     public SocialDemoPlugin(@NotNull final AppConfig appConfig) {
         timezone = appConfig.timezone();
@@ -57,8 +57,7 @@ public final class SocialDemoPlugin implements SocialPlugin {
     }
 
     @Override
-    @NotNull
-    public String getServiceName() {
+    public @NotNull String getServiceName() {
         return "Demo";
     }
 
@@ -68,13 +67,11 @@ public final class SocialDemoPlugin implements SocialPlugin {
     }
 
     @Override
-    @NotNull
-    public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
+    public @NotNull Stream<@NotNull Post> getPosts(final @NotNull List<@NotNull String> hashtags) {
         return posts.stream();
     }
 
-    @NotNull
-    public List<Post> createFakePosts(final int postCount) {
+    public @NotNull List<@NotNull Post> createFakePosts(final int postCount) {
         final Faker faker = new Faker(LOCALE, RANDOM);
         final var fakePosts = new ArrayList<Post>();
         for (int number = 1; number <= postCount; number++) {
@@ -94,23 +91,23 @@ public final class SocialDemoPlugin implements SocialPlugin {
         return fakePosts;
     }
 
-    private @NotNull List<String> getRandomImage(@NotNull final Faker faker) {
+    private @NotNull List<String> getRandomImage(final @NotNull Faker faker) {
         return List.of(faker.image().base64SVG());
     }
 
-    private @NotNull String getRandomHtml(@NotNull final Faker faker) {
+    private @NotNull String getRandomHtml(final @NotNull Faker faker) {
         return faker.lorem().sentence(10);
     }
 
-    private @NotNull String getRandomProfile(@NotNull final Faker faker) {
+    private @NotNull String getRandomProfile(final @NotNull Faker faker) {
         return faker.internet().emailAddress();
     }
 
-    private @NotNull String getRandomAvatar(@NotNull final Faker faker) {
+    private @NotNull String getRandomAvatar(final @NotNull Faker faker) {
         return faker.avatar().image();
     }
 
-    private static @NotNull String getRandomAuthor(@NotNull final Faker faker) {
+    private static @NotNull String getRandomAuthor(final @NotNull Faker faker) {
         return faker.name().fullName();
     }
 

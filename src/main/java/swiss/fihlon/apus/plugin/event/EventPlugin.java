@@ -26,7 +26,6 @@ public interface EventPlugin {
 
     boolean isEnabled();
 
-    @NotNull
-    Stream<Session> getSessions();
+    @NotNull Stream<@NotNull Session> getSessions();
 
 }

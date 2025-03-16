@@ -49,10 +49,10 @@ import java.util.stream.Stream;
 @Service
 public final class DoagPlugin implements EventPlugin {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DoagPlugin.class);
+    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(DoagPlugin.class);
 
     private final int eventId;
-    private final String eventApi;
+    private final @NotNull String eventApi;
 
     public DoagPlugin(@NotNull final AppConfig appConfig) {
         this.eventId = appConfig.doag().eventId();
@@ -65,7 +65,7 @@ public final class DoagPlugin implements EventPlugin {
     }
 
     @Override
-    @NotNull public Stream<Session> getSessions() {
+    public @NotNull Stream<@NotNull Session> getSessions() {
         final ArrayList<Session> sessions = new ArrayList<>();
         int lastSlotId = 0;
         try {
@@ -142,7 +142,7 @@ public final class DoagPlugin implements EventPlugin {
                 );
     }
 
-    private Language getLanguage(@NotNull final JSONObject slot) {
+    private @NotNull Language getLanguage(@NotNull final JSONObject slot) {
         try {
             final var languageArray = slot.getJSONArray("language");
             final var languageString = languageArray.getString(0);
@@ -154,7 +154,7 @@ public final class DoagPlugin implements EventPlugin {
         return Language.UNKNOWN;
     }
 
-    private String getTitle(@NotNull final JSONObject slot, @NotNull final String defaultLanguage) throws JSONException {
+    private @NotNull String getTitle(@NotNull final JSONObject slot, @NotNull final String defaultLanguage) throws JSONException {
         for (final String language : List.of(defaultLanguage, "de", "en")) {
             try {
                 final String title = slot.getJSONObject("title").getString(language);
@@ -169,7 +169,7 @@ public final class DoagPlugin implements EventPlugin {
     }
 
     @SuppressWarnings("StringSplitter") // safe to ignore here
-    private Duration parseDuration(@NotNull final String duration) {
+    private @NotNull Duration parseDuration(@NotNull final String duration) {
         final String minutes = duration.split(":")[1];
         return Duration.ofMinutes(Long.parseLong(minutes));
     }

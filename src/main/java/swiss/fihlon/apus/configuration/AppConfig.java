@@ -42,7 +42,7 @@ public record AppConfig(@NotNull String version, @NotNull String language, @NotN
     // needed to add the `@ConstructorBinding` annotation
     public AppConfig { }
 
-    public Locale locale() {
+    public @NotNull Locale locale() {
         return language().toLowerCase(Locale.getDefault()).equals("de") ? Locale.GERMAN : Locale.ENGLISH;
     }
 }

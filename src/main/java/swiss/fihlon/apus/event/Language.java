@@ -26,12 +26,12 @@ public enum Language {
     DE("de"),
     EN("en");
 
-    private static final String FILE_NAME_TEMPLATE = "icons/flags/%s.svg";
+    private static final @NotNull String FILE_NAME_TEMPLATE = "icons/flags/%s.svg";
 
-    private final String languageCode;
-    private final String flagFileName;
+    private final @NotNull String languageCode;
+    private final @NotNull String flagFileName;
 
-    public static Language languageWithCode(@NotNull final String languageCode) {
+    public static @NotNull Language languageWithCode(@NotNull final String languageCode) {
         for (final Language language : values()) {
             if (language.languageCode.equals(languageCode)) {
                 return language;
@@ -45,13 +45,11 @@ public enum Language {
         this.flagFileName = FILE_NAME_TEMPLATE.formatted(languageCode);
     }
 
-    @NotNull
-    public String getLanguageCode() {
+    public @NotNull String getLanguageCode() {
         return languageCode;
     }
 
-    @NotNull
-    public String getFlagFileName() {
+    public @NotNull String getFlagFileName() {
         return flagFileName;
     }
 }

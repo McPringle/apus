@@ -37,17 +37,17 @@ public record Track(String svgCode) {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Track.class);
 
-    public static final Track NONE = new Track("");
-    public static final Track ARCHITECTURE = defaultTrack("architecture.svg");
-    public static final Track CLOUD = defaultTrack("cloud.svg");
-    public static final Track CORE = defaultTrack("core.svg");
-    public static final Track INFRASTRUCTURE = defaultTrack("infrastructure.svg");
-    public static final Track SECURITY = defaultTrack("security.svg");
-    public static final Track TOOLS = defaultTrack("tools.svg");
+    public static final @NotNull Track NONE = new Track("");
+    public static final @NotNull Track ARCHITECTURE = defaultTrack("architecture.svg");
+    public static final @NotNull Track CLOUD = defaultTrack("cloud.svg");
+    public static final @NotNull Track CORE = defaultTrack("core.svg");
+    public static final @NotNull Track INFRASTRUCTURE = defaultTrack("infrastructure.svg");
+    public static final @NotNull Track SECURITY = defaultTrack("security.svg");
+    public static final @NotNull Track TOOLS = defaultTrack("tools.svg");
 
-    private static final String FILE_NAME_TEMPLATE = "/icons/tracks/%s";
+    private static final @NotNull String FILE_NAME_TEMPLATE = "/icons/tracks/%s";
 
-    private static Track defaultTrack(@NotNull final String svgFileName) {
+    private static @NotNull Track defaultTrack(@NotNull final String svgFileName) {
         try {
             final String fileName = FILE_NAME_TEMPLATE.formatted(svgFileName);
             final URL url = Track.class.getResource(fileName);
@@ -63,12 +63,12 @@ public record Track(String svgCode) {
         return NONE;
     }
 
-    public static Track fromPath(@NotNull final Path path) throws IOException {
+    public static @NotNull Track fromPath(@NotNull final Path path) throws IOException {
         final String svgCode = Files.readString(path);
         return new Track(svgCode);
     }
 
-    public static Track fromURI(@NotNull final URI uri) throws IOException, InterruptedException {
+    public static @NotNull Track fromURI(@NotNull final URI uri) throws IOException, InterruptedException {
         try (var client = HttpClient.newHttpClient()) {
             final var request = HttpRequest.newBuilder()
                     .uri(uri)

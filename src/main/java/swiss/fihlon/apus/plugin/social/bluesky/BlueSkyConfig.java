@@ -17,4 +17,7 @@
  */
 package swiss.fihlon.apus.plugin.social.bluesky;
 
-public record BlueSkyConfig(String instance, String hashtagUrl, String mentionsUrl, String profile, int postLimit) { }
+import org.jetbrains.annotations.NotNull;
+
+public record BlueSkyConfig(@NotNull String instance, @NotNull String hashtagUrl, @NotNull String mentionsUrl, @NotNull String profile,
+                            int postLimit) { }

@@ -216,13 +216,13 @@ enum TrackIcons {
             </g>
             </svg>""");
 
-    private final String svgCode;
+    private final @NotNull String svgCode;
 
-    TrackIcons(@NotNull final String svgCode) {
+    TrackIcons(final @NotNull String svgCode) {
         this.svgCode = svgCode;
     }
 
-    public String getSvgCode() {
+    public @NotNull String getSvgCode() {
         return svgCode;
     }
 }

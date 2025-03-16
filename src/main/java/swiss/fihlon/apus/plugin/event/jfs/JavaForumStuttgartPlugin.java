@@ -56,10 +56,10 @@ import java.util.stream.Stream;
 @Service
 public final class JavaForumStuttgartPlugin implements EventPlugin {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JavaForumStuttgartPlugin.class);
+    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(JavaForumStuttgartPlugin.class);
 
-    private final String dbUrl;
-    private final ZoneId timezone;
+    private final @NotNull String dbUrl;
+    private final @NotNull ZoneId timezone;
 
     public JavaForumStuttgartPlugin(@NotNull final AppConfig appConfig) {
         dbUrl = appConfig.jfs().dbUrl();
@@ -72,7 +72,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     }
 
     @Override
-    public @NotNull Stream<Session> getSessions() {
+    public @NotNull Stream<@NotNull Session> getSessions() {
         final List<Talk> allTalks;
         final Map<String, List<String>> allAssignments;
         final Map<String, Speaker> allSpeakers;
@@ -123,7 +123,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         }
     }
 
-    private @NotNull List<Talk> getTalks(@NotNull final Statement statement) throws SQLException {
+    private @NotNull List<@NotNull Talk> getTalks(@NotNull final Statement statement) throws SQLException {
         final ArrayList<Talk> talks = new ArrayList<>();
 
         final ResultSet resultSet = statement.executeQuery("""
@@ -144,7 +144,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return talks;
     }
 
-    private @NotNull Map<String, List<String>> getAssignments(@NotNull final Statement statement) throws SQLException {
+    private @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> getAssignments(@NotNull final Statement statement) throws SQLException {
         final HashMap<String, List<String>> assignments = new HashMap<>();
 
         final ResultSet resultSet = statement.executeQuery("""
@@ -163,7 +163,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return assignments;
     }
 
-    private @NotNull Map<String, Speaker> getSpeakers(@NotNull final Statement statement) throws SQLException {
+    private @NotNull Map<@NotNull String, @NotNull Speaker> getSpeakers(@NotNull final Statement statement) throws SQLException {
         final HashMap<String, Speaker> speakers = new HashMap<>();
 
         final ResultSet resultSet = statement.executeQuery("""
@@ -180,10 +180,10 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return speakers;
     }
 
-    private Session mapToSession(@NotNull final Talk talk,
-                                 @NotNull final Map<String, List<String>> allAssignments,
-                                 @NotNull final Map<String, Speaker> allSpeakers,
-                                 @NotNull final Map<String, Track> allTracks) {
+    private Session mapToSession(final @NotNull Talk talk,
+                                 final @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> allAssignments,
+                                 final @NotNull Map<@NotNull String, @NotNull Speaker> allSpeakers,
+                                 final @NotNull Map<@NotNull String, @NotNull Track> allTracks) {
         final String id = String.format("JFS:%s", talk.id());
         final Room room = new Room(talk.room());
         final String title = talk.title();
@@ -194,11 +194,11 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return new Session(id, startDate, endDate, room, title, speakers, Language.UNKNOWN, track);
     }
 
-    private @NotNull List<Speaker> getSpeakersForTalk(@NotNull final Talk talk,
-                                             @NotNull final Map<String, List<String>> allAssignments,
-                                             @NotNull final Map<String, Speaker> allSpeakers) {
+    private @NotNull List<@NotNull Speaker> getSpeakersForTalk(final @NotNull Talk talk,
+                                                               final @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> allAssignments,
+                                                               final @NotNull Map<@NotNull String, @NotNull Speaker> allSpeakers) {
         final var assignments = allAssignments.get(talk.id());
-        return assignments == null ? List.of() : assignments.stream()
+        return assignments.stream()
                 .map(allSpeakers::get)
                 .toList();
     }
@@ -215,7 +215,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return LocalDateTime.of(LocalDate.now(timezone), time);
     }
 
-    private Map<String, Track> getTracks() {
+    private @NotNull Map<@NotNull String, @NotNull Track> getTracks() {
         return Map.of(
                 "Architektur & Sicherheit", new Track(TrackIcons.ARCHITECTURE_SECURITY.getSvgCode()),
                 "Test & Betrieb", new Track(TrackIcons.BETRIEB.getSvgCode()),
@@ -230,7 +230,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         );
     }
 
-    private Track getTrack(@NotNull final Talk talk, @NotNull final Map<String, Track> allTracks) {
+    private Track getTrack(final @NotNull Talk talk, final @NotNull Map<@NotNull String, @NotNull Track> allTracks) {
         return allTracks.getOrDefault(talk.topic(), Track.NONE);
     }
 
