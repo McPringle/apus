@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Auto-merge Dependabot PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
