@@ -33,6 +33,7 @@ import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -53,8 +54,8 @@ class EventServiceTest {
     private static final Locale TEST_LOCALE = Locale.ENGLISH;
     private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
 
-    static AppConfig mockConfiguration(@NotNull final Period dateAdjust, boolean demoMode) {
-        final var eventConfig = new EventConfig(dateAdjust, "", 60,
+    static AppConfig mockConfiguration(@NotNull final Period dateAdjust, @NotNull final Duration timeAdjust, boolean demoMode) {
+        final var eventConfig = new EventConfig(dateAdjust, timeAdjust, "", 60,
                 true, true, 0);
         final var appConfig = mock(AppConfig.class);
         when(appConfig.locale()).thenReturn(TEST_LOCALE);
@@ -68,7 +69,7 @@ class EventServiceTest {
     void getRoomsWithSessionsInDemoMode() {
         // TestEventPlugin should be ignored and replaced by EventDemoPlugin
         final EventService eventService = new EventService(
-                new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, true), List.of(new TestEventPlugin()));
+                new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, Duration.ZERO, true), List.of(new TestEventPlugin()));
         final var roomsWithSessions = eventService.getRoomsWithSessions();
 
         // There should be four rooms
@@ -97,7 +98,7 @@ class EventServiceTest {
     void getRoomsWithSessions() {
         // TestEventPlugin creates a shuffled list of sessions...
         final EventService eventService = new EventService(
-                new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, false), List.of(new TestEventPlugin()));
+                new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, Duration.ZERO, false), List.of(new TestEventPlugin()));
 
         // ...which is sorted and grouped by the EventService.
         final var roomsWithSessions = eventService.getRoomsWithSessions();
@@ -127,7 +128,7 @@ class EventServiceTest {
 
         memoryAppender.start();
         final var eventService = new EventService(
-                new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, false), List.of(new DisabledEventPlugin()));
+                new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, Duration.ZERO, false), List.of(new DisabledEventPlugin()));
         eventService.stopUpdateScheduler();
         memoryAppender.stop();
 
@@ -139,7 +140,7 @@ class EventServiceTest {
     void getSessionsWithDateAdjust() {
         final var expectedDate = LocalDate.now(TEST_TIMEZONE).plusDays(10);
         final var eventService = new EventService(
-                new NoOpTaskScheduler(), mockConfiguration(Period.ofDays(10), false), List.of(new NowEventPlugin()));
+                new NoOpTaskScheduler(), mockConfiguration(Period.ofDays(10), Duration.ZERO, false), List.of(new NowEventPlugin()));
         final var roomsWithSessions = eventService.getRoomsWithSessions();
         for (final var sessions : roomsWithSessions.values()) {
             for (final var session : sessions) {
@@ -156,7 +157,7 @@ class EventServiceTest {
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
-        new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, false), List.of(new ExceptionEventPlugin()));
+        new EventService(new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, Duration.ZERO, false), List.of(new ExceptionEventPlugin()));
         memoryAppender.stop();
 
         final int errorCount = memoryAppender.searchMessages("Failed to import sessions", Level.ERROR).size();

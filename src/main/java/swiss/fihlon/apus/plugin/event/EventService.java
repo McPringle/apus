@@ -49,6 +49,7 @@ public final class EventService {
     private final @NotNull List<@NotNull EventPlugin> eventPlugins;
     private final @Nullable ScheduledFuture<?> updateScheduler;
     private final @NotNull Period dateAdjust;
+    private final @NotNull Duration timeAdjust;
     private final @NotNull ZoneId timezone;
     private @NotNull Map<@NotNull Room, @NotNull List<@NotNull Session>> roomsWithSessions = new TreeMap<>();
 
@@ -58,6 +59,7 @@ public final class EventService {
         final var demoMode = appConfig.demoMode();
         this.eventPlugins = demoMode ? List.of(new EventDemoPlugin(appConfig)) : eventPlugins;
         this.dateAdjust = demoMode ? Period.ZERO : appConfig.event().dateAdjust();
+        this.timeAdjust = demoMode ? Duration.ZERO : appConfig.event().timeAdjust();
         this.timezone = appConfig.timezone();
         if (isEnabled()) {
             updateSessions();
@@ -115,13 +117,17 @@ public final class EventService {
     }
 
     private @NotNull Session dateAdjust(@NotNull final Session session) {
-        if (dateAdjust.isZero()) {
+        if (dateAdjust.isZero() && timeAdjust.isZero()) {
             return session;
         }
         return new Session(
                 session.id(),
-                session.startDate().plus(dateAdjust),
-                session.endDate().plus(dateAdjust),
+                session.startDate()
+                        .plus(dateAdjust)
+                        .plus(timeAdjust),
+                session.endDate()
+                        .plus(dateAdjust)
+                        .plus(timeAdjust),
                 session.room(),
                 session.title(),
                 session.speakers(),

@@ -19,7 +19,8 @@ package swiss.fihlon.apus.plugin.event;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
 import java.time.Period;
 
-public record EventConfig(@NotNull Period dateAdjust, @NotNull String image, int nextSessionTimeout, boolean showEmptyRooms, boolean showLegend,
-                          int updateFrequency) { }
+public record EventConfig(@NotNull Period dateAdjust, @NotNull Duration timeAdjust, @NotNull String image, int nextSessionTimeout,
+                          boolean showEmptyRooms, boolean showLegend, int updateFrequency) { }

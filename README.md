@@ -160,11 +160,12 @@ To modify the default configuration values, just specify environment variables w
 | APUS_DEVOXX_WEEKDAY             |                 | The day of the week of the Devoxx event to read the conference agenda.                |
 | APUS_DOAG_EVENT_API             | [4]             | The URL of the DOAG event API to read the conference agenda.                          |
 | APUS_DOAG_EVENT_ID              | 0               | The ID of the DOAG event to read the conference agenda (0 = disabled).                |
-| APUS_EVENT_DATE_ADJUST          |                 | Adjust the date of the event in days, ISO-8601 formatted (empty = disabled).          |
+| APUS_EVENT_DATE_ADJUST          | P0D             | Adjust the date of the event, ISO-8601 formatted (P0D = disabled).                    |
 | APUS_EVENT_IMAGE_URL            |                 | The URL of the image to be shown below the event agenda (empty = no image).           |
 | APUS_EVENT_NEXT_SESSION_TIMEOUT | 60              | Number of minutes a session is shown before it starts (0 = disabled).                 |
 | APUS_EVENT_SHOW_EMPTY_ROOMS     | true            | Show (true) or hide (false) empty event rooms.                                        |
 | APUS_EVENT_SHOW_LEGEND          | true            | Show (true) or hide (false) the event room legend.                                    |
+| APUS_EVENT_TIME_ADJUST          | PT0D            | Adjust the time of the event, ISO-8601 formatted (PT0D = disabled).                   |
 | APUS_EVENT_UPDATE_FREQUENCY     | 5               | How often (in minutes) to update event data (0 = disabled).                           |
 | APUS_JFS_DB_URL                 |                 | The URL of the database file for Java Forum Stuttgart.                                |
 | APUS_LANGUAGE                   | en              | Language code of the language used for the UI.                                        |
@@ -209,6 +210,17 @@ The `APUS_EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` a
 | `P1Y2M3W4D` | +1 year, +2 months, +25 days (3 weeks and 4 days)            |
 | `P-1Y2M`    | -1 year, +2 months (minus is valid for the year only)        |
 | `-P1Y2M`    | -1 year, -2 months (minus is valid for the whole expression) |
+
+The `APUS_EVENT_TIME_ADJUST` option uses the ISO-8601 duration formats `PTnHnMnS`. Examples:
+
+| Example    | Description                                                   |
+|------------|---------------------------------------------------------------|
+| `PT5H`     | +5 hours                                                      |
+| `PT3M`     | +3 minutes                                                    |
+| `PT2S`     | +2 seconds                                                    |
+| `PT1H2M3S` | +1 hour, +2 minutes, +3 seconds                               |
+| `PT-1H2M`  | -1 hour, +2 minutes (minus is valid for the hours only)       |
+| `-PT1H2M`  | -1 hour, -2 minutes (minus is valid for the whole expression) |
 
 ### Custom Styles
 

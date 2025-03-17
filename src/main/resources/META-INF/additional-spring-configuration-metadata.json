@@ -57,8 +57,8 @@
     },
     {
       "name" : "apus.event.dateAdjust",
-      "type" : "java.lang.String",
-      "description" : "Adjust the date of the event in days (empty = disabled)."
+      "type" : "java.time.Period",
+      "description" : "Adjust the date of the event, ISO-8601 formatted (P0D = disabled)."
     },
     {
       "name" : "apus.event.image",
@@ -79,6 +79,11 @@
       "name" : "apus.event.showLegend",
       "type" : "java.lang.Boolean",
       "description" : "Show (true) or hide (false) the event room legend."
+    },
+    {
+      "name" : "apus.event.timeAdjust",
+      "type" : "java.time.Duration",
+      "description" : "Adjust the time of the event, ISO-8601 formatted (PT0D = disabled)."
     },
     {
       "name" : "apus.event.updateFrequency",
