@@ -55,7 +55,7 @@ class MastodonPluginTest {
     @Test
     void getServiceName() {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
+        final var mastodonConfig = new MastodonConfig("localhost", null, null, POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -75,7 +75,7 @@ class MastodonPluginTest {
     @MethodSource("provideDataForDisabledTest")
     void isDisabled(@NotNull final String instance, @NotNull final String postApi) {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig(instance, postApi, POST_LIMIT);
+        final var mastodonConfig = new MastodonConfig(instance, "", "", postApi,POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -85,7 +85,7 @@ class MastodonPluginTest {
     @Test
     void isEnabled() {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
+        final var mastodonConfig = new MastodonConfig("localhost", "", "",POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -111,7 +111,7 @@ class MastodonPluginTest {
     @MethodSource("provideDataForHashtagsTest")
     void getPostsWithHashtags(@NotNull final List<String> hashtags, final int expectedNumberOfPosts) {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
+        final var mastodonConfig = new MastodonConfig("localhost", "", "",POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -124,7 +124,7 @@ class MastodonPluginTest {
     @Test
     void getPostsWithUnlimitedImages() {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
+        final var mastodonConfig = new MastodonConfig("localhost", "", "",POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -149,7 +149,7 @@ class MastodonPluginTest {
     @Test
     void getPostsWithInvalidImageTypes() {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
+        final var mastodonConfig = new MastodonConfig("localhost", "", "",POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -169,7 +169,7 @@ class MastodonPluginTest {
     @Test
     void getPostsCatchesException() {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
+        final var mastodonConfig = new MastodonConfig("localhost", "", "",POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final MemoryAppender memoryAppender = new MemoryAppender();
@@ -190,7 +190,7 @@ class MastodonPluginTest {
     @Test
     void testReplyConversion() {
         final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", POST_API, POST_LIMIT);
+        final var mastodonConfig = new MastodonConfig("localhost", "", "",POST_API, POST_LIMIT);
         when(appConfig.mastodon()).thenReturn(mastodonConfig);
 
         final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
@@ -211,10 +211,10 @@ class MastodonPluginTest {
 
         @Override
         @NotNull
-        public JSONArray getPosts(@NotNull final String instance,
-                                  @NotNull final String hashtag,
-                                  @NotNull final String postAPI,
-                                  final int postLimit)
+        public JSONArray getPostsWithHashtag(@NotNull final String instance,
+                                             @NotNull final String hashtag,
+                                             @NotNull final String postAPI,
+                                             final int postLimit)
                 throws MastodonException {
             final var posts = new JSONArray();
             posts.putAll(switch (hashtag) {
@@ -245,6 +245,11 @@ class MastodonPluginTest {
                 default -> List.of();
             });
             return posts;
+        }
+
+        @Override
+        public @NotNull JSONArray getMentions(@NotNull String instance, @NotNull String accessToken, @NotNull String notificationAPI, int postLimit) throws MastodonException {
+            return new JSONArray();
         }
 
         @SuppressWarnings("ZoneIdOfZ") // because that is what the JSON interface in production uses

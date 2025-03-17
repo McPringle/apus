@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 public final class DownloadUtil {
@@ -31,6 +34,13 @@ public final class DownloadUtil {
         try (InputStream in = new URI(location).toURL().openStream()) {
             return new String(in.readAllBytes(), StandardCharsets.UTF_8);
         }
+    }
+
+    public static @NotNull String getString(final @NotNull String location, @NotNull final String accessToken) throws IOException, URISyntaxException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().header("Authorization", "Bearer " + accessToken).uri(URI.create(location)).GET().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
     }
 
     private DownloadUtil() {

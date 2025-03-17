@@ -30,7 +30,7 @@ class DefaultMastodonLoaderTest {
 
     @RetryingTest(3)
     void getStatuses() throws MastodonException {
-        final JSONArray posts = new DefaultMastodonLoader().getPosts("ijug.social", "java",
+        final JSONArray posts = new DefaultMastodonLoader().getPostsWithHashtag("ijug.social", "java",
                 "https://${instance}/api/v1/timelines/tag/${hashtag}?limit=${limit}", 1);
         assertNotNull(posts);
         assertFalse(posts.isEmpty());
@@ -39,9 +39,18 @@ class DefaultMastodonLoaderTest {
     @Test
     void throwException() {
         final var exception = assertThrows(MastodonException.class,
-                () -> new DefaultMastodonLoader().getPosts("non.existent.server", "java",
+                () -> new DefaultMastodonLoader().getPostsWithHashtag("non.existent.server", "java",
                         "https://${instance}/api/v1/timelines/tag/${hashtag}?limit=${limit}", 1));
         assertEquals("Unable to load posts with hashtag 'java' from Mastodon instance 'non.existent.server'", exception.getMessage());
     }
+
+    @Test
+    void getStatusWithMention() throws MastodonException {
+        final JSONArray posts = new DefaultMastodonLoader().getMentions("fosstodon.org", "PggcEcIBzo8vfyZMFj25UogbwtkmVYKaMbmQS8a1gCo", "https://${instance}/api/v1/notifications?limit=${limit}", 1  );
+
+        assertNotNull(posts);
+        assertFalse(posts.isEmpty());
+    }
+
 
 }

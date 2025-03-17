@@ -101,6 +101,11 @@
       "description" : "Language code of the language used for the UI."
     },
     {
+      "name" : "apus.mastodon.accessToken",
+      "type" : "java.lang.String",
+      "description" : "The Mastodon access token . TODO: Marcus you turn"
+    },
+    {
       "name" : "apus.mastodon.instance",
       "type" : "java.lang.String",
       "description" : "The Mastodon instance used to read the posts from."
