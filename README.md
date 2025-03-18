@@ -599,6 +599,7 @@ Special thanks for all these wonderful people who had helped this project so far
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ky0n"><img src="https://avatars.githubusercontent.com/u/30866028?v=4?s=100" width="100px;" alt="Hendrik"/><br /><sub><b>Hendrik</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=ky0n" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/uzoltan"><img src="https://avatars.githubusercontent.com/u/16861870?v=4?s=100" width="100px;" alt="Zoltán Umlauf"/><br /><sub><b>Zoltán Umlauf</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=uzoltan" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://offline.ch/"><img src="https://avatars.githubusercontent.com/u/8600029?v=4?s=100" width="100px;" alt="Tobias Kündig"/><br /><sub><b>Tobias Kündig</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=tobias-kuendig" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://www.sandra-parsick.de/"><img src="https://avatars.githubusercontent.com/u/976007?v=4?s=100" width="100px;" alt="Sandra Parsick"/><br /><sub><b>Sandra Parsick</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=sparsick" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
