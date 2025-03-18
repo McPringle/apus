@@ -34,6 +34,7 @@ For questions and support requests, please use
 * Add a lot of new automated tests
 * Add more checks for common errors during the build process
 * Fixed dozens of coding issues
+* Changed default Mastodon instance from `mastodon.social` to `ijug.social`
 
 ### Breaking Changes
 

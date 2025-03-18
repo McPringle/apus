@@ -147,46 +147,46 @@ podman run \
 
 To modify the default configuration values, just specify environment variables with the following names:
 
-| Environment Variable            | Default         | Description                                                                           |
-|---------------------------------|-----------------|---------------------------------------------------------------------------------------|
-| APUS_BLUESKY_HASHTAG_URL        | [1]             | The URL of the BlueSky API to get the posts containing a hashtag (empty = disabled).  |
-| APUS_BLUESKY_INSTANCE           | api.bsky.app    | The BlueSky instance used to read the posts from (empty = disabled).                  |
-| APUS_BLUESKY_MENTIONS_URL       | [2]             | The URL of the BlueSky API to get the posts mentioning a profile (empty = disabled).  |
-| APUS_BLUESKY_POST_LIMIT         | 30              | The limit for the number of BlueSky posts when accessing the API.                     |
-| APUS_BLUESKY_PROFILE            |                 | The profile (without the @) of a BlueSky user to get the mentions (empty = disabled). |
-| APUS_DEMO                       | false           | Enable (true) or disable (false) the demo mode to show demo data only.                |
-| APUS_DEVOXX_EVENT_API           | [3]             | The URL of the Devoxx API to read the conference agenda.                              |
-| APUS_DEVOXX_EVENT_ID            |                 | The ID of the Devoxx event to read the conference agenda.                             |
-| APUS_DEVOXX_WEEKDAY             |                 | The day of the week of the Devoxx event to read the conference agenda.                |
-| APUS_DOAG_EVENT_API             | [4]             | The URL of the DOAG event API to read the conference agenda.                          |
-| APUS_DOAG_EVENT_ID              | 0               | The ID of the DOAG event to read the conference agenda (0 = disabled).                |
-| APUS_EVENT_DATE_ADJUST          | P0D             | Adjust the date of the event, ISO-8601 formatted (P0D = disabled).                    |
-| APUS_EVENT_IMAGE_URL            |                 | The URL of the image to be shown below the event agenda (empty = no image).           |
-| APUS_EVENT_NEXT_SESSION_TIMEOUT | 60              | Number of minutes a session is shown before it starts (0 = disabled).                 |
-| APUS_EVENT_SHOW_EMPTY_ROOMS     | true            | Show (true) or hide (false) empty event rooms.                                        |
-| APUS_EVENT_SHOW_LEGEND          | true            | Show (true) or hide (false) the event room legend.                                    |
-| APUS_EVENT_TIME_ADJUST          | PT0D            | Adjust the time of the event, ISO-8601 formatted (PT0D = disabled).                   |
-| APUS_EVENT_UPDATE_FREQUENCY     | 5               | How often (in minutes) to update event data (0 = disabled).                           |
-| APUS_JFS_DB_URL                 |                 | The URL of the database file for Java Forum Stuttgart.                                |
-| APUS_LANGUAGE                   | en              | Language code of the language used for the UI.                                        |
-| APUS_MASTODON_INSTANCE          | mastodon.social | The Mastodon instance used to read the posts from (empty = disabled).                 |
-| APUS_MASTODON_LIMIT             | 30              | The limit for the number of Mastodon posts when accessing the API.                    |
-| APUS_MASTODON_POST_API          | [5]             | The URL of the Mastodon API to read the posts (empty = disabled).                     |
-| APUS_PASSWORD                   |                 | The hashed password to get admin access (empty = disabled).                           |
-| APUS_SOCIAL_FILTER_LENGTH       | 500             | Hide social media posts which exceed this length (0 = disabled).                      |
-| APUS_SOCIAL_FILTER_REPLIES      | true            | Hide social media posts which are replies.                                            |
-| APUS_SOCIAL_FILTER_SENSITIVE    | true            | Hide social media posts which contain sensitive information.                          |
-| APUS_SOCIAL_FILTER_WORDS        |                 | Hide social media posts which contain these words.                                    |
-| APUS_SOCIAL_COLUMNS             | 3               | How many columns to be used for social media posts.                                   |
-| APUS_SOCIAL_HASHTAGS            |                 | A list of comma separated hashtags for social media posts (empty = disabled).         |
-| APUS_SOCIAL_HEADLINE            |                 | Overwrite the headline for social media posts (empty = don't overwrite).              |
-| APUS_SOCIAL_IMAGE_LIMIT         | 1               | Limit number of images per social media post (0 = no limit).                          |
-| APUS_SOCIAL_IMAGES_ENABLED      | true            | Enable or disable images in social media posts.                                       |
-| APUS_SESSIONIZE_EVENT_API       | [6]             | The URL of the Sessionize API to read the conference agenda.                          |
-| APUS_SESSIONIZE_EVENT_ID        | 0               | The ID of the Sessionize event to read the conference agenda (0 = disabled).          |
-| APUS_SESSIONIZE_SPEAKER_API     | [7]             | The URL of the Sessionize API to read the speaker information.                        |
-| APUS_STYLES                     |                 | Inject custom styles into the user interface (see explanations below).                |
-| APUS_TIMEZONE                   | Europe/Zurich   | The timezone used for date and time calculations.                                     |
+| Environment Variable            | Default       | Description                                                                           |
+|---------------------------------|---------------|---------------------------------------------------------------------------------------|
+| APUS_BLUESKY_HASHTAG_URL        | [1]           | The URL of the BlueSky API to get the posts containing a hashtag (empty = disabled).  |
+| APUS_BLUESKY_INSTANCE           | api.bsky.app  | The BlueSky instance used to read the posts from (empty = disabled).                  |
+| APUS_BLUESKY_MENTIONS_URL       | [2]           | The URL of the BlueSky API to get the posts mentioning a profile (empty = disabled).  |
+| APUS_BLUESKY_POST_LIMIT         | 30            | The limit for the number of BlueSky posts when accessing the API.                     |
+| APUS_BLUESKY_PROFILE            |               | The profile (without the @) of a BlueSky user to get the mentions (empty = disabled). |
+| APUS_DEMO                       | false         | Enable (true) or disable (false) the demo mode to show demo data only.                |
+| APUS_DEVOXX_EVENT_API           | [3]           | The URL of the Devoxx API to read the conference agenda.                              |
+| APUS_DEVOXX_EVENT_ID            |               | The ID of the Devoxx event to read the conference agenda.                             |
+| APUS_DEVOXX_WEEKDAY             |               | The day of the week of the Devoxx event to read the conference agenda.                |
+| APUS_DOAG_EVENT_API             | [4]           | The URL of the DOAG event API to read the conference agenda.                          |
+| APUS_DOAG_EVENT_ID              | 0             | The ID of the DOAG event to read the conference agenda (0 = disabled).                |
+| APUS_EVENT_DATE_ADJUST          | P0D           | Adjust the date of the event, ISO-8601 formatted (P0D = disabled).                    |
+| APUS_EVENT_IMAGE_URL            |               | The URL of the image to be shown below the event agenda (empty = no image).           |
+| APUS_EVENT_NEXT_SESSION_TIMEOUT | 60            | Number of minutes a session is shown before it starts (0 = disabled).                 |
+| APUS_EVENT_SHOW_EMPTY_ROOMS     | true          | Show (true) or hide (false) empty event rooms.                                        |
+| APUS_EVENT_SHOW_LEGEND          | true          | Show (true) or hide (false) the event room legend.                                    |
+| APUS_EVENT_TIME_ADJUST          | PT0D          | Adjust the time of the event, ISO-8601 formatted (PT0D = disabled).                   |
+| APUS_EVENT_UPDATE_FREQUENCY     | 5             | How often (in minutes) to update event data (0 = disabled).                           |
+| APUS_JFS_DB_URL                 |               | The URL of the database file for Java Forum Stuttgart.                                |
+| APUS_LANGUAGE                   | en            | Language code of the language used for the UI.                                        |
+| APUS_MASTODON_INSTANCE          | ijug.social   | The Mastodon instance used to read the posts from (empty = disabled).                 |
+| APUS_MASTODON_LIMIT             | 30            | The limit for the number of Mastodon posts when accessing the API.                    |
+| APUS_MASTODON_POST_API          | [5]           | The URL of the Mastodon API to read the posts (empty = disabled).                     |
+| APUS_PASSWORD                   |               | The hashed password to get admin access (empty = disabled).                           |
+| APUS_SOCIAL_FILTER_LENGTH       | 500           | Hide social media posts which exceed this length (0 = disabled).                      |
+| APUS_SOCIAL_FILTER_REPLIES      | true          | Hide social media posts which are replies.                                            |
+| APUS_SOCIAL_FILTER_SENSITIVE    | true          | Hide social media posts which contain sensitive information.                          |
+| APUS_SOCIAL_FILTER_WORDS        |               | Hide social media posts which contain these words.                                    |
+| APUS_SOCIAL_COLUMNS             | 3             | How many columns to be used for social media posts.                                   |
+| APUS_SOCIAL_HASHTAGS            |               | A list of comma separated hashtags for social media posts (empty = disabled).         |
+| APUS_SOCIAL_HEADLINE            |               | Overwrite the headline for social media posts (empty = don't overwrite).              |
+| APUS_SOCIAL_IMAGE_LIMIT         | 1             | Limit number of images per social media post (0 = no limit).                          |
+| APUS_SOCIAL_IMAGES_ENABLED      | true          | Enable or disable images in social media posts.                                       |
+| APUS_SESSIONIZE_EVENT_API       | [6]           | The URL of the Sessionize API to read the conference agenda.                          |
+| APUS_SESSIONIZE_EVENT_ID        | 0             | The ID of the Sessionize event to read the conference agenda (0 = disabled).          |
+| APUS_SESSIONIZE_SPEAKER_API     | [7]           | The URL of the Sessionize API to read the speaker information.                        |
+| APUS_STYLES                     |               | Inject custom styles into the user interface (see explanations below).                |
+| APUS_TIMEZONE                   | Europe/Zurich | The timezone used for date and time calculations.                                     |
 
 The environment variables will override the default values. Some default values might be too long to be displayed in this table. They are marked with a number in square brackets and can be looked up in the following list:
 
