@@ -103,7 +103,7 @@
     {
       "name" : "apus.mastodon.accessToken",
       "type" : "java.lang.String",
-      "description" : "The Mastodon access token . TODO: Marcus you turn"
+      "description" : "The Mastodon access token. Only needed for the notification API."
     },
     {
       "name" : "apus.mastodon.instance",
@@ -114,6 +114,11 @@
       "name" : "apus.mastodon.limit",
       "type" : "java.lang.Integer",
       "description" : "The limit for the number of results when accessing the Mastodon API."
+    },
+    {
+      "name" : "apus.mastodon.notificationAPI",
+      "type" : "java.lang.String",
+      "description" : "The URL of the Mastodon API to read the notifications."
     },
     {
       "name" : "apus.mastodon.postAPI",
