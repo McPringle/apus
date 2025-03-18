@@ -29,10 +29,10 @@ import java.util.Map;
 public final class DefaultMastodonLoader implements MastodonLoader {
 
     @Override
-    public @NotNull JSONArray getPosts(final @NotNull String instance,
-                                       final @NotNull String hashtag,
-                                       final @NotNull String postAPI,
-                                       final int limit)
+    public @NotNull JSONArray getPostsWithHashtag(final @NotNull String instance,
+                                                  final @NotNull String hashtag,
+                                                  final @NotNull String postAPI,
+                                                  final int limit)
             throws MastodonException {
         try {
             final var url = TemplateUtil.replaceVariables(
@@ -41,6 +41,22 @@ public final class DefaultMastodonLoader implements MastodonLoader {
             return new JSONArray(json);
         } catch (final Exception e) {
             throw new MastodonException(String.format("Unable to load posts with hashtag '%s' from Mastodon instance '%s'", hashtag, instance), e);
+        }
+    }
+
+    @Override
+    public @NotNull JSONArray getMentions(final @NotNull String instance,
+                                          final @NotNull String notificationAPI,
+                                          final @NotNull String accessToken,
+                                          final int postLimit)
+            throws MastodonException {
+        try {
+            final var url = TemplateUtil.replaceVariables(
+                    notificationAPI, Map.of("instance", instance, "limit", Integer.toString(postLimit)));
+            final var json = DownloadUtil.getString(url, accessToken);
+            return new JSONArray(json);
+        } catch (final Exception e) {
+            throw new MastodonException(String.format("Unable to load posts from Mastodon instance '%s'",  instance), e);
         }
     }
 
