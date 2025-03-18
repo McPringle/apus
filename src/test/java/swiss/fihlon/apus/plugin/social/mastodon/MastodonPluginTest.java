@@ -28,6 +28,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import swiss.fihlon.apus.MemoryAppender;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.social.Post;
@@ -47,18 +49,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
 class MastodonPluginTest {
 
-    private static final String POST_API = "https://%s/api/v1/timelines/tag/%s?limit=%d";
-    private static final int POST_LIMIT = 30;
+    @Autowired
+    private AppConfig appConfig;
 
     @Test
     void getServiceName() {
-        final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", null, null, POST_API, POST_LIMIT);
-        when(appConfig.mastodon()).thenReturn(mastodonConfig);
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("", "", "", "", 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
 
-        final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
+        final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
         assertEquals("Mastodon", mastodonPlugin.getServiceName());
     }
 
@@ -74,21 +77,21 @@ class MastodonPluginTest {
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
     void isDisabled(@NotNull final String instance, @NotNull final String postApi) {
-        final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig(instance, "", "", postApi,POST_LIMIT);
-        when(appConfig.mastodon()).thenReturn(mastodonConfig);
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig(instance, "", "", postApi, 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
 
-        final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
+        final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
         assertFalse(mastodonPlugin.isEnabled());
     }
 
     @Test
     void isEnabled() {
-        final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "", "",POST_API, POST_LIMIT);
-        when(appConfig.mastodon()).thenReturn(mastodonConfig);
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "", "", "foobar", 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
 
-        final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
+        final var mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
         assertTrue(mastodonPlugin.isEnabled());
     }
 
@@ -110,11 +113,11 @@ class MastodonPluginTest {
     @ParameterizedTest
     @MethodSource("provideDataForHashtagsTest")
     void getPostsWithHashtags(@NotNull final List<String> hashtags, final int expectedNumberOfPosts) {
-        final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "", "",POST_API, POST_LIMIT);
-        when(appConfig.mastodon()).thenReturn(mastodonConfig);
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "", "", appConfig.mastodon().postAPI(), 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
 
-        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
         final List<Post> posts = mastodonPlugin.getPosts(hashtags).toList();
 
         assertNotNull(posts);
@@ -123,11 +126,11 @@ class MastodonPluginTest {
 
     @Test
     void getPostsWithUnlimitedImages() {
-        final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "", "",POST_API, POST_LIMIT);
-        when(appConfig.mastodon()).thenReturn(mastodonConfig);
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "", "", appConfig.mastodon().postAPI(), 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
 
-        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
         final List<Post> posts = mastodonPlugin.getPosts(List.of("foobar")).toList();
 
         assertNotNull(posts);
@@ -148,11 +151,11 @@ class MastodonPluginTest {
 
     @Test
     void getPostsWithInvalidImageTypes() {
-        final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "", "",POST_API, POST_LIMIT);
-        when(appConfig.mastodon()).thenReturn(mastodonConfig);
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "", "", appConfig.mastodon().postAPI(), 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
 
-        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
         final List<Post> posts = mastodonPlugin.getPosts(List.of("invalidImageType")).toList();
 
         assertNotNull(posts);
@@ -168,9 +171,9 @@ class MastodonPluginTest {
 
     @Test
     void getPostsCatchesException() {
-        final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "", "",POST_API, POST_LIMIT);
-        when(appConfig.mastodon()).thenReturn(mastodonConfig);
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "", "", appConfig.mastodon().postAPI(), 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
 
         final MemoryAppender memoryAppender = new MemoryAppender();
         memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
@@ -178,7 +181,7 @@ class MastodonPluginTest {
         logger.addAppender(memoryAppender);
 
         memoryAppender.start();
-        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
         final var posts = mastodonPlugin.getPosts(List.of("broken")).toList();
         memoryAppender.stop();
 
@@ -189,11 +192,11 @@ class MastodonPluginTest {
 
     @Test
     void testReplyConversion() {
-        final var appConfig = mock(AppConfig.class);
-        final var mastodonConfig = new MastodonConfig("localhost", "", "",POST_API, POST_LIMIT);
-        when(appConfig.mastodon()).thenReturn(mastodonConfig);
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "", "", appConfig.mastodon().postAPI(), 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
 
-        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), appConfig);
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
         final List<Post> posts = mastodonPlugin.getPosts(List.of("foobar")).toList();
 
         assertNotNull(posts);
@@ -205,6 +208,20 @@ class MastodonPluginTest {
         }
 
         assertTrue(posts.getLast().isReply());
+    }
+
+    @Test
+    void getNotifications() {
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "testToken",
+                appConfig.mastodon().notificationAPI(), appConfig.mastodon().postAPI(), 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
+
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
+        final List<Post> posts = mastodonPlugin.getPosts(List.of("empty")).toList();
+
+        assertNotNull(posts);
+        assertEquals(3, posts.size());
     }
 
     private static final class TestMastodonLoader implements MastodonLoader {
@@ -250,7 +267,20 @@ class MastodonPluginTest {
         @Override
         public @NotNull JSONArray getNotifications(@NotNull String instance, @NotNull String notificationAPI, @NotNull String accessToken, int postLimit)
                 throws MastodonException {
-            return new JSONArray();
+            final var notifications = new JSONArray();
+            notifications.putAll(List.of(
+                        createNotification(101),
+                        createNotification(102),
+                        createNotification(103)
+                )
+            );
+            return notifications;
+        }
+
+        private JSONObject createNotification(final int index) {
+            final var notification = new JSONObject();
+            notification.put("status", createPost(index, false));
+            return notification;
         }
 
         @SuppressWarnings("ZoneIdOfZ") // because that is what the JSON interface in production uses
@@ -260,6 +290,7 @@ class MastodonPluginTest {
             post.put("in_reply_to_id", index == 1 ? null : index == 5 ? "ID 4" : " ");
             post.put("sensitive", false);
             post.put("content", "Content for post #" + index);
+            post.put("visibility", "public");
 
             final var account = new JSONObject();
             account.put("display_name", "Display Name " + index);

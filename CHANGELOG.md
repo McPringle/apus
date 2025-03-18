@@ -14,6 +14,7 @@ For questions and support requests, please use
 ### New Features
 
 * Add support for BlueSky with hashtags and profile mentions
+* Add support for Mastodon profile mentions
 * Add support for Devoxx events (including Voxxed Days)
 * Configure UI language via environment variable
 * Dynamically generate social headline based on enabled plugins

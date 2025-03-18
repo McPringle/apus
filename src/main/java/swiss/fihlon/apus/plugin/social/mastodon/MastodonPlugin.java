@@ -46,6 +46,8 @@ public final class MastodonPlugin implements SocialPlugin {
     private final @NotNull MastodonLoader mastodonLoader;
     private final @NotNull String instance;
     private final @NotNull String postAPI;
+    private final @NotNull String notificationAPI;
+    private final @NotNull String accessToken;
     private final int limit;
 
     public MastodonPlugin(final @NotNull MastodonLoader mastodonLoader,
@@ -54,6 +56,8 @@ public final class MastodonPlugin implements SocialPlugin {
         final var mastodonConfig = appConfig.mastodon();
         this.instance = mastodonConfig.instance();
         this.postAPI = mastodonConfig.postAPI();
+        this.notificationAPI = mastodonConfig.notificationAPI();
+        this.accessToken = mastodonConfig.accessToken();
         this.limit = mastodonConfig.limit();
     }
 
@@ -71,15 +75,19 @@ public final class MastodonPlugin implements SocialPlugin {
 
     @Override
     public @NotNull Stream<@NotNull Post> getPosts(final @NotNull List<@NotNull String> hashtags) {
-        return hashtags.parallelStream()
-                .filter(hashtag -> !hashtag.isBlank())
-                .flatMap(this::getPosts);
+        return Stream.concat(
+                        hashtags.parallelStream()
+                                .filter(hashtag -> !hashtag.isBlank())
+                                .flatMap(this::getPosts),
+                        getNotifications()
+                )
+                .distinct();
     }
 
     private @NotNull Stream<@NotNull Post> getPosts(final @NotNull String hashtag) {
         try {
             LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
-            final var jsonPosts = mastodonLoader.getPostsWithHashtag(instance, hashtag, postAPI, limit);
+            final var jsonPosts = mastodonLoader.getPosts(instance, hashtag, postAPI, limit);
             LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", jsonPosts.length(), hashtag, instance);
 
             final var posts = new ArrayList<Post>();
@@ -87,7 +95,31 @@ public final class MastodonPlugin implements SocialPlugin {
                 final var post = jsonPosts.getJSONObject(i);
                 posts.add(createPost(post));
             }
+            return posts.stream();
+        } catch (final MastodonException e) {
+            LOGGER.error(e.getMessage(), e);
+            return Stream.of();
+        }
+    }
 
+    private @NotNull Stream<@NotNull Post> getNotifications() {
+        if (notificationAPI.isBlank() || accessToken.isBlank()) {
+            return Stream.of();
+        }
+
+        try {
+            LOGGER.info("Starting download of notifications from instance '{}'", instance);
+            final var notifications = mastodonLoader.getNotifications(instance, notificationAPI, accessToken, limit);
+            LOGGER.info("Successfully downloaded {} notifications from instance '{}'", notifications.length(), instance);
+
+            final var posts = new ArrayList<Post>();
+            for (var i = 0; i < notifications.length(); i++) {
+                final var notification = notifications.getJSONObject(i);
+                final var status = notification.getJSONObject("status");
+                if (status.getString("visibility").equals("public")) {
+                    posts.add(createPost(status));
+                }
+            }
             return posts.stream();
         } catch (final MastodonException e) {
             LOGGER.error(e.getMessage(), e);
