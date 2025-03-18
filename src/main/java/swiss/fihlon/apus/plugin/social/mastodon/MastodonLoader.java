@@ -22,9 +22,11 @@ import org.json.JSONArray;
 
 public interface MastodonLoader {
 
-    @NotNull JSONArray getPostsWithHashtag(@NotNull String instance, @NotNull String hashtag, @NotNull String postAPI, int postLimit) throws MastodonException;
+    @NotNull JSONArray getPostsWithHashtag(@NotNull String instance, @NotNull String hashtag, @NotNull String postAPI, int postLimit)
+            throws MastodonException;
 
-    @NotNull JSONArray getMentions(@NotNull String instance, @NotNull String accessToken, @NotNull String notificationAPI, int postLimit) throws MastodonException;
+    @NotNull JSONArray getMentions(@NotNull String instance, @NotNull String notificationAPI, @NotNull String accessToken, int postLimit)
+            throws MastodonException;
 
 
 

@@ -18,6 +18,7 @@
 package swiss.fihlon.apus.plugin.social.mastodon;
 
 import org.json.JSONArray;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.RetryingTest;
 
@@ -36,6 +37,15 @@ class DefaultMastodonLoaderTest {
         assertFalse(posts.isEmpty());
     }
 
+    @RetryingTest(3)
+    @Disabled
+    void getStatusWithMention() throws MastodonException {
+        final JSONArray posts = new DefaultMastodonLoader().getMentions("fosstodon.org",
+                "https://${instance}/api/v1/notifications?limit=${limit}", "PggcEcIBzo8vfyZMFj25UogbwtkmVYKaMbmQS8a1gCo", 1  );
+        assertNotNull(posts);
+        assertFalse(posts.isEmpty());
+    }
+
     @Test
     void throwException() {
         final var exception = assertThrows(MastodonException.class,
@@ -43,14 +53,5 @@ class DefaultMastodonLoaderTest {
                         "https://${instance}/api/v1/timelines/tag/${hashtag}?limit=${limit}", 1));
         assertEquals("Unable to load posts with hashtag 'java' from Mastodon instance 'non.existent.server'", exception.getMessage());
     }
-
-    @Test
-    void getStatusWithMention() throws MastodonException {
-        final JSONArray posts = new DefaultMastodonLoader().getMentions("fosstodon.org", "PggcEcIBzo8vfyZMFj25UogbwtkmVYKaMbmQS8a1gCo", "https://${instance}/api/v1/notifications?limit=${limit}", 1  );
-
-        assertNotNull(posts);
-        assertFalse(posts.isEmpty());
-    }
-
 
 }

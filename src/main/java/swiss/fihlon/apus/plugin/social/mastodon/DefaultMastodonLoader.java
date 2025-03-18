@@ -45,7 +45,11 @@ public final class DefaultMastodonLoader implements MastodonLoader {
     }
 
     @Override
-    public @NotNull JSONArray getMentions(@NotNull String instance, @NotNull String accessToken, @NotNull String notificationAPI, int postLimit) throws MastodonException {
+    public @NotNull JSONArray getMentions(final @NotNull String instance,
+                                          final @NotNull String notificationAPI,
+                                          final @NotNull String accessToken,
+                                          final int postLimit)
+            throws MastodonException {
         try {
             final var url = TemplateUtil.replaceVariables(
                     notificationAPI, Map.of("instance", instance, "limit", Integer.toString(postLimit)));

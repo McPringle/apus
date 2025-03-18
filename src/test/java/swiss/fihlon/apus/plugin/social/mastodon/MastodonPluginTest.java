@@ -248,7 +248,8 @@ class MastodonPluginTest {
         }
 
         @Override
-        public @NotNull JSONArray getMentions(@NotNull String instance, @NotNull String accessToken, @NotNull String notificationAPI, int postLimit) throws MastodonException {
+        public @NotNull JSONArray getMentions(@NotNull String instance, @NotNull String notificationAPI, @NotNull String accessToken, int postLimit)
+                throws MastodonException {
             return new JSONArray();
         }
 

@@ -25,22 +25,28 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 public final class DownloadUtil {
 
-    public static @NotNull String getString(final @NotNull String location) throws IOException, URISyntaxException {
+    public static @NotNull String getString(final @NotNull String location)
+            throws IOException, URISyntaxException {
         try (InputStream in = new URI(location).toURL().openStream()) {
             return new String(in.readAllBytes(), StandardCharsets.UTF_8);
         }
     }
 
-    public static @NotNull String getString(final @NotNull String location, @NotNull final String accessToken) throws IOException, URISyntaxException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().header("Authorization", "Bearer " + accessToken).uri(URI.create(location)).GET().build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
+    public static @NotNull String getString(final @NotNull String location, final @NotNull String accessToken)
+            throws IOException, InterruptedException {
+        try (var client = HttpClient.newHttpClient()) {
+            var request = HttpRequest.newBuilder()
+                    .header("Authorization", "Bearer " + accessToken)
+                    .uri(URI.create(location))
+                    .GET()
+                    .build();
+            var  response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        }
     }
 
     private DownloadUtil() {
