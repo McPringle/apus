@@ -35,6 +35,7 @@ import swiss.fihlon.apus.event.Track;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -145,6 +146,19 @@ class EventServiceTest {
         for (final var sessions : roomsWithSessions.values()) {
             for (final var session : sessions) {
                 assertEquals(expectedDate, session.startDate().toLocalDate());
+            }
+        }
+    }
+
+    @Test
+    void getSessionsWithTimeAdjust() {
+        final var expectedTime = LocalTime.now(TEST_TIMEZONE).plusHours(5);
+        final var eventService = new EventService(
+                new NoOpTaskScheduler(), mockConfiguration(Period.ZERO, Duration.ofHours(5), false), List.of(new NowEventPlugin()));
+        final var roomsWithSessions = eventService.getRoomsWithSessions();
+        for (final var sessions : roomsWithSessions.values()) {
+            for (final var session : sessions) {
+                assertEquals(expectedTime.getHour(), session.startDate().getHour());
             }
         }
     }
