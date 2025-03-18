@@ -602,6 +602,9 @@ Special thanks for all these wonderful people who had helped this project so far
       <td align="center" valign="top" width="14.28%"><a href="http://www.sandra-parsick.de/"><img src="https://avatars.githubusercontent.com/u/976007?v=4?s=100" width="100px;" alt="Sandra Parsick"/><br /><sub><b>Sandra Parsick</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=sparsick" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://aschemann.net/"><img src="https://avatars.githubusercontent.com/u/456000?v=4?s=100" width="100px;" alt="Gerd Aschemann"/><br /><sub><b>Gerd Aschemann</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=ascheman" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/johthor"><img src="https://avatars.githubusercontent.com/u/2544827?v=4?s=100" width="100px;" alt="Johannes Thorn"/><br /><sub><b>Johannes Thorn</b></sub></a><br /><a href="https://github.com/McPringle/apus/commits?author=johthor" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 

@@ -205,6 +205,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "johthor",
+      "name": "Johannes Thorn",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2544827?v=4",
+      "profile": "https://github.com/johthor",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
