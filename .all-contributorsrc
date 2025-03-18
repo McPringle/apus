@@ -196,6 +196,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ascheman",
+      "name": "Gerd Aschemann",
+      "avatar_url": "https://avatars.githubusercontent.com/u/456000?v=4",
+      "profile": "https://aschemann.net/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
