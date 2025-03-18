@@ -211,10 +211,10 @@ class MastodonPluginTest {
 
         @Override
         @NotNull
-        public JSONArray getPostsWithHashtag(@NotNull final String instance,
-                                             @NotNull final String hashtag,
-                                             @NotNull final String postAPI,
-                                             final int postLimit)
+        public JSONArray getPosts(@NotNull final String instance,
+                                  @NotNull final String hashtag,
+                                  @NotNull final String postAPI,
+                                  final int postLimit)
                 throws MastodonException {
             final var posts = new JSONArray();
             posts.putAll(switch (hashtag) {
@@ -248,7 +248,7 @@ class MastodonPluginTest {
         }
 
         @Override
-        public @NotNull JSONArray getMentions(@NotNull String instance, @NotNull String notificationAPI, @NotNull String accessToken, int postLimit)
+        public @NotNull JSONArray getNotifications(@NotNull String instance, @NotNull String notificationAPI, @NotNull String accessToken, int postLimit)
                 throws MastodonException {
             return new JSONArray();
         }

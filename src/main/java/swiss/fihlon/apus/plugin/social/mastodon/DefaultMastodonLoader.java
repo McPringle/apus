@@ -29,10 +29,10 @@ import java.util.Map;
 public final class DefaultMastodonLoader implements MastodonLoader {
 
     @Override
-    public @NotNull JSONArray getPostsWithHashtag(final @NotNull String instance,
-                                                  final @NotNull String hashtag,
-                                                  final @NotNull String postAPI,
-                                                  final int limit)
+    public @NotNull JSONArray getPosts(final @NotNull String instance,
+                                       final @NotNull String hashtag,
+                                       final @NotNull String postAPI,
+                                       final int limit)
             throws MastodonException {
         try {
             final var url = TemplateUtil.replaceVariables(
@@ -45,10 +45,10 @@ public final class DefaultMastodonLoader implements MastodonLoader {
     }
 
     @Override
-    public @NotNull JSONArray getMentions(final @NotNull String instance,
-                                          final @NotNull String notificationAPI,
-                                          final @NotNull String accessToken,
-                                          final int limit)
+    public @NotNull JSONArray getNotifications(final @NotNull String instance,
+                                               final @NotNull String notificationAPI,
+                                               final @NotNull String accessToken,
+                                               final int limit)
             throws MastodonException {
         try {
             final var url = TemplateUtil.replaceVariables(

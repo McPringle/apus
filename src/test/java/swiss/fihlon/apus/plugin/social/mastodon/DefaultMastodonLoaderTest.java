@@ -38,7 +38,7 @@ class DefaultMastodonLoaderTest {
     @RetryingTest(3)
     void getStatuses() throws MastodonException {
         final var mastodonConfig = appConfig.mastodon();
-        final JSONArray posts = new DefaultMastodonLoader().getPostsWithHashtag(
+        final JSONArray posts = new DefaultMastodonLoader().getPosts(
                 mastodonConfig.instance(), "java", mastodonConfig.postAPI(), 1);
         assertNotNull(posts);
         assertFalse(posts.isEmpty());
@@ -47,7 +47,7 @@ class DefaultMastodonLoaderTest {
     @RetryingTest(3)
     void getStatusWithMention() throws MastodonException {
         final var mastodonConfig = appConfig.mastodon();
-        final JSONArray posts = new DefaultMastodonLoader().getMentions(
+        final JSONArray posts = new DefaultMastodonLoader().getNotifications(
                 mastodonConfig.instance(), mastodonConfig.notificationAPI(), mastodonConfig.accessToken(), 1  );
         assertNotNull(posts);
         assertFalse(posts.isEmpty());
@@ -57,7 +57,7 @@ class DefaultMastodonLoaderTest {
     void nonExistingServerThrowsException() {
         final var mastodonConfig = appConfig.mastodon();
         final var exception = assertThrows(MastodonException.class,
-                () -> new DefaultMastodonLoader().getPostsWithHashtag("non.existent.server", "java",
+                () -> new DefaultMastodonLoader().getPosts("non.existent.server", "java",
                         mastodonConfig.postAPI(), 1));
         assertEquals("Unable to load posts with hashtag 'java' from Mastodon instance 'non.existent.server'", exception.getMessage());
     }
