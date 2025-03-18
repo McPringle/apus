@@ -170,8 +170,8 @@ To modify the default configuration values, just specify environment variables w
 | APUS_JFS_DB_URL                 |                 | The URL of the database file for Java Forum Stuttgart.                                |
 | APUS_LANGUAGE                   | en              | Language code of the language used for the UI.                                        |
 | APUS_MASTODON_INSTANCE          | mastodon.social | The Mastodon instance used to read the posts from (empty = disabled).                 |
+| APUS_MASTODON_LIMIT             | 30              | The limit for the number of Mastodon posts when accessing the API.                    |
 | APUS_MASTODON_POST_API          | [5]             | The URL of the Mastodon API to read the posts (empty = disabled).                     |
-| APUS_MASTODON_POST_LIMIT        | 30              | The limit for the number of Mastodon posts when accessing the API.                    |
 | APUS_PASSWORD                   |                 | The hashed password to get admin access (empty = disabled).                           |
 | APUS_SOCIAL_FILTER_LENGTH       | 500             | Hide social media posts which exceed this length (0 = disabled).                      |
 | APUS_SOCIAL_FILTER_REPLIES      | true            | Hide social media posts which are replies.                                            |

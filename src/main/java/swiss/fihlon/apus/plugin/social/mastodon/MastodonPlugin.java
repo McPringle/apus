@@ -46,7 +46,7 @@ public final class MastodonPlugin implements SocialPlugin {
     private final @NotNull MastodonLoader mastodonLoader;
     private final @NotNull String instance;
     private final @NotNull String postAPI;
-    private final int postLimit;
+    private final int limit;
 
     public MastodonPlugin(final @NotNull MastodonLoader mastodonLoader,
                           final @NotNull AppConfig appConfig) {
@@ -54,7 +54,7 @@ public final class MastodonPlugin implements SocialPlugin {
         final var mastodonConfig = appConfig.mastodon();
         this.instance = mastodonConfig.instance();
         this.postAPI = mastodonConfig.postAPI();
-        this.postLimit = mastodonConfig.postLimit();
+        this.limit = mastodonConfig.limit();
     }
 
     @Override
@@ -79,7 +79,7 @@ public final class MastodonPlugin implements SocialPlugin {
     private @NotNull Stream<@NotNull Post> getPosts(final @NotNull String hashtag) {
         try {
             LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
-            final var jsonPosts = mastodonLoader.getPostsWithHashtag(instance, hashtag, postAPI, postLimit);
+            final var jsonPosts = mastodonLoader.getPostsWithHashtag(instance, hashtag, postAPI, limit);
             LOGGER.info("Successfully downloaded {} posts with hashtag '{}' from instance '{}'", jsonPosts.length(), hashtag, instance);
 
             final var posts = new ArrayList<Post>();

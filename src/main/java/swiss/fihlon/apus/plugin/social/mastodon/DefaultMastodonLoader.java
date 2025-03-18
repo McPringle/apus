@@ -48,11 +48,11 @@ public final class DefaultMastodonLoader implements MastodonLoader {
     public @NotNull JSONArray getMentions(final @NotNull String instance,
                                           final @NotNull String notificationAPI,
                                           final @NotNull String accessToken,
-                                          final int postLimit)
+                                          final int limit)
             throws MastodonException {
         try {
             final var url = TemplateUtil.replaceVariables(
-                    notificationAPI, Map.of("instance", instance, "limit", Integer.toString(postLimit)));
+                    notificationAPI, Map.of("instance", instance, "limit", Integer.toString(limit)));
             final var json = DownloadUtil.getString(url, accessToken);
             return new JSONArray(json);
         } catch (final Exception e) {

@@ -45,6 +45,7 @@ For questions and support requests, please use
 * The `FILTER_*` environment variables have been renamed to `APUS_SOCIAL_FILTER_*`
 * The timezone has to be specified in the `APUS_TIMEZONE` environment variable (instead of just `TZ`)
 * The admin password has to be specified in the `APUS_PASSWORD` environment variable (instead of `ADMIN_PASSWORD`)
+* The envirenment variable `APUS_MASTODON_POST_LIMIT` was renamed to `APUS_MASTODON_LIMIT`
 
 ---
 
