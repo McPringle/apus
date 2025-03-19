@@ -133,12 +133,21 @@ public final class MastodonPlugin implements SocialPlugin {
         final var account = post.getJSONObject("account");
         final var author = account.getString("display_name");
         final var avatar = account.getString("avatar");
-        final var profile = account.getString("acct");
+        final var profile = getProfile(account);
         final var html = post.getString("content");
         final var isReply = !post.isNull("in_reply_to_id") && !post.getString("in_reply_to_id").isBlank();
         final var isSensitive = post.getBoolean("sensitive");
         final var images = getImages(post.getJSONArray("media_attachments"));
         return new Post(id, date, author, avatar, profile, html, images, isReply, isSensitive, MASTODON_LOGO);
+    }
+
+    private String getProfile(final @NotNull JSONObject account) {
+        final var profile = account.getString("acct");
+        if (profile.contains("@")) {
+            return profile;
+        }
+        // add instance name to local accounts
+        return profile.concat("@").concat(instance);
     }
 
     private @NotNull List<@NotNull String> getImages(final @NotNull JSONArray mediaAttachments) {
