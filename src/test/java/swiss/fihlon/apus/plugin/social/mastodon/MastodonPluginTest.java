@@ -224,6 +224,62 @@ class MastodonPluginTest {
         assertEquals(3, posts.size());
     }
 
+    @Test
+    void getNotificationsWithEmptyAPI() {
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "testToken",
+                "", appConfig.mastodon().postAPI(), 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
+
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
+        final List<Post> posts = mastodonPlugin.getPosts(List.of("empty")).toList();
+
+        assertNotNull(posts);
+        assertTrue(posts.isEmpty());
+    }
+
+    @Test
+    void getNotificationsWithBlankAPI() {
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "testToken",
+                "   ", appConfig.mastodon().postAPI(), 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
+
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
+        final List<Post> posts = mastodonPlugin.getPosts(List.of("empty")).toList();
+
+        assertNotNull(posts);
+        assertTrue(posts.isEmpty());
+    }
+
+    @Test
+    void getNotificationsWithEmptyAccessToken() {
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "",
+                appConfig.mastodon().notificationAPI(), appConfig.mastodon().postAPI(), 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
+
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
+        final List<Post> posts = mastodonPlugin.getPosts(List.of("empty")).toList();
+
+        assertNotNull(posts);
+        assertTrue(posts.isEmpty());
+    }
+
+    @Test
+    void getNotificationsWithBlankAccessToken() {
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "   ",
+                appConfig.mastodon().notificationAPI(), appConfig.mastodon().postAPI(), 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
+
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
+        final List<Post> posts = mastodonPlugin.getPosts(List.of("empty")).toList();
+
+        assertNotNull(posts);
+        assertTrue(posts.isEmpty());
+    }
+
     private static final class TestMastodonLoader implements MastodonLoader {
 
         @Override
