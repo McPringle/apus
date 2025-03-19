@@ -65,6 +65,9 @@ See:
 ![Apus screenshot with JavaLand theme](screenshot-javaland.webp)
 *Apus screenshot with JavaLand theme*
 
+![Apus screenshot with Voxxed Days theme](screenshot-voxxeddays.webp)
+*Apus screenshot with Voxxed Days theme*
+
 ## Features
 
 ### Show posts from Social Media
