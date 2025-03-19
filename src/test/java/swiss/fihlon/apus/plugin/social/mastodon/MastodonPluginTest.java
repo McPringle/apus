@@ -185,7 +185,7 @@ class MastodonPluginTest {
         final var posts = mastodonPlugin.getPosts(List.of("broken")).toList();
         memoryAppender.stop();
 
-        final int errorCount = memoryAppender.searchMessages("This is an expected exception.", Level.ERROR).size();
+        final int errorCount = memoryAppender.searchMessages("This is an expected exception getting posts.", Level.ERROR).size();
         assertEquals(1, errorCount);
         assertEquals(0, posts.size());
     }
@@ -280,6 +280,28 @@ class MastodonPluginTest {
         assertTrue(posts.isEmpty());
     }
 
+    @Test
+    void getNotificationsCatchesException() {
+        final var mockAppConfig = mock(AppConfig.class);
+        final var mastodonConfig = new MastodonConfig("localhost", "broken",
+                appConfig.mastodon().notificationAPI(), appConfig.mastodon().postAPI(), 0);
+        when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
+
+        final MemoryAppender memoryAppender = new MemoryAppender();
+        memoryAppender.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
+        final Logger logger = (Logger) LoggerFactory.getLogger(MastodonPlugin.class);
+        logger.addAppender(memoryAppender);
+
+        memoryAppender.start();
+        final MastodonPlugin mastodonPlugin = new MastodonPlugin(new TestMastodonLoader(), mockAppConfig);
+        final var posts = mastodonPlugin.getPosts(List.of("empty")).toList();
+        memoryAppender.stop();
+
+        final int errorCount = memoryAppender.searchMessages("This is an expected exception getting notifications.", Level.ERROR).size();
+        assertEquals(1, errorCount);
+        assertEquals(0, posts.size());
+    }
+
     private static final class TestMastodonLoader implements MastodonLoader {
 
         @Override
@@ -314,7 +336,8 @@ class MastodonPluginTest {
                         createPost(4, true),
                         createPost(5, true)
                 );
-                case "broken" -> throw new MastodonException("This is an expected exception.", new RuntimeException("This is a faked cause."));
+                case "broken" -> throw new MastodonException("This is an expected exception getting posts.",
+                        new RuntimeException("This is a faked cause."));
                 default -> List.of();
             });
             return posts;
@@ -323,6 +346,10 @@ class MastodonPluginTest {
         @Override
         public @NotNull JSONArray getNotifications(@NotNull String instance, @NotNull String notificationAPI, @NotNull String accessToken, int postLimit)
                 throws MastodonException {
+            if (accessToken.equalsIgnoreCase("broken")) {
+                throw new MastodonException("This is an expected exception getting notifications.",
+                        new RuntimeException("This is a faked cause."));
+            }
             final var notifications = new JSONArray();
             notifications.putAll(List.of(
                         createNotification(101),
