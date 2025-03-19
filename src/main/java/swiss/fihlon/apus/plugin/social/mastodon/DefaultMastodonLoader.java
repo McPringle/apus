@@ -45,6 +45,7 @@ public final class DefaultMastodonLoader implements MastodonLoader {
     }
 
     @Override
+    @SuppressWarnings("java:S2142")
     public @NotNull JSONArray getNotifications(final @NotNull String instance,
                                                final @NotNull String notificationAPI,
                                                final @NotNull String accessToken,
@@ -56,7 +57,7 @@ public final class DefaultMastodonLoader implements MastodonLoader {
             final var json = DownloadUtil.getString(url, accessToken);
             return new JSONArray(json);
         } catch (final Exception e) {
-            throw new MastodonException(String.format("Unable to load posts from Mastodon instance '%s'",  instance), e);
+            throw new MastodonException(String.format("Unable to load notifications from Mastodon instance '%s'",  instance), e);
         }
     }
 

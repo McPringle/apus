@@ -54,12 +54,21 @@ class DefaultMastodonLoaderTest {
     }
 
     @Test
-    void nonExistingServerThrowsException() {
+    void nonExistingServerThrowsExceptionOnGetPost() {
         final var mastodonConfig = appConfig.mastodon();
         final var exception = assertThrows(MastodonException.class,
                 () -> new DefaultMastodonLoader().getPosts("non.existent.server", "java",
                         mastodonConfig.postAPI(), 1));
         assertEquals("Unable to load posts with hashtag 'java' from Mastodon instance 'non.existent.server'", exception.getMessage());
+    }
+
+    @Test
+    void nonExistingServerThrowsExceptionOnGetNotifications() {
+        final var mastodonConfig = appConfig.mastodon();
+        final var exception = assertThrows(MastodonException.class,
+                () -> new DefaultMastodonLoader().getNotifications("non.existent.server",
+                        mastodonConfig.notificationAPI(), mastodonConfig.accessToken(), 1));
+        assertEquals("Unable to load notifications from Mastodon instance 'non.existent.server'", exception.getMessage());
     }
 
 }
