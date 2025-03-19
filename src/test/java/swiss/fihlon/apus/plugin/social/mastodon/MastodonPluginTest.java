@@ -271,7 +271,9 @@ class MastodonPluginTest {
             notifications.putAll(List.of(
                         createNotification(101),
                         createNotification(102),
-                        createNotification(103)
+                        createNotification(103),
+                        createNotification(104),
+                        createNotification(105)
                 )
             );
             return notifications;
@@ -290,7 +292,11 @@ class MastodonPluginTest {
             post.put("in_reply_to_id", index == 1 ? null : index == 5 ? "ID 4" : " ");
             post.put("sensitive", false);
             post.put("content", "Content for post #" + index);
-            post.put("visibility", "public");
+            if (index >= 100 && index % 2 == 0) {
+                post.put("visibility", "private");
+            } else {
+                post.put("visibility", "public");
+            }
 
             final var account = new JSONObject();
             account.put("display_name", "Display Name " + index);
