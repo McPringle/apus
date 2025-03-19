@@ -172,7 +172,8 @@ To modify the default configuration values, just specify environment variables w
 | APUS_MASTODON_ACCESS_TOKEN      |               | The Mastodon access token. Only needed for the notification API.                      |
 | APUS_MASTODON_INSTANCE          | ijug.social   | The Mastodon instance used to read the posts from (empty = disabled).                 |
 | APUS_MASTODON_LIMIT             | 30            | The limit for the number of results when accessing the Mastodon API.                  |
-| APUS_MASTODON_POST_API          | [5]           | The URL of the Mastodon API to read the posts (empty = disabled).                     |
+| APUS_MASTODON_NOTIFICATION_API  | [5]           | The URL of the Mastodon API to read the notifications (empty = disabled).             |
+| APUS_MASTODON_POST_API          | [6]           | The URL of the Mastodon API to read the posts (empty = disabled).                     |
 | APUS_PASSWORD                   |               | The hashed password to get admin access (empty = disabled).                           |
 | APUS_SOCIAL_FILTER_LENGTH       | 500           | Hide social media posts which exceed this length (0 = disabled).                      |
 | APUS_SOCIAL_FILTER_REPLIES      | true          | Hide social media posts which are replies.                                            |
@@ -183,9 +184,9 @@ To modify the default configuration values, just specify environment variables w
 | APUS_SOCIAL_HEADLINE            |               | Overwrite the headline for social media posts (empty = don't overwrite).              |
 | APUS_SOCIAL_IMAGE_LIMIT         | 1             | Limit number of images per social media post (0 = no limit).                          |
 | APUS_SOCIAL_IMAGES_ENABLED      | true          | Enable or disable images in social media posts.                                       |
-| APUS_SESSIONIZE_EVENT_API       | [6]           | The URL of the Sessionize API to read the conference agenda.                          |
+| APUS_SESSIONIZE_EVENT_API       | [7]           | The URL of the Sessionize API to read the conference agenda.                          |
 | APUS_SESSIONIZE_EVENT_ID        | 0             | The ID of the Sessionize event to read the conference agenda (0 = disabled).          |
-| APUS_SESSIONIZE_SPEAKER_API     | [7]           | The URL of the Sessionize API to read the speaker information.                        |
+| APUS_SESSIONIZE_SPEAKER_API     | [8]           | The URL of the Sessionize API to read the speaker information.                        |
 | APUS_STYLES                     |               | Inject custom styles into the user interface (see explanations below).                |
 | APUS_TIMEZONE                   | Europe/Zurich | The timezone used for date and time calculations.                                     |
 
@@ -195,9 +196,10 @@ The environment variables will override the default values. Some default values 
 2. `https://${instance}/xrpc/app.bsky.feed.searchPosts?q=%40${profile}&mentions=${profile}&limit=${limit}`
 3. `https://${event}.cfp.dev/api/public/schedules/${weekday}`
 4. `https://meine.doag.org/api/event/action.getCPEventAgenda/eventId.${event}`
-5. `https://${instance}/api/v1/timelines/tag/${hashtag}?limit=${limit}`
-6. `https://sessionize.com/api/v2/${event}/view/Sessions`
-7. `https://sessionize.com/api/v2/${event}/view/Speakers`
+5. `https://${instance\/api/v1/notifications?types[]=mention&limit=${limit}`
+6. `https://${instance}/api/v1/timelines/tag/${hashtag}?limit=${limit}`
+7. `https://sessionize.com/api/v2/${event}/view/Sessions`
+8. `https://sessionize.com/api/v2/${event}/view/Speakers`
 
 The `APUS_EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` and `PnW`. Examples:
 

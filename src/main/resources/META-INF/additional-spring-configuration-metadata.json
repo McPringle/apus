@@ -118,12 +118,12 @@
     {
       "name" : "apus.mastodon.notificationAPI",
       "type" : "java.lang.String",
-      "description" : "The URL of the Mastodon API to read the notifications."
+      "description" : "The URL of the Mastodon API to read the notifications (empty = disabled)."
     },
     {
       "name" : "apus.mastodon.postAPI",
       "type" : "java.lang.String",
-      "description" : "The URL of the Mastodon API to read the posts."
+      "description" : "The URL of the Mastodon API to read the posts (empty = disabled)."
     },
     {
       "name" : "apus.password",
