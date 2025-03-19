@@ -384,7 +384,7 @@ class MastodonPluginTest {
             final var account = new JSONObject();
             account.put("display_name", "Display Name " + index);
             account.put("avatar", "Avatar " + index);
-            account.put("acct", "profile" + index + "@localhost");
+            account.put("acct", "profile" + index + (index % 2 == 0 ? "" : "@localhost"));
             post.put("account", account);
 
             final var createdAt = ZonedDateTime.ofInstant(Instant.now().minus(index, ChronoUnit.MINUTES), ZoneId.of("Z"));
