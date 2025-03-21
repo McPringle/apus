@@ -17,7 +17,7 @@
  */
 
 #social-view {
-    font-size: var(--lumo-font-size-s);
+    font-size: var(--lumo-font-size-xs);
     background-color: var(--social-background-color);
     position: absolute;
     top: 0;

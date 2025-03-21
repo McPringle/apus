@@ -36,6 +36,7 @@ For questions and support requests, please use
 * Add more checks for common errors during the build process
 * Fixed dozens of coding issues
 * Changed default Mastodon instance from `mastodon.social` to `ijug.social`
+* UI: Smaller font size for the social media posts
 
 ### Breaking Changes
 
