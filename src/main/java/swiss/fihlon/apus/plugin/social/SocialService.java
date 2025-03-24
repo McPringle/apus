@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -120,26 +121,31 @@ public final class SocialService {
     }
 
     private void updatePosts() {
-        postsByPlugin.keySet()
-                .parallelStream()
-                .forEach(socialPlugin -> {
-                    final var posts = socialPlugin.getPosts(hashtags)
-                            .filter(post -> !hiddenPosts.contains(post.id()))
-                            .filter(post -> !blockedProfiles.contains(post.profile()))
-                            .filter(post -> !filterSensitive || !post.isSensitive())
-                            .filter(post -> !filterReplies || !post.isReply())
-                            .filter(post -> filterLength <= 0 || HtmlUtil.extractText(post.html()).length() <= filterLength)
-                            .filter(this::checkWordFilter)
-                            .sorted()
-                            .limit(MAX_POSTS)
-                            .map(this::checkImages)
-                            .toList();
-                    if (!posts.isEmpty()) {
-                        synchronized (postsByPlugin) {
-                            postsByPlugin.put(socialPlugin, List.copyOf(posts));
+        final var futures = postsByPlugin.keySet().stream()
+                .map(socialPlugin -> CompletableFuture.runAsync(() -> {
+                    try {
+                        final var posts = socialPlugin.getPosts(hashtags)
+                                .filter(post -> !hiddenPosts.contains(post.id()))
+                                .filter(post -> !blockedProfiles.contains(post.profile()))
+                                .filter(post -> !filterSensitive || !post.isSensitive())
+                                .filter(post -> !filterReplies || !post.isReply())
+                                .filter(post -> filterLength <= 0 || HtmlUtil.extractText(post.html()).length() <= filterLength)
+                                .filter(this::checkWordFilter)
+                                .sorted()
+                                .limit(MAX_POSTS)
+                                .map(this::checkImages)
+                                .toList();
+                        if (!posts.isEmpty()) {
+                            synchronized (postsByPlugin) {
+                                postsByPlugin.put(socialPlugin, List.copyOf(posts));
+                            }
                         }
+                    } catch (final Exception e) {
+                        LOGGER.error("Unable to load posts from social plugin '{}': {}", socialPlugin, e.getMessage());
                     }
-                });
+                }))
+                .toList();
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
     }
 
     private @NotNull Post checkImages(final @NotNull Post post) {
