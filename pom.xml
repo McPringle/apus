@@ -51,7 +51,7 @@
     </scm>
 
     <properties>
-        <java.version>23</java.version>
+        <java.version>24</java.version>
         <maven.version>3.9.9</maven.version>
         <vaadin.version>24.7.4</vaadin.version>
     </properties>
@@ -351,6 +351,7 @@
                 </executions>
             </plugin>
 
+            <!-- this plugin is not compatible with Java 24 yet
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.8.1</version>
@@ -361,12 +362,13 @@
                             <goal>analyze-only</goal>
                         </goals>
                         <configuration>
-                            <!-- TODO set to true later when all warnings are fixed -->
+                            // TODO set to true later when all warnings are fixed
                             <failOnWarning>false</failOnWarning>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            -->
 
             <plugin>
                 <groupId>org.simplify4u.plugins</groupId>
