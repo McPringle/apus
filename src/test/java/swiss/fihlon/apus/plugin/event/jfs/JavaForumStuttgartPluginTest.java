@@ -29,7 +29,7 @@ class JavaForumStuttgartPluginTest {
     @Test
     void isEnabled() {
         final var appConfig = mock(AppConfig.class);
-        final var jfsConfig = new JavaForumStuttgartConfig("test");
+        final var jfsConfig = new JavaForumStuttgartConfig("test", "");
         when(appConfig.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
@@ -39,7 +39,7 @@ class JavaForumStuttgartPluginTest {
     @Test
     void isDisabledBecauseEmpty() {
         final var appConfig = mock(AppConfig.class);
-        final var jfsConfig = new JavaForumStuttgartConfig("");
+        final var jfsConfig = new JavaForumStuttgartConfig("", "");
         when(appConfig.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
@@ -49,7 +49,11 @@ class JavaForumStuttgartPluginTest {
     @Test
     void getSessions() {
         final var appConfig = mock(AppConfig.class);
-        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/jfs.db");
+        final var jfsConfig = new JavaForumStuttgartConfig(
+                "https://jfspwa.java-forum-stuttgart.de/jfsdata/jfs_schedule_server.json",
+        "https://jfspwa.java-forum-stuttgart.de/jfsdata/jfs_resources.zip"
+
+        );
         when(appConfig.jfs()).thenReturn(jfsConfig);
         when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
 
@@ -80,7 +84,7 @@ class JavaForumStuttgartPluginTest {
     @Test
     void throwsExceptionWithNonExistingDatabase() {
         final var appConfig = mock(AppConfig.class);
-        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/non-existing.db");
+        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/non-existing.db", "");
         when(appConfig.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
@@ -94,7 +98,7 @@ class JavaForumStuttgartPluginTest {
     @Test
     void throwsExceptionWithEmptyDatabase() {
         final var appConfig = mock(AppConfig.class);
-        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/jfs-empty.db");
+        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/jfs-empty.db", "");
         when(appConfig.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);

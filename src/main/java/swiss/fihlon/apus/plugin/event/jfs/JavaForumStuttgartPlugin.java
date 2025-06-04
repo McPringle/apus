@@ -18,6 +18,7 @@
 package swiss.fihlon.apus.plugin.event.jfs;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -51,6 +53,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -58,17 +61,19 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
 
     private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(JavaForumStuttgartPlugin.class);
 
-    private final @NotNull String dbUrl;
+    private final @NotNull String jsonUrl;
+    private final @NotNull String resourcesUrl;
     private final @NotNull ZoneId timezone;
 
     public JavaForumStuttgartPlugin(@NotNull final AppConfig appConfig) {
-        dbUrl = appConfig.jfs().dbUrl();
+        jsonUrl = appConfig.jfs().jsonUrl();
+        resourcesUrl = appConfig.jfs().resourcesUrl();
         timezone = appConfig.timezone();
     }
 
     @Override
     public boolean isEnabled() {
-        return !dbUrl.isEmpty();
+        return !jsonUrl.isEmpty();
     }
 
     @Override
@@ -78,12 +83,28 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         final Map<String, Speaker> allSpeakers;
         final Map<String, Track> allTracks = getTracks();
 
-        final Path databaseFile = downloadDatabaseFile();
-        try (
-                Connection connection = DriverManager.getConnection("jdbc:sqlite:" + databaseFile.toAbsolutePath().toFile().getAbsolutePath());
-                Statement statement = connection.createStatement()
+        final Path jsonFile = downloadJsonFile();
+
+        try (BufferedReader reader = Files.newBufferedReader(jsonFile)) {
+
+            // Read lines as stream and join into a single string
+            String content = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+
+            // Parse to JSONObject
+            JSONObject json = new JSONObject(content);
+
+            // Pretty print the JSON
+            System.out.println(json.toString(2));
+
+        } catch (IOException e) {
+            System.err.println("IO error: " + e.getMessage());
+        } catch (org.json.JSONException e) {
+            System.err.println("JSON error: " + e.getMessage());
+        }
+
+      /*  try (
+
             ) {
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
             allTalks = getTalks(statement);
             allAssignments = getAssignments(statement);
             allSpeakers = getSpeakers(statement);
@@ -94,32 +115,35 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
                     e.getMessage()), e);
         } finally {
             try {
-                Files.delete(databaseFile);
-                LOGGER.info("Successfully deleted temporary database file: {}", databaseFile);
+                Files.delete(jsonFile);
+                LOGGER.info("Successfully deleted temporary database file: {}", jsonFile);
             } catch (final IOException e) {
-                LOGGER.warn("Unable to delete temporary database file: {}", databaseFile);
+                LOGGER.warn("Unable to delete temporary database file: {}", jsonFile);
             }
-        }
+        }*/
+        allTalks = List.of();
+        allAssignments = Map.of();
+        allSpeakers = Map.of();
         LOGGER.info("Successfully imported {} sessions for Java Forum Stuttgart", allTalks.size());
         return allTalks.stream().map(talk -> mapToSession(talk, allAssignments, allSpeakers, allTracks));
     }
 
-    private @NotNull Path downloadDatabaseFile() {
+    private @NotNull Path downloadJsonFile() {
         try {
-            final Path temporaryDatabaseFile = Files.createTempFile("jfs-", ".db");
-            LOGGER.info("Start downloading database from {} ...", dbUrl);
-            final URI uri = URI.create(dbUrl);
+            final Path temporaryJsonFile = Files.createTempFile("jfs-", ".json");
+            LOGGER.info("Start downloading JSON from {} ...", jsonUrl);
+            final URI uri = URI.create(jsonUrl);
             final URL url = uri.toURL();
             try (InputStream is = url.openStream();
-                 OutputStream os = Files.newOutputStream(temporaryDatabaseFile)) {
+                 OutputStream os = Files.newOutputStream(temporaryJsonFile)) {
                 is.transferTo(os);
             }
-            LOGGER.info("Successfully downloaded database to temporary file {}", temporaryDatabaseFile);
-            return temporaryDatabaseFile;
+            LOGGER.info("Successfully downloaded database to temporary file {}", temporaryJsonFile);
+            return temporaryJsonFile;
         } catch (final IOException e) {
             throw new SessionImportException(String.format(
                     "Error downloading database file from '%s': %s",
-                    dbUrl, e.getMessage()), e);
+                    jsonUrl, e.getMessage()), e);
         }
     }
 
