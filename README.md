@@ -170,7 +170,8 @@ To modify the default configuration values, just specify environment variables w
 | APUS_EVENT_SHOW_LEGEND          | true          | Show (true) or hide (false) the event room legend.                                    |
 | APUS_EVENT_TIME_ADJUST          | PT0D          | Adjust the time of the event, ISO-8601 formatted (PT0D = disabled).                   |
 | APUS_EVENT_UPDATE_FREQUENCY     | 5             | How often (in minutes) to update event data (0 = disabled).                           |
-| APUS_JFS_DB_URL                 |               | The URL of the database file for Java Forum Stuttgart.                                |
+| APUS_JFS_JSON_URL               |               | The URL of the JSON file for Java Forum Stuttgart.                                    |
+| APUS_JFS_RESOURCES_URL          |               | The URL of the resources file for Java Forum Stuttgart.                               |
 | APUS_LANGUAGE                   | en            | Language code of the language used for the UI.                                        |
 | APUS_MASTODON_ACCESS_TOKEN      |               | The Mastodon access token. Only needed for the notification API.                      |
 | APUS_MASTODON_INSTANCE          | ijug.social   | The Mastodon instance used to read the posts from (empty = disabled).                 |
