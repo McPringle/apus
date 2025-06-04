@@ -18,6 +18,8 @@
 package swiss.fihlon.apus.plugin.event.jfs;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,9 +80,9 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
 
     @Override
     public @NotNull Stream<@NotNull Session> getSessions() {
-        final List<Talk> allTalks;
-        final Map<String, List<String>> allAssignments;
-        final Map<String, Speaker> allSpeakers;
+        List<Talk> allTalks = List.of();
+        Map<String, List<String>> allAssignments = Map.of();
+        Map<String, Speaker> allSpeakers = Map.of();
         final Map<String, Track> allTracks = getTracks();
 
         final Path jsonFile = downloadJsonFile();
@@ -90,29 +92,24 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
             // Read lines as stream and join into a single string
             String content = reader.lines().collect(Collectors.joining(System.lineSeparator()));
 
-            // Parse to JSONObject
-            JSONObject json = new JSONObject(content);
+            // Parse root-level JSON array
+            JSONArray jsonArray = new JSONArray(content);
 
-            // Pretty print the JSON
-            System.out.println(json.toString(2));
+            allTalks = getTalks(jsonArray);
+
+            if(allTalks.isEmpty()){
+                throw new SessionImportException(String.format(
+                        "Error importing session data for Java Forum Stuttgart: No talks found in %s from %s",
+                        jsonFile, jsonUrl));
+            }
+
+            allAssignments = getAssignments(jsonArray);
+            allSpeakers = getSpeakers(jsonArray);
 
         } catch (IOException e) {
             System.err.println("IO error: " + e.getMessage());
-        } catch (org.json.JSONException e) {
+        } catch (JSONException e) {
             System.err.println("JSON error: " + e.getMessage());
-        }
-
-      /*  try (
-
-            ) {
-            allTalks = getTalks(statement);
-            allAssignments = getAssignments(statement);
-            allSpeakers = getSpeakers(statement);
-        } catch (final SQLException e) {
-            // if the error message is "out of memory", it probably means no database file is found
-            throw new SessionImportException(String.format(
-                    "Error importing session data for Java Forum Stuttgart: %s",
-                    e.getMessage()), e);
         } finally {
             try {
                 Files.delete(jsonFile);
@@ -120,12 +117,12 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
             } catch (final IOException e) {
                 LOGGER.warn("Unable to delete temporary database file: {}", jsonFile);
             }
-        }*/
-        allTalks = List.of();
-        allAssignments = Map.of();
-        allSpeakers = Map.of();
+        }
+
         LOGGER.info("Successfully imported {} sessions for Java Forum Stuttgart", allTalks.size());
-        return allTalks.stream().map(talk -> mapToSession(talk, allAssignments, allSpeakers, allTracks));
+        Map<String, List<String>> finalAllAssignments = allAssignments;
+        Map<String, Speaker> finalAllSpeakers = allSpeakers;
+        return allTalks.stream().map(talk -> mapToSession(talk, finalAllAssignments, finalAllSpeakers, allTracks));
     }
 
     private @NotNull Path downloadJsonFile() {
@@ -142,25 +139,22 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
             return temporaryJsonFile;
         } catch (final IOException e) {
             throw new SessionImportException(String.format(
-                    "Error downloading database file from '%s': %s",
+                    "Error downloading JSON file from '%s': %s",
                     jsonUrl, e.getMessage()), e);
         }
     }
 
-    private @NotNull List<@NotNull Talk> getTalks(@NotNull final Statement statement) throws SQLException {
+    private @NotNull List<@NotNull Talk> getTalks(@NotNull final JSONArray talksArray) {
         final ArrayList<Talk> talks = new ArrayList<>();
 
-        final ResultSet resultSet = statement.executeQuery("""
-                SELECT id, title, room, topic, timeSlot
-                FROM talk
-                ORDER BY timeSlot""");
+        for (int i = 0; i < talksArray.length(); i++) {
+            JSONObject obj = talksArray.getJSONObject(i);
 
-        while (resultSet.next()) {
-            final String id = resultSet.getString("id");
-            final String title = resultSet.getString("title");
-            final String room = resultSet.getString("room");
-            final String topic = resultSet.getString("topic");
-            final String timeSlot = resultSet.getString("timeSlot");
+            final String id = Integer.toString(obj.getInt("id"));
+            final String title = obj.getString("title");
+            final String room = obj.getString("room");
+            final String topic = obj.getString("topic");
+            final String timeSlot = obj.getString("timeSlot");
 
             talks.add(new Talk(id, title, room, topic, timeSlot));
         }
@@ -168,39 +162,43 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return talks;
     }
 
-    private @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> getAssignments(@NotNull final Statement statement) throws SQLException {
+    private @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> getAssignments(@NotNull final JSONArray array) {
         final HashMap<String, List<String>> assignments = new HashMap<>();
 
-        final ResultSet resultSet = statement.executeQuery("""
-                SELECT speaker_id, talk_id
-                FROM speakertalk""");
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject obj = array.getJSONObject(i);
 
-        while (resultSet.next()) {
-            final String talkId = resultSet.getString("talk_id");
-            final String speakerId = resultSet.getString("speaker_id");
+            final String talkId = Integer.toString(obj.getInt("id"));
 
-            final ArrayList<String> speakers = (ArrayList<String>) assignments.getOrDefault(talkId, new ArrayList<>());
-            speakers.add(speakerId);
+            final ArrayList<String> speakers = new ArrayList<>();
+            JSONArray speakersArray = obj.getJSONArray("speakers");
+            for (int j = 0; j < speakersArray.length(); j++) {
+                JSONObject speaker = speakersArray.getJSONObject(j);
+                final String speakerId = Integer.toString(speaker.getInt("id"));
+                speakers.add(speakerId);
+            }
+
             assignments.put(talkId, speakers);
         }
 
         return assignments;
     }
 
-    private @NotNull Map<@NotNull String, @NotNull Speaker> getSpeakers(@NotNull final Statement statement) throws SQLException {
+    private @NotNull Map<@NotNull String, @NotNull Speaker> getSpeakers(@NotNull final JSONArray array) {
         final HashMap<String, Speaker> speakers = new HashMap<>();
 
-        final ResultSet resultSet = statement.executeQuery("""
-                SELECT id, name
-                FROM speaker""");
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject obj = array.getJSONObject(i);
 
-        while (resultSet.next()) {
-            final String id = resultSet.getString("id");
-            final String name = resultSet.getString("name");
-
-            speakers.put(id, new Speaker(name));
+            JSONArray speakersArray = obj.getJSONArray("speakers");
+            for (int j = 0; j < speakersArray.length(); j++) {
+                JSONObject speaker = speakersArray.getJSONObject(j);
+                final String speakerId = Integer.toString(speaker.getInt("id"));
+                String name = speaker.getString("name");
+                String imageUrl = speaker.getString("imageUrl");
+                speakers.put(speakerId, new Speaker(name, imageUrl));
+            }
         }
-
         return speakers;
     }
 

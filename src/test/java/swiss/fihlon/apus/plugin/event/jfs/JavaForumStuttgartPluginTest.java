@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
-import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 
@@ -12,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -50,7 +48,7 @@ class JavaForumStuttgartPluginTest {
     void getSessions() {
         final var appConfig = mock(AppConfig.class);
         final var jfsConfig = new JavaForumStuttgartConfig(
-                "https://jfspwa.java-forum-stuttgart.de/jfsdata/jfs_schedule_server.json",
+                "file:src/test/resources/testdata/jfs-talks.json",
         "https://jfspwa.java-forum-stuttgart.de/jfsdata/jfs_resources.zip"
 
         );
@@ -59,46 +57,39 @@ class JavaForumStuttgartPluginTest {
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
         final var sessions = jfsPlugin.getSessions().toList();
-        assertEquals(8, sessions.size());
-
-        final var sessionIds = sessions.stream().map(Session::id).toList();
-        for (String id : List.of("A1", "A2", "A3", "B4", "A5", "B6", "A7", "A8")) {
-            final var sessionId = String.format("JFS:%s", id);
-            assertTrue(sessionIds.contains(sessionId));
-        }
+        assertEquals(49, sessions.size());
 
         // full check of session with ID "JFS:5"
         final var session = sessions.get(5);
         final var today = LocalDate.now(TEST_TIMEZONE);
-        assertEquals("JFS:A5", session.id());
-        assertEquals(ZonedDateTime.of(today, LocalTime.of(16, 0), TEST_TIMEZONE), session.startDate());
-        assertEquals(ZonedDateTime.of(today, LocalTime.of(16, 45), TEST_TIMEZONE), session.endDate());
-        assertEquals(new Room("Room A"), session.room());
-        assertEquals("Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat", session.title());
-        assertEquals(2, session.speakers().size());
-        assertEquals(new Speaker("Saul Goodman"), session.speakers().get(0));
-        assertEquals(new Speaker("Mike Ehrmantraut"), session.speakers().get(1));
+        assertEquals("JFS:180560128", session.id());
+        assertEquals(ZonedDateTime.of(today, LocalTime.of(15, 35), TEST_TIMEZONE), session.startDate());
+        assertEquals(ZonedDateTime.of(today, LocalTime.of(16, 20), TEST_TIMEZONE), session.endDate());
+        assertEquals(new Room("Track A"), session.room());
+        assertEquals("Decoupled by Default", session.title());
+        assertEquals(1, session.speakers().size());
+        assertEquals(new Speaker("Markus Schlegel", "images/2025__1805601280__Schlegel__Markus.jpeg"), session.speakers().get(0));
         assertEquals(Language.UNKNOWN, session.language());
     }
 
     @Test
-    void throwsExceptionWithNonExistingDatabase() {
+    void throwsExceptionWithNonExistingJson() {
         final var appConfig = mock(AppConfig.class);
-        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/non-existing.db", "");
+        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/non-existing.json", "");
         when(appConfig.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, jfsPlugin::getSessions);
         final var message = exception.getMessage();
         assertNotNull(message);
-        assertTrue(message.startsWith("Error downloading database file from 'file:src/test/resources/testdata/non-existing.db': "));
+        assertTrue(message.startsWith("Error downloading JSON file from 'file:src/test/resources/testdata/non-existing.json': "));
     }
 
 
     @Test
     void throwsExceptionWithEmptyDatabase() {
         final var appConfig = mock(AppConfig.class);
-        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/jfs-empty.db", "");
+        final var jfsConfig = new JavaForumStuttgartConfig("file:src/test/resources/testdata/jfs-empty.json", "");
         when(appConfig.jfs()).thenReturn(jfsConfig);
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
