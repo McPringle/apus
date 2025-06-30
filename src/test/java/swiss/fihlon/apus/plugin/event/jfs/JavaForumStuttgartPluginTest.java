@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 class JavaForumStuttgartPluginTest {
 
-    private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
+    private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Berlin");
 
     @Test
     void isEnabled() {
@@ -57,18 +57,19 @@ class JavaForumStuttgartPluginTest {
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
         final var sessions = jfsPlugin.getSessions().toList();
-        assertEquals(49, sessions.size());
+        assertEquals(1, sessions.size());
 
-        // full check of session with ID "JFS:5"
-        final var session = sessions.get(5);
+        // full check of session with ID "JFS:1"
+        final var session = sessions.get(0);
         final var today = LocalDate.now(TEST_TIMEZONE);
-        assertEquals("JFS:180560128", session.id());
-        assertEquals(ZonedDateTime.of(today, LocalTime.of(15, 35), TEST_TIMEZONE), session.startDate());
-        assertEquals(ZonedDateTime.of(today, LocalTime.of(16, 20), TEST_TIMEZONE), session.endDate());
-        assertEquals(new Room("Track A"), session.room());
-        assertEquals("Decoupled by Default", session.title());
-        assertEquals(1, session.speakers().size());
-        assertEquals(new Speaker("Markus Schlegel", "images/2025__1805601280__Schlegel__Markus.jpeg"), session.speakers().get(0));
+        assertEquals("JFS:1", session.id());
+        assertEquals(ZonedDateTime.of(today, LocalTime.of(9, 45), TEST_TIMEZONE), session.startDate());
+        assertEquals(ZonedDateTime.of(today, LocalTime.of(10, 0), TEST_TIMEZONE), session.endDate());
+        assertEquals(new Room("Room A"), session.room());
+        assertEquals("Lorem ipsum dolor sit amet", session.title());
+        assertEquals(2, session.speakers().size());
+        assertEquals(new Speaker("Walter White", "images/2025__1__White__Walter.jpeg"), session.speakers().getFirst());
+        assertEquals(new Speaker("Jesse Pinkman", "images/2025__2__Pinkman__Jesse.jpeg"), session.speakers().get(1));
         assertEquals(Language.UNKNOWN, session.language());
     }
 
