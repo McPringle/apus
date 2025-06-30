@@ -92,7 +92,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
 
             allTalks = getTalks(jsonArray);
 
-            if(allTalks.isEmpty()){
+            if (allTalks.isEmpty()) {
                 throw new SessionImportException(String.format(
                         "Error importing session data for Java Forum Stuttgart: No talks found in %s from %s",
                         jsonFile, jsonUrl));
