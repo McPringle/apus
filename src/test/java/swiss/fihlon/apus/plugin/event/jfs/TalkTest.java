@@ -20,10 +20,11 @@ package swiss.fihlon.apus.plugin.event.jfs;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TalkTest {
 
-    private final Talk talk = new Talk("id", "title", "room", "topic", "timeSlot");
+    private final Talk talk = new Talk("id", "title", "room", "topic", "timeSlot", true);
 
     @Test
     void id() {
@@ -48,6 +49,11 @@ class TalkTest {
     @Test
     void timeSlot() {
         assertEquals("timeSlot", talk.timeSlot());
+    }
+
+    @Test
+    void isInEnglish() {
+        assertTrue(talk.isInEnglish());
     }
 
 }

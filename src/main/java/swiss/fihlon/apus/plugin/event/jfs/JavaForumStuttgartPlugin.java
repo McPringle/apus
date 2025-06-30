@@ -150,8 +150,9 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
             final String room = obj.getString("room");
             final String topic = obj.getString("topic");
             final String timeSlot = obj.getString("timeSlot");
+            final boolean isInEnglish = obj.getBoolean("isInEnglish");
 
-            talks.add(new Talk(id, title, room, topic, timeSlot));
+            talks.add(new Talk(id, title, room, topic, timeSlot, isInEnglish));
         }
 
         return talks;
@@ -208,7 +209,8 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         final ZonedDateTime startDate = getStartDate(talk).atZone(timezone);
         final ZonedDateTime endDate = getEndDate(talk).atZone(timezone);
         final Track track = getTrack(talk, allTracks);
-        return new Session(id, startDate, endDate, room, title, speakers, Language.UNKNOWN, track);
+        final Language language = talk.isInEnglish() ? Language.EN : Language.DE;
+        return new Session(id, startDate, endDate, room, title, speakers, language, track);
     }
 
     private @NotNull List<@NotNull Speaker> getSpeakersForTalk(final @NotNull Talk talk,
