@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "title": "Lorem ipsum dolor sit amet",
+    "room": "Room A",
+    "timeSlot": "09:45 - 10:00",
+    "topic": "Methodik & Praxis",
+    "isInEnglish": false,
+    "isCanceled": false,
+    "speakers": [
+      {
+        "id": 1,
+        "name": "Walter White",
+        "imageUrl": "images/2025__1__White__Walter.jpeg"
+      },
+      {
+        "id": 2,
+        "name": "Jesse Pinkman",
+        "imageUrl": "images/2025__2__Pinkman__Jesse.jpeg"
+      }
+    ]
+  }
+]

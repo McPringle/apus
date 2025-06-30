@@ -18,6 +18,9 @@
 package swiss.fihlon.apus.plugin.event.jfs;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,7 @@ import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
 import swiss.fihlon.apus.plugin.event.EventPlugin;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,11 +41,6 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -51,6 +50,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -58,85 +58,98 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
 
     private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(JavaForumStuttgartPlugin.class);
 
-    private final @NotNull String dbUrl;
+    private final @NotNull String jsonUrl;
+    private final @NotNull String resourcesUrl;
     private final @NotNull ZoneId timezone;
 
     public JavaForumStuttgartPlugin(@NotNull final AppConfig appConfig) {
-        dbUrl = appConfig.jfs().dbUrl();
+        jsonUrl = appConfig.jfs().jsonUrl();
+        resourcesUrl = appConfig.jfs().resourcesUrl();
         timezone = appConfig.timezone();
     }
 
     @Override
     public boolean isEnabled() {
-        return !dbUrl.isEmpty();
+        return !jsonUrl.isEmpty();
     }
 
     @Override
     public @NotNull Stream<@NotNull Session> getSessions() {
-        final List<Talk> allTalks;
-        final Map<String, List<String>> allAssignments;
-        final Map<String, Speaker> allSpeakers;
+        List<Talk> allTalks = List.of();
+        Map<String, List<String>> allAssignments = Map.of();
+        Map<String, Speaker> allSpeakers = Map.of();
         final Map<String, Track> allTracks = getTracks();
 
-        final Path databaseFile = downloadDatabaseFile();
-        try (
-                Connection connection = DriverManager.getConnection("jdbc:sqlite:" + databaseFile.toAbsolutePath().toFile().getAbsolutePath());
-                Statement statement = connection.createStatement()
-            ) {
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
-            allTalks = getTalks(statement);
-            allAssignments = getAssignments(statement);
-            allSpeakers = getSpeakers(statement);
-        } catch (final SQLException e) {
-            // if the error message is "out of memory", it probably means no database file is found
-            throw new SessionImportException(String.format(
-                    "Error importing session data for Java Forum Stuttgart: %s",
-                    e.getMessage()), e);
+        final Path jsonFile = downloadJsonFile();
+
+        try (BufferedReader reader = Files.newBufferedReader(jsonFile)) {
+
+            // Read lines as stream and join into a single string
+            String content = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+
+            // Parse root-level JSON array
+            JSONArray jsonArray = new JSONArray(content);
+
+            allTalks = getTalks(jsonArray);
+
+            if (allTalks.isEmpty()) {
+                throw new SessionImportException(String.format(
+                        "Error importing session data for Java Forum Stuttgart: No talks found in %s from %s",
+                        jsonFile, jsonUrl));
+            }
+
+            allAssignments = getAssignments(jsonArray);
+            allSpeakers = getSpeakers(jsonArray);
+
+        } catch (final IOException e) {
+            LOGGER.error("IO error: {}", e.getMessage());
+        } catch (final JSONException e) {
+            LOGGER.error("JSON error: {}", e.getMessage());
         } finally {
             try {
-                Files.delete(databaseFile);
-                LOGGER.info("Successfully deleted temporary database file: {}", databaseFile);
+                Files.delete(jsonFile);
+                LOGGER.info("Successfully deleted temporary database file: {}", jsonFile);
             } catch (final IOException e) {
-                LOGGER.warn("Unable to delete temporary database file: {}", databaseFile);
+                LOGGER.warn("Unable to delete temporary database file: {}", jsonFile);
             }
         }
+
         LOGGER.info("Successfully imported {} sessions for Java Forum Stuttgart", allTalks.size());
-        return allTalks.stream().map(talk -> mapToSession(talk, allAssignments, allSpeakers, allTracks));
+        Map<String, List<String>> finalAllAssignments = allAssignments;
+        Map<String, Speaker> finalAllSpeakers = allSpeakers;
+        return allTalks.stream().map(talk -> mapToSession(talk, finalAllAssignments, finalAllSpeakers, allTracks));
     }
 
-    private @NotNull Path downloadDatabaseFile() {
+    private @NotNull Path downloadJsonFile() {
         try {
-            final Path temporaryDatabaseFile = Files.createTempFile("jfs-", ".db");
-            LOGGER.info("Start downloading database from {} ...", dbUrl);
-            final URI uri = URI.create(dbUrl);
+            final Path temporaryJsonFile = Files.createTempFile("jfs-", ".json");
+            LOGGER.info("Start downloading JSON from {} ...", jsonUrl);
+            final URI uri = URI.create(jsonUrl);
             final URL url = uri.toURL();
             try (InputStream is = url.openStream();
-                 OutputStream os = Files.newOutputStream(temporaryDatabaseFile)) {
+                 OutputStream os = Files.newOutputStream(temporaryJsonFile)) {
                 is.transferTo(os);
             }
-            LOGGER.info("Successfully downloaded database to temporary file {}", temporaryDatabaseFile);
-            return temporaryDatabaseFile;
+            LOGGER.info("Successfully downloaded database to temporary file {}", temporaryJsonFile);
+            return temporaryJsonFile;
         } catch (final IOException e) {
             throw new SessionImportException(String.format(
-                    "Error downloading database file from '%s': %s",
-                    dbUrl, e.getMessage()), e);
+                    "Error downloading JSON file from '%s': %s",
+                    jsonUrl, e.getMessage()), e);
         }
     }
 
-    private @NotNull List<@NotNull Talk> getTalks(@NotNull final Statement statement) throws SQLException {
+    private @NotNull List<@NotNull Talk> getTalks(@NotNull final JSONArray talksArray) {
         final ArrayList<Talk> talks = new ArrayList<>();
 
-        final ResultSet resultSet = statement.executeQuery("""
-                SELECT id, title, room, topic, timeSlot
-                FROM talk
-                ORDER BY timeSlot""");
+        for (int i = 0; i < talksArray.length(); i++) {
+            JSONObject obj = talksArray.getJSONObject(i);
 
-        while (resultSet.next()) {
-            final String id = resultSet.getString("id");
-            final String title = resultSet.getString("title");
-            final String room = resultSet.getString("room");
-            final String topic = resultSet.getString("topic");
-            final String timeSlot = resultSet.getString("timeSlot");
+            final String id = Integer.toString(obj.getInt("id"));
+            final String title = obj.getString("title");
+            final String room = obj.getString("room");
+            final String topic = obj.getString("topic");
+            final String timeSlot = obj.getString("timeSlot");
 
             talks.add(new Talk(id, title, room, topic, timeSlot));
         }
@@ -144,39 +157,43 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return talks;
     }
 
-    private @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> getAssignments(@NotNull final Statement statement) throws SQLException {
+    private @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> getAssignments(@NotNull final JSONArray array) {
         final HashMap<String, List<String>> assignments = new HashMap<>();
 
-        final ResultSet resultSet = statement.executeQuery("""
-                SELECT speaker_id, talk_id
-                FROM speakertalk""");
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject obj = array.getJSONObject(i);
 
-        while (resultSet.next()) {
-            final String talkId = resultSet.getString("talk_id");
-            final String speakerId = resultSet.getString("speaker_id");
+            final String talkId = Integer.toString(obj.getInt("id"));
 
-            final ArrayList<String> speakers = (ArrayList<String>) assignments.getOrDefault(talkId, new ArrayList<>());
-            speakers.add(speakerId);
+            final ArrayList<String> speakers = new ArrayList<>();
+            JSONArray speakersArray = obj.getJSONArray("speakers");
+            for (int j = 0; j < speakersArray.length(); j++) {
+                JSONObject speaker = speakersArray.getJSONObject(j);
+                final String speakerId = Integer.toString(speaker.getInt("id"));
+                speakers.add(speakerId);
+            }
+
             assignments.put(talkId, speakers);
         }
 
         return assignments;
     }
 
-    private @NotNull Map<@NotNull String, @NotNull Speaker> getSpeakers(@NotNull final Statement statement) throws SQLException {
+    private @NotNull Map<@NotNull String, @NotNull Speaker> getSpeakers(@NotNull final JSONArray array) {
         final HashMap<String, Speaker> speakers = new HashMap<>();
 
-        final ResultSet resultSet = statement.executeQuery("""
-                SELECT id, name
-                FROM speaker""");
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject obj = array.getJSONObject(i);
 
-        while (resultSet.next()) {
-            final String id = resultSet.getString("id");
-            final String name = resultSet.getString("name");
-
-            speakers.put(id, new Speaker(name));
+            JSONArray speakersArray = obj.getJSONArray("speakers");
+            for (int j = 0; j < speakersArray.length(); j++) {
+                JSONObject speaker = speakersArray.getJSONObject(j);
+                final String speakerId = Integer.toString(speaker.getInt("id"));
+                String name = speaker.getString("name");
+                String imageUrl = speaker.getString("imageUrl");
+                speakers.put(speakerId, new Speaker(name, imageUrl));
+            }
         }
-
         return speakers;
     }
 

@@ -91,9 +91,14 @@
       "description" : "How often (in minutes) to update event data."
     },
     {
-      "name" : "apus.jfs.dbUrl",
+      "name" : "apus.jfs.jsonUrl",
       "type" : "java.lang.String",
-      "description" : "The URL of the database file for Java Forum Stuttgart."
+      "description" : "The URL of the JSON file for Java Forum Stuttgart."
+    },
+    {
+      "name" : "apus.jfs.resourcesUrl",
+      "type" : "java.lang.String",
+      "description" : "The URL of the resources file for Java Forum Stuttgart."
     },
     {
       "name" : "apus.language",
