@@ -70,7 +70,7 @@ class JavaForumStuttgartPluginTest {
         assertEquals(2, session.speakers().size());
         assertEquals(new Speaker("Walter White", null), session.speakers().getFirst());
         assertEquals(new Speaker("Jesse Pinkman", null), session.speakers().get(1));
-        assertEquals(Language.UNKNOWN, session.language());
+        assertEquals(Language.EN, session.language());
     }
 
     @Test

@@ -5,7 +5,7 @@
     "room": "Room A",
     "timeSlot": "09:45 - 10:00",
     "topic": "Methodik & Praxis",
-    "isInEnglish": false,
+    "isInEnglish": true,
     "isCanceled": false,
     "speakers": [
       {
