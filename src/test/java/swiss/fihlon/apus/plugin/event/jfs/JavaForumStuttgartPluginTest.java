@@ -68,8 +68,8 @@ class JavaForumStuttgartPluginTest {
         assertEquals(new Room("Room A"), session.room());
         assertEquals("Lorem ipsum dolor sit amet", session.title());
         assertEquals(2, session.speakers().size());
-        assertEquals(new Speaker("Walter White", "images/2025__1__White__Walter.jpeg"), session.speakers().getFirst());
-        assertEquals(new Speaker("Jesse Pinkman", "images/2025__2__Pinkman__Jesse.jpeg"), session.speakers().get(1));
+        assertEquals(new Speaker("Walter White", null), session.speakers().getFirst());
+        assertEquals(new Speaker("Jesse Pinkman", null), session.speakers().get(1));
         assertEquals(Language.UNKNOWN, session.language());
     }
 

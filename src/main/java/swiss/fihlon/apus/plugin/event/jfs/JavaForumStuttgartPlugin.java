@@ -191,8 +191,8 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
                 JSONObject speaker = speakersArray.getJSONObject(j);
                 final String speakerId = Integer.toString(speaker.getInt("id"));
                 String name = speaker.getString("name");
-                String imageUrl = speaker.getString("imageUrl");
-                speakers.put(speakerId, new Speaker(name, imageUrl));
+                //String imageUrl = speaker.getString("imageUrl"); // not used for now because we want the fallback to the track icon
+                speakers.put(speakerId, new Speaker(name, null));
             }
         }
         return speakers;
