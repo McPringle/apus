@@ -101,10 +101,10 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
             allAssignments = getAssignments(jsonArray);
             allSpeakers = getSpeakers(jsonArray);
 
-        } catch (IOException e) {
-            System.err.println("IO error: " + e.getMessage());
-        } catch (JSONException e) {
-            System.err.println("JSON error: " + e.getMessage());
+        } catch (final IOException e) {
+            LOGGER.error("IO error: {}", e.getMessage());
+        } catch (final JSONException e) {
+            LOGGER.error("JSON error: {}", e.getMessage());
         } finally {
             try {
                 Files.delete(jsonFile);
