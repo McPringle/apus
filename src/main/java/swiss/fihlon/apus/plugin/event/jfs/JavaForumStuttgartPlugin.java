@@ -237,7 +237,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     private @NotNull Map<@NotNull String, @NotNull Track> getTracks() {
         return Map.of(
                 "Architektur & Sicherheit", new Track(TrackIcons.ARCHITECTURE_SECURITY.getSvgCode()),
-                "Test & Betrieb", new Track(TrackIcons.BETRIEB.getSvgCode()),
+                "Test & Betrieb", new Track(TrackIcons.TEST_BETRIEB.getSvgCode()),
                 "Microservices, Container & Cloud", new Track(TrackIcons.CLOUD.getSvgCode()),
                 "Core Java & JVM-Sprachen", new Track(TrackIcons.CORE_JAVA.getSvgCode()),
                 "Enterprise Java & Frameworks", new Track(TrackIcons.ENTERPRISE_FRAMEWORKS.getSvgCode()),

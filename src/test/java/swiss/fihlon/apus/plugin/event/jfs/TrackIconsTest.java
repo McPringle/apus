@@ -41,7 +41,6 @@ class TrackIconsTest {
     @Test
     void valueOf() {
         assertEquals(TrackIcons.ARCHITECTURE_SECURITY, TrackIcons.valueOf("ARCHITECTURE_SECURITY"));
-        assertEquals(TrackIcons.BETRIEB, TrackIcons.valueOf("BETRIEB"));
         assertEquals(TrackIcons.CLOUD, TrackIcons.valueOf("CLOUD"));
         assertEquals(TrackIcons.CORE_JAVA, TrackIcons.valueOf("CORE_JAVA"));
         assertEquals(TrackIcons.ENTERPRISE_FRAMEWORKS, TrackIcons.valueOf("ENTERPRISE_FRAMEWORKS"));
@@ -51,6 +50,7 @@ class TrackIconsTest {
         assertEquals(TrackIcons.METHODS_PRACTICE, TrackIcons.valueOf("METHODS_PRACTICE"));
         assertEquals(TrackIcons.PECHA_KUCHA, TrackIcons.valueOf("PECHA_KUCHA"));
         assertEquals(TrackIcons.OPENSOURCE, TrackIcons.valueOf("OPENSOURCE"));
+        assertEquals(TrackIcons.TEST_BETRIEB, TrackIcons.valueOf("TEST_BETRIEB"));
         assertEquals(TrackIcons.TRENDS, TrackIcons.valueOf("TRENDS"));
     }
 }
