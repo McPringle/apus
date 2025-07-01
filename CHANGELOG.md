@@ -22,6 +22,8 @@ For questions and support requests, please use
 
 ### Breaking Changes
 
+* Rewrite Java Forum Stuttgart Plugin for new API with new configuration options
+
 ---
 
 ## Version 5
