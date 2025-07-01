@@ -59,12 +59,10 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(JavaForumStuttgartPlugin.class);
 
     private final @NotNull String jsonUrl;
-    private final @NotNull String resourcesUrl;
     private final @NotNull ZoneId timezone;
 
     public JavaForumStuttgartPlugin(@NotNull final AppConfig appConfig) {
         jsonUrl = appConfig.jfs().jsonUrl();
-        resourcesUrl = appConfig.jfs().resourcesUrl();
         timezone = appConfig.timezone();
     }
 
@@ -109,7 +107,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
             try {
                 Files.delete(jsonFile);
                 LOGGER.info("Successfully deleted temporary database file: {}", jsonFile);
-            } catch (final IOException e) {
+            } catch (final IOException _) {
                 LOGGER.warn("Unable to delete temporary database file: {}", jsonFile);
             }
         }
@@ -191,7 +189,6 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
                 JSONObject speaker = speakersArray.getJSONObject(j);
                 final String speakerId = Integer.toString(speaker.getInt("id"));
                 String name = speaker.getString("name");
-                //String imageUrl = speaker.getString("imageUrl"); // not used for now because we want the fallback to the track icon
                 speakers.put(speakerId, new Speaker(name, null));
             }
         }

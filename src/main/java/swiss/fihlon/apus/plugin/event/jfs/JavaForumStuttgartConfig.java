@@ -19,4 +19,4 @@ package swiss.fihlon.apus.plugin.event.jfs;
 
 import org.jetbrains.annotations.NotNull;
 
-public record JavaForumStuttgartConfig(@NotNull String jsonUrl, @NotNull String resourcesUrl) { }
+public record JavaForumStuttgartConfig(@NotNull String jsonUrl) { }
