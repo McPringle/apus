@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 public record Speaker(@NotNull String fullName, @Nullable String imageUrl) {
 
-    public Speaker(@NotNull final String fullName) {
+    public Speaker(final @NotNull String fullName) {
         this(fullName, null);
     }
 

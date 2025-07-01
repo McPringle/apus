@@ -52,7 +52,7 @@ public final class EventDemoPlugin implements EventPlugin {
     private final boolean demoMode;
     private final @NotNull List<@NotNull Session> sessions;
 
-    public EventDemoPlugin(@NotNull final AppConfig appConfig) {
+    public EventDemoPlugin(final @NotNull AppConfig appConfig) {
         locale = appConfig.locale();
         timezone = appConfig.timezone();
         demoMode = appConfig.demoMode();

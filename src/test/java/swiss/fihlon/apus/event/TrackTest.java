@@ -30,7 +30,7 @@ class TrackTest {
 
     @ParameterizedTest
     @MethodSource("provideArgumentsForDefaultTrack")
-    void defaultTracks(@NotNull final Track testee) {
+    void defaultTracks(final @NotNull Track testee) {
         final String message = String.format("Error while testing track '%s'!", testee);
         assertNotNull(testee, message);
 

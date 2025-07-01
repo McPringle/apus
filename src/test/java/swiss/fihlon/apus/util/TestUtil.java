@@ -27,20 +27,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public final class TestUtil {
 
-    public static List<Component> getComponentsByClassName(@NotNull final Component component, @NotNull final String className) {
+    public static List<Component> getComponentsByClassName(final @NotNull Component component, final @NotNull String className) {
         return component.getChildren()
                 .filter(c -> c.getElement().getAttribute("class") != null && c.getElement().getAttribute("class").contains(className))
                 .toList();
     }
 
-    public static List<Component> getComponentsByTagName(@NotNull final Component component, @NotNull final String tagName) {
+    public static List<Component> getComponentsByTagName(final @NotNull Component component, final @NotNull String tagName) {
         return component.getChildren()
                 .filter(c -> c.getElement().getTag().equals(tagName))
                 .toList();
     }
 
     @NotNull
-    public static String extractFirstHtmlTag(@NotNull final String html, @NotNull final String tagName) {
+    public static String extractFirstHtmlTag(final @NotNull String html, final @NotNull String tagName) {
         final var document = Jsoup.parse(html);
         final var element = document.selectFirst(tagName);
         assertNotNull(element);

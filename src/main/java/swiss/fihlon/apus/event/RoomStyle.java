@@ -30,7 +30,7 @@ public enum RoomStyle {
     private final @NotNull String cssStyle;
     private final @NotNull String translationKey;
 
-    RoomStyle(@NotNull final String cssStyle, @NotNull final String translationKey) {
+    RoomStyle(final @NotNull String cssStyle, final @NotNull String translationKey) {
         this.cssStyle = cssStyle;
         this.translationKey = translationKey;
     }

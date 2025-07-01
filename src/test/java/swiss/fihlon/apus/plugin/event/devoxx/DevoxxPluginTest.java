@@ -90,7 +90,7 @@ class DevoxxPluginTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(@NotNull final String eventApi, @NotNull final String eventId, @NotNull final String weekday) {
+    void isDisabled(final @NotNull String eventApi, final @NotNull String eventId, final @NotNull String weekday) {
         final var appConfig = mock(AppConfig.class);
         final var devoxxConfig = new DevoxxConfig(eventApi, eventId, weekday);
         when(appConfig.devoxx()).thenReturn(devoxxConfig);
@@ -147,7 +147,7 @@ class DevoxxPluginTest {
         assertTracks(sessions);
     }
 
-    private void assertTracks(@NotNull final List<Session> sessions) {
+    private void assertTracks(final @NotNull List<Session> sessions) {
         // the first session contains a PNG wrapped in an SVG
         final var expectedPNG = """
                 <svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">

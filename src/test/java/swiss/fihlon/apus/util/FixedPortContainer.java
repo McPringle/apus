@@ -22,7 +22,7 @@ import org.testcontainers.containers.GenericContainer;
 
 public class FixedPortContainer extends GenericContainer<FixedPortContainer> {
 
-    public FixedPortContainer(@NotNull final String dockerImageName, final int fixedPort, final int containerPort) {
+    public FixedPortContainer(final @NotNull String dockerImageName, final int fixedPort, final int containerPort) {
         super(dockerImageName);
         addFixedExposedPort(fixedPort, containerPort);
     }

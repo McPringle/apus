@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 
 class ApplicationI18NProviderTest {
 
-    private @NotNull AppConfig mockAppConfig(@NotNull final String language) {
+    private @NotNull AppConfig mockAppConfig(final @NotNull String language) {
         final var appConfig = mock(AppConfig.class);
         when(appConfig.language()).thenReturn(language);
         when(appConfig.locale()).thenReturn(switch (language) {

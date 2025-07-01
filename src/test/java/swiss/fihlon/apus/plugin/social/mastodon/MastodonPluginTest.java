@@ -76,7 +76,7 @@ class MastodonPluginTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(@NotNull final String instance, @NotNull final String postApi) {
+    void isDisabled(final @NotNull String instance, final @NotNull String postApi) {
         final var mockAppConfig = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig(instance, "", "", postApi, 0);
         when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
@@ -112,7 +112,7 @@ class MastodonPluginTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForHashtagsTest")
-    void getPostsWithHashtags(@NotNull final List<String> hashtags, final int expectedNumberOfPosts) {
+    void getPostsWithHashtags(final @NotNull List<String> hashtags, final int expectedNumberOfPosts) {
         final var mockAppConfig = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig("localhost", "", "", appConfig.mastodon().postAPI(), 0);
         when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
@@ -306,9 +306,9 @@ class MastodonPluginTest {
 
         @Override
         @NotNull
-        public JSONArray getPosts(@NotNull final String instance,
-                                  @NotNull final String hashtag,
-                                  @NotNull final String postAPI,
+        public JSONArray getPosts(final @NotNull String instance,
+                                  final @NotNull String hashtag,
+                                  final @NotNull String postAPI,
                                   final int postLimit)
                 throws MastodonException {
             final var posts = new JSONArray();

@@ -116,7 +116,7 @@ public final class EventService {
         }
     }
 
-    private @NotNull Session dateAdjust(@NotNull final Session session) {
+    private @NotNull Session dateAdjust(final @NotNull Session session) {
         if (dateAdjust.isZero() && timeAdjust.isZero()) {
             return session;
         }

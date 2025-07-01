@@ -58,7 +58,7 @@ public final class DevoxxPlugin implements EventPlugin {
     private final @NotNull String eventId;
     private final @NotNull String weekday;
 
-    public DevoxxPlugin(@NotNull final AppConfig configuration) {
+    public DevoxxPlugin(final @NotNull AppConfig configuration) {
         this.eventApi = configuration.devoxx().eventApi();
         this.eventId = configuration.devoxx().eventId();
         this.weekday = configuration.devoxx().weekday();
@@ -108,7 +108,7 @@ public final class DevoxxPlugin implements EventPlugin {
         return sessions.stream();
     }
 
-    private @NotNull List<@NotNull Speaker> getSpeakers(@NotNull final JSONArray speakersData) {
+    private @NotNull List<@NotNull Speaker> getSpeakers(final @NotNull JSONArray speakersData) {
         final var speakers = new ArrayList<Speaker>();
         for (int counter = 0; counter < speakersData.length(); counter++) {
             final var speakerData = speakersData.getJSONObject(counter);
@@ -117,7 +117,7 @@ public final class DevoxxPlugin implements EventPlugin {
         return speakers;
     }
 
-    private @NotNull Track getTrack(@NotNull final JSONObject proposal) throws IOException, InterruptedException {
+    private @NotNull Track getTrack(final @NotNull JSONObject proposal) throws IOException, InterruptedException {
         if (proposal.has("track")) {
             if (!proposal.isNull("track")) {
                 final var trackData = proposal.getJSONObject("track");
@@ -139,12 +139,12 @@ public final class DevoxxPlugin implements EventPlugin {
         return Track.NONE;
     }
 
-    private @NotNull Track trackWithPNG(@NotNull final String imageURL) {
+    private @NotNull Track trackWithPNG(final @NotNull String imageURL) {
         final var svgCode = TemplateUtil.replaceVariables(PNG_SVG_WRAPPER_TEMPLATE, Map.of("PNG_URL", imageURL));
         return new Track(svgCode);
     }
 
-    private @NotNull Track trackWithSVG(@NotNull final String imageURL) throws IOException, InterruptedException {
+    private @NotNull Track trackWithSVG(final @NotNull String imageURL) throws IOException, InterruptedException {
         final URI uri = URI.create(imageURL);
         return Track.fromURI(uri);
     }

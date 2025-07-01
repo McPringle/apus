@@ -59,7 +59,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     private final @NotNull String jsonUrl;
     private final @NotNull ZoneId timezone;
 
-    public JavaForumStuttgartPlugin(@NotNull final AppConfig appConfig) {
+    public JavaForumStuttgartPlugin(final @NotNull AppConfig appConfig) {
         jsonUrl = appConfig.jfs().jsonUrl();
         timezone = appConfig.timezone();
     }
@@ -131,7 +131,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         }
     }
 
-    private @NotNull List<@NotNull Talk> getTalks(@NotNull final JSONArray talksArray) {
+    private @NotNull List<@NotNull Talk> getTalks(final @NotNull JSONArray talksArray) {
         final ArrayList<Talk> talks = new ArrayList<>();
 
         for (int i = 0; i < talksArray.length(); i++) {
@@ -150,7 +150,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return talks;
     }
 
-    private @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> getAssignments(@NotNull final JSONArray array) {
+    private @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> getAssignments(final @NotNull JSONArray array) {
         final HashMap<String, List<String>> assignments = new HashMap<>();
 
         for (int i = 0; i < array.length(); i++) {
@@ -171,7 +171,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return assignments;
     }
 
-    private @NotNull Map<@NotNull String, @NotNull Speaker> getSpeakers(@NotNull final JSONArray array) {
+    private @NotNull Map<@NotNull String, @NotNull Speaker> getSpeakers(final @NotNull JSONArray array) {
         final HashMap<String, Speaker> speakers = new HashMap<>();
 
         for (int i = 0; i < array.length(); i++) {
@@ -213,13 +213,13 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     }
 
     @SuppressWarnings("StringSplitter") // safe to ignore here
-    private @NotNull LocalDateTime getStartDate(@NotNull final Talk talk) {
+    private @NotNull LocalDateTime getStartDate(final @NotNull Talk talk) {
         final var time = LocalTime.parse(talk.timeSlot().split("-")[0].trim());
         return LocalDateTime.of(LocalDate.now(timezone), time);
     }
 
     @SuppressWarnings("StringSplitter") // safe to ignore here
-    private @NotNull LocalDateTime getEndDate(@NotNull final Talk talk) {
+    private @NotNull LocalDateTime getEndDate(final @NotNull Talk talk) {
         final var time = LocalTime.parse(talk.timeSlot().split("-")[1].replace("Uhr", "").trim());
         return LocalDateTime.of(LocalDate.now(timezone), time);
     }

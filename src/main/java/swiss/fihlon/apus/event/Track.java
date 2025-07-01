@@ -47,7 +47,7 @@ public record Track(String svgCode) {
 
     private static final @NotNull String FILE_NAME_TEMPLATE = "/icons/tracks/%s";
 
-    private static @NotNull Track defaultTrack(@NotNull final String svgFileName) {
+    private static @NotNull Track defaultTrack(final @NotNull String svgFileName) {
         try {
             final String fileName = FILE_NAME_TEMPLATE.formatted(svgFileName);
             final URL url = Track.class.getResource(fileName);
@@ -63,12 +63,12 @@ public record Track(String svgCode) {
         return NONE;
     }
 
-    public static @NotNull Track fromPath(@NotNull final Path path) throws IOException {
+    public static @NotNull Track fromPath(final @NotNull Path path) throws IOException {
         final String svgCode = Files.readString(path);
         return new Track(svgCode);
     }
 
-    public static @NotNull Track fromURI(@NotNull final URI uri) throws IOException, InterruptedException {
+    public static @NotNull Track fromURI(final @NotNull URI uri) throws IOException, InterruptedException {
         try (var client = HttpClient.newHttpClient()) {
             final var request = HttpRequest.newBuilder()
                     .uri(uri)

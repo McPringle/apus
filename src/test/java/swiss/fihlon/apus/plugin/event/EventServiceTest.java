@@ -55,7 +55,7 @@ class EventServiceTest {
     private static final Locale TEST_LOCALE = Locale.ENGLISH;
     private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
 
-    static AppConfig mockConfiguration(@NotNull final Period dateAdjust, @NotNull final Duration timeAdjust, boolean demoMode) {
+    static AppConfig mockConfiguration(final @NotNull Period dateAdjust, final @NotNull Duration timeAdjust, boolean demoMode) {
         final var eventConfig = new EventConfig(dateAdjust, timeAdjust, "", 60,
                 true, true, 0);
         final var appConfig = mock(AppConfig.class);
@@ -198,7 +198,7 @@ class EventServiceTest {
             return sessions.stream();
         }
 
-        private @NotNull Session createSession(final int i, @NotNull final ZonedDateTime startDate) {
+        private @NotNull Session createSession(final int i, final @NotNull ZonedDateTime startDate) {
             final var id = "TEST" + i;
             final var endDate = startDate.plusHours(1);
             final var room = new Room("Room " + (Math.abs(i) % 2));

@@ -28,7 +28,7 @@ public record Session(@NotNull String id, @NotNull ZonedDateTime startDate, @Not
         implements Comparable<Session> {
 
     @Override
-    public int compareTo(@NotNull final Session other) {
+    public int compareTo(final @NotNull Session other) {
         final var dateCompareResult = startDate.compareTo(other.startDate);
         if (dateCompareResult == 0) {
             return room.compareTo(other.room);

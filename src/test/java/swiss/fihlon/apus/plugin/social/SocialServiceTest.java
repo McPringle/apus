@@ -122,7 +122,7 @@ class SocialServiceTest {
     }
 
     @NotNull
-    private List<Post> getPostsWithConfig(@NotNull final SocialConfig socialConfig) {
+    private List<Post> getPostsWithConfig(final @NotNull SocialConfig socialConfig) {
         final var config = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(), appConfig.password(),
                 appConfig.demoMode(), appConfig.styles(), appConfig.event(), socialConfig,
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
@@ -176,7 +176,7 @@ class SocialServiceTest {
     }
 
     @NotNull
-    private SocialService getSocialService(@NotNull final SocialConfig socialConfig) {
+    private SocialService getSocialService(final @NotNull SocialConfig socialConfig) {
         final var config = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(), appConfig.password(),
                 appConfig.demoMode(), appConfig.styles(), appConfig.event(), socialConfig,
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
@@ -363,7 +363,7 @@ class SocialServiceTest {
 
         @Override
         @NotNull
-        public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
+        public Stream<Post> getPosts(final @NotNull List<String> hashtags) {
             final Faker faker = new Faker();
             final var now = ZonedDateTime.now(TEST_TIMEZONE);
             final List<Post> posts = new ArrayList<>();
@@ -405,7 +405,7 @@ class SocialServiceTest {
 
         @Override
         @NotNull
-        public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
+        public Stream<Post> getPosts(final @NotNull List<String> hashtags) {
             if (hashtags.isEmpty()) {
                 return Stream.of();
             }
@@ -428,7 +428,7 @@ class SocialServiceTest {
 
         @Override
         @NotNull
-        public Stream<Post> getPosts(@NotNull final List<String> hashtags) {
+        public Stream<Post> getPosts(final @NotNull List<String> hashtags) {
             return Stream.of();
         }
     }

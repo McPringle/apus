@@ -58,7 +58,7 @@ public final class SessionizePlugin implements EventPlugin {
     private final @NotNull String speakerApi;
     private final @NotNull ZoneId timezone;
 
-    public SessionizePlugin(@NotNull final AppConfig appConfig) {
+    public SessionizePlugin(final @NotNull AppConfig appConfig) {
         this.eventId = appConfig.sessionize().eventId();
         this.eventApi = TemplateUtil.replaceVariables(appConfig.sessionize().eventApi(), Map.of("event", eventId));
         this.speakerApi = TemplateUtil.replaceVariables(appConfig.sessionize().speakerApi(), Map.of("event", eventId));

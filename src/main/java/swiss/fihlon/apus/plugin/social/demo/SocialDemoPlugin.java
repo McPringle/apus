@@ -50,7 +50,7 @@ public final class SocialDemoPlugin implements SocialPlugin {
     private final boolean demoMode;
     private final @NotNull List<@NotNull Post> posts;
 
-    public SocialDemoPlugin(@NotNull final AppConfig appConfig) {
+    public SocialDemoPlugin(final @NotNull AppConfig appConfig) {
         timezone = appConfig.timezone();
         demoMode = appConfig.demoMode();
         posts = demoMode ? createFakePosts(POST_COUNT) : List.of();

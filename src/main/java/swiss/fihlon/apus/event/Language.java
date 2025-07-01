@@ -31,7 +31,7 @@ public enum Language {
     private final @NotNull String languageCode;
     private final @NotNull String flagFileName;
 
-    public static @NotNull Language languageWithCode(@NotNull final String languageCode) {
+    public static @NotNull Language languageWithCode(final @NotNull String languageCode) {
         for (final Language language : values()) {
             if (language.languageCode.equals(languageCode)) {
                 return language;
@@ -40,7 +40,7 @@ public enum Language {
         throw new IllegalArgumentException(String.format("No language constant with language code '%s'!", languageCode));
     }
 
-    Language(@NotNull final String languageCode) {
+    Language(final @NotNull String languageCode) {
         this.languageCode = languageCode;
         this.flagFileName = FILE_NAME_TEMPLATE.formatted(languageCode);
     }
