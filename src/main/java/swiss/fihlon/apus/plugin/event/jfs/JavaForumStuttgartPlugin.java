@@ -20,7 +20,6 @@ package swiss.fihlon.apus.plugin.event.jfs;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -45,7 +44,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,18 +79,14 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         final Path jsonFile = downloadJsonFile();
 
         try (BufferedReader reader = Files.newBufferedReader(jsonFile)) {
-
-            // Read lines as stream and join into a single string
-            String content = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-
-            // Parse root-level JSON array
-            JSONArray jsonArray = new JSONArray(content);
+            final var content = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+            final var jsonArray = new JSONArray(content);
 
             allTalks = getTalks(jsonArray);
 
             if (allTalks.isEmpty()) {
                 throw new SessionImportException(String.format(
-                        "Error importing session data for Java Forum Stuttgart: No talks found in %s from %s",
+                        "Error importing session data for Java Forum Stuttgart: No talks found in '%s' from '%s'! ",
                         jsonFile, jsonUrl));
             }
 
@@ -113,8 +107,8 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         }
 
         LOGGER.info("Successfully imported {} sessions for Java Forum Stuttgart", allTalks.size());
-        Map<String, List<String>> finalAllAssignments = allAssignments;
-        Map<String, Speaker> finalAllSpeakers = allSpeakers;
+        final var finalAllAssignments = allAssignments;
+        final var finalAllSpeakers = allSpeakers;
         return allTalks.stream().map(talk -> mapToSession(talk, finalAllAssignments, finalAllSpeakers, allTracks));
     }
 
@@ -141,7 +135,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         final ArrayList<Talk> talks = new ArrayList<>();
 
         for (int i = 0; i < talksArray.length(); i++) {
-            JSONObject obj = talksArray.getJSONObject(i);
+            final var obj = talksArray.getJSONObject(i);
 
             final String id = Integer.toString(obj.getInt("id"));
             final String title = obj.getString("title");
@@ -160,15 +154,14 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         final HashMap<String, List<String>> assignments = new HashMap<>();
 
         for (int i = 0; i < array.length(); i++) {
-            JSONObject obj = array.getJSONObject(i);
-
-            final String talkId = Integer.toString(obj.getInt("id"));
+            final var obj = array.getJSONObject(i);
+            final var talkId = Integer.toString(obj.getInt("id"));
 
             final ArrayList<String> speakers = new ArrayList<>();
-            JSONArray speakersArray = obj.getJSONArray("speakers");
+            final var speakersArray = obj.getJSONArray("speakers");
             for (int j = 0; j < speakersArray.length(); j++) {
-                JSONObject speaker = speakersArray.getJSONObject(j);
-                final String speakerId = Integer.toString(speaker.getInt("id"));
+                final var speaker = speakersArray.getJSONObject(j);
+                final var speakerId = Integer.toString(speaker.getInt("id"));
                 speakers.add(speakerId);
             }
 
@@ -182,13 +175,13 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         final HashMap<String, Speaker> speakers = new HashMap<>();
 
         for (int i = 0; i < array.length(); i++) {
-            JSONObject obj = array.getJSONObject(i);
+            final var obj = array.getJSONObject(i);
 
-            JSONArray speakersArray = obj.getJSONArray("speakers");
+            final var speakersArray = obj.getJSONArray("speakers");
             for (int j = 0; j < speakersArray.length(); j++) {
-                JSONObject speaker = speakersArray.getJSONObject(j);
-                final String speakerId = Integer.toString(speaker.getInt("id"));
-                String name = speaker.getString("name");
+                final var speaker = speakersArray.getJSONObject(j);
+                final var speakerId = Integer.toString(speaker.getInt("id"));
+                final var name = speaker.getString("name");
                 speakers.put(speakerId, new Speaker(name, null));
             }
         }
@@ -199,14 +192,14 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
                                  final @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> allAssignments,
                                  final @NotNull Map<@NotNull String, @NotNull Speaker> allSpeakers,
                                  final @NotNull Map<@NotNull String, @NotNull Track> allTracks) {
-        final String id = String.format("JFS:%s", talk.id());
-        final Room room = new Room(talk.room());
-        final String title = talk.title();
-        final List<Speaker> speakers = getSpeakersForTalk(talk, allAssignments, allSpeakers);
-        final ZonedDateTime startDate = getStartDate(talk).atZone(timezone);
-        final ZonedDateTime endDate = getEndDate(talk).atZone(timezone);
-        final Track track = getTrack(talk, allTracks);
-        final Language language = talk.isInEnglish() ? Language.EN : Language.DE;
+        final var id = String.format("JFS:%s", talk.id());
+        final var room = new Room(talk.room());
+        final var title = talk.title();
+        final var speakers = getSpeakersForTalk(talk, allAssignments, allSpeakers);
+        final var startDate = getStartDate(talk).atZone(timezone);
+        final var endDate = getEndDate(talk).atZone(timezone);
+        final var track = getTrack(talk, allTracks);
+        final var language = talk.isInEnglish() ? Language.EN : Language.DE;
         return new Session(id, startDate, endDate, room, title, speakers, language, track);
     }
 
@@ -221,20 +214,19 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
 
     @SuppressWarnings("StringSplitter") // safe to ignore here
     private @NotNull LocalDateTime getStartDate(@NotNull final Talk talk) {
-        final LocalTime time = LocalTime.parse(talk.timeSlot().split("-")[0].trim());
+        final var time = LocalTime.parse(talk.timeSlot().split("-")[0].trim());
         return LocalDateTime.of(LocalDate.now(timezone), time);
     }
 
     @SuppressWarnings("StringSplitter") // safe to ignore here
     private @NotNull LocalDateTime getEndDate(@NotNull final Talk talk) {
-        final LocalTime time = LocalTime.parse(talk.timeSlot().split("-")[1].replace("Uhr", "").trim());
+        final var time = LocalTime.parse(talk.timeSlot().split("-")[1].replace("Uhr", "").trim());
         return LocalDateTime.of(LocalDate.now(timezone), time);
     }
 
     private @NotNull Map<@NotNull String, @NotNull Track> getTracks() {
         return Map.of(
                 "Architektur & Sicherheit", new Track(TrackIcons.ARCHITECTURE_SECURITY.getSvgCode()),
-                "Test & Betrieb", new Track(TrackIcons.TEST_BETRIEB.getSvgCode()),
                 "Microservices, Container & Cloud", new Track(TrackIcons.CLOUD.getSvgCode()),
                 "Core Java & JVM-Sprachen", new Track(TrackIcons.CORE_JAVA.getSvgCode()),
                 "Enterprise Java & Frameworks", new Track(TrackIcons.ENTERPRISE_FRAMEWORKS.getSvgCode()),
@@ -242,6 +234,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
                 "IDE & Tools", new Track(TrackIcons.IDE_TOOLS.getSvgCode()),
                 "Methodik & Praxis", new Track(TrackIcons.METHODS_PRACTICE.getSvgCode()),
                 "Open Source & Community", new Track(TrackIcons.OPENSOURCE.getSvgCode()),
+                "Test & Betrieb", new Track(TrackIcons.TEST_BETRIEB.getSvgCode()),
                 "Trends & neue Technologien (KI o.a.)", new Track(TrackIcons.TRENDS.getSvgCode())
         );
     }
