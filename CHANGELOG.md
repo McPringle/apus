@@ -7,6 +7,20 @@ For questions and support requests, please use
 
 ---
 
+## Version 7
+
+**Release date: work in progress 🚧**
+
+### New Features
+
+### Fixed Bugs
+
+### Maintenance Work
+
+### Breaking Changes
+
+---
+
 ## Version 6
 
 **Release date: 2025-07-01**
