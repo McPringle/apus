@@ -9,16 +9,13 @@ For questions and support requests, please use
 
 ## Version 6
 
-**Release date: work in progress 🚧**
-
-### New Features
-
-### Fixed Bugs
+**Release date: 2025-07-01**
 
 ### Maintenance Work
 
 * UI: Smaller font size for the social media posts
 * Loading social media media posts from different plugins in parallel
+* Many dependency updates
 
 ### Breaking Changes
 
