@@ -107,8 +107,8 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
             try {
                 Files.delete(jsonFile);
                 LOGGER.info("Successfully deleted temporary database file: {}", jsonFile);
-            } catch (final IOException _) {
-                LOGGER.warn("Unable to delete temporary database file: {}", jsonFile);
+            } catch (final IOException ioe) {
+                LOGGER.warn("Unable to delete temporary database file '{}' : {}", jsonFile, ioe.getMessage());
             }
         }
 
