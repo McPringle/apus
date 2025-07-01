@@ -53,20 +53,20 @@ class JavaForumStuttgartPluginTest {
 
         final var jfsPlugin = new JavaForumStuttgartPlugin(appConfig);
         final var sessions = jfsPlugin.getSessions().toList();
-        assertEquals(1, sessions.size());
+        assertEquals(8, sessions.size());
 
-        // full check of session with ID "JFS:1"
-        final var session = sessions.get(0);
+        // full check of session with ID "JFS:5"
+        final var session = sessions.get(4);
         final var today = LocalDate.now(TEST_TIMEZONE);
-        assertEquals("JFS:1", session.id());
-        assertEquals(ZonedDateTime.of(today, LocalTime.of(9, 45), TEST_TIMEZONE), session.startDate());
-        assertEquals(ZonedDateTime.of(today, LocalTime.of(10, 0), TEST_TIMEZONE), session.endDate());
+        assertEquals("JFS:5", session.id());
+        assertEquals(ZonedDateTime.of(today, LocalTime.of(19, 00), TEST_TIMEZONE), session.startDate());
+        assertEquals(ZonedDateTime.of(today, LocalTime.of(19, 45), TEST_TIMEZONE), session.endDate());
         assertEquals(new Room("Room A"), session.room());
-        assertEquals("Lorem ipsum dolor sit amet", session.title());
+        assertEquals("Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat", session.title());
         assertEquals(2, session.speakers().size());
-        assertEquals(new Speaker("Walter White", null), session.speakers().getFirst());
-        assertEquals(new Speaker("Jesse Pinkman", null), session.speakers().get(1));
-        assertEquals(Language.EN, session.language());
+        assertEquals(new Speaker("Saul Goodman", null), session.speakers().getFirst());
+        assertEquals(new Speaker("Mike Ehrmantraut", null), session.speakers().get(1));
+        assertEquals(Language.DE, session.language());
     }
 
     @Test

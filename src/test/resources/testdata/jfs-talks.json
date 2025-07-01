@@ -5,6 +5,27 @@
     "room": "Room A",
     "timeSlot": "09:45 - 10:00",
     "topic": "Methodik & Praxis",
+    "isInEnglish": false,
+    "isCanceled": false,
+    "speakers": [
+      {
+        "id": 1,
+        "name": "Walter White",
+        "imageUrl": "images/2025__1__White__Walter.jpeg"
+      },
+      {
+        "id": 2,
+        "name": "Jesse Pinkman",
+        "imageUrl": "images/2025__2__Pinkman__Jesse.jpeg"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat",
+    "room": "Room A",
+    "timeSlot": "10:00 - 10:30",
+    "topic": "Methodik & Praxis",
     "isInEnglish": true,
     "isCanceled": false,
     "speakers": [
@@ -17,6 +38,107 @@
         "id": 2,
         "name": "Jesse Pinkman",
         "imageUrl": "images/2025__2__Pinkman__Jesse.jpeg"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Ut wisi enim ad minim veniam",
+    "room": "Room A",
+    "timeSlot": "19:00 - 19:45",
+    "topic": "Methodik & Praxis",
+    "isInEnglish": false,
+    "isCanceled": false,
+    "speakers": [
+      {
+        "id": 3,
+        "name": "Gustavo Fring",
+        "imageUrl": "images/2025__3__Fring__Gustavo.jpeg"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum",
+    "room": "Room B",
+    "timeSlot": "11:00 - 11:45",
+    "topic": "Methodik & Praxis",
+    "isInEnglish": true,
+    "isCanceled": false,
+    "speakers": [
+      {
+        "id": 4,
+        "name": "Hank Schrader",
+        "imageUrl": "images/2025__4__Schrader__Hank.jpeg"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat",
+    "room": "Room A",
+    "timeSlot": "19:00 - 19:45",
+    "topic": "Methodik & Praxis",
+    "isInEnglish": false,
+    "isCanceled": false,
+    "speakers": [
+      {
+        "id": 5,
+        "name": "Saul Goodman",
+        "imageUrl": "images/2025__5__Goodman__Saul.jpeg"
+      },
+      {
+        "id": 6,
+        "name": "Mike Ehrmantraut",
+        "imageUrl": "images/2025__6__Ehrmantraut__Mike.jpeg"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "At vero eos et accusam et justo duo dolores et ea rebum",
+    "room": "Room B",
+    "timeSlot": "11:00 - 12:45",
+    "topic": "Methodik & Praxis",
+    "isInEnglish": true,
+    "isCanceled": false,
+    "speakers": [
+      {
+        "id": 7,
+        "name": "Skyler White",
+        "imageUrl": "images/2025__7__White__Skyler.jpeg"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Consetetur sadipscing elitr",
+    "room": "Room A",
+    "timeSlot": "10:00 - 12:45",
+    "topic": "Methodik & Praxis",
+    "isInEnglish": true,
+    "isCanceled": false,
+    "speakers": [
+      {
+        "id": 8,
+        "name": "Marie Schrader",
+        "imageUrl": "images/2025__8__Schrader__Marie.jpeg"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Consetetur sadipscing elitr",
+    "room": "Room A",
+    "timeSlot": "13:00 - 14:45",
+    "topic": "Methodik & Praxis",
+    "isInEnglish": false,
+    "isCanceled": false,
+    "speakers": [
+      {
+        "id": 9,
+        "name": "Lydia Rodarte-Quayle",
+        "imageUrl": "images/2025__9__Rodarte-Quayle__Lydia.jpeg"
       }
     ]
   }
