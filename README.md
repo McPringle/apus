@@ -317,6 +317,8 @@ The following table contains the CSS variables you can modify to change the user
 --event-next-session-color: #fff8dd;
 --event-closed-room-color: #fff8dd;
 --event-room-border: 1px solid #000000;
+--event-image-border: 1px solid #000000;
+--event-image-width: 852px;
 
 --social-background-color: #fff8dd;
 --social-title-color: #000000;
