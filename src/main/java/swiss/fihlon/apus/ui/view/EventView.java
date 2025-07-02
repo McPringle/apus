@@ -91,8 +91,8 @@ public final class EventView extends Div {
             Notification.show(getTranslation("event.error.nosessions"));
         }
         final var roomStylesInUse = new HashSet<RoomStyle>();
-        for (final Map.Entry<Room, List<Session>> roomWithSession : roomsWithSessions) {
-            final RoomView roomView = createRoomView(roomWithSession);
+        for (final Map.Entry<Room, List<Session>> roomWithSessions : roomsWithSessions) {
+            final RoomView roomView = createRoomView(roomWithSessions);
             if (!showEmptyRooms && RoomStyle.EMPTY.equals(roomView.getRoomStyle())) {
                 continue; // don't show empty rooms when configured to do so
             }
@@ -132,11 +132,11 @@ public final class EventView extends Div {
         }
     }
 
-    private @NotNull RoomView createRoomView(final @NotNull Map.Entry<@NotNull Room, @NotNull List<@NotNull Session>> roomWithSession) {
+    private @NotNull RoomView createRoomView(final @NotNull Map.Entry<@NotNull Room, @NotNull List<@NotNull Session>> roomWithSessions) {
         final LocalDate today = LocalDate.now(timezone);
         final ZonedDateTime timeLimitNextSession = ZonedDateTime.now(timezone).plus(nextSessionTimeout);
-        final Room room = roomWithSession.getKey();
-        final List<Session> sessions = roomWithSession.getValue();
+        final Room room = roomWithSessions.getKey();
+        final List<Session> sessions = roomWithSessions.getValue();
         final ZonedDateTime now = ZonedDateTime.now(timezone).withSecond(59).withNano(999);
         final Session session = sessions.isEmpty() ? null : sessions.stream()
                 .filter(s -> s.endDate().isAfter(now))
