@@ -172,7 +172,7 @@ To modify the default configuration values, just specify environment variables w
 | APUS_EVENT_UPDATE_FREQUENCY     | 5             | How often (in minutes) to update event data (0 = disabled).                           |
 | APUS_JFS_JSON_URL               |               | The URL of the JSON file for Java Forum Stuttgart.                                    |
 | APUS_LANGUAGE                   | en            | Language code of the language used for the UI.                                        |
-| APUS_MASTODON_ACCESS_TOKEN      |               | The Mastodon access token. Only needed for the notification API.                      |
+| APUS_MASTODON_ACCESS_TOKEN      |               | The Mastodon access token. Only needed for the notification API (see below).          |
 | APUS_MASTODON_INSTANCE          | ijug.social   | The Mastodon instance used to read the posts from (empty = disabled).                 |
 | APUS_MASTODON_LIMIT             | 30            | The limit for the number of results when accessing the Mastodon API.                  |
 | APUS_MASTODON_NOTIFICATION_API  | [5]           | The URL of the Mastodon API to read the notifications (empty = disabled).             |
@@ -204,6 +204,8 @@ The environment variables will override the default values. Some default values 
 7. `https://sessionize.com/api/v2/${event}/view/Sessions`
 8. `https://sessionize.com/api/v2/${event}/view/Speakers`
 
+#### Adjusting Event Dates and Times
+
 The `APUS_EVENT_DATE_ADJUST` option uses the ISO-8601 period formats `PnYnMnD` and `PnW`. Examples:
 
 | Example     | Description                                                  |
@@ -227,6 +229,23 @@ The `APUS_EVENT_TIME_ADJUST` option uses the ISO-8601 duration formats `PTnHnMnS
 | `PT1H2M3S` | +1 hour, +2 minutes, +3 seconds                               |
 | `PT-1H2M`  | -1 hour, +2 minutes (minus is valid for the hours only)       |
 | `-PT1H2M`  | -1 hour, -2 minutes (minus is valid for the whole expression) |
+
+#### Create Mastodon Access Token
+
+1. Please log in at https://YOUR.INSTANCE/.
+2. Open the page https://YOUR.INSTANCE/settings/applications/new.
+3. Fill out the form:
+   - Application name: Apus
+   - Application website: https://APUS_DOMAIN/
+   - Adjust the permissions as follows:
+     - Enable only "read:notifications"
+     - Disable everything else
+4. Scroll to the bottom and click "Save".
+5. The new application "Apus" will now appear in the table.
+6. Click on the name "Apus".
+7. Copy the access token (third line).
+
+Replace the placeholder `YOUR.INSTANCE` with the domain of the Mastodon instance where your account is registered (e.g. `mastodon.social` or `ijug.social`) and replace `APUS_DOMAIN` with the domain where your Apus installation is accessible (e.g. `apus.ijug.eu`).
 
 ### Custom Styles
 

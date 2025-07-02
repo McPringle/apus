@@ -17,6 +17,8 @@ For questions and support requests, please use
 
 ### Maintenance Work
 
+* Add description about how to create a Mastodon Access Token
+
 ### Breaking Changes
 
 ---
