@@ -15,6 +15,8 @@ For questions and support requests, please use
 
 ### Fixed Bugs
 
+* Fix disappearing rooms after last session of the day
+
 ### Maintenance Work
 
 * Add description about how to create a Mastodon Access Token

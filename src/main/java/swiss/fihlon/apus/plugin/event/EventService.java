@@ -32,6 +32,7 @@ import swiss.fihlon.apus.plugin.event.demo.EventDemoPlugin;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -92,10 +93,10 @@ public final class EventService {
                     .sorted()
                     .toList();
 
-            final ZonedDateTime now = ZonedDateTime.now(timezone);
+            final LocalDate today = ZonedDateTime.now(timezone).toLocalDate();
             final Map<Room, List<Session>> newRoomsWithSessions = new TreeMap<>();
             final List<Session> runningAndNextSessions = sessions.stream()
-                    .filter(session -> session.endDate().isAfter(now))
+                    .filter(session -> session.endDate().toLocalDate().isEqual(today))
                     .toList();
             for (final Session session : runningAndNextSessions) {
                 final var roomWithSessions = newRoomsWithSessions.get(session.room());
