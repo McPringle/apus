@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
 
+import static java.time.temporal.ChronoUnit.DAYS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
@@ -90,8 +91,7 @@ class EventServiceTest {
                 .stream()
                 .mapToLong(List::size)
                 .sum();
-        final var now = ZonedDateTime.now(TEST_TIMEZONE);
-        final var expectedSessionCount = 4 * (24 - now.getHour()) - (now.getMinute() >= 50 ? 4 : 0);
+        final var expectedSessionCount = 4 * 24;
         assertEquals(expectedSessionCount, sessionCount);
     }
 
@@ -107,17 +107,17 @@ class EventServiceTest {
         // The result be two rooms...
         assertEquals(2, roomsWithSessions.size());
 
-        // ... where the first room starts with session 0 ...
+        // ... where the first room starts with session 4 ...
         final var room0 = roomsWithSessions.get(new Room("Room 0"));
         assertNotNull(room0);
-        assertEquals(3, room0.size());
-        assertEquals("TEST0", room0.getFirst().id());
+        assertEquals(4, room0.size());
+        assertEquals("TEST2", room0.getFirst().id());
 
-        // ... and the second room starts with session -1.
+        // ... and the second room starts with session 5.
         final var room1 = roomsWithSessions.get(new Room("Room 1"));
         assertNotNull(room1);
-        assertEquals(3, room1.size());
-        assertEquals("TEST-1", room1.getFirst().id());
+        assertEquals(4, room1.size());
+        assertEquals("TEST1", room1.getFirst().id());
     }
 
     @Test
@@ -190,9 +190,11 @@ class EventServiceTest {
 
         @Override
         public @NotNull Stream<Session> getSessions() {
+            final var today = ZonedDateTime.now(TEST_TIMEZONE).truncatedTo(DAYS);
             final List<Session> sessions = new ArrayList<>();
-            for (int i = -5; i <= 5; i++) {
-                sessions.add(createSession(i, ZonedDateTime.now(TEST_TIMEZONE).minusHours(i)));
+            for (int i = 1; i <= 8; i++) {
+                final var hours = 8 + i;
+                sessions.add(createSession(i, today.plusHours(hours)));
             }
             Collections.shuffle(sessions);
             return sessions.stream();
@@ -200,7 +202,7 @@ class EventServiceTest {
 
         private @NotNull Session createSession(final int i, final @NotNull ZonedDateTime startDate) {
             final var id = "TEST" + i;
-            final var endDate = startDate.plusHours(1);
+            final var endDate = startDate.plusMinutes(45);
             final var room = new Room("Room " + (Math.abs(i) % 2));
             final var title = "Session " + i;
             final var speakers = List.of(new Speaker("Speaker 1"));
