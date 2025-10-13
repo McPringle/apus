@@ -9,9 +9,7 @@ For questions and support requests, please use
 
 ## Version 7
 
-**Release date: work in progress 🚧**
-
-### New Features
+**Release date: 2025-10-13**
 
 ### Fixed Bugs
 
@@ -20,8 +18,7 @@ For questions and support requests, please use
 ### Maintenance Work
 
 * Add description about how to create a Mastodon Access Token
-
-### Breaking Changes
+* Update dependencies
 
 ---
 
