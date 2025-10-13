@@ -15,6 +15,8 @@ For questions and support requests, please use
 
 ### Fixed Bugs
 
+* Fix Sessionize language detection after API changes
+
 ### Maintenance Work
 
 ### Breaking Changes

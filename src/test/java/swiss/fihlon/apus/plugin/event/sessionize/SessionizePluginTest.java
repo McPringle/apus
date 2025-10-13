@@ -151,7 +151,7 @@ class SessionizePluginTest {
 
         final var sessionizePlugin = new SessionizePlugin(appConfig);
         final var exception = assertThrows(SessionImportException.class, sessionizePlugin::getSessions);
-        assertEquals("Error parsing session 1: Unknown language ID: 123456", exception.getMessage());
+        assertEquals("Error parsing session 1: Unknown language name: Foobar", exception.getMessage());
     }
 
     @Test

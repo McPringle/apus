@@ -49,9 +49,9 @@ import java.util.stream.Stream;
 public final class SessionizePlugin implements EventPlugin {
     private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(SessionizePlugin.class);
 
-    private static final int CATEGORY_ID_LANGUAGE = 68911;
-    private static final int LANGUAGE_ID_ENGLISH = 242155;
-    private static final int LANGUAGE_ID_GERMAN = 242156;
+    private static final String CATEGORY_NAME_LANGUAGE = "Language";
+    private static final String LANGUAGE_NAME_ENGLISH = "English";
+    private static final String LANGUAGE_NAME_GERMAN = "German";
 
     private final @NotNull String eventId;
     private final @NotNull String eventApi;
@@ -144,15 +144,16 @@ public final class SessionizePlugin implements EventPlugin {
         final JSONArray categories = singleSession.getJSONArray("categories");
         for (int categoryCounter = 0; categoryCounter < categories.length(); categoryCounter++) {
             final JSONObject category = categories.getJSONObject(categoryCounter);
-            if (category.getInt("id") == CATEGORY_ID_LANGUAGE) {
+            if (CATEGORY_NAME_LANGUAGE.equalsIgnoreCase(category.getString("name"))) {
                 final JSONArray categoryItems = category.getJSONArray("categoryItems");
                 final JSONObject firstCategoryItem = categoryItems.getJSONObject(0);
-                final int languageId = firstCategoryItem.getInt("id");
-                return switch (languageId) {
-                    case LANGUAGE_ID_ENGLISH -> Language.EN;
-                    case LANGUAGE_ID_GERMAN -> Language.DE;
-                    default -> throw new JSONException("Unknown language ID: " + languageId);
-                };
+                final String languageName = firstCategoryItem.getString("name");
+                if (LANGUAGE_NAME_ENGLISH.equalsIgnoreCase(languageName)) {
+                    return Language.EN;
+                } else if (LANGUAGE_NAME_GERMAN.equalsIgnoreCase(languageName)) {
+                    return Language.DE;
+                }
+                throw new JSONException("Unknown language name: " + languageName);
             }
         }
         return Language.UNKNOWN;
