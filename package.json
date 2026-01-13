@@ -15,10 +15,10 @@
     "@vaadin/vaadin-usage-statistics": "2.1.3",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
-    "lit": "3.3.1",
+    "lit": "3.3.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-router": "7.10.1"
+    "react-router": "7.12.0"
   },
   "devDependencies": {
     "@babel/preset-react": "7.28.5",
@@ -37,12 +37,12 @@
     "strip-css-comments": "5.0.0",
     "transform-ast": "2.4.4",
     "typescript": "5.9.3",
-    "vite": "7.3.0",
+    "vite": "7.3.1",
     "vite-plugin-checker": "0.12.0",
     "workbox-build": "7.4.0",
     "workbox-core": "7.3.0",
     "workbox-precaching": "7.3.0",
-    "@types/node": "25.0.2"
+    "@types/node": "25.0.3"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -76,10 +76,10 @@
       "@vaadin/vaadin-usage-statistics": "2.1.3",
       "construct-style-sheets-polyfill": "3.1.0",
       "date-fns": "2.29.3",
-      "lit": "3.3.1",
+      "lit": "3.3.2",
       "react": "19.2.3",
       "react-dom": "19.2.3",
-      "react-router": "7.10.1"
+      "react-router": "7.12.0"
     },
     "devDependencies": {
       "@babel/preset-react": "7.28.5",
@@ -97,12 +97,12 @@
       "strip-css-comments": "5.0.0",
       "transform-ast": "2.4.4",
       "typescript": "5.9.3",
-      "vite": "7.3.0",
+      "vite": "7.3.1",
       "vite-plugin-checker": "0.12.0",
       "workbox-build": "7.4.0",
       "workbox-core": "7.3.0",
       "workbox-precaching": "7.3.0",
-      "@types/node": "25.0.2"
+      "@types/node": "25.0.3"
     },
     "hash": "11c0a4f9b9e61d1dd442360bee9afc5d68920843ff95f1c84d87d3abd0f63b42"
   }
