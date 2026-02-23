@@ -333,19 +333,14 @@ The following table contains the CSS variables you can modify to change the user
 ##### JavaLand
 
 ```
---event-background-color: #000000;
---event-title-color: #ffffff;
---event-text-color: #262626;
---event-running-session-color: #79fffe;
---event-next-session-color: #00f1ef;
---event-closed-room-color: #00c2c1;
---event-room-border: none;
+--event-running-session-color: #e1f1f2;
+--event-running-session-border: 1px solid #36928f;
+--event-next-session-color: #bde1e2;
+--event-next-session-border: 1px solid #36928f;
+--event-closed-room-color: #efe3f0
+--event-closed-room-border: 1px solid #d479af;
 
---social-background-color: #272727;
---social-title-color: #ffffff;
---social-text-color: #262626;
---social-post-background-color: #ffa8a8;
---social-post-border: none;
+--social-post-border: 1px solid #36928f;
 ```
 
 ##### Voxxed Days Zürich
