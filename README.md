@@ -257,26 +257,29 @@ You can modify the styles of the user interface using CSS variables. The CSS var
 
 The following table contains the CSS variables you can modify to change the user interface and their default values:
 
-| CSS Variable                      | Default           | Description                                                        |
-|-----------------------------------|-------------------|--------------------------------------------------------------------|
-| --event-background-color          | #e7eaee           | The color for the background of the event agenda.                  |
-| --event-title-color               | #262626           | The color for the title of the event agenda.                       |
-| --event-text-color                | #262626           | The color for the text of the event agenda.                        |
-| --event-running-session-color     | #ffffff           | The color for the background of rooms with running sessions.       |
-| --event-next-session-color        | #eeeeee           | The color for the background of rooms with sessions starting next. |
-| --event-closed-room-color         | #cccccc           | The color for the background of closed rooms.                      |
-| --event-room-border               | 1px solid #909090 | The border for the event room.                                     |
-| --event-image-position-bottom     | 10px              | The position of the optional event image relative to the bottom.   |
-| --event-image-position-left       | 10px              | The position of the optional event image relative to the left.     |
-| --event-image-width               | auto              | The width of the optional event image.                             |
-| --event-image-height              | auto              | The height of the optional event image.                            |
-| --social-background-color         | #e7eaee           | The color for the background of the social wall.                   |
-| --social-title-color              | #262626           | The color for the title of the social wall.                        |
-| --social-text-color               | #262626           | The color for the text of the social wall.                         |
-| --social-post-background-color    | #ffffff           | The color for the background of social posts.                      |
-| --social-post-border              | 1px solid #909090 | The border for the social posts.                                   |
-| --speaker-avatar-background-color | transparent       | The color for the background of speaker avatars.                   |
-| --speaker-avatar-border           | none              | The border for the speaker avatars.                                |
+| CSS Variable                      | Default                  | Description                                                        |
+|-----------------------------------|--------------------------|--------------------------------------------------------------------|
+| --event-background-color          | #e7eaee                  | The color for the background of the event agenda.                  |
+| --event-title-color               | #262626                  | The color for the title of the event agenda.                       |
+| --event-text-color                | #262626                  | The color for the text of the event agenda.                        |
+| --event-running-session-color     | #ffffff                  | The color for the background of rooms with running sessions.       |
+| --event-running-session-border    | var(--event-room-border) | The border for rooms with running sessions.                        |
+| --event-next-session-color        | #eeeeee                  | The color for the background of rooms with sessions starting next. |
+| --event-next-session-border       | var(--event-room-border) | The border for rooms with sessions starting next.                  |
+| --event-closed-room-color         | #cccccc                  | The color for the background of closed rooms.                      |
+| --event-closed-room-border        | var(--event-room-border) | The border for closed rooms.                                       |
+| --event-room-border               | 1px solid #909090        | The border for the event room.                                     |
+| --event-image-position-bottom     | 10px                     | The position of the optional event image relative to the bottom.   |
+| --event-image-position-left       | 10px                     | The position of the optional event image relative to the left.     |
+| --event-image-width               | auto                     | The width of the optional event image.                             |
+| --event-image-height              | auto                     | The height of the optional event image.                            |
+| --social-background-color         | #e7eaee                  | The color for the background of the social wall.                   |
+| --social-title-color              | #262626                  | The color for the title of the social wall.                        |
+| --social-text-color               | #262626                  | The color for the text of the social wall.                         |
+| --social-post-background-color    | #ffffff                  | The color for the background of social posts.                      |
+| --social-post-border              | 1px solid #909090        | The border for the social posts.                                   |
+| --speaker-avatar-background-color | transparent              | The color for the background of speaker avatars.                   |
+| --speaker-avatar-border           | none                     | The border for the speaker avatars.                                |
 
 > [!NOTE]  
 > Default values may change in newer versions of *Apus*. Compare your custom styles before and after an update.

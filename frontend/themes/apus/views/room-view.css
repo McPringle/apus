@@ -31,14 +31,17 @@
 
 .running-session {
     background-color: var(--event-running-session-color);
+    border: var(--event-running-session-border);
 }
 
 .next-session {
     background-color: var(--event-next-session-color);
+    border: var(--event-next-session-border);
 }
 
 .empty-room {
     background-color: var(--event-closed-room-color);
+    border: var(--event-closed-room-border);
 }
 
 .empty-room .title h3 {

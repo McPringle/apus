@@ -21,8 +21,11 @@
     --event-title-color: #262626;
     --event-text-color: #262626;
     --event-running-session-color: #ffffff;
+    --event-running-session-border: var(--event-room-border);
     --event-next-session-color: #eeeeee;
+    --event-next-session-border: var(--event-room-border);
     --event-closed-room-color: #cccccc;
+    --event-closed-room-border: var(--event-room-border);
     --event-room-border: 1px solid #909090;
     --event-width: 870px;
     --event-grid-template-columns: auto auto;
