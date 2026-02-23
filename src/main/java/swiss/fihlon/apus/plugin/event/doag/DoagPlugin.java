@@ -170,7 +170,9 @@ public final class DoagPlugin implements EventPlugin {
 
     @SuppressWarnings("StringSplitter") // safe to ignore here
     private @NotNull Duration parseDuration(final @NotNull String duration) {
-        final String minutes = duration.split(":")[1];
-        return Duration.ofMinutes(Long.parseLong(minutes));
+        final var values = duration.split(":");
+        final var hours = values[0];
+        final var minutes = values[1];
+        return Duration.ofHours(Long.parseLong(hours)).plusMinutes(Long.parseLong(minutes));
     }
 }
