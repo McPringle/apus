@@ -10,23 +10,6 @@
           "rooms": {
             "Room A": [
               {
-                "id": 0,
-                "date": "2024-01-01T08:45:00+02:00",
-                "duration": "00:45",
-                "language": [
-                  "en"
-                ],
-                "title": {
-                  "de": "Trackwalk: This session should be ignored"
-                },
-                "type": "lecture",
-                "persons": [
-                  {
-                    "public_name": "Gus Fring"
-                  }
-                ]
-              },
-              {
                 "id": 1,
                 "date": "2024-01-01T09:45:00+02:00",
                 "duration": "00:15",
@@ -207,7 +190,7 @@
                 ]
               }
             ],
-            "info°center": [
+            "Heinrich Mack": [
               {
                 "id": 10,
                 "date": "2024-01-04T10:00:00+02:00",
@@ -221,114 +204,6 @@
                 "persons": [
                   {
                     "public_name": "Jesse Pinkman"
-                  }
-                ]
-              }
-            ],
-            "ring°kartbahn": [
-              {
-                "id": 11,
-                "date": "2024-01-04T10:00:00+02:00",
-                "duration": "00:165",
-                "language": [
-                ],
-                "title": {
-                  "en": "This room should be ignored"
-                },
-                "type": "lecture",
-                "persons": [
-                  {
-                    "public_name": "Skyler White"
-                  }
-                ]
-              }
-            ],
-            "ring°boulevard": [
-              {
-                "id": 12,
-                "date": "2024-01-04T10:00:00+02:00",
-                "duration": "00:165",
-                "language": [
-                ],
-                "title": {
-                  "en": "This room should be ignored"
-                },
-                "type": "lecture",
-                "persons": [
-                  {
-                    "public_name": "Hank Schrader"
-                  }
-                ]
-              }
-            ],
-            "Restaurant": [
-              {
-                "id": 13,
-                "date": "2024-01-04T10:00:00+02:00",
-                "duration": "00:165",
-                "language": [
-                ],
-                "title": {
-                  "en": "This room should be ignored"
-                },
-                "type": "lecture",
-                "persons": [
-                  {
-                    "public_name": "Hank Schrader"
-                  }
-                ]
-              }
-            ],
-            "Gasthaus": [
-              {
-                "id": 14,
-                "date": "2024-01-04T10:00:00+02:00",
-                "duration": "00:165",
-                "language": [
-                ],
-                "title": {
-                  "en": "This room should be ignored"
-                },
-                "type": "lecture",
-                "persons": [
-                  {
-                    "public_name": "Hank Schrader"
-                  }
-                ]
-              }
-            ],
-            "Race Room": [
-              {
-                "id": 15,
-                "date": "2024-01-04T10:00:00+02:00",
-                "duration": "00:165",
-                "language": [
-                ],
-                "title": {
-                  "en": "This room should be ignored"
-                },
-                "type": "lecture",
-                "persons": [
-                  {
-                    "public_name": "Hank Schrader"
-                  }
-                ]
-              }
-            ],
-            "Eclipse Foundation Business Lounge": [
-              {
-                "id": 16,
-                "date": "2024-01-04T10:00:00+02:00",
-                "duration": "00:165",
-                "language": [
-                ],
-                "title": {
-                  "en": "This room should be ignored"
-                },
-                "type": "lecture",
-                "persons": [
-                  {
-                    "public_name": "Hank Schrader"
                   }
                 ]
               }

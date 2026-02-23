@@ -103,17 +103,9 @@ public final class DoagPlugin implements EventPlugin {
 
     private static boolean checkSkipSession(final @NotNull JSONObject slot, final @NotNull Session session) {
         final var type = slot.getString("type");
-        final var title = session.title();
         final var roomName = session.room().name();
         return !type.equalsIgnoreCase("lecture")
-                || title.contains("Trackwalk")
-                || roomName.contains("info°center")
-                || roomName.contains("ring°kartbahn")
-                || roomName.contains("ring°boulevard")
-                || roomName.contains("Restaurant")
-                || roomName.contains("Gasthaus")
-                || roomName.contains("Race Room")
-                || roomName.contains("Eclipse Foundation Business Lounge");
+                || roomName.contains("Heinrich Mack");
     }
 
     private @NotNull Session createSession(final @NotNull JSONObject slot,
