@@ -105,7 +105,12 @@ public final class DoagPlugin implements EventPlugin {
         final var type = slot.getString("type");
         final var roomName = session.room().name();
         return !type.equalsIgnoreCase("lecture")
-                || roomName.contains("Heinrich Mack");
+                || roomName.contains("Burger Bär")
+                || roomName.contains("Flammkuchenstand")
+                || roomName.contains("Gelateria")
+                || roomName.contains("Heinrich Mack")
+                || roomName.contains("Marios Pizza")
+                || roomName.contains("Walters Wurstbude");
     }
 
     private @NotNull Session createSession(final @NotNull JSONObject slot,
