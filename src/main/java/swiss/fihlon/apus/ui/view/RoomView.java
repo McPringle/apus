@@ -152,7 +152,7 @@ public final class RoomView extends Div {
         } else if (startTime.isAfter(now)) { // next session
             timeComponent.add(
                     new Icon(VaadinIcon.ALARM),
-                    new Text(String.format("%s - %s",
+                    new Text("%s - %s".formatted(
                             startTime.withZoneSameInstant(timezone).toLocalTime(),
                             endTime.withZoneSameInstant(timezone).toLocalTime()))
             );

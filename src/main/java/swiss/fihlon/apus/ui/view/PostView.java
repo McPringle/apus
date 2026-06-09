@@ -72,7 +72,7 @@ public final class PostView extends Div {
     private @NotNull Component createTextComponent(final @NotNull Post post) {
         final String unsafeHtml = post.html();
         final String safeHtml = HtmlUtil.sanitize(unsafeHtml);
-        return new Html(String.format("<div class=\"content\">%s</div>", safeHtml));
+        return new Html("<div class=\"content\">%s</div>".formatted(safeHtml));
     }
 
     private @NotNull Component[] createImageComponents(final @NotNull Post post) {

@@ -87,7 +87,7 @@ public final class SessionizePlugin implements EventPlugin {
             }
             LOGGER.info("Successfully loaded {} sessions for event ID {}", sessions.size(), eventId);
         } catch (IOException | URISyntaxException | JSONException e) {
-            throw new SessionImportException(String.format("Error parsing session %s: %s", lastSessionId, e.getMessage()), e);
+            throw new SessionImportException("Error parsing session %s: %s".formatted(lastSessionId, e.getMessage()), e);
         }
         return sessions.stream();
     }
@@ -107,7 +107,7 @@ public final class SessionizePlugin implements EventPlugin {
             }
             LOGGER.info("Successfully loaded {} speakers for event ID {}", allSpeakers.size(), eventId);
         } catch (final IOException | URISyntaxException | JSONException e) {
-            throw new SessionImportException(String.format("Error parsing speaker %s: %s", lastSpeakerId, e.getMessage()), e);
+            throw new SessionImportException("Error parsing speaker %s: %s".formatted(lastSpeakerId, e.getMessage()), e);
         }
         return allSpeakers;
     }
@@ -122,7 +122,7 @@ public final class SessionizePlugin implements EventPlugin {
                 final Speaker speaker = allSpeakers.get(speakerId);
                 speakers.add(speaker);
             } else {
-                throw new SessionImportException(String.format("Error parsing sessions: Can't find speaker with id %s!", speakerId));
+                throw new SessionImportException("Error parsing sessions: Can't find speaker with id %s!".formatted(speakerId));
             }
         }
 
@@ -130,7 +130,7 @@ public final class SessionizePlugin implements EventPlugin {
         final var endsAt = LocalDateTime.parse(sessionData.getString("endsAt"));
 
         return new Session(
-                String.format("%s:%s", eventId, sessionData.getString("id")),
+                "%s:%s".formatted(eventId, sessionData.getString("id")),
                 startsAt.atZone(timezone),
                 endsAt.atZone(timezone),
                 new Room(sessionData.getString("room")),

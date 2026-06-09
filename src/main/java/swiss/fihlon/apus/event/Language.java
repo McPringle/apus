@@ -37,7 +37,7 @@ public enum Language {
                 return language;
             }
         }
-        throw new IllegalArgumentException(String.format("No language constant with language code '%s'!", languageCode));
+        throw new IllegalArgumentException("No language constant with language code '%s'!".formatted(languageCode));
     }
 
     Language(final @NotNull String languageCode) {

@@ -40,7 +40,7 @@ public final class DefaultMastodonLoader implements MastodonLoader {
             final var json = DownloadUtil.getString(url);
             return new JSONArray(json);
         } catch (final Exception e) {
-            throw new MastodonException(String.format("Unable to load posts with hashtag '%s' from Mastodon instance '%s'", hashtag, instance), e);
+            throw new MastodonException("Unable to load posts with hashtag '%s' from Mastodon instance '%s'".formatted(hashtag, instance), e);
         }
     }
 
@@ -57,7 +57,7 @@ public final class DefaultMastodonLoader implements MastodonLoader {
             final var json = DownloadUtil.getString(url, accessToken);
             return new JSONArray(json);
         } catch (final Exception e) {
-            throw new MastodonException(String.format("Unable to load notifications from Mastodon instance '%s'",  instance), e);
+            throw new MastodonException("Unable to load notifications from Mastodon instance '%s'".formatted(instance), e);
         }
     }
 

@@ -74,7 +74,7 @@ class SessionizePluginTest {
 
         final var sessionIds = sessions.stream().map(Session::id).toList();
         for (int counter = 1; counter <= 8; counter++) {
-            final var sessionId = String.format("BBAD:%d", counter);
+            final var sessionId = "BBAD:%d".formatted(counter);
             assertTrue(sessionIds.contains(sessionId));
         }
 

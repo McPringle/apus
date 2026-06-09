@@ -41,7 +41,7 @@ public final class DefaultBlueSkyLoader implements BlueSkyLoader {
             final var json = DownloadUtil.getString(url);
             return new JSONObject(json).getJSONArray("posts");
         } catch (final Exception e) {
-            throw new BlueSkyException(String.format("Unable to load posts with hashtag '%s' from BlueSky instance '%s'", hashtag, instance), e);
+            throw new BlueSkyException("Unable to load posts with hashtag '%s' from BlueSky instance '%s'".formatted(hashtag, instance), e);
         }
     }
 
@@ -57,7 +57,7 @@ public final class DefaultBlueSkyLoader implements BlueSkyLoader {
             final var json = DownloadUtil.getString(url);
             return new JSONObject(json).getJSONArray("posts");
         } catch (final Exception e) {
-            throw new BlueSkyException(String.format("Unable to load posts with profile '%s' from BlueSky instance '%s'", profile, instance), e);
+            throw new BlueSkyException("Unable to load posts with profile '%s' from BlueSky instance '%s'".formatted(profile, instance), e);
         }
     }
 

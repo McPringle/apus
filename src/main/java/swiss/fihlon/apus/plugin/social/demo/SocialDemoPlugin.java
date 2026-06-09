@@ -116,6 +116,6 @@ public final class SocialDemoPlugin implements SocialPlugin {
     }
 
     private static @NotNull String generateId() {
-        return String.format("DEMO:%s", UUID.randomUUID());
+        return "DEMO:%s".formatted(UUID.randomUUID());
     }
 }

@@ -31,7 +31,7 @@ class TrackTest {
     @ParameterizedTest
     @MethodSource("provideArgumentsForDefaultTrack")
     void defaultTracks(final @NotNull Track testee) {
-        final String message = String.format("Error while testing track '%s'!", testee);
+        final String message = "Error while testing track '%s'!".formatted(testee);
         assertNotNull(testee, message);
 
         final var svgCode = testee.svgCode().trim();

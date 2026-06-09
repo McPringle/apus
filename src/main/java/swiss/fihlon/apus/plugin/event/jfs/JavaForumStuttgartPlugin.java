@@ -85,9 +85,9 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
             allTalks = getTalks(jsonArray);
 
             if (allTalks.isEmpty()) {
-                throw new SessionImportException(String.format(
-                        "Error importing session data for Java Forum Stuttgart: No talks found in '%s' from '%s'! ",
-                        jsonFile, jsonUrl));
+                throw new SessionImportException(
+                        "Error importing session data for Java Forum Stuttgart: No talks found in '%s' from '%s'! "
+                                .formatted(jsonFile, jsonUrl));
             }
 
             allAssignments = getAssignments(jsonArray);
@@ -125,9 +125,8 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
             LOGGER.info("Successfully downloaded database to temporary file {}", temporaryJsonFile);
             return temporaryJsonFile;
         } catch (final IOException e) {
-            throw new SessionImportException(String.format(
-                    "Error downloading JSON file from '%s': %s",
-                    jsonUrl, e.getMessage()), e);
+            throw new SessionImportException(
+                    "Error downloading JSON file from '%s': %s".formatted(jsonUrl, e.getMessage()), e);
         }
     }
 
@@ -192,7 +191,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
                                  final @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> allAssignments,
                                  final @NotNull Map<@NotNull String, @NotNull Speaker> allSpeakers,
                                  final @NotNull Map<@NotNull String, @NotNull Track> allTracks) {
-        final var id = String.format("JFS:%s", talk.id());
+        final var id = "JFS:%s".formatted(talk.id());
         final var room = new Room(talk.room());
         final var title = talk.title();
         final var speakers = getSpeakersForTalk(talk, allAssignments, allSpeakers);

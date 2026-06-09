@@ -103,7 +103,7 @@ public final class DevoxxPlugin implements EventPlugin {
             }
             LOGGER.info("Successfully loaded {} sessions for event ID {} on {}", sessions.size(), eventId, weekday);
         } catch (final IOException | URISyntaxException | JSONException | InterruptedException e) {
-            throw new SessionImportException(String.format("Error parsing session %s: %s", lastSessionId, e.getMessage()), e);
+            throw new SessionImportException("Error parsing session %s: %s".formatted(lastSessionId, e.getMessage()), e);
         }
         return sessions.stream();
     }

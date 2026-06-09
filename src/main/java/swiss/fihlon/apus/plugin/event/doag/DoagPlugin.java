@@ -96,7 +96,7 @@ public final class DoagPlugin implements EventPlugin {
             }
             LOGGER.info("Successfully loaded {} sessions for event ID {}", sessions.size(), eventId);
         } catch (IOException | URISyntaxException | JSONException e) {
-            throw new SessionImportException(String.format("Error parsing slot %d: %s", lastSlotId, e.getMessage()), e);
+            throw new SessionImportException("Error parsing slot %d: %s".formatted(lastSlotId, e.getMessage()), e);
         }
         return sessions.stream();
     }
@@ -128,7 +128,7 @@ public final class DoagPlugin implements EventPlugin {
             speakers.add(publicName);
         }
         return new Session(
-                String.format("%s:%d", acronym, slot.getInt("id")),
+                "%s:%d".formatted(acronym, slot.getInt("id")),
                 date,
                 date.plus(duration),
                 new Room(roomName),
@@ -162,7 +162,7 @@ public final class DoagPlugin implements EventPlugin {
                 // skip and try next language
             }
         }
-        throw new JSONException(String.format("No title with language 'de' or 'en' for session '%s'", slot.getInt("id")));
+        throw new JSONException("No title with language 'de' or 'en' for session '%s'".formatted(slot.getInt("id")));
     }
 
     @SuppressWarnings("StringSplitter") // safe to ignore here
