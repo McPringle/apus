@@ -36,7 +36,8 @@
     "vite-plugin-checker": "0.12.0",
     "workbox-build": "7.4.0",
     "workbox-core": "7.3.0",
-    "workbox-precaching": "7.3.0"
+    "workbox-precaching": "7.3.0",
+    "@babel/types": "7.28.5"
   },
   "overrides": {
     "@vaadin/vaadin-development-mode-detector": "$@vaadin/vaadin-development-mode-detector",
@@ -145,7 +146,8 @@
       "vite-plugin-checker": "0.12.0",
       "workbox-build": "7.4.0",
       "workbox-core": "7.3.0",
-      "workbox-precaching": "7.3.0"
+      "workbox-precaching": "7.3.0",
+      "@babel/types": "7.28.5"
     },
     "hash": "e8012826f976360be6ea4ad7ca8e98e8b00545d8adfd734ff795d49e33c717db"
   }
