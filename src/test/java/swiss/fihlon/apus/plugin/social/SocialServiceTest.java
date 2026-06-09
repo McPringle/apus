@@ -379,7 +379,7 @@ class SocialServiceTest {
             posts.add(new Post("PX", now, "Troll", "","troll@localhost",
                     "<p>This post is foobar!</p>", List.of(), false, false, ""));
             posts.add(new Post("PL", now, "Writer", "","writer@localhost",
-                    "<p>" + faker.lorem().characters(501) + "</p>", List.of(),
+                    "<p>" + "x".repeat(501) + "</p>", List.of(),
                     false, false, ""));
             posts.add(new Post("PS", now, "Sensitive", "","sensitive@localhost",
                     "<p>This post contains sensitive content!</p>", List.of(), false, true, ""));
