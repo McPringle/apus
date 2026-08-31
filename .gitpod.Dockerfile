@@ -22,5 +22,5 @@ RUN sudo rm -rf /var/lib/apt/lists/*
 
 RUN bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh \
     && sdk update \
-    && sdk install java 25-tem \
-    && sdk default java 25-tem"
+    && sdk install java 25.0.4-tem \
+    && sdk default java 25.0.4-tem"
