@@ -160,13 +160,13 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>26.1.0</version>
-            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.jspecify</groupId>
             <artifactId>jspecify</artifactId>
             <version>1.0.1</version>
-            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.github.spotbugs</groupId>
@@ -481,6 +481,23 @@
                 <groupId>org.spdx</groupId>
                 <artifactId>spdx-maven-plugin</artifactId>
                 <version>1.0.4</version>
+                <configuration>
+                    <licenseDeclared>AGPL-3.0-only</licenseDeclared>
+                    <licenseOverwrites>
+                        <licenseOverwrite>
+                            <target>both</target>
+                            <groupId>jakarta.annotation</groupId>
+                            <artifactId>jakarta.annotation-api</artifactId>
+                            <licenseString>(EPL-2.0 OR GPL-2.0-only WITH Classpath-exception-2.0)</licenseString>
+                        </licenseOverwrite>
+                        <licenseOverwrite>
+                            <target>both</target>
+                            <groupId>jakarta.servlet</groupId>
+                            <artifactId>jakarta.servlet-api</artifactId>
+                            <licenseString>(EPL-2.0 OR GPL-2.0-only WITH Classpath-exception-2.0)</licenseString>
+                        </licenseOverwrite>
+                    </licenseOverwrites>
+                </configuration>
                 <executions>
                     <execution>
                         <id>build-spdx</id>
