@@ -17,28 +17,45 @@
  */
 package swiss.fihlon.apus.plugin.social.bluesky;
 
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
 import org.json.JSONArray;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junitpioneer.jupiter.RetryingTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import swiss.fihlon.apus.configuration.AppConfig;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
 class DefaultBlueSkyLoaderTest {
 
-    @Autowired
-    private AppConfig appConfig;
+    private static final String HASHTAG_URL = "http://${instance}/posts?q=%23${hashtag}&limit=${limit}";
+    private static final String MENTIONS_URL = "http://${instance}/posts?q=%40${profile}&limit=${limit}";
+    private static HttpServer server;
 
-    @RetryingTest(3)
+    @BeforeAll
+    static void startServer() throws IOException {
+        server = HttpServer.create(new InetSocketAddress(0), 0);
+        server.createContext("/posts", DefaultBlueSkyLoaderTest::sendPosts);
+        server.start();
+    }
+
+    @AfterAll
+    static void stopServer() {
+        server.stop(0);
+    }
+
+    @Test
     void getPostsWithHashtag() throws BlueSkyException {
+        final var instance = "localhost:" + server.getAddress().getPort();
         final JSONArray jsonPosts = new DefaultBlueSkyLoader()
-                .getPostsWithHashtag(appConfig.blueSky().instance(), "java", appConfig.blueSky().hashtagUrl(), 30);
+                .getPostsWithHashtag(instance, "java", HASHTAG_URL, 30);
         assertNotNull(jsonPosts);
         assertFalse(jsonPosts.isEmpty());
     }
@@ -47,15 +64,15 @@ class DefaultBlueSkyLoaderTest {
     void getPostsWithHashtagShouldThrowException() {
         final var exception = assertThrows(BlueSkyException.class,
                 () -> new DefaultBlueSkyLoader()
-                        .getPostsWithHashtag("non.existent.server", "java", appConfig.blueSky().hashtagUrl(), 30));
+                        .getPostsWithHashtag("non.existent.server", "java", HASHTAG_URL, 30));
         assertEquals("Unable to load posts with hashtag 'java' from BlueSky instance 'non.existent.server'", exception.getMessage());
     }
 
-
-    @RetryingTest(3)
+    @Test
     void getPostsWithMention() throws BlueSkyException {
+        final var instance = "localhost:" + server.getAddress().getPort();
         final JSONArray jsonPosts = new DefaultBlueSkyLoader()
-                .getPostsWithMention(appConfig.blueSky().instance(), "jugch.bsky.social", appConfig.blueSky().mentionsUrl(), 30);
+                .getPostsWithMention(instance, "jugch.bsky.social", MENTIONS_URL, 30);
         assertNotNull(jsonPosts);
         assertFalse(jsonPosts.isEmpty());
     }
@@ -64,8 +81,17 @@ class DefaultBlueSkyLoaderTest {
     void getPostsWithMentionShouldThrowException() {
         final var exception = assertThrows(BlueSkyException.class,
                 () -> new DefaultBlueSkyLoader()
-                        .getPostsWithMention("non.existent.server", "jugch.bsky.social", appConfig.blueSky().mentionsUrl(), 30));
+                        .getPostsWithMention("non.existent.server", "jugch.bsky.social", MENTIONS_URL, 30));
         assertEquals("Unable to load posts with profile 'jugch.bsky.social' from BlueSky instance 'non.existent.server'", exception.getMessage());
+    }
+
+    private static void sendPosts(final HttpExchange exchange) throws IOException {
+        final byte[] response = "{\"posts\":[{}]}".getBytes(StandardCharsets.UTF_8);
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.sendResponseHeaders(200, response.length);
+        try (var responseBody = exchange.getResponseBody()) {
+            responseBody.write(response);
+        }
     }
 
 }
