@@ -21,19 +21,58 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public final class DownloadUtil {
 
     public static @NotNull String getString(final @NotNull String location)
             throws IOException, URISyntaxException {
-        try (InputStream in = new URI(location).toURL().openStream()) {
+        final var connection = new URI(location).toURL().openConnection();
+        if (connection instanceof HttpURLConnection http && http.getResponseCode() == HttpURLConnection.HTTP_FORBIDDEN) {
+            try {
+                throw forbiddenResponse(http);
+            } finally {
+                http.disconnect();
+            }
+        }
+        try (InputStream in = connection.getInputStream()) {
             return new String(in.readAllBytes(), StandardCharsets.UTF_8);
         }
+    }
+
+    private static @NotNull HttpDownloadException forbiddenResponse(final @NotNull HttpURLConnection connection) {
+        final var details = new StringBuilder();
+        for (final var name : List.of("Server", "Date", "Content-Type", "Retry-After", "RateLimit-Limit",
+                "RateLimit-Remaining", "RateLimit-Reset", "X-RateLimit-Limit", "X-RateLimit-Remaining",
+                "X-RateLimit-Reset", "X-Request-ID", "CDN-RequestId", "CF-Ray")) {
+            final var value = connection.getHeaderField(name);
+            if (value != null) {
+                details.append(name).append('=').append(compact(value)).append("; ");
+            }
+        }
+        try (InputStream error = connection.getErrorStream()) {
+            if (error == null) {
+                details.append("body=<empty>");
+            } else {
+                final var bytes = error.readNBytes(2049);
+                final var body = new String(bytes, 0, Math.min(bytes.length, 2048), StandardCharsets.UTF_8);
+                details.append("body=").append(compact(body + (bytes.length > 2048 ? " [truncated]" : "")));
+            }
+        } catch (final IOException e) {
+            details.append("body=<unavailable: ").append(e.getClass().getSimpleName()).append('>');
+        }
+        return new HttpDownloadException(HttpURLConnection.HTTP_FORBIDDEN, connection.getURL().toString(), details.toString());
+    }
+
+    private static @NotNull String compact(final @NotNull String text) {
+        final var singleLine = text.replaceAll("[\\p{Cntrl}\\s]+", " ").trim();
+        return singleLine.length() > 512 ? singleLine.substring(0, 512) + " [truncated]" : singleLine;
     }
 
     public static @NotNull String getString(final @NotNull String location, final @NotNull String accessToken)

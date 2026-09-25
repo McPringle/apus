@@ -26,6 +26,7 @@ import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.social.SocialPlugin;
 import swiss.fihlon.apus.social.Post;
 import swiss.fihlon.apus.util.JsonUtil;
+import swiss.fihlon.apus.util.HttpDownloadException;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -99,7 +100,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
 
             return posts.stream();
         } catch (final BlueSkyException e) {
-            LOGGER.error(e.getMessage(), e);
+            logDownloadFailure(e);
             return Stream.of();
         }
     }
@@ -123,8 +124,16 @@ public final class BlueSkyPlugin implements SocialPlugin {
 
             return posts.stream();
         } catch (final BlueSkyException e) {
-            LOGGER.error(e.getMessage(), e);
+            logDownloadFailure(e);
             return Stream.of();
+        }
+    }
+
+    private static void logDownloadFailure(final @NotNull BlueSkyException exception) {
+        if (exception.getCause() instanceof HttpDownloadException response && response.getStatusCode() == 403) {
+            LOGGER.error("{}: {}", exception.getMessage(), response.getMessage());
+        } else {
+            LOGGER.error(exception.getMessage(), exception);
         }
     }
 
