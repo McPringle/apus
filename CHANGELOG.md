@@ -9,15 +9,23 @@ For questions and support requests, please use
 
 ## Version 8
 
-**Release date: work in progress 🚧**
+**Release date: 2026-09-26**
 
 ### New Features
+
+* new styling options for event session/room borders
+* configure global room exclusions via environment variable
 
 ### Fixed Bugs
 
 * Fix Sessionize language detection after API changes
+* Fix DOAG date-time-parsing after API changes
 
 ### Maintenance Work
+
+* Update dependencies
+* Log BlueSky errors without stacktraces
+* Several refactorings to remove warnings
 
 ### Breaking Changes
 
