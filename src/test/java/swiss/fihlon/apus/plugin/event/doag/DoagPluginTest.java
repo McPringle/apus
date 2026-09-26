@@ -67,13 +67,16 @@ class DoagPluginTest {
 
         final var doagPlugin = new DoagPlugin(appConfig);
         final var sessions = doagPlugin.getSessions().toList();
-        assertEquals(8, sessions.size());
+        assertEquals(9, sessions.size());
 
         final var sessionIds = sessions.stream().map(Session::id).toList();
         for (int counter = 1; counter <= 8; counter++) {
             final var sessionId = "BBAD:%d".formatted(counter);
             assertTrue(sessionIds.contains(sessionId));
         }
+
+        assertFalse(sessionIds.contains("BBAD:9")); // workshops remain excluded
+        assertTrue(sessionIds.contains("BBAD:10")); // room filtering belongs to EventService
 
         // full check of session with ID "BBAD:5"
         final var session = sessions.get(5);

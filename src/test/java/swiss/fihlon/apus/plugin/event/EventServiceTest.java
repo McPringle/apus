@@ -32,6 +32,7 @@ import swiss.fihlon.apus.event.Session;
 import swiss.fihlon.apus.event.SessionImportException;
 import swiss.fihlon.apus.event.Speaker;
 import swiss.fihlon.apus.event.Track;
+import swiss.fihlon.apus.plugin.event.demo.EventDemoPlugin;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -49,6 +50,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
 
 class EventServiceTest {
@@ -58,7 +60,7 @@ class EventServiceTest {
 
     static AppConfig mockConfiguration(final @NotNull Period dateAdjust, final @NotNull Duration timeAdjust, boolean demoMode) {
         final var eventConfig = new EventConfig(dateAdjust, timeAdjust, "", 60,
-                true, true, 0);
+                true, true, 0, List.of());
         final var appConfig = mock(AppConfig.class);
         when(appConfig.locale()).thenReturn(TEST_LOCALE);
         when(appConfig.timezone()).thenReturn(TEST_TIMEZONE);
@@ -118,6 +120,33 @@ class EventServiceTest {
         assertNotNull(room1);
         assertEquals(4, room1.size());
         assertEquals("TEST1", room1.getFirst().id());
+    }
+
+    @Test
+    void excludesOnlyCompleteRoomNamesAcrossPlugins() {
+        final var config = mockConfiguration(Period.ZERO, Duration.ZERO, false);
+        when(config.event()).thenReturn(new EventConfig(Period.ZERO, Duration.ZERO, "", 60,
+                true, true, 0, List.of(" room 0 ", "ROOM X", "Room", " ")));
+        final var service = new EventService(new NoOpTaskScheduler(), config,
+                List.of(new TestEventPlugin(), new NowEventPlugin()));
+
+        assertEquals(List.of(new Room("Room 1")), service.getRoomsWithSessions().keySet().stream().toList());
+        assertEquals(4, service.getRoomsWithSessions().get(new Room("Room 1")).size());
+    }
+
+    @Test
+    void excludesRoomsInDemoMode() {
+        final var config = mockConfiguration(Period.ZERO, Duration.ZERO, true);
+        when(config.event()).thenReturn(new EventConfig(Period.ZERO, Duration.ZERO, "", 60,
+                true, true, 0, List.of("ROOM 0")));
+        try (final var demoPlugins = mockConstruction(EventDemoPlugin.class, (plugin, context) -> {
+            when(plugin.isEnabled()).thenReturn(true);
+            when(plugin.getSessions()).thenAnswer(invocation -> new TestEventPlugin().getSessions());
+        })) {
+            final var service = new EventService(new NoOpTaskScheduler(), config, List.of());
+            assertEquals(1, demoPlugins.constructed().size());
+            assertEquals(List.of(new Room("Room 1")), service.getRoomsWithSessions().keySet().stream().toList());
+        }
     }
 
     @Test

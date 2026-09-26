@@ -164,6 +164,7 @@ To modify the default configuration values, just specify environment variables w
 | APUS_DOAG_EVENT_API             | [4]           | The URL of the DOAG event API to read the conference agenda.                          |
 | APUS_DOAG_EVENT_ID              | 0             | The ID of the DOAG event to read the conference agenda (0 = disabled).                |
 | APUS_EVENT_DATE_ADJUST          | P0D           | Adjust the date of the event, ISO-8601 formatted (P0D = disabled).                    |
+| APUS_EVENT_EXCLUDED_ROOMS       |               | Comma-separated room names to exclude; exact match ignoring case (empty = disabled).  |
 | APUS_EVENT_IMAGE_URL            |               | The URL of the image to be shown below the event agenda (empty = no image).           |
 | APUS_EVENT_NEXT_SESSION_TIMEOUT | 60            | Number of minutes a session is shown before it starts (0 = disabled).                 |
 | APUS_EVENT_SHOW_EMPTY_ROOMS     | true          | Show (true) or hide (false) empty event rooms.                                        |
@@ -203,6 +204,23 @@ The environment variables will override the default values. Some default values 
 6. `https://${instance}/api/v1/timelines/tag/${hashtag}?limit=${limit}`
 7. `https://sessionize.com/api/v2/${event}/view/Sessions`
 8. `https://sessionize.com/api/v2/${event}/view/Speakers`
+
+#### Excluding Event Rooms
+
+`APUS_EVENT_EXCLUDED_ROOMS` excludes rooms from all event plugins, including the demo plugin.
+Each entry must match the complete room name, ignoring case: `Saal Alpha` also matches
+`SAAL ALPHA`, but does not match `Saal Alpha 2` or `Nebenraum Saal Alpha`.
+Spaces around comma-separated entries are trimmed and empty entries are ignored.
+If the variable is unset or empty, no rooms are excluded. Plugin-specific session type filters still apply.
+
+Docker Compose example:
+
+```yaml
+environment:
+  APUS_EVENT_EXCLUDED_ROOMS: "Saal Alpha,Workshopraum Beta"
+```
+
+Recreate the container after changing its environment variables.
 
 #### Adjusting Event Dates and Times
 

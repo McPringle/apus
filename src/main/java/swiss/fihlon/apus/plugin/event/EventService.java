@@ -52,6 +52,7 @@ public final class EventService {
     private final @NotNull Period dateAdjust;
     private final @NotNull Duration timeAdjust;
     private final @NotNull ZoneId timezone;
+    private final @NotNull List<String> excludedRooms;
     private @NotNull Map<@NotNull Room, @NotNull List<@NotNull Session>> roomsWithSessions = new TreeMap<>();
 
     public EventService(final @NotNull TaskScheduler taskScheduler,
@@ -62,6 +63,7 @@ public final class EventService {
         this.dateAdjust = demoMode ? Period.ZERO : appConfig.event().dateAdjust();
         this.timeAdjust = demoMode ? Duration.ZERO : appConfig.event().timeAdjust();
         this.timezone = appConfig.timezone();
+        this.excludedRooms = appConfig.event().excludedRooms();
         if (isEnabled()) {
             updateSessions();
             final var updateFrequency = Duration.ofMinutes(appConfig.event().updateFrequency());
@@ -89,6 +91,7 @@ public final class EventService {
             final var sessions = eventPlugins.parallelStream()
                     .filter(EventPlugin::isEnabled)
                     .flatMap(EventPlugin::getSessions)
+                    .filter(this::isRoomIncluded)
                     .map(this::dateAdjust)
                     .sorted()
                     .toList();
@@ -115,6 +118,11 @@ public final class EventService {
         } catch (final SessionImportException e) {
             LOGGER.error("Failed to import sessions: {}", e.getMessage());
         }
+    }
+
+    private boolean isRoomIncluded(final @NotNull Session session) {
+        return excludedRooms.stream()
+                .noneMatch(session.room().name()::equalsIgnoreCase);
     }
 
     private @NotNull Session dateAdjust(final @NotNull Session session) {

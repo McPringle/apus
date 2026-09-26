@@ -87,7 +87,7 @@ public final class DoagPlugin implements EventPlugin {
                         final JSONObject slot = slots.getJSONObject(slotCounter);
                         lastSlotId = slot.getInt("id");
                         final Session session = createSession(slot, acronym, roomName);
-                        if (checkSkipSession(slot, session)) {
+                        if (checkSkipSession(slot)) {
                             continue;
                         }
                         sessions.add(session);
@@ -101,16 +101,8 @@ public final class DoagPlugin implements EventPlugin {
         return sessions.stream();
     }
 
-    private static boolean checkSkipSession(final @NotNull JSONObject slot, final @NotNull Session session) {
-        final var type = slot.getString("type");
-        final var roomName = session.room().name();
-        return !type.equalsIgnoreCase("lecture")
-                || roomName.contains("Burger Bär")
-                || roomName.contains("Flammkuchenstand")
-                || roomName.contains("Gelateria")
-                || roomName.contains("Heinrich Mack")
-                || roomName.contains("Marios Pizza")
-                || roomName.contains("Walters Wurstbude");
+    private static boolean checkSkipSession(final @NotNull JSONObject slot) {
+        return !slot.getString("type").equalsIgnoreCase("lecture");
     }
 
     private @NotNull Session createSession(final @NotNull JSONObject slot,
