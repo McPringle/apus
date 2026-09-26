@@ -54,6 +54,8 @@
         <java.version>25</java.version>
         <maven.version>3.9.9</maven.version>
         <vaadin.version>25.2.8</vaadin.version>
+        <!-- Default when JaCoCo does not populate the test JVM arguments. -->
+        <argLine/>
     </properties>
 
     <parent>
@@ -381,6 +383,19 @@
             -->
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>test-agent-properties</id>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.simplify4u.plugins</groupId>
                 <artifactId>pgpverify-maven-plugin</artifactId>
                 <executions>
@@ -410,6 +425,15 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- Preserve the agent arguments supplied by JaCoCo. -->
+                    <argLine>@{argLine} -javaagent:"${org.mockito:mockito-core:jar}"</argLine>
+                </configuration>
+            </plugin>
+
             <!-- Runs the integration tests (*IT) after the server is started -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -423,6 +447,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <argLine>@{argLine} -javaagent:"${org.mockito:mockito-core:jar}"</argLine>
                     <trimStackTrace>false</trimStackTrace>
                     <enableAssertions>true</enableAssertions>
                 </configuration>
