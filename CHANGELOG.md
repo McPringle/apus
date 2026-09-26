@@ -7,6 +7,20 @@ For questions and support requests, please use
 
 ---
 
+## Version 9
+
+**Release date: work in progress 🚧**
+
+### New Features
+
+### Fixed Bugs
+
+### Maintenance Work
+
+### Breaking Changes
+
+---
+
 ## Version 8
 
 **Release date: 2026-09-26**
@@ -26,8 +40,6 @@ For questions and support requests, please use
 * Update dependencies
 * Log BlueSky errors without stacktraces
 * Several refactorings to remove warnings
-
-### Breaking Changes
 
 ---
 
