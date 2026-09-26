@@ -22,7 +22,6 @@ import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Svg;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.Header;
@@ -34,7 +33,6 @@ import swiss.fihlon.apus.util.HtmlUtil;
 
 import java.util.Locale;
 
-@CssImport(value = "./themes/apus/views/post-view.css")
 public final class PostView extends Div {
 
     @NotNull

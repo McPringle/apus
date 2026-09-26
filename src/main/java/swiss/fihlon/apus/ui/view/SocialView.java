@@ -22,7 +22,6 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -46,7 +45,6 @@ import java.util.Locale;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
-@CssImport(value = "./themes/apus/views/social-view.css")
 public final class SocialView extends Div {
 
     private static final @NotNull Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);

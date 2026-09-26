@@ -17,11 +17,12 @@
  */
 package swiss.fihlon.apus;
 
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.PWA;
-import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.theme.lumo.Lumo;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
@@ -47,7 +48,8 @@ import swiss.fihlon.apus.util.PasswordUtil;
 @Push
 @PageTitle("Apus – Social Media Wall with Event Agenda")
 @PWA(name = "Apus", shortName = "Apus")
-@Theme("apus")
+@StyleSheet(Lumo.STYLESHEET)
+@StyleSheet("styles.css")
 @SuppressWarnings({"HideUtilityClassConstructor", "RegexpSingleline", "java:S106"})
 public class Application implements AppShellConfigurator {
 

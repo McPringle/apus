@@ -22,7 +22,6 @@ import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Svg;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Image;
@@ -44,7 +43,6 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CssImport(value = "./themes/apus/views/room-view.css")
 public final class RoomView extends Div {
 
     private final @NotNull ZoneId timezone;

@@ -18,7 +18,6 @@
 package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -44,7 +43,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 
-@CssImport(value = "./themes/apus/views/event-view.css")
 public final class EventView extends Div {
 
     public static final @NotNull String LABEL_THEME = "badge";

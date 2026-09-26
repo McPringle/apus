@@ -18,7 +18,6 @@
 package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.Route;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +32,6 @@ import swiss.fihlon.apus.plugin.social.SocialService;
 import java.util.Arrays;
 
 @Route("")
-@CssImport(value = "./themes/apus/views/social-wall-view.css")
 public final class SocialWallView extends Div {
 
     private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(SocialWallView.class);

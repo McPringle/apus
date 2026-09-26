@@ -16,7 +16,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-:root {
+@import url("./views/event-view.css");
+@import url("./views/post-view.css");
+@import url("./views/room-view.css");
+@import url("./views/social-view.css");
+@import url("./views/social-wall-view.css");
+
+/* Resolve variable references on the same element as the APUS_STYLES overrides. */
+body {
     --event-background-color: #e7eaee;
     --event-title-color: #262626;
     --event-text-color: #262626;
@@ -45,7 +52,9 @@
 
     --speaker-avatar-background-color: transparent;
     --speaker-avatar-border: none;
+}
 
+:root {
     background-color: #000000;
 }
 
