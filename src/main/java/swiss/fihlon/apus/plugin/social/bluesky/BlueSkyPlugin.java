@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.social.bluesky;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,23 +35,23 @@ import java.util.stream.Stream;
 @Service
 public final class BlueSkyPlugin implements SocialPlugin {
 
-    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(BlueSkyPlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BlueSkyPlugin.class);
 
     @SuppressWarnings("LineLength")
-    private static final @NotNull String BLUESKY_LOGO = """
+    private static final String BLUESKY_LOGO = """
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path d="M111.8 62.2C170.2 105.9 233 194.7 256 242.4c23-47.6 85.8-136.4 144.2-180.2c42.1-31.6 110.3-56 110.3 21.8c0 15.5-8.9 130.5-14.1 149.2C478.2 298 412 314.6 353.1 304.5c102.9 17.5 129.1 75.5 72.5 133.5c-107.4 110.2-154.3-27.6-166.3-62.9l0 0c-1.7-4.9-2.6-7.8-3.3-7.8s-1.6 3-3.3 7.8l0 0c-12 35.3-59 173.1-166.3 62.9c-56.5-58-30.4-116 72.5-133.5C100 314.6 33.8 298 15.7 233.1C10.4 214.4 1.5 99.4 1.5 83.9c0-77.8 68.2-53.4 110.3-21.8z"/>
             </svg>""";
 
-    private final @NotNull BlueSkyLoader blueSkyLoader;
-    private final @NotNull String instance;
-    private final @NotNull String hashtagUrl;
-    private final @NotNull String mentionsUrl;
-    private final @NotNull String profile;
+    private final BlueSkyLoader blueSkyLoader;
+    private final String instance;
+    private final String hashtagUrl;
+    private final String mentionsUrl;
+    private final String profile;
     private final int postLimit;
 
-    public BlueSkyPlugin(final @NotNull BlueSkyLoader blueSkyLoader,
-                         final @NotNull AppConfig appConfig) {
+    public BlueSkyPlugin(final BlueSkyLoader blueSkyLoader,
+                         final AppConfig appConfig) {
         this.blueSkyLoader = blueSkyLoader;
         final var blueSkyConfig = appConfig.blueSky();
         this.instance = blueSkyConfig.instance();
@@ -63,7 +62,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
     }
 
     @Override
-    public @NotNull String getServiceName() {
+    public String getServiceName() {
         return "BlueSky";
     }
 
@@ -75,7 +74,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
     }
 
     @Override
-    public @NotNull Stream<@NotNull Post> getPosts(final @NotNull List<@NotNull String> hashtags) {
+    public Stream<Post> getPosts(final List<String> hashtags) {
         return Stream.concat(
                         hashtags.parallelStream()
                                 .filter(hashtag -> !hashtag.isBlank())
@@ -85,7 +84,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
                 .distinct();
     }
 
-    private @NotNull Stream<@NotNull Post> getPostsWithHashtag(final @NotNull String hashtag) {
+    private Stream<Post> getPostsWithHashtag(final String hashtag) {
         try {
             final var posts = new ArrayList<Post>();
 
@@ -105,7 +104,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
         }
     }
 
-    private @NotNull Stream<@NotNull Post> getPostsWithMention() {
+    private Stream<Post> getPostsWithMention() {
         if (mentionsUrl.isBlank() || profile.isBlank()) {
             return Stream.of();
         }
@@ -129,7 +128,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
         }
     }
 
-    private static void logDownloadFailure(final @NotNull BlueSkyException exception) {
+    private static void logDownloadFailure(final BlueSkyException exception) {
         if (exception.getCause() instanceof HttpDownloadException response && response.getStatusCode() == 403) {
             LOGGER.error("{}: {}", exception.getMessage(), response.getMessage());
         } else {
@@ -137,7 +136,7 @@ public final class BlueSkyPlugin implements SocialPlugin {
         }
     }
 
-    private @NotNull Post createPost(final @NotNull JSONObject post) {
+    private Post createPost(final JSONObject post) {
         final var id = post.getString("uri");
 
         final var author = post.getJSONObject("author");

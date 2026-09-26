@@ -17,8 +17,6 @@
  */
 package swiss.fihlon.apus.event;
 
-import org.jetbrains.annotations.NotNull;
-
 public enum RoomStyle {
 
     // Important: When adding a new room style, modify the test accordingly!
@@ -27,19 +25,19 @@ public enum RoomStyle {
     NEXT("next-session", "event.legend.next-session"),
     EMPTY("empty-room", "event.legend.empty-room");
 
-    private final @NotNull String cssStyle;
-    private final @NotNull String translationKey;
+    private final String cssStyle;
+    private final String translationKey;
 
-    RoomStyle(final @NotNull String cssStyle, final @NotNull String translationKey) {
+    RoomStyle(final String cssStyle, final String translationKey) {
         this.cssStyle = cssStyle;
         this.translationKey = translationKey;
     }
 
-    public @NotNull String getCssStyle() {
+    public String getCssStyle() {
         return cssStyle;
     }
 
-    public @NotNull String getTranslationKey() {
+    public String getTranslationKey() {
         return translationKey;
     }
 }

@@ -17,16 +17,15 @@
  */
 package swiss.fihlon.apus.plugin.event;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.Duration;
 import java.time.Period;
 import java.util.List;
 
-public record EventConfig(@NotNull Period dateAdjust, @NotNull Duration timeAdjust, @NotNull String image, int nextSessionTimeout,
+public record EventConfig(Period dateAdjust, Duration timeAdjust, String image, int nextSessionTimeout,
                           boolean showEmptyRooms, boolean showLegend, int updateFrequency,
-                          @DefaultValue("") @NotNull List<String> excludedRooms) {
+                          @DefaultValue("") List<String> excludedRooms) {
 
     public EventConfig {
         excludedRooms = excludedRooms.stream()

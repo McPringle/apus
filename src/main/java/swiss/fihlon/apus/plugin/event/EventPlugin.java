@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.event;
 
-import org.jetbrains.annotations.NotNull;
 import swiss.fihlon.apus.event.Session;
 
 import java.util.stream.Stream;
@@ -26,6 +25,6 @@ public interface EventPlugin {
 
     boolean isEnabled();
 
-    @NotNull Stream<@NotNull Session> getSessions();
+    Stream<Session> getSessions();
 
 }

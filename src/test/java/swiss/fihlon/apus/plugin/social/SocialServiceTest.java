@@ -21,7 +21,6 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import net.datafaker.Faker;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -121,8 +120,7 @@ class SocialServiceTest {
         assertEquals("P5", posts.get(4).id());
     }
 
-    @NotNull
-    private List<Post> getPostsWithConfig(final @NotNull SocialConfig socialConfig) {
+    private List<Post> getPostsWithConfig(final SocialConfig socialConfig) {
         final var config = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(), appConfig.password(),
                 appConfig.demoMode(), appConfig.styles(), appConfig.event(), socialConfig,
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
@@ -175,8 +173,7 @@ class SocialServiceTest {
         assertEquals(1, posts.stream().filter(post -> post.html().length() > 500).count());
     }
 
-    @NotNull
-    private SocialService getSocialService(final @NotNull SocialConfig socialConfig) {
+    private SocialService getSocialService(final SocialConfig socialConfig) {
         final var config = new AppConfig(appConfig.version(), appConfig.language(), appConfig.timezone(), appConfig.password(),
                 appConfig.demoMode(), appConfig.styles(), appConfig.event(), socialConfig,
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
@@ -351,7 +348,6 @@ class SocialServiceTest {
     private static final class TestSocialPlugin implements SocialPlugin {
 
         @Override
-        @NotNull
         public String getServiceName() {
             return "Test";
         }
@@ -362,8 +358,7 @@ class SocialServiceTest {
         }
 
         @Override
-        @NotNull
-        public Stream<Post> getPosts(final @NotNull List<String> hashtags) {
+        public Stream<Post> getPosts(final List<String> hashtags) {
             final Faker faker = new Faker();
             final var now = ZonedDateTime.now(TEST_TIMEZONE);
             final List<Post> posts = new ArrayList<>();
@@ -393,7 +388,6 @@ class SocialServiceTest {
     private static final class NoHashtagSocialPlugin implements SocialPlugin {
 
         @Override
-        @NotNull
         public String getServiceName() {
             return "Hashtag";
         }
@@ -404,8 +398,7 @@ class SocialServiceTest {
         }
 
         @Override
-        @NotNull
-        public Stream<Post> getPosts(final @NotNull List<String> hashtags) {
+        public Stream<Post> getPosts(final List<String> hashtags) {
             if (hashtags.isEmpty()) {
                 return Stream.of();
             }
@@ -416,7 +409,6 @@ class SocialServiceTest {
     private static final class EmptySocialPlugin implements SocialPlugin {
 
         @Override
-        @NotNull
         public String getServiceName() {
             return "Empty";
         }
@@ -427,8 +419,7 @@ class SocialServiceTest {
         }
 
         @Override
-        @NotNull
-        public Stream<Post> getPosts(final @NotNull List<String> hashtags) {
+        public Stream<Post> getPosts(final List<String> hashtags) {
             return Stream.of();
         }
     }

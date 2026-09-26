@@ -17,18 +17,16 @@
  */
 package swiss.fihlon.apus.event;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.ZonedDateTime;
 import java.util.List;
 
-public record Session(@NotNull String id, @NotNull ZonedDateTime startDate, @NotNull ZonedDateTime endDate,
-                      @NotNull Room room, @NotNull String title, @NotNull List<@NotNull Speaker> speakers,
-                      @NotNull Language language, @NotNull Track track)
+public record Session(String id, ZonedDateTime startDate, ZonedDateTime endDate,
+                      Room room, String title, List<Speaker> speakers,
+                      Language language, Track track)
         implements Comparable<Session> {
 
     @Override
-    public int compareTo(final @NotNull Session other) {
+    public int compareTo(final Session other) {
         final var dateCompareResult = startDate.compareTo(other.startDate);
         if (dateCompareResult == 0) {
             return room.compareTo(other.room);

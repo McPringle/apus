@@ -17,8 +17,7 @@
  */
 package swiss.fihlon.apus.ui.view;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -44,7 +43,7 @@ class RoomViewTest {
 
     private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
 
-    private static void assertTitle(final @NotNull RoomView roomView, final @NotNull String title, final @NotNull Language language) {
+    private static void assertTitle(final RoomView roomView, final String title, final Language language) {
         final var components = getComponentsByClassName(roomView, "title");
         assertEquals(1, components.size());
 
@@ -61,7 +60,7 @@ class RoomViewTest {
         }
     }
 
-    private static void assertSpeakers(final @NotNull RoomView roomView, final @NotNull String speakers) {
+    private static void assertSpeakers(final RoomView roomView, final String speakers) {
         final var components = getComponentsByClassName(roomView, "speaker");
         assertEquals(1, components.size());
 
@@ -83,7 +82,7 @@ class RoomViewTest {
         }
     }
 
-    private static void assertRoom(final @NotNull RoomView roomView, final @NotNull String roomName) {
+    private static void assertRoom(final RoomView roomView, final String roomName) {
         final var components = getComponentsByClassName(roomView, "room");
         assertEquals(1, components.size());
 
@@ -98,7 +97,7 @@ class RoomViewTest {
         assertEquals(roomName, text.getElement().getText());
     }
 
-    private static void assertTime(final @NotNull RoomView roomView, final @NotNull String time) {
+    private static void assertTime(final RoomView roomView, final String time) {
         final var components = getComponentsByClassName(roomView, "time");
         assertEquals(1, components.size());
 
@@ -120,7 +119,7 @@ class RoomViewTest {
         }
     }
 
-    private static void assertTrack(final @NotNull RoomView roomView, final @Nullable Track track) {
+    private static void assertTrack(final RoomView roomView, final @Nullable Track track) {
         final var components = getComponentsByClassName(roomView, "track");
         assertEquals(track == null ? 0 : 1, components.size());
 
@@ -141,7 +140,7 @@ class RoomViewTest {
         }
     }
 
-    private static void assertAvatar(final @NotNull RoomView roomView, final @NotNull List<String> avatarLinks) {
+    private static void assertAvatar(final RoomView roomView, final List<String> avatarLinks) {
         final var components = getComponentsByClassName(roomView, "avatar");
         assertEquals(1, components.size());
 
@@ -171,7 +170,7 @@ class RoomViewTest {
 
     @ParameterizedTest
     @MethodSource("provideArgumentsForRoomTest")
-    void constructorWithRoom(final @NotNull String roomName) {
+    void constructorWithRoom(final String roomName) {
         final var room = new Room(roomName);
         final var roomView = new RoomView(TEST_TIMEZONE, room);
         assertEquals(5, roomView.getChildren().count());

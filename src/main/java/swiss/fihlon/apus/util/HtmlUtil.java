@@ -17,25 +17,24 @@
  */
 package swiss.fihlon.apus.util;
 
-import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 
 public final class HtmlUtil {
 
-    private static final @NotNull PolicyFactory POLICY_FACTORY = new HtmlPolicyBuilder()
+    private static final PolicyFactory POLICY_FACTORY = new HtmlPolicyBuilder()
             .allowElements("p", "br", "a", "b", "i", "u", "em", "strong", "mark", "code", "img")
             .allowUrlProtocols("https")
             .allowAttributes("href").onElements("a")
             .allowAttributes("src").onElements("img")
             .toFactory();
 
-    public static @NotNull String sanitize(final @NotNull String html) {
+    public static String sanitize(final String html) {
         return POLICY_FACTORY.sanitize(html);
     }
 
-    public static @NotNull String extractText(final @NotNull String html) {
+    public static String extractText(final String html) {
         return Jsoup.parse(html).text();
     }
 

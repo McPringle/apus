@@ -28,8 +28,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.social.SocialService;
@@ -47,20 +46,20 @@ import java.util.stream.Collectors;
 
 public final class SocialView extends Div {
 
-    private static final @NotNull Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
+    private static final Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
 
-    private final @NotNull Locale locale;
-    private final transient @NotNull SocialService socialService;
-    private final transient @NotNull AppConfig appConfig;
-    private final @NotNull List<@NotNull Div> postsColumns;
+    private final Locale locale;
+    private final transient SocialService socialService;
+    private final transient AppConfig appConfig;
+    private final List<Div> postsColumns;
     private final @Nullable ContextMenu contextMenu;
     private boolean adminModeEnabled = false;
 
     @SuppressWarnings("StringSplitter") // that behaviour is exactly what we need
-    public SocialView(final @NotNull SocialService socialService,
-                      final @NotNull TaskScheduler taskScheduler,
-                      final @NotNull AppConfig appConfig,
-                      final @NotNull Locale locale) {
+    public SocialView(final SocialService socialService,
+                      final TaskScheduler taskScheduler,
+                      final AppConfig appConfig,
+                      final Locale locale) {
         this.locale = locale;
         this.socialService = socialService;
         this.appConfig = appConfig;
@@ -144,7 +143,7 @@ public final class SocialView extends Div {
         passwordField.focus();
     }
 
-    private void handleLogin(final @NotNull String password) {
+    private void handleLogin(final String password) {
         if (contextMenu != null && PasswordUtil.matches(password, appConfig.password())) {
             adminModeEnabled = true;
             contextMenu.setTarget(null);
@@ -170,13 +169,13 @@ public final class SocialView extends Div {
         }
     }
 
-    private void hidePost(final @NotNull Post post) {
+    private void hidePost(final Post post) {
         socialService.hidePost(post);
         Notification.show(getTranslation("social.post.contextmenu.hide.post.done"));
         updatePosts();
     }
 
-    private void blockProfile(final @NotNull Post post) {
+    private void blockProfile(final Post post) {
         socialService.blockProfile(post);
         Notification.show(getTranslation("social.post.contextmenu.block.profile.done"));
         updatePosts();

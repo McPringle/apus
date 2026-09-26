@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.configuration;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -33,9 +32,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class AppConfigTest {
 
     @Autowired
-    private @NotNull AppConfig appConfig;
+    private AppConfig appConfig;
 
-    private static @NotNull Stream<Arguments> provideDataForLocaleTest() {
+    private static Stream<Arguments> provideDataForLocaleTest() {
         return Stream.of(
                 Arguments.of(Locale.GERMAN, "DE"),
                 Arguments.of(Locale.GERMAN, "de"),
@@ -48,7 +47,7 @@ class AppConfigTest {
         );
     }
 
-    private @NotNull AppConfig createAppConfig(final @NotNull String language) {
+    private AppConfig createAppConfig(final String language) {
         return new AppConfig(appConfig.version(), language, appConfig.timezone(), appConfig.password(),
                 appConfig.demoMode(), appConfig.styles(), appConfig.event(), appConfig.social(),
                 appConfig.devoxx(), appConfig.doag(), appConfig.jfs(), appConfig.sessionize(),
@@ -57,7 +56,7 @@ class AppConfigTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForLocaleTest")
-    void locale(final @NotNull Locale expectedLocale, final @NotNull String language) {
+    void locale(final Locale expectedLocale, final String language) {
         assertEquals(expectedLocale, createAppConfig(language).locale());
     }
 

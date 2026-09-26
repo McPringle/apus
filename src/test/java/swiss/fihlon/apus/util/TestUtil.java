@@ -18,7 +18,6 @@
 package swiss.fihlon.apus.util;
 
 import com.vaadin.flow.component.Component;
-import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 
 import java.util.List;
@@ -27,20 +26,19 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public final class TestUtil {
 
-    public static List<Component> getComponentsByClassName(final @NotNull Component component, final @NotNull String className) {
+    public static List<Component> getComponentsByClassName(final Component component, final String className) {
         return component.getChildren()
                 .filter(c -> c.getElement().getAttribute("class") != null && c.getElement().getAttribute("class").contains(className))
                 .toList();
     }
 
-    public static List<Component> getComponentsByTagName(final @NotNull Component component, final @NotNull String tagName) {
+    public static List<Component> getComponentsByTagName(final Component component, final String tagName) {
         return component.getChildren()
                 .filter(c -> c.getElement().getTag().equals(tagName))
                 .toList();
     }
 
-    @NotNull
-    public static String extractFirstHtmlTag(final @NotNull String html, final @NotNull String tagName) {
+    public static String extractFirstHtmlTag(final String html, final String tagName) {
         final var document = Jsoup.parse(html);
         final var element = document.selectFirst(tagName);
         assertNotNull(element);

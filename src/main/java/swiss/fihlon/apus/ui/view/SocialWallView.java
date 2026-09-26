@@ -20,7 +20,6 @@ package swiss.fihlon.apus.ui.view;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.Route;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
@@ -34,13 +33,13 @@ import java.util.Arrays;
 @Route("")
 public final class SocialWallView extends Div {
 
-    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(SocialWallView.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SocialWallView.class);
 
-    public SocialWallView(final @NotNull EventService eventService,
-                          final @NotNull SocialService socialService,
-                          final @NotNull TaskScheduler taskScheduler,
-                          final @NotNull AppConfig appConfig,
-                          final @NotNull ApplicationI18NProvider i18NProvider) {
+    public SocialWallView(final EventService eventService,
+                          final SocialService socialService,
+                          final TaskScheduler taskScheduler,
+                          final AppConfig appConfig,
+                          final ApplicationI18NProvider i18NProvider) {
         setId("social-wall-view");
         addDynamicStyles(appConfig, eventService);
         addCustomStyles(appConfig);
@@ -51,7 +50,7 @@ public final class SocialWallView extends Div {
         add(new SocialView(socialService, taskScheduler, appConfig, locale));
     }
 
-    private static void addDynamicStyles(final @NotNull AppConfig appConfig, final @NotNull EventService eventService) {
+    private static void addDynamicStyles(final AppConfig appConfig, final EventService eventService) {
         final var currentStyle = UI.getCurrent().getElement().getStyle();
         currentStyle.set("--social-post-column-count", Integer.toString(appConfig.social().numberOfColumns()));
         if (eventService.isEnabled()) {
@@ -67,7 +66,7 @@ public final class SocialWallView extends Div {
         }
     }
 
-    private static void addCustomStyles(final @NotNull AppConfig appConfig) {
+    private static void addCustomStyles(final AppConfig appConfig) {
         final String styles = appConfig.styles();
         if (!styles.isBlank()) {
             final var currentStyle = UI.getCurrent().getElement().getStyle();

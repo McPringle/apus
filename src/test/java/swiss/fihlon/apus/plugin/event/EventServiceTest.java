@@ -20,7 +20,6 @@ package swiss.fihlon.apus.plugin.event;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.support.NoOpTaskScheduler;
@@ -58,7 +57,7 @@ class EventServiceTest {
     private static final Locale TEST_LOCALE = Locale.ENGLISH;
     private static final ZoneId TEST_TIMEZONE = ZoneId.of("Europe/Zurich");
 
-    static AppConfig mockConfiguration(final @NotNull Period dateAdjust, final @NotNull Duration timeAdjust, boolean demoMode) {
+    static AppConfig mockConfiguration(final Period dateAdjust, final Duration timeAdjust, boolean demoMode) {
         final var eventConfig = new EventConfig(dateAdjust, timeAdjust, "", 60,
                 true, true, 0, List.of());
         final var appConfig = mock(AppConfig.class);
@@ -218,7 +217,7 @@ class EventServiceTest {
         }
 
         @Override
-        public @NotNull Stream<Session> getSessions() {
+        public Stream<Session> getSessions() {
             final var today = ZonedDateTime.now(TEST_TIMEZONE).truncatedTo(DAYS);
             final List<Session> sessions = new ArrayList<>();
             for (int i = 1; i <= 8; i++) {
@@ -229,7 +228,7 @@ class EventServiceTest {
             return sessions.stream();
         }
 
-        private @NotNull Session createSession(final int i, final @NotNull ZonedDateTime startDate) {
+        private Session createSession(final int i, final ZonedDateTime startDate) {
             final var id = "TEST" + i;
             final var endDate = startDate.plusMinutes(45);
             final var room = new Room("Room " + (Math.abs(i) % 2));
@@ -250,7 +249,7 @@ class EventServiceTest {
         }
 
         @Override
-        public @NotNull Stream<Session> getSessions() {
+        public Stream<Session> getSessions() {
             throw new SessionImportException("This is a test", new RuntimeException());
         }
 
@@ -264,7 +263,7 @@ class EventServiceTest {
         }
 
         @Override
-        public @NotNull Stream<Session> getSessions() {
+        public Stream<Session> getSessions() {
             throw new SessionImportException("This method should never be called", new RuntimeException());
         }
 
@@ -278,7 +277,7 @@ class EventServiceTest {
         }
 
         @Override
-        public @NotNull Stream<Session> getSessions() {
+        public Stream<Session> getSessions() {
             final var id = "TEST-0";
             final var startDate = ZonedDateTime.now(TEST_TIMEZONE);
             final var endDate = startDate.plusHours(1);

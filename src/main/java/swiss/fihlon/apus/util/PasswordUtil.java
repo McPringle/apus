@@ -17,18 +17,17 @@
  */
 package swiss.fihlon.apus.util;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public final class PasswordUtil {
 
-    private static final @NotNull BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+    private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
-    public static @NotNull String hashPassword(final @NotNull String password) {
+    public static String hashPassword(final String password) {
         return PASSWORD_ENCODER.encode(password);
     }
 
-    public static boolean matches(final @NotNull String password, final @NotNull String hashedPassword) {
+    public static boolean matches(final String password, final String hashedPassword) {
         return PASSWORD_ENCODER.matches(password, hashedPassword);
     }
 

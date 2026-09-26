@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.configuration;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.ConstructorBinding;
 import swiss.fihlon.apus.plugin.event.EventConfig;
@@ -32,17 +31,17 @@ import java.time.ZoneId;
 import java.util.Locale;
 
 @ConfigurationProperties(prefix = "apus")
-public record AppConfig(@NotNull String version, @NotNull String language, @NotNull ZoneId timezone, @NotNull String password,
-                        @NotNull Boolean demoMode, @NotNull String styles, @NotNull EventConfig event, @NotNull SocialConfig social,
-                        @NotNull DevoxxConfig devoxx, @NotNull DoagConfig doag, @NotNull JavaForumStuttgartConfig jfs,
-                        @NotNull SessionizeConfig sessionize, @NotNull BlueSkyConfig blueSky, @NotNull MastodonConfig mastodon) {
+public record AppConfig(String version, String language, ZoneId timezone, String password,
+                        Boolean demoMode, String styles, EventConfig event, SocialConfig social,
+                        DevoxxConfig devoxx, DoagConfig doag, JavaForumStuttgartConfig jfs,
+                        SessionizeConfig sessionize, BlueSkyConfig blueSky, MastodonConfig mastodon) {
 
     @ConstructorBinding
     @SuppressWarnings({"java:S1186", "java:S6207"})
     // needed to add the `@ConstructorBinding` annotation
     public AppConfig { }
 
-    public @NotNull Locale locale() {
+    public Locale locale() {
         return language().toLowerCase(Locale.getDefault()).equals("de") ? Locale.GERMAN : Locale.ENGLISH;
     }
 }

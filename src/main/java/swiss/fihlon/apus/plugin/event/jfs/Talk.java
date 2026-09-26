@@ -17,6 +17,4 @@
  */
 package swiss.fihlon.apus.plugin.event.jfs;
 
-import org.jetbrains.annotations.NotNull;
-
-record Talk(@NotNull String id, @NotNull String title, @NotNull String room, @NotNull String topic, @NotNull String timeSlot, boolean isInEnglish) { }
+record Talk(String id, String title, String room, String topic, String timeSlot, boolean isInEnglish) { }

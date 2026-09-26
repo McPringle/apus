@@ -17,8 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.event.jfs;
 
-import org.jetbrains.annotations.NotNull;
-
 @SuppressWarnings({ "checkstyle:FileTabCharacter", "java:S2479" })
 enum TrackIcons {
 
@@ -216,13 +214,13 @@ enum TrackIcons {
             </g>
             </svg>""");
 
-    private final @NotNull String svgCode;
+    private final String svgCode;
 
-    TrackIcons(final @NotNull String svgCode) {
+    TrackIcons(final String svgCode) {
         this.svgCode = svgCode;
     }
 
-    public @NotNull String getSvgCode() {
+    public String getSvgCode() {
         return svgCode;
     }
 }

@@ -18,8 +18,7 @@
 package swiss.fihlon.apus.plugin.social;
 
 import jakarta.annotation.PreDestroy;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,25 +50,25 @@ import java.util.stream.Stream;
 @Service
 public final class SocialService {
 
-    private static final @NotNull Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
+    private static final Duration UPDATE_FREQUENCY = Duration.ofSeconds(30);
     private static final int MAX_POSTS = 50;
-    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SocialService.class);
 
     private final @Nullable ScheduledFuture<?> updateScheduler;
-    private final @NotNull List<@NotNull String> hashtags;
+    private final List<String> hashtags;
     private final int filterLength;
     private final boolean filterReplies;
     private final boolean filterSensitive;
-    private final @NotNull List<@NotNull String> filterWords;
+    private final List<String> filterWords;
     private final boolean imagesEnabled;
     private final int imageLimit;
-    private final @NotNull Set<@NotNull String> hiddenPosts = new HashSet<>();
-    private final @NotNull Set<@NotNull String> blockedProfiles = new HashSet<>();
-    private final @NotNull Map<@NotNull SocialPlugin, @NotNull List<@NotNull Post>> postsByPlugin = new HashMap<>();
+    private final Set<String> hiddenPosts = new HashSet<>();
+    private final Set<String> blockedProfiles = new HashSet<>();
+    private final Map<SocialPlugin, List<Post>> postsByPlugin = new HashMap<>();
 
-    public SocialService(final @NotNull TaskScheduler taskScheduler,
-                         final @NotNull AppConfig appConfig,
-                         final @NotNull List<@NotNull SocialPlugin> socialPlugins) {
+    public SocialService(final TaskScheduler taskScheduler,
+                         final AppConfig appConfig,
+                         final List<SocialPlugin> socialPlugins) {
         final var demoMode = appConfig.demoMode();
         hashtags = Arrays.stream(appConfig.social().hashtags().split(","))
                 .filter(hashtag -> !hashtag.isBlank())
@@ -105,7 +104,7 @@ public final class SocialService {
         }
     }
 
-    public @NotNull Stream<@NotNull String> getServiceNames() {
+    public Stream<String> getServiceNames() {
         synchronized (postsByPlugin) {
             return postsByPlugin.keySet().stream()
                     .filter(SocialPlugin::isEnabled)
@@ -148,7 +147,7 @@ public final class SocialService {
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
     }
 
-    private @NotNull Post checkImages(final @NotNull Post post) {
+    private Post checkImages(final Post post) {
         if ((imagesEnabled && imageLimit == 0) || post.images().isEmpty()) {
             return post;
         } else if (!imagesEnabled) {
@@ -159,7 +158,7 @@ public final class SocialService {
         }
     }
 
-    private boolean checkWordFilter(final @NotNull Post post) {
+    private boolean checkWordFilter(final Post post) {
         final String postText = Jsoup.parse(post.html()).text().toLowerCase(Locale.getDefault());
         for (final String filterWord : filterWords) {
             if (postText.contains(filterWord)) {
@@ -169,7 +168,7 @@ public final class SocialService {
         return true;
     }
 
-    public @NotNull List<@NotNull Post> getPosts(final int limit) {
+    public List<Post> getPosts(final int limit) {
         synchronized (postsByPlugin) {
             return postsByPlugin.values()
                     .parallelStream()
@@ -180,7 +179,7 @@ public final class SocialService {
         }
     }
 
-    public void hidePost(final @NotNull Post postToHide) {
+    public void hidePost(final Post postToHide) {
         LOGGER.warn("Hiding post (id={}, profile={}, author={})",
                 postToHide.id(), postToHide.profile(), postToHide.author());
         synchronized (postsByPlugin) {
@@ -197,7 +196,7 @@ public final class SocialService {
         saveHiddenPostIds();
     }
 
-    public void blockProfile(final @NotNull Post postToHide) {
+    public void blockProfile(final Post postToHide) {
         LOGGER.warn("Block profile (id={}, profile={}, author={})",
                 postToHide.id(), postToHide.profile(), postToHide.author());
         synchronized (postsByPlugin) {
@@ -214,7 +213,7 @@ public final class SocialService {
         saveBlockedProfiles();
     }
 
-    private @NotNull Path getConfigDir() {
+    private Path getConfigDir() {
         final Path configDir = Path.of(System.getProperty("user.home"), ".apus");
         if (!configDir.toFile().exists()) {
             try {

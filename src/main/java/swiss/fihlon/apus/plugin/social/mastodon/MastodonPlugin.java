@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.social.mastodon;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -35,23 +34,23 @@ import java.util.stream.Stream;
 @Service
 public final class MastodonPlugin implements SocialPlugin {
 
-    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(MastodonPlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MastodonPlugin.class);
 
     @SuppressWarnings("LineLength")
-    private static final @NotNull String MASTODON_LOGO = """
+    private static final String MASTODON_LOGO = """
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54a102.5 102.5 0 0 1 -.9-13.9c85.6 20.9 158.7 9.1 178.8 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zm-75.1 125.2h-46.6v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.3V197c0-58.5-64-56.6-64-6.9v114.2H90.2c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175z"/>
             </svg>""";
 
-    private final @NotNull MastodonLoader mastodonLoader;
-    private final @NotNull String instance;
-    private final @NotNull String postAPI;
-    private final @NotNull String notificationAPI;
-    private final @NotNull String accessToken;
+    private final MastodonLoader mastodonLoader;
+    private final String instance;
+    private final String postAPI;
+    private final String notificationAPI;
+    private final String accessToken;
     private final int limit;
 
-    public MastodonPlugin(final @NotNull MastodonLoader mastodonLoader,
-                          final @NotNull AppConfig appConfig) {
+    public MastodonPlugin(final MastodonLoader mastodonLoader,
+                          final AppConfig appConfig) {
         this.mastodonLoader = mastodonLoader;
         final var mastodonConfig = appConfig.mastodon();
         this.instance = mastodonConfig.instance();
@@ -62,7 +61,7 @@ public final class MastodonPlugin implements SocialPlugin {
     }
 
     @Override
-    public @NotNull String getServiceName() {
+    public String getServiceName() {
         return "Mastodon";
     }
 
@@ -74,7 +73,7 @@ public final class MastodonPlugin implements SocialPlugin {
     }
 
     @Override
-    public @NotNull Stream<@NotNull Post> getPosts(final @NotNull List<@NotNull String> hashtags) {
+    public Stream<Post> getPosts(final List<String> hashtags) {
         return Stream.concat(
                         hashtags.parallelStream()
                                 .filter(hashtag -> !hashtag.isBlank())
@@ -84,7 +83,7 @@ public final class MastodonPlugin implements SocialPlugin {
                 .distinct();
     }
 
-    private @NotNull Stream<@NotNull Post> getPosts(final @NotNull String hashtag) {
+    private Stream<Post> getPosts(final String hashtag) {
         try {
             LOGGER.info("Starting download of posts with hashtag '{}' from instance '{}'", hashtag, instance);
             final var jsonPosts = mastodonLoader.getPosts(instance, hashtag, postAPI, limit);
@@ -102,7 +101,7 @@ public final class MastodonPlugin implements SocialPlugin {
         }
     }
 
-    private @NotNull Stream<@NotNull Post> getNotifications() {
+    private Stream<Post> getNotifications() {
         if (notificationAPI.isBlank() || accessToken.isBlank()) {
             return Stream.of();
         }
@@ -127,7 +126,7 @@ public final class MastodonPlugin implements SocialPlugin {
         }
     }
 
-    private @NotNull Post createPost(final @NotNull JSONObject post) {
+    private Post createPost(final JSONObject post) {
         final var id = post.getString("id");
         final var date = ZonedDateTime.parse(post.getString("created_at"));
         final var account = post.getJSONObject("account");
@@ -141,7 +140,7 @@ public final class MastodonPlugin implements SocialPlugin {
         return new Post(id, date, author, avatar, profile, html, images, isReply, isSensitive, MASTODON_LOGO);
     }
 
-    private String getProfile(final @NotNull JSONObject account) {
+    private String getProfile(final JSONObject account) {
         final var profile = account.getString("acct");
         if (profile.contains("@")) {
             return profile;
@@ -150,7 +149,7 @@ public final class MastodonPlugin implements SocialPlugin {
         return profile.concat("@").concat(instance);
     }
 
-    private @NotNull List<@NotNull String> getImages(final @NotNull JSONArray mediaAttachments) {
+    private List<String> getImages(final JSONArray mediaAttachments) {
         final List<String> images = new ArrayList<>();
         for (var i = 0; i < mediaAttachments.length(); i++) {
             final var mediaAttachment = mediaAttachments.getJSONObject(i);

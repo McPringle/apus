@@ -17,12 +17,11 @@
  */
 package swiss.fihlon.apus.event;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
-public record Speaker(@NotNull String fullName, @Nullable String imageUrl) {
+public record Speaker(String fullName, @Nullable String imageUrl) {
 
-    public Speaker(final @NotNull String fullName) {
+    public Speaker(final String fullName) {
         this(fullName, null);
     }
 

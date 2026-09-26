@@ -17,12 +17,11 @@
  */
 package swiss.fihlon.apus.util;
 
-import org.jetbrains.annotations.NotNull;
 import org.testcontainers.containers.GenericContainer;
 
 public class FixedPortContainer extends GenericContainer<FixedPortContainer> {
 
-    public FixedPortContainer(final @NotNull String dockerImageName, final int fixedPort, final int containerPort) {
+    public FixedPortContainer(final String dockerImageName, final int fixedPort, final int containerPort) {
         super(dockerImageName);
         addFixedExposedPort(fixedPort, containerPort);
     }

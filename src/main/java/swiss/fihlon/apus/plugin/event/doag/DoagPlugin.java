@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.event.doag;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,12 +48,12 @@ import java.util.stream.Stream;
 @Service
 public final class DoagPlugin implements EventPlugin {
 
-    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(DoagPlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DoagPlugin.class);
 
     private final int eventId;
-    private final @NotNull String eventApi;
+    private final String eventApi;
 
-    public DoagPlugin(final @NotNull AppConfig appConfig) {
+    public DoagPlugin(final AppConfig appConfig) {
         this.eventId = appConfig.doag().eventId();
         this.eventApi = TemplateUtil.replaceVariables(appConfig.doag().eventApi(), Map.of("event", Integer.toString(eventId)));
     }
@@ -65,7 +64,7 @@ public final class DoagPlugin implements EventPlugin {
     }
 
     @Override
-    public @NotNull Stream<@NotNull Session> getSessions() {
+    public Stream<Session> getSessions() {
         final ArrayList<Session> sessions = new ArrayList<>();
         int lastSlotId = 0;
         try {
@@ -101,13 +100,13 @@ public final class DoagPlugin implements EventPlugin {
         return sessions.stream();
     }
 
-    private static boolean checkSkipSession(final @NotNull JSONObject slot) {
+    private static boolean checkSkipSession(final JSONObject slot) {
         return !slot.getString("type").equalsIgnoreCase("lecture");
     }
 
-    private @NotNull Session createSession(final @NotNull JSONObject slot,
-                                           final @NotNull String acronym,
-                                           final @NotNull String roomName) {
+    private Session createSession(final JSONObject slot,
+                                           final String acronym,
+                                           final String roomName) {
         final Language language = getLanguage(slot);
         final String title = getTitle(slot, language.getLanguageCode());
         final ZonedDateTime date = ZonedDateTime.parse(slot.getString("date"));
@@ -131,7 +130,7 @@ public final class DoagPlugin implements EventPlugin {
                 );
     }
 
-    private @NotNull Language getLanguage(final @NotNull JSONObject slot) {
+    private Language getLanguage(final JSONObject slot) {
         try {
             final var languageArray = slot.getJSONArray("language");
             final var languageString = languageArray.getString(0);
@@ -143,7 +142,7 @@ public final class DoagPlugin implements EventPlugin {
         return Language.UNKNOWN;
     }
 
-    private @NotNull String getTitle(final @NotNull JSONObject slot, final @NotNull String defaultLanguage) throws JSONException {
+    private String getTitle(final JSONObject slot, final String defaultLanguage) throws JSONException {
         for (final String language : List.of(defaultLanguage, "de", "en")) {
             try {
                 final String title = slot.getJSONObject("title").getString(language);
@@ -158,7 +157,7 @@ public final class DoagPlugin implements EventPlugin {
     }
 
     @SuppressWarnings("StringSplitter") // safe to ignore here
-    private @NotNull Duration parseDuration(final @NotNull String duration) {
+    private Duration parseDuration(final String duration) {
         final var values = duration.split(":");
         final var hours = values[0];
         final var minutes = values[1];

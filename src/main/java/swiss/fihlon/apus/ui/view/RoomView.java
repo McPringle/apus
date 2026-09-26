@@ -28,8 +28,7 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import swiss.fihlon.apus.event.Language;
 import swiss.fihlon.apus.event.Room;
 import swiss.fihlon.apus.event.RoomStyle;
@@ -45,24 +44,24 @@ import java.util.stream.Collectors;
 
 public final class RoomView extends Div {
 
-    private final @NotNull ZoneId timezone;
-    private final transient @NotNull Room room;
+    private final ZoneId timezone;
+    private final transient Room room;
     private final @Nullable String title;
-    private final transient @NotNull List<Speaker> speakers;
+    private final transient List<Speaker> speakers;
     private final @Nullable ZonedDateTime startTime;
     private final @Nullable ZonedDateTime endTime;
     private final @Nullable Language language;
     private final transient @Nullable Track track;
 
-    private @NotNull RoomStyle roomStyle = RoomStyle.NONE;
+    private RoomStyle roomStyle = RoomStyle.NONE;
 
-    public RoomView(final @NotNull ZoneId timezone,
-                    final @NotNull Room room) {
+    public RoomView(final ZoneId timezone,
+                    final Room room) {
         this(timezone, room, null, List.of(), null, null, null, null);
     }
 
-    public RoomView(final @NotNull ZoneId timezone,
-                    final @NotNull Session session) {
+    public RoomView(final ZoneId timezone,
+                    final Session session) {
         this(
                 timezone,
                 session.room(),
@@ -76,10 +75,10 @@ public final class RoomView extends Div {
     }
 
     @SuppressWarnings({ "java:S107", "ParameterNumber" })
-    public RoomView(final @NotNull ZoneId timezone,
-                    final @NotNull Room room,
+    public RoomView(final ZoneId timezone,
+                    final Room room,
                     final @Nullable String title,
-                    final @NotNull List<Speaker> speakers,
+                    final List<Speaker> speakers,
                     final @Nullable ZonedDateTime startTime,
                     final @Nullable ZonedDateTime endTime,
                     final @Nullable Language language,
@@ -102,7 +101,7 @@ public final class RoomView extends Div {
         addClassName(roomStyle.getCssStyle());
     }
 
-    private @NotNull Component createTitleComponent() {
+    private Component createTitleComponent() {
         final var titleComponent = new Div();
         titleComponent.addClassName("title");
         titleComponent.add(new H3(new Text(title == null ? getTranslation("event.room.empty") : title)));
@@ -114,7 +113,7 @@ public final class RoomView extends Div {
         return titleComponent;
     }
 
-    private @NotNull Component createSpeakersComponent() {
+    private Component createSpeakersComponent() {
         final var speakersComponent = new Div();
         speakersComponent.addClassName("speakers");
         if (speakers.isEmpty()) {
@@ -131,7 +130,7 @@ public final class RoomView extends Div {
         return speakersComponent;
     }
 
-    private @NotNull Component createRoomComponent() {
+    private Component createRoomComponent() {
         final var roomComponent = new Div(
                 new Icon(VaadinIcon.LOCATION_ARROW_CIRCLE),
                 new Text(room.name())
@@ -140,7 +139,7 @@ public final class RoomView extends Div {
         return roomComponent;
     }
 
-    private @NotNull Component createTimeComponent() {
+    private Component createTimeComponent() {
         final var timeComponent = new Div();
         timeComponent.addClassName("time");
         final var now = ZonedDateTime.now(timezone).withSecond(59).withNano(999);
@@ -171,7 +170,7 @@ public final class RoomView extends Div {
         return timeComponent;
     }
 
-    private @NotNull Component createImageComponent() {
+    private Component createImageComponent() {
         final var speakerAvatars = speakers.stream()
                 .filter(speaker -> speaker.imageUrl() != null && !speaker.imageUrl().isBlank())
                 .map(speaker -> new Avatar(speaker.fullName(), speaker.imageUrl()))
@@ -190,7 +189,7 @@ public final class RoomView extends Div {
         return avatarComponent;
     }
 
-    private @NotNull Component createTrackComponent() {
+    private Component createTrackComponent() {
         final var trackComponent = new Div();
         trackComponent.addClassName("track");
         if (track != null && !track.equals(Track.NONE)) {
@@ -200,11 +199,11 @@ public final class RoomView extends Div {
         return trackComponent;
     }
 
-    private static @NotNull Component nbsp() {
+    private static Component nbsp() {
         return new Html("<span>&nbsp;</span>");
     }
 
-    public @NotNull RoomStyle getRoomStyle() {
+    public RoomStyle getRoomStyle() {
         return roomStyle;
     }
 }

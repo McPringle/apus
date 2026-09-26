@@ -17,8 +17,7 @@
  */
 package swiss.fihlon.apus.util;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -26,8 +25,8 @@ import java.util.regex.Pattern;
 
 public final class TemplateUtil {
 
-    public static @NotNull String replaceVariables(final @NotNull String text,
-                                                   final @Nullable Map<@NotNull String, @NotNull String> variables) {
+    public static String replaceVariables(final String text,
+                                                   final @Nullable Map<String, String> variables) {
         String returnValue = text;
         if (variables != null) {
             for (final var entrySet : variables.entrySet()) {

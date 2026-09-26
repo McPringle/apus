@@ -17,8 +17,6 @@
  */
 package swiss.fihlon.apus.util;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -31,7 +29,7 @@ import java.util.List;
 
 public final class DownloadUtil {
 
-    public static @NotNull String getString(final @NotNull String location)
+    public static String getString(final String location)
             throws IOException, URISyntaxException {
         final var connection = new URI(location).toURL().openConnection();
         if (connection instanceof HttpURLConnection http && http.getResponseCode() == HttpURLConnection.HTTP_FORBIDDEN) {
@@ -46,7 +44,7 @@ public final class DownloadUtil {
         }
     }
 
-    private static @NotNull HttpDownloadException forbiddenResponse(final @NotNull HttpURLConnection connection) {
+    private static HttpDownloadException forbiddenResponse(final HttpURLConnection connection) {
         final var details = new StringBuilder();
         for (final var name : List.of("Server", "Date", "Content-Type", "Retry-After", "RateLimit-Limit",
                 "RateLimit-Remaining", "RateLimit-Reset", "X-RateLimit-Limit", "X-RateLimit-Remaining",
@@ -70,12 +68,12 @@ public final class DownloadUtil {
         return new HttpDownloadException(HttpURLConnection.HTTP_FORBIDDEN, connection.getURL().toString(), details.toString());
     }
 
-    private static @NotNull String compact(final @NotNull String text) {
+    private static String compact(final String text) {
         final var singleLine = text.replaceAll("[\\p{Cntrl}\\s]+", " ").trim();
         return singleLine.length() > 512 ? singleLine.substring(0, 512) + " [truncated]" : singleLine;
     }
 
-    public static @NotNull String getString(final @NotNull String location, final @NotNull String accessToken)
+    public static String getString(final String location, final String accessToken)
             throws IOException, InterruptedException {
         try (var client = HttpClient.newHttpClient()) {
             var request = HttpRequest.newBuilder()

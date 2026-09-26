@@ -2,7 +2,6 @@ package swiss.fihlon.apus.ui.view;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Footer;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -55,14 +54,14 @@ class PostViewTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForPostViewTest")
-    void testPostView(final @NotNull String postId,
-                      final @NotNull ZonedDateTime postDate,
-                      final @NotNull String postAuthor,
-                      final @NotNull String postAvatar,
-                      final @NotNull String postProfile,
-                      final @NotNull String postHtml,
-                      final @NotNull List<String> postImages,
-                      final @NotNull String sourceLogo) {
+    void testPostView(final String postId,
+                      final ZonedDateTime postDate,
+                      final String postAuthor,
+                      final String postAvatar,
+                      final String postProfile,
+                      final String postHtml,
+                      final List<String> postImages,
+                      final String sourceLogo) {
         final var post = new Post(postId, postDate, postAuthor, postAvatar, postProfile, postHtml, postImages, false, false, sourceLogo);
         final var locale = Locale.ENGLISH;
         final var postView = new PostView(post, locale);
@@ -77,10 +76,10 @@ class PostViewTest {
         assertFooter(postView, sourceLogo, postDate, locale);
     }
 
-    private static void assertHeader(final @NotNull PostView postView,
-                                     final @NotNull String expectedAvatar,
-                                     final @NotNull String expectedAuthor,
-                                     final @NotNull String expectedProfile) {
+    private static void assertHeader(final PostView postView,
+                                     final String expectedAvatar,
+                                     final String expectedAuthor,
+                                     final String expectedProfile) {
         final var headers = getComponentsByClassName(postView, "header");
         assertEquals(1, headers.size());
 
@@ -95,8 +94,8 @@ class PostViewTest {
         assertProfile(authorContainer, expectedProfile);
     }
 
-    private static void assertAvatar(final @NotNull Component component,
-                                     final @NotNull String expectedAvatar) {
+    private static void assertAvatar(final Component component,
+                                     final String expectedAvatar) {
         final var avatars = getComponentsByClassName(component, "avatar");
         assertEquals(1, avatars.size());
 
@@ -105,8 +104,8 @@ class PostViewTest {
         assertEquals(expectedAvatar, element.getAttribute("img"));
     }
 
-    private static void assertAuthor(final @NotNull Component component,
-                                     final @NotNull String expectedAuthor) {
+    private static void assertAuthor(final Component component,
+                                     final String expectedAuthor) {
         final var authors = getComponentsByClassName(component, "author");
         assertEquals(1, authors.size());
 
@@ -115,8 +114,8 @@ class PostViewTest {
         assertEquals(expectedAuthor, element.getText());
     }
 
-    private static void assertProfile(final @NotNull Component component,
-                                      final @NotNull String expectedProfile) {
+    private static void assertProfile(final Component component,
+                                      final String expectedProfile) {
         final var profiles = getComponentsByClassName(component, "profile");
         assertEquals(1, profiles.size());
 
@@ -125,8 +124,8 @@ class PostViewTest {
         assertEquals(expectedProfile, element.getText());
     }
 
-    private static void assertContent(final @NotNull PostView postView,
-                                      final @NotNull String expectedHtml) {
+    private static void assertContent(final PostView postView,
+                                      final String expectedHtml) {
         final var components = getComponentsByClassName(postView, "content");
         assertEquals(1, components.size());
 
@@ -141,18 +140,18 @@ class PostViewTest {
         assertEquals(expectedOuterHtml, element.getOuterHTML());
     }
 
-    private static void assertImage(final @NotNull PostView postView,
-                                    final @NotNull List<String> expectedImages) {
+    private static void assertImage(final PostView postView,
+                                    final List<String> expectedImages) {
         final var components = getComponentsByTagName(postView, "img");
         assertEquals(2, components.size());
         assertEquals(expectedImages.get(0), components.getFirst().getElement().getAttribute("src"));
         assertEquals(expectedImages.get(1), components.getLast().getElement().getAttribute("src"));
     }
 
-    private void assertFooter(final @NotNull PostView postView,
-                                final @NotNull String sourceLogo,
-                                final @NotNull ZonedDateTime postDate,
-                                final @NotNull Locale locale) {
+    private void assertFooter(final PostView postView,
+                                final String sourceLogo,
+                                final ZonedDateTime postDate,
+                                final Locale locale) {
         final var components = getComponentsByClassName(postView, "footer");
         assertEquals(1, components.size());
         final var footer = (Footer) components.getFirst();
@@ -160,8 +159,8 @@ class PostViewTest {
         assertDateTime(footer, postDate, locale);
     }
 
-    private void assertSourceLogo(final @NotNull Footer footer,
-                                  final @NotNull String sourceLogo) {
+    private void assertSourceLogo(final Footer footer,
+                                  final String sourceLogo) {
         final var components = getComponentsByClassName(footer, "source-logo");
         assertEquals(1, components.size());
 
@@ -176,9 +175,9 @@ class PostViewTest {
         }
     }
 
-    private void assertDateTime(final @NotNull Footer footer,
-                                final @NotNull ZonedDateTime postDate,
-                                final @NotNull Locale locale) {
+    private void assertDateTime(final Footer footer,
+                                final ZonedDateTime postDate,
+                                final Locale locale) {
         final var components = getComponentsByClassName(footer, "datetime");
         assertEquals(1, components.size());
         assertEquals(new PrettyTime(locale).format(postDate), components.getFirst().getElement().getText());

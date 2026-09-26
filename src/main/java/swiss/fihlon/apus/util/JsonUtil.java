@@ -17,14 +17,13 @@
  */
 package swiss.fihlon.apus.util;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 public final class JsonUtil {
 
-    public static @NotNull String getStringOrDefault(final @NotNull JSONObject jsonObject,
-                                                     final @NotNull String key,
-                                                     final @NotNull String defaultValue) {
+    public static String getStringOrDefault(final JSONObject jsonObject,
+                                                     final String key,
+                                                     final String defaultValue) {
         if (jsonObject.has(key) && !jsonObject.isNull(key)) {
             final var value = jsonObject.getString(key);
             if (!value.isBlank()) {

@@ -18,7 +18,6 @@
 package swiss.fihlon.apus.plugin.social.demo;
 
 import net.datafaker.Faker;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.plugin.social.SocialPlugin;
@@ -37,27 +36,27 @@ import java.util.stream.Stream;
 public final class SocialDemoPlugin implements SocialPlugin {
 
     @SuppressWarnings("LineLength")
-    private static final @NotNull String DEMO_LOGO = """
+    private static final String DEMO_LOGO = """
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path d="M64 0C28.7 0 0 28.7 0 64L0 352c0 35.3 28.7 64 64 64l96 0 0 80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416 448 416c35.3 0 64-28.7 64-64l0-288c0-35.3-28.7-64-64-64L64 0z"/>
             </svg>""";
 
-    private static final @NotNull Locale LOCALE = Locale.getDefault();
-    private static final @NotNull Random RANDOM = new Random();
+    private static final Locale LOCALE = Locale.getDefault();
+    private static final Random RANDOM = new Random();
     private static final int POST_COUNT = 50;
 
-    private final @NotNull ZoneId timezone;
+    private final ZoneId timezone;
     private final boolean demoMode;
-    private final @NotNull List<@NotNull Post> posts;
+    private final List<Post> posts;
 
-    public SocialDemoPlugin(final @NotNull AppConfig appConfig) {
+    public SocialDemoPlugin(final AppConfig appConfig) {
         timezone = appConfig.timezone();
         demoMode = appConfig.demoMode();
         posts = demoMode ? createFakePosts(POST_COUNT) : List.of();
     }
 
     @Override
-    public @NotNull String getServiceName() {
+    public String getServiceName() {
         return "Demo";
     }
 
@@ -67,11 +66,11 @@ public final class SocialDemoPlugin implements SocialPlugin {
     }
 
     @Override
-    public @NotNull Stream<@NotNull Post> getPosts(final @NotNull List<@NotNull String> hashtags) {
+    public Stream<Post> getPosts(final List<String> hashtags) {
         return posts.stream();
     }
 
-    public @NotNull List<@NotNull Post> createFakePosts(final int postCount) {
+    public List<Post> createFakePosts(final int postCount) {
         final Faker faker = new Faker(LOCALE, RANDOM);
         final var fakePosts = new ArrayList<Post>();
         for (int number = 1; number <= postCount; number++) {
@@ -91,31 +90,31 @@ public final class SocialDemoPlugin implements SocialPlugin {
         return fakePosts;
     }
 
-    private @NotNull List<@NotNull String> getRandomImage(final @NotNull Faker faker) {
+    private List<String> getRandomImage(final Faker faker) {
         return List.of(faker.image().base64SVG());
     }
 
-    private @NotNull String getRandomHtml(final @NotNull Faker faker) {
+    private String getRandomHtml(final Faker faker) {
         return faker.lorem().sentence(10);
     }
 
-    private @NotNull String getRandomProfile(final @NotNull Faker faker) {
+    private String getRandomProfile(final Faker faker) {
         return faker.internet().emailAddress();
     }
 
-    private @NotNull String getRandomAvatar(final @NotNull Faker faker) {
+    private String getRandomAvatar(final Faker faker) {
         return faker.avatar().image();
     }
 
-    private static @NotNull String getRandomAuthor(final @NotNull Faker faker) {
+    private static String getRandomAuthor(final Faker faker) {
         return faker.name().fullName();
     }
 
-    private static @NotNull ZonedDateTime getRandomDateTime(final @NotNull ZoneId timezone) {
+    private static ZonedDateTime getRandomDateTime(final ZoneId timezone) {
         return ZonedDateTime.now(timezone).minusMinutes(RANDOM.nextLong(10_000));
     }
 
-    private static @NotNull String generateId() {
+    private static String generateId() {
         return "DEMO:%s".formatted(UUID.randomUUID());
     }
 }

@@ -17,8 +17,7 @@
  */
 package swiss.fihlon.apus.plugin.event.devoxx;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -49,7 +48,7 @@ import static org.mockito.Mockito.when;
 
 class DevoxxPluginTest {
 
-    private static final @NotNull String NGINX_IMAGE_NAME = "nginx:latest";
+    private static final String NGINX_IMAGE_NAME = "nginx:latest";
     private static final int NGINX_FIXED_PORT = 8088;
     private static final int NGINX_CONTAINER_PORT = 80;
     private static @Nullable FixedPortContainer nginxContainer;
@@ -90,7 +89,7 @@ class DevoxxPluginTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(final @NotNull String eventApi, final @NotNull String eventId, final @NotNull String weekday) {
+    void isDisabled(final String eventApi, final String eventId, final String weekday) {
         final var appConfig = mock(AppConfig.class);
         final var devoxxConfig = new DevoxxConfig(eventApi, eventId, weekday);
         when(appConfig.devoxx()).thenReturn(devoxxConfig);
@@ -147,7 +146,7 @@ class DevoxxPluginTest {
         assertTracks(sessions);
     }
 
-    private void assertTracks(final @NotNull List<Session> sessions) {
+    private void assertTracks(final List<Session> sessions) {
         // the first session contains a PNG wrapped in an SVG
         final var expectedPNG = """
                 <svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">

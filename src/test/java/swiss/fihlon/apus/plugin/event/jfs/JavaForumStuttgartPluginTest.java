@@ -82,7 +82,6 @@ class JavaForumStuttgartPluginTest {
         assertTrue(message.startsWith("Error downloading JSON file from 'file:src/test/resources/testdata/non-existing.json': "));
     }
 
-
     @Test
     void throwsExceptionWithEmptyDatabase() {
         final var appConfig = mock(AppConfig.class);

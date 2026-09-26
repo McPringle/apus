@@ -19,7 +19,6 @@ package swiss.fihlon.apus.util;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.Command;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,10 +27,10 @@ import java.util.concurrent.ExecutionException;
 
 public final class VaadinUtil {
 
-    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(VaadinUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VaadinUtil.class);
 
     @SuppressWarnings("java:S2142") // logging the exceptions is enough
-    public static void updateUI(final @NotNull UI ui, final @NotNull Command command) {
+    public static void updateUI(final UI ui, final Command command) {
         CompletableFuture.supplyAsync(() -> {
             try {
                 var future = ui.access(command);

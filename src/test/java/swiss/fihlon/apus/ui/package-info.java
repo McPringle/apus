@@ -15,16 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package swiss.fihlon.apus.plugin.social.mastodon;
+@NullMarked
+package swiss.fihlon.apus.ui;
 
-import org.json.JSONArray;
-
-public interface MastodonLoader {
-
-    JSONArray getPosts(String instance, String hashtag, String postAPI, int postLimit)
-            throws MastodonException;
-
-    JSONArray getNotifications(String instance, String notificationAPI, String accessToken, int postLimit)
-            throws MastodonException;
-
-}
+import org.jspecify.annotations.NullMarked;

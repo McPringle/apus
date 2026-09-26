@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.util;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -45,10 +44,10 @@ class JsonUtilTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForTest")
-    void getStringOrDefault(final @NotNull String expected,
-                            final @NotNull JSONObject jsonObject,
-                            final @NotNull String key,
-                            final @NotNull String defaultValue) {
+    void getStringOrDefault(final String expected,
+                            final JSONObject jsonObject,
+                            final String key,
+                            final String defaultValue) {
         assertEquals(expected, JsonUtil.getStringOrDefault(jsonObject, key, defaultValue));
     }
 

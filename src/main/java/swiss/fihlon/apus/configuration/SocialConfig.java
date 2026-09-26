@@ -17,7 +17,5 @@
  */
 package swiss.fihlon.apus.configuration;
 
-import org.jetbrains.annotations.NotNull;
-
-public record SocialConfig(@NotNull String hashtags, @NotNull String headline, int numberOfColumns, boolean imagesEnabled, int imageLimit,
-                           @NotNull FilterConfig filter) { }
+public record SocialConfig(String hashtags, String headline, int numberOfColumns, boolean imagesEnabled, int imageLimit,
+                           FilterConfig filter) { }

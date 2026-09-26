@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.event.jfs;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.slf4j.Logger;
@@ -54,12 +53,12 @@ import java.util.stream.Stream;
 @Service
 public final class JavaForumStuttgartPlugin implements EventPlugin {
 
-    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(JavaForumStuttgartPlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JavaForumStuttgartPlugin.class);
 
-    private final @NotNull String jsonUrl;
-    private final @NotNull ZoneId timezone;
+    private final String jsonUrl;
+    private final ZoneId timezone;
 
-    public JavaForumStuttgartPlugin(final @NotNull AppConfig appConfig) {
+    public JavaForumStuttgartPlugin(final AppConfig appConfig) {
         jsonUrl = appConfig.jfs().jsonUrl();
         timezone = appConfig.timezone();
     }
@@ -70,7 +69,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     }
 
     @Override
-    public @NotNull Stream<@NotNull Session> getSessions() {
+    public Stream<Session> getSessions() {
         List<Talk> allTalks = List.of();
         Map<String, List<String>> allAssignments = Map.of();
         Map<String, Speaker> allSpeakers = Map.of();
@@ -112,7 +111,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return allTalks.stream().map(talk -> mapToSession(talk, finalAllAssignments, finalAllSpeakers, allTracks));
     }
 
-    private @NotNull Path downloadJsonFile() {
+    private Path downloadJsonFile() {
         try {
             final Path temporaryJsonFile = Files.createTempFile("jfs-", ".json");
             LOGGER.info("Start downloading JSON from {} ...", jsonUrl);
@@ -130,7 +129,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         }
     }
 
-    private @NotNull List<@NotNull Talk> getTalks(final @NotNull JSONArray talksArray) {
+    private List<Talk> getTalks(final JSONArray talksArray) {
         final ArrayList<Talk> talks = new ArrayList<>();
 
         for (int i = 0; i < talksArray.length(); i++) {
@@ -149,7 +148,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return talks;
     }
 
-    private @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> getAssignments(final @NotNull JSONArray array) {
+    private Map<String, List<String>> getAssignments(final JSONArray array) {
         final HashMap<String, List<String>> assignments = new HashMap<>();
 
         for (int i = 0; i < array.length(); i++) {
@@ -170,7 +169,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return assignments;
     }
 
-    private @NotNull Map<@NotNull String, @NotNull Speaker> getSpeakers(final @NotNull JSONArray array) {
+    private Map<String, Speaker> getSpeakers(final JSONArray array) {
         final HashMap<String, Speaker> speakers = new HashMap<>();
 
         for (int i = 0; i < array.length(); i++) {
@@ -187,10 +186,10 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return speakers;
     }
 
-    private Session mapToSession(final @NotNull Talk talk,
-                                 final @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> allAssignments,
-                                 final @NotNull Map<@NotNull String, @NotNull Speaker> allSpeakers,
-                                 final @NotNull Map<@NotNull String, @NotNull Track> allTracks) {
+    private Session mapToSession(final Talk talk,
+                                 final Map<String, List<String>> allAssignments,
+                                 final Map<String, Speaker> allSpeakers,
+                                 final Map<String, Track> allTracks) {
         final var id = "JFS:%s".formatted(talk.id());
         final var room = new Room(talk.room());
         final var title = talk.title();
@@ -202,9 +201,9 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         return new Session(id, startDate, endDate, room, title, speakers, language, track);
     }
 
-    private @NotNull List<@NotNull Speaker> getSpeakersForTalk(final @NotNull Talk talk,
-                                                               final @NotNull Map<@NotNull String, @NotNull List<@NotNull String>> allAssignments,
-                                                               final @NotNull Map<@NotNull String, @NotNull Speaker> allSpeakers) {
+    private List<Speaker> getSpeakersForTalk(final Talk talk,
+                                                               final Map<String, List<String>> allAssignments,
+                                                               final Map<String, Speaker> allSpeakers) {
         final var assignments = allAssignments.get(talk.id());
         return assignments.stream()
                 .map(allSpeakers::get)
@@ -212,18 +211,18 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
     }
 
     @SuppressWarnings("StringSplitter") // safe to ignore here
-    private @NotNull LocalDateTime getStartDate(final @NotNull Talk talk) {
+    private LocalDateTime getStartDate(final Talk talk) {
         final var time = LocalTime.parse(talk.timeSlot().split("-")[0].trim());
         return LocalDateTime.of(LocalDate.now(timezone), time);
     }
 
     @SuppressWarnings("StringSplitter") // safe to ignore here
-    private @NotNull LocalDateTime getEndDate(final @NotNull Talk talk) {
+    private LocalDateTime getEndDate(final Talk talk) {
         final var time = LocalTime.parse(talk.timeSlot().split("-")[1].replace("Uhr", "").trim());
         return LocalDateTime.of(LocalDate.now(timezone), time);
     }
 
-    private @NotNull Map<@NotNull String, @NotNull Track> getTracks() {
+    private Map<String, Track> getTracks() {
         return Map.of(
                 "Architektur & Sicherheit", new Track(TrackIcons.ARCHITECTURE_SECURITY.getSvgCode()),
                 "Microservices, Container & Cloud", new Track(TrackIcons.CLOUD.getSvgCode()),
@@ -238,7 +237,7 @@ public final class JavaForumStuttgartPlugin implements EventPlugin {
         );
     }
 
-    private Track getTrack(final @NotNull Talk talk, final @NotNull Map<@NotNull String, @NotNull Track> allTracks) {
+    private Track getTrack(final Talk talk, final Map<String, Track> allTracks) {
         return allTracks.getOrDefault(talk.topic(), Track.NONE);
     }
 

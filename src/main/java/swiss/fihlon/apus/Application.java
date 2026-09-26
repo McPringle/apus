@@ -28,7 +28,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -53,12 +52,12 @@ import swiss.fihlon.apus.util.PasswordUtil;
 @SuppressWarnings({"HideUtilityClassConstructor", "RegexpSingleline", "java:S106"})
 public class Application implements AppShellConfigurator {
 
-    private static final @NotNull Option HASH_PASSWORD_OPTION =
+    private static final Option HASH_PASSWORD_OPTION =
             new Option("p", "password", true, "Hash password and exit");
-    private static final @NotNull Option HELP_OPTION =
+    private static final Option HELP_OPTION =
             new Option("h", "help", false, "Show help and exit");
 
-    public static void main(final @NotNull String[] args) throws ParseException {
+    public static void main(final String[] args) throws ParseException {
         final var options = new Options();
         options.addOption(HASH_PASSWORD_OPTION);
         options.addOption(HELP_OPTION);

@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.social.bluesky;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -30,9 +29,9 @@ import java.util.Map;
 public final class DefaultBlueSkyLoader implements BlueSkyLoader {
 
     @Override
-    public @NotNull JSONArray getPostsWithHashtag(final @NotNull String instance,
-                                                  final @NotNull String hashtag,
-                                                  final @NotNull String hashtagUrl,
+    public JSONArray getPostsWithHashtag(final String instance,
+                                                  final String hashtag,
+                                                  final String hashtagUrl,
                                                   final int limit)
             throws BlueSkyException {
         try {
@@ -46,9 +45,9 @@ public final class DefaultBlueSkyLoader implements BlueSkyLoader {
     }
 
     @Override
-    public @NotNull JSONArray getPostsWithMention(final @NotNull String instance,
-                                                  final @NotNull String profile,
-                                                  final @NotNull String mentionsUrl,
+    public JSONArray getPostsWithMention(final String instance,
+                                                  final String profile,
+                                                  final String mentionsUrl,
                                                   final int limit)
             throws BlueSkyException {
         try {

@@ -17,6 +17,4 @@
  */
 package swiss.fihlon.apus.plugin.event.doag;
 
-import org.jetbrains.annotations.NotNull;
-
-public record DoagConfig(int eventId, @NotNull String eventApi) { }
+public record DoagConfig(int eventId, String eventApi) { }

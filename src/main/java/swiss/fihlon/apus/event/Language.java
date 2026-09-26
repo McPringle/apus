@@ -17,8 +17,6 @@
  */
 package swiss.fihlon.apus.event;
 
-import org.jetbrains.annotations.NotNull;
-
 public enum Language {
 
     // Important: When adding a new language, modify the test accordingly!
@@ -26,12 +24,12 @@ public enum Language {
     DE("de"),
     EN("en");
 
-    private static final @NotNull String FILE_NAME_TEMPLATE = "icons/flags/%s.svg";
+    private static final String FILE_NAME_TEMPLATE = "icons/flags/%s.svg";
 
-    private final @NotNull String languageCode;
-    private final @NotNull String flagFileName;
+    private final String languageCode;
+    private final String flagFileName;
 
-    public static @NotNull Language languageWithCode(final @NotNull String languageCode) {
+    public static Language languageWithCode(final String languageCode) {
         for (final Language language : values()) {
             if (language.languageCode.equals(languageCode)) {
                 return language;
@@ -40,16 +38,16 @@ public enum Language {
         throw new IllegalArgumentException("No language constant with language code '%s'!".formatted(languageCode));
     }
 
-    Language(final @NotNull String languageCode) {
+    Language(final String languageCode) {
         this.languageCode = languageCode;
         this.flagFileName = FILE_NAME_TEMPLATE.formatted(languageCode);
     }
 
-    public @NotNull String getLanguageCode() {
+    public String getLanguageCode() {
         return languageCode;
     }
 
-    public @NotNull String getFlagFileName() {
+    public String getFlagFileName() {
         return flagFileName;
     }
 }

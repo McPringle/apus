@@ -17,7 +17,5 @@
  */
 package swiss.fihlon.apus.plugin.event.devoxx;
 
-import org.jetbrains.annotations.NotNull;
-
-public record DevoxxConfig(@NotNull String eventApi, @NotNull String eventId, @NotNull String weekday) {
+public record DevoxxConfig(String eventApi, String eventId, String weekday) {
 }

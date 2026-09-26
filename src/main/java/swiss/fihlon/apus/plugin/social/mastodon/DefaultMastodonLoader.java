@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.social.mastodon;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.util.DownloadUtil;
@@ -29,9 +28,9 @@ import java.util.Map;
 public final class DefaultMastodonLoader implements MastodonLoader {
 
     @Override
-    public @NotNull JSONArray getPosts(final @NotNull String instance,
-                                       final @NotNull String hashtag,
-                                       final @NotNull String postAPI,
+    public JSONArray getPosts(final String instance,
+                                       final String hashtag,
+                                       final String postAPI,
                                        final int limit)
             throws MastodonException {
         try {
@@ -46,9 +45,9 @@ public final class DefaultMastodonLoader implements MastodonLoader {
 
     @Override
     @SuppressWarnings("java:S2142")
-    public @NotNull JSONArray getNotifications(final @NotNull String instance,
-                                               final @NotNull String notificationAPI,
-                                               final @NotNull String accessToken,
+    public JSONArray getNotifications(final String instance,
+                                               final String notificationAPI,
+                                               final String accessToken,
                                                final int limit)
             throws MastodonException {
         try {

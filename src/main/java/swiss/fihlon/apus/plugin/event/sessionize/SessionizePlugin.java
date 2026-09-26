@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.event.sessionize;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,21 +43,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-
 @Service
 public final class SessionizePlugin implements EventPlugin {
-    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(SessionizePlugin.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionizePlugin.class);
 
     private static final String CATEGORY_NAME_LANGUAGE = "Language";
     private static final String LANGUAGE_NAME_ENGLISH = "English";
     private static final String LANGUAGE_NAME_GERMAN = "German";
 
-    private final @NotNull String eventId;
-    private final @NotNull String eventApi;
-    private final @NotNull String speakerApi;
-    private final @NotNull ZoneId timezone;
+    private final String eventId;
+    private final String eventApi;
+    private final String speakerApi;
+    private final ZoneId timezone;
 
-    public SessionizePlugin(final @NotNull AppConfig appConfig) {
+    public SessionizePlugin(final AppConfig appConfig) {
         this.eventId = appConfig.sessionize().eventId();
         this.eventApi = TemplateUtil.replaceVariables(appConfig.sessionize().eventApi(), Map.of("event", eventId));
         this.speakerApi = TemplateUtil.replaceVariables(appConfig.sessionize().speakerApi(), Map.of("event", eventId));
@@ -70,9 +68,8 @@ public final class SessionizePlugin implements EventPlugin {
         return !eventId.equals("0");
     }
 
-
     @Override
-    public @NotNull Stream<@NotNull Session> getSessions() {
+    public Stream<Session> getSessions() {
         final Map<String, Speaker> allSpeakers = getAllSpeakers();
         final ArrayList<Session> sessions = new ArrayList<>();
         String lastSessionId = "";
@@ -92,7 +89,7 @@ public final class SessionizePlugin implements EventPlugin {
         return sessions.stream();
     }
 
-    private @NotNull Map<@NotNull String, @NotNull Speaker> getAllSpeakers() {
+    private Map<String, Speaker> getAllSpeakers() {
         final Map<String, Speaker> allSpeakers = new HashMap<>();
         String lastSpeakerId = "";
         try {
@@ -112,7 +109,7 @@ public final class SessionizePlugin implements EventPlugin {
         return allSpeakers;
     }
 
-    private @NotNull Session getSession(final @NotNull JSONObject sessionData, final @NotNull Map<@NotNull String, @NotNull Speaker> allSpeakers) {
+    private Session getSession(final JSONObject sessionData, final Map<String, Speaker> allSpeakers) {
         final JSONArray speakersData = sessionData.getJSONArray("speakers");
         final ArrayList<Speaker> speakers = new ArrayList<>(speakersData.length());
         for (int speakerCounter = 0; speakerCounter < speakersData.length(); speakerCounter++) {
@@ -140,7 +137,7 @@ public final class SessionizePlugin implements EventPlugin {
                 Track.NONE);
     }
 
-    private @NotNull Language getLanguage(final @NotNull JSONObject singleSession) {
+    private Language getLanguage(final JSONObject singleSession) {
         final JSONArray categories = singleSession.getJSONArray("categories");
         for (int categoryCounter = 0; categoryCounter < categories.length(); categoryCounter++) {
             final JSONObject category = categories.getJSONObject(categoryCounter);

@@ -20,7 +20,6 @@ package swiss.fihlon.apus.plugin.social.bluesky;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -74,7 +73,7 @@ class BlueSkyPluginTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(final @NotNull String instance, final @NotNull String hashtagUrl) {
+    void isDisabled(final String instance, final String hashtagUrl) {
         final var appConfig = mock(AppConfig.class);
         final var blueSkyConfig = new BlueSkyConfig(instance, hashtagUrl, "", "", 30);
         when(appConfig.blueSky()).thenReturn(blueSkyConfig);
@@ -110,7 +109,7 @@ class BlueSkyPluginTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForHashtagsTest")
-    void getPostsWithHashtags(final @NotNull List<String> hashtags, final int expectedNumberOfPosts) {
+    void getPostsWithHashtags(final List<String> hashtags, final int expectedNumberOfPosts) {
         final var appConfig = mock(AppConfig.class);
         final var blueSkyConfig = new BlueSkyConfig("localhost", "https://%s/q=%s&limit=%d", "", "", 30);
         when(appConfig.blueSky()).thenReturn(blueSkyConfig);
@@ -279,10 +278,9 @@ class BlueSkyPluginTest {
     private static final class TestBlueSkyLoader implements BlueSkyLoader {
 
         @Override
-        @NotNull
-        public JSONArray getPostsWithHashtag(final @NotNull String instance,
-                                             final @NotNull String hashtag,
-                                             final @NotNull String postAPI,
+        public JSONArray getPostsWithHashtag(final String instance,
+                                             final String hashtag,
+                                             final String postAPI,
                                              final int postLimit)
                 throws BlueSkyException {
             return switch (hashtag) {
@@ -313,10 +311,9 @@ class BlueSkyPluginTest {
         }
 
         @Override
-        @NotNull
-        public JSONArray getPostsWithMention(final @NotNull String instance,
-                                             final @NotNull String profile,
-                                             final @NotNull String mentionsUrl,
+        public JSONArray getPostsWithMention(final String instance,
+                                             final String profile,
+                                             final String mentionsUrl,
                                              final int postLimit)
                 throws BlueSkyException {
             return switch (profile) {
@@ -332,7 +329,7 @@ class BlueSkyPluginTest {
             };
         }
 
-        private JSONObject createPost(final int i, final @NotNull String hashtag, boolean withVideo) {
+        private JSONObject createPost(final int i, final String hashtag, boolean withVideo) {
             final var createdAt = ZonedDateTime.of(LocalDateTime.now(TEST_TIMEZONE).minusMinutes(i), TEST_TIMEZONE);
             final var fakeReply = """
                     "reply": {
@@ -390,7 +387,7 @@ class BlueSkyPluginTest {
             return new JSONObject(postJSON);
         }
 
-        private JSONObject createPostWithMention(final int i, final @NotNull String profile) {
+        private JSONObject createPostWithMention(final int i, final String profile) {
             final var createdAt = ZonedDateTime.of(LocalDateTime.now(TEST_TIMEZONE).minusMinutes(i), TEST_TIMEZONE);
             final var postJSON = """
                 {
@@ -452,9 +449,9 @@ class BlueSkyPluginTest {
     private static final class NoEmbedBlueSkyLoader implements BlueSkyLoader {
 
         @Override
-        @NotNull public JSONArray getPostsWithHashtag(final @NotNull String instance,
-                                                      final @NotNull String hashtag,
-                                                      final @NotNull String postAPI,
+        public JSONArray getPostsWithHashtag(final String instance,
+                                                      final String hashtag,
+                                                      final String postAPI,
                                                       final int postLimit) {
             return new JSONArray(List.of(
                     createPost(1, hashtag),
@@ -464,15 +461,14 @@ class BlueSkyPluginTest {
         }
 
         @Override
-        @NotNull
-        public JSONArray getPostsWithMention(final @NotNull String instance,
-                                             final @NotNull String profile,
-                                             final @NotNull String mentionsUrl,
+        public JSONArray getPostsWithMention(final String instance,
+                                             final String profile,
+                                             final String mentionsUrl,
                                              final int postLimit) {
             return new JSONArray();
         }
 
-        private JSONObject createPost(final int i, final @NotNull String hashtag) {
+        private JSONObject createPost(final int i, final String hashtag) {
             final var createdAt = ZonedDateTime.of(LocalDateTime.now(TEST_TIMEZONE).minusMinutes(i), TEST_TIMEZONE);
             final var postJSON = """
                 {
@@ -528,9 +524,9 @@ class BlueSkyPluginTest {
     private static final class OptionalDataBlankBlueSkyLoader implements BlueSkyLoader {
 
         @Override
-        @NotNull public JSONArray getPostsWithHashtag(final @NotNull String instance,
-                                                      final @NotNull String hashtag,
-                                                      final @NotNull String postAPI,
+        public JSONArray getPostsWithHashtag(final String instance,
+                                                      final String hashtag,
+                                                      final String postAPI,
                                                       final int postLimit) {
             return new JSONArray(List.of(
                     createPost(1, hashtag),
@@ -540,15 +536,14 @@ class BlueSkyPluginTest {
         }
 
         @Override
-        @NotNull
-        public JSONArray getPostsWithMention(final @NotNull String instance,
-                                             final @NotNull String profile,
-                                             final @NotNull String mentionsUrl,
+        public JSONArray getPostsWithMention(final String instance,
+                                             final String profile,
+                                             final String mentionsUrl,
                                              final int postLimit) {
             return new JSONArray();
         }
 
-        private JSONObject createPost(final int i, final @NotNull String hashtag) {
+        private JSONObject createPost(final int i, final String hashtag) {
             final var createdAt = ZonedDateTime.of(LocalDateTime.now(TEST_TIMEZONE).minusMinutes(i), TEST_TIMEZONE);
             final var postJSON = """
                 {
@@ -604,9 +599,9 @@ class BlueSkyPluginTest {
     private static final class OptionalDataNullBlueSkyLoader implements BlueSkyLoader {
 
         @Override
-        @NotNull public JSONArray getPostsWithHashtag(final @NotNull String instance,
-                                                      final @NotNull String hashtag,
-                                                      final @NotNull String postAPI,
+        public JSONArray getPostsWithHashtag(final String instance,
+                                                      final String hashtag,
+                                                      final String postAPI,
                                                       final int postLimit) {
             return new JSONArray(List.of(
                     createPost(1, hashtag),
@@ -616,15 +611,14 @@ class BlueSkyPluginTest {
         }
 
         @Override
-        @NotNull
-        public JSONArray getPostsWithMention(final @NotNull String instance,
-                                             final @NotNull String profile,
-                                             final @NotNull String mentionsUrl,
+        public JSONArray getPostsWithMention(final String instance,
+                                             final String profile,
+                                             final String mentionsUrl,
                                              final int postLimit) {
             return new JSONArray();
         }
 
-        private JSONObject createPost(final int i, final @NotNull String hashtag) {
+        private JSONObject createPost(final int i, final String hashtag) {
             final var createdAt = ZonedDateTime.of(LocalDateTime.now(TEST_TIMEZONE).minusMinutes(i), TEST_TIMEZONE);
             final var postJSON = """
                 {
@@ -680,9 +674,9 @@ class BlueSkyPluginTest {
     private static final class OptionalDataMissingBlueSkyLoader implements BlueSkyLoader {
 
         @Override
-        @NotNull public JSONArray getPostsWithHashtag(final @NotNull String instance,
-                                                      final @NotNull String hashtag,
-                                                      final @NotNull String postAPI,
+        public JSONArray getPostsWithHashtag(final String instance,
+                                                      final String hashtag,
+                                                      final String postAPI,
                                                       final int postLimit) {
             return new JSONArray(List.of(
                     createPost(1, hashtag),
@@ -692,15 +686,14 @@ class BlueSkyPluginTest {
         }
 
         @Override
-        @NotNull
-        public JSONArray getPostsWithMention(final @NotNull String instance,
-                                             final @NotNull String profile,
-                                             final @NotNull String mentionsUrl,
+        public JSONArray getPostsWithMention(final String instance,
+                                             final String profile,
+                                             final String mentionsUrl,
                                              final int postLimit) {
             return new JSONArray();
         }
 
-        private JSONObject createPost(final int i, final @NotNull String hashtag) {
+        private JSONObject createPost(final int i, final String hashtag) {
             final var createdAt = ZonedDateTime.of(LocalDateTime.now(TEST_TIMEZONE).minusMinutes(i), TEST_TIMEZONE);
             final var postJSON = """
                 {

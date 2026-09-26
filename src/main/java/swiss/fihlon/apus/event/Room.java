@@ -17,12 +17,10 @@
  */
 package swiss.fihlon.apus.event;
 
-import org.jetbrains.annotations.NotNull;
-
-public record Room(@NotNull String name) implements Comparable<Room> {
+public record Room(String name) implements Comparable<Room> {
 
     @Override
-    public int compareTo(final @NotNull Room other) {
+    public int compareTo(final Room other) {
         return name.compareTo(other.name);
     }
 

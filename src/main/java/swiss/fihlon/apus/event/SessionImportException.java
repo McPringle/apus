@@ -17,15 +17,13 @@
  */
 package swiss.fihlon.apus.event;
 
-import org.jetbrains.annotations.NotNull;
-
 public class SessionImportException extends RuntimeException {
 
-    public SessionImportException(final @NotNull String message) {
+    public SessionImportException(final String message) {
         super(message);
     }
 
-    public SessionImportException(final @NotNull String message, final @NotNull Exception e) {
+    public SessionImportException(final String message, final Exception e) {
         super(message, e);
     }
 

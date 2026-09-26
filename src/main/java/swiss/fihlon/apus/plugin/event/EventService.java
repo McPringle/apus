@@ -18,8 +18,7 @@
 package swiss.fihlon.apus.plugin.event;
 
 import jakarta.annotation.PreDestroy;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.TaskScheduler;
@@ -45,19 +44,19 @@ import java.util.concurrent.ScheduledFuture;
 @Service
 public final class EventService {
 
-    private static final @NotNull Logger LOGGER = LoggerFactory.getLogger(EventService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
 
-    private final @NotNull List<@NotNull EventPlugin> eventPlugins;
+    private final List<EventPlugin> eventPlugins;
     private final @Nullable ScheduledFuture<?> updateScheduler;
-    private final @NotNull Period dateAdjust;
-    private final @NotNull Duration timeAdjust;
-    private final @NotNull ZoneId timezone;
-    private final @NotNull List<String> excludedRooms;
-    private @NotNull Map<@NotNull Room, @NotNull List<@NotNull Session>> roomsWithSessions = new TreeMap<>();
+    private final Period dateAdjust;
+    private final Duration timeAdjust;
+    private final ZoneId timezone;
+    private final List<String> excludedRooms;
+    private Map<Room, List<Session>> roomsWithSessions = new TreeMap<>();
 
-    public EventService(final @NotNull TaskScheduler taskScheduler,
-                        final @NotNull AppConfig appConfig,
-                        final @NotNull List<@NotNull EventPlugin> eventPlugins) {
+    public EventService(final TaskScheduler taskScheduler,
+                        final AppConfig appConfig,
+                        final List<EventPlugin> eventPlugins) {
         final var demoMode = appConfig.demoMode();
         this.eventPlugins = demoMode ? List.of(new EventDemoPlugin(appConfig)) : eventPlugins;
         this.dateAdjust = demoMode ? Period.ZERO : appConfig.event().dateAdjust();
@@ -120,12 +119,12 @@ public final class EventService {
         }
     }
 
-    private boolean isRoomIncluded(final @NotNull Session session) {
+    private boolean isRoomIncluded(final Session session) {
         return excludedRooms.stream()
                 .noneMatch(session.room().name()::equalsIgnoreCase);
     }
 
-    private @NotNull Session dateAdjust(final @NotNull Session session) {
+    private Session dateAdjust(final Session session) {
         if (dateAdjust.isZero() && timeAdjust.isZero()) {
             return session;
         }
@@ -145,7 +144,7 @@ public final class EventService {
         );
     }
 
-    public @NotNull Map<@NotNull Room, @NotNull List<@NotNull Session>> getRoomsWithSessions() {
+    public Map<Room, List<Session>> getRoomsWithSessions() {
         synchronized (this) {
             return new TreeMap<>(roomsWithSessions);
         }

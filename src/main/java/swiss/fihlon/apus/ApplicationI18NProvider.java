@@ -20,8 +20,7 @@ package swiss.fihlon.apus;
 import com.vaadin.flow.i18n.I18NProvider;
 import com.vaadin.flow.server.InvalidI18NConfigurationException;
 import com.vaadin.flow.spring.annotation.SpringComponent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import swiss.fihlon.apus.configuration.AppConfig;
 
 import java.text.MessageFormat;
@@ -32,12 +31,12 @@ import java.util.ResourceBundle;
 @SpringComponent
 public final class ApplicationI18NProvider implements I18NProvider {
 
-    private static final @NotNull List<@NotNull Locale> SUPPORTED_LOCALES = List.of(Locale.ENGLISH, Locale.GERMAN);
+    private static final List<Locale> SUPPORTED_LOCALES = List.of(Locale.ENGLISH, Locale.GERMAN);
 
-    private final @NotNull Locale locale;
-    private final transient @NotNull ResourceBundle resourceBundle;
+    private final Locale locale;
+    private final transient ResourceBundle resourceBundle;
 
-    public ApplicationI18NProvider(final @NotNull AppConfig appConfig) {
+    public ApplicationI18NProvider(final AppConfig appConfig) {
         locale = appConfig.locale();
         if (SUPPORTED_LOCALES.contains(locale)) {
             resourceBundle = ResourceBundle.getBundle("i18n/translations", locale);
@@ -47,17 +46,17 @@ public final class ApplicationI18NProvider implements I18NProvider {
         }
     }
 
-    public @NotNull Locale getLocale() {
+    public Locale getLocale() {
         return locale;
     }
 
     @Override
-    public @NotNull List<@NotNull Locale> getProvidedLocales() {
+    public List<Locale> getProvidedLocales() {
         return SUPPORTED_LOCALES;
     }
 
     @Override
-    public @NotNull String getTranslation(final @NotNull String key, final @Nullable Locale ignoreLocale, final @NotNull Object... params) {
+    public String getTranslation(final String key, final @Nullable Locale ignoreLocale, final Object... params) {
         final String message =  resourceBundle.getString(key);
         return params.length > 0 ? MessageFormat.format(message, params) : message;
     }

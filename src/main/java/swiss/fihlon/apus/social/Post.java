@@ -17,24 +17,22 @@
  */
 package swiss.fihlon.apus.social;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.ZonedDateTime;
 import java.util.List;
 
-public record Post(@NotNull String id, @NotNull ZonedDateTime date,
-                   @NotNull String author, @NotNull String avatar, @NotNull String profile,
-                   @NotNull String html, @NotNull List<@NotNull String> images,
-                   boolean isReply, boolean isSensitive, @NotNull String sourceLogo)
+public record Post(String id, ZonedDateTime date,
+                   String author, String avatar, String profile,
+                   String html, List<String> images,
+                   boolean isReply, boolean isSensitive, String sourceLogo)
         implements Comparable<Post> {
 
     @Override
-    public int compareTo(final @NotNull Post other) {
+    public int compareTo(final Post other) {
         final int dateCompareResult = other.date.compareTo(date);
         return dateCompareResult == 0 ? id.compareTo(other.id) : dateCompareResult;
     }
 
-    public @NotNull Post withImages(final @NotNull List<@NotNull String> newImages) {
+    public Post withImages(final List<String> newImages) {
         return new Post(id, date, author, avatar, profile, html, List.copyOf(newImages), isReply, isSensitive, sourceLogo);
     }
 

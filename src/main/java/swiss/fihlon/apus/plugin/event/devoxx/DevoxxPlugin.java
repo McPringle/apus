@@ -17,7 +17,6 @@
  */
 package swiss.fihlon.apus.plugin.event.devoxx;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,20 +44,19 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
 
-
 @Service
 public final class DevoxxPlugin implements EventPlugin {
-    public static final @NotNull Logger LOGGER = LoggerFactory.getLogger(DevoxxPlugin.class);
-    private static final @NotNull String PNG_SVG_WRAPPER_TEMPLATE = """
+    public static final Logger LOGGER = LoggerFactory.getLogger(DevoxxPlugin.class);
+    private static final String PNG_SVG_WRAPPER_TEMPLATE = """
             <svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
                 <image href="${PNG_URL}" x="0" y="0" width="40" height="40"/>
             </svg>""";
 
-    private final @NotNull String eventApi;
-    private final @NotNull String eventId;
-    private final @NotNull String weekday;
+    private final String eventApi;
+    private final String eventId;
+    private final String weekday;
 
-    public DevoxxPlugin(final @NotNull AppConfig configuration) {
+    public DevoxxPlugin(final AppConfig configuration) {
         this.eventApi = configuration.devoxx().eventApi();
         this.eventId = configuration.devoxx().eventId();
         this.weekday = configuration.devoxx().weekday();
@@ -72,10 +70,9 @@ public final class DevoxxPlugin implements EventPlugin {
         return eventApiOk && eventIdOk && weekdayOk;
     }
 
-
     @Override
     @SuppressWarnings("java:S2142") // InterruptedException is caught and stops session loading
-    public @NotNull Stream<@NotNull Session> getSessions() {
+    public Stream<Session> getSessions() {
         final var sessions = new ArrayList<Session>();
         var lastSessionId = "";
         try {
@@ -108,7 +105,7 @@ public final class DevoxxPlugin implements EventPlugin {
         return sessions.stream();
     }
 
-    private @NotNull List<@NotNull Speaker> getSpeakers(final @NotNull JSONArray speakersData) {
+    private List<Speaker> getSpeakers(final JSONArray speakersData) {
         final var speakers = new ArrayList<Speaker>();
         for (int counter = 0; counter < speakersData.length(); counter++) {
             final var speakerData = speakersData.getJSONObject(counter);
@@ -117,7 +114,7 @@ public final class DevoxxPlugin implements EventPlugin {
         return speakers;
     }
 
-    private @NotNull Track getTrack(final @NotNull JSONObject proposal) throws IOException, InterruptedException {
+    private Track getTrack(final JSONObject proposal) throws IOException, InterruptedException {
         if (proposal.has("track")) {
             if (!proposal.isNull("track")) {
                 final var trackData = proposal.getJSONObject("track");
@@ -139,12 +136,12 @@ public final class DevoxxPlugin implements EventPlugin {
         return Track.NONE;
     }
 
-    private @NotNull Track trackWithPNG(final @NotNull String imageURL) {
+    private Track trackWithPNG(final String imageURL) {
         final var svgCode = TemplateUtil.replaceVariables(PNG_SVG_WRAPPER_TEMPLATE, Map.of("PNG_URL", imageURL));
         return new Track(svgCode);
     }
 
-    private @NotNull Track trackWithSVG(final @NotNull String imageURL) throws IOException, InterruptedException {
+    private Track trackWithSVG(final String imageURL) throws IOException, InterruptedException {
         final URI uri = URI.create(imageURL);
         return Track.fromURI(uri);
     }

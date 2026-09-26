@@ -18,7 +18,6 @@
 package swiss.fihlon.apus;
 
 import com.vaadin.flow.server.InvalidI18NConfigurationException;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import swiss.fihlon.apus.configuration.AppConfig;
 
@@ -34,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 class ApplicationI18NProviderTest {
 
-    private @NotNull AppConfig mockAppConfig(final @NotNull String language) {
+    private AppConfig mockAppConfig(final String language) {
         final var appConfig = mock(AppConfig.class);
         when(appConfig.language()).thenReturn(language);
         when(appConfig.locale()).thenReturn(switch (language) {

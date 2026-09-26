@@ -17,11 +17,9 @@
  */
 package swiss.fihlon.apus.plugin.social.bluesky;
 
-import org.jetbrains.annotations.NotNull;
-
 public class BlueSkyException extends Exception {
 
-    public BlueSkyException(final @NotNull String message, final @NotNull Exception e) {
+    public BlueSkyException(final String message, final Exception e) {
         super(message, e);
     }
 

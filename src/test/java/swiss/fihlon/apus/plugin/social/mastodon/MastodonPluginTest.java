@@ -20,7 +20,6 @@ package swiss.fihlon.apus.plugin.social.mastodon;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -76,7 +75,7 @@ class MastodonPluginTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForDisabledTest")
-    void isDisabled(final @NotNull String instance, final @NotNull String postApi) {
+    void isDisabled(final String instance, final String postApi) {
         final var mockAppConfig = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig(instance, "", "", postApi, 0);
         when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
@@ -112,7 +111,7 @@ class MastodonPluginTest {
 
     @ParameterizedTest
     @MethodSource("provideDataForHashtagsTest")
-    void getPostsWithHashtags(final @NotNull List<String> hashtags, final int expectedNumberOfPosts) {
+    void getPostsWithHashtags(final List<String> hashtags, final int expectedNumberOfPosts) {
         final var mockAppConfig = mock(AppConfig.class);
         final var mastodonConfig = new MastodonConfig("localhost", "", "", appConfig.mastodon().postAPI(), 0);
         when(mockAppConfig.mastodon()).thenReturn(mastodonConfig);
@@ -305,10 +304,9 @@ class MastodonPluginTest {
     private static final class TestMastodonLoader implements MastodonLoader {
 
         @Override
-        @NotNull
-        public JSONArray getPosts(final @NotNull String instance,
-                                  final @NotNull String hashtag,
-                                  final @NotNull String postAPI,
+        public JSONArray getPosts(final String instance,
+                                  final String hashtag,
+                                  final String postAPI,
                                   final int postLimit)
                 throws MastodonException {
             final var posts = new JSONArray();
@@ -344,7 +342,7 @@ class MastodonPluginTest {
         }
 
         @Override
-        public @NotNull JSONArray getNotifications(@NotNull String instance, @NotNull String notificationAPI, @NotNull String accessToken, int postLimit)
+        public JSONArray getNotifications(String instance, String notificationAPI, String accessToken, int postLimit)
                 throws MastodonException {
             if (accessToken.equalsIgnoreCase("broken")) {
                 throw new MastodonException("This is an expected exception getting notifications.",
@@ -396,7 +394,7 @@ class MastodonPluginTest {
             return post;
         }
 
-        private static @NotNull JSONArray getMediaAttachments(final int index, final boolean invalidImageType) {
+        private static JSONArray getMediaAttachments(final int index, final boolean invalidImageType) {
             final var mediaAttachments = new JSONArray();
             final var mediaAttachmentA = new JSONObject();
             mediaAttachmentA.put("type", invalidImageType ? "video" : "image");

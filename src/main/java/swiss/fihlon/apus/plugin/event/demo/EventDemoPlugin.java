@@ -18,7 +18,6 @@
 package swiss.fihlon.apus.plugin.event.demo;
 
 import net.datafaker.Faker;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Language;
@@ -41,18 +40,18 @@ import java.util.stream.Stream;
 @Service
 public final class EventDemoPlugin implements EventPlugin {
 
-    private static final @NotNull Random RANDOM = new Random();
+    private static final Random RANDOM = new Random();
     private static final int AROUND_THE_CLOCK = 24;
     private static final int ROOM_COUNT = 4;
-    private static final @NotNull List<@NotNull Track> DEFAULT_TRACKS =
+    private static final List<Track> DEFAULT_TRACKS =
             List.of(Track.ARCHITECTURE, Track.CLOUD, Track.CORE, Track.INFRASTRUCTURE, Track.SECURITY, Track.TOOLS);
 
-    private final @NotNull Locale locale;
-    private final @NotNull ZoneId timezone;
+    private final Locale locale;
+    private final ZoneId timezone;
     private final boolean demoMode;
-    private final @NotNull List<@NotNull Session> sessions;
+    private final List<Session> sessions;
 
-    public EventDemoPlugin(final @NotNull AppConfig appConfig) {
+    public EventDemoPlugin(final AppConfig appConfig) {
         locale = appConfig.locale();
         timezone = appConfig.timezone();
         demoMode = appConfig.demoMode();
@@ -65,11 +64,11 @@ public final class EventDemoPlugin implements EventPlugin {
     }
 
     @Override
-    public @NotNull Stream<@NotNull Session> getSessions() {
+    public Stream<Session> getSessions() {
         return sessions.stream();
     }
 
-    private @NotNull List<@NotNull Session> createFakeSessions() {
+    private List<Session> createFakeSessions() {
         final List<Room> fakeRooms = createFakeRooms();
         final List<Session> fakeSessions = new ArrayList<>(AROUND_THE_CLOCK * ROOM_COUNT);
 
@@ -90,7 +89,7 @@ public final class EventDemoPlugin implements EventPlugin {
         return fakeSessions;
     }
 
-    private @NotNull List<@NotNull Room> createFakeRooms() {
+    private List<Room> createFakeRooms() {
         final HashSet<Room> rooms = HashSet.newHashSet(ROOM_COUNT);
         final Faker faker = new Faker(locale, RANDOM);
         while (rooms.size() < ROOM_COUNT) {
@@ -99,7 +98,7 @@ public final class EventDemoPlugin implements EventPlugin {
         return List.copyOf(rooms);
     }
 
-    private @NotNull Language getRandomLanguage() {
+    private Language getRandomLanguage() {
         final var values = Arrays.asList(Language.values());
         final int size = values.size();
 
@@ -111,7 +110,7 @@ public final class EventDemoPlugin implements EventPlugin {
         return language;
     }
 
-    private @NotNull Track getRandomTrack() {
+    private Track getRandomTrack() {
         return DEFAULT_TRACKS.get(RANDOM.nextInt(DEFAULT_TRACKS.size()));
     }
 }

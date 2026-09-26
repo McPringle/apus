@@ -3,7 +3,6 @@ package swiss.fihlon.apus.event;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,7 +29,7 @@ class TrackTest {
 
     @ParameterizedTest
     @MethodSource("provideArgumentsForDefaultTrack")
-    void defaultTracks(final @NotNull Track testee) {
+    void defaultTracks(final Track testee) {
         final String message = "Error while testing track '%s'!".formatted(testee);
         assertNotNull(testee, message);
 

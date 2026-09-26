@@ -17,11 +17,9 @@
  */
 package swiss.fihlon.apus.plugin.social.mastodon;
 
-import org.jetbrains.annotations.NotNull;
-
 public class MastodonException extends Exception {
 
-    public MastodonException(final @NotNull String message, final @NotNull Exception e) {
+    public MastodonException(final String message, final Exception e) {
         super(message, e);
     }
 

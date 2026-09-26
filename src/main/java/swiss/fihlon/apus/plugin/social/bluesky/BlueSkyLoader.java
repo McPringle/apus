@@ -17,15 +17,14 @@
  */
 package swiss.fihlon.apus.plugin.social.bluesky;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 
 public interface BlueSkyLoader {
 
-    @NotNull JSONArray getPostsWithHashtag(@NotNull String instance, @NotNull String hashtag, @NotNull String hashtagUrl, int postLimit)
+    JSONArray getPostsWithHashtag(String instance, String hashtag, String hashtagUrl, int postLimit)
             throws BlueSkyException;
 
-    @NotNull JSONArray getPostsWithMention(@NotNull String instance, @NotNull String profile, @NotNull String mentionsUrl, int postLimit)
+    JSONArray getPostsWithMention(String instance, String profile, String mentionsUrl, int postLimit)
             throws BlueSkyException;
 
 }

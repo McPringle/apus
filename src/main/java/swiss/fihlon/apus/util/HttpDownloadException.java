@@ -17,15 +17,13 @@
  */
 package swiss.fihlon.apus.util;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 
 public final class HttpDownloadException extends IOException {
 
     private final int statusCode;
 
-    public HttpDownloadException(final int statusCode, final @NotNull String url, final @NotNull String details) {
+    public HttpDownloadException(final int statusCode, final String url, final String details) {
         super("HTTP %d for URL '%s'; %s".formatted(statusCode, url, details));
         this.statusCode = statusCode;
     }

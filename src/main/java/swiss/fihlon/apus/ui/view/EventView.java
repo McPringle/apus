@@ -23,7 +23,6 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.TaskScheduler;
 import swiss.fihlon.apus.configuration.AppConfig;
 import swiss.fihlon.apus.event.Room;
@@ -45,20 +44,20 @@ import java.util.concurrent.ScheduledFuture;
 
 public final class EventView extends Div {
 
-    public static final @NotNull String LABEL_THEME = "badge";
-    private static final @NotNull Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
+    public static final String LABEL_THEME = "badge";
+    private static final Duration UPDATE_FREQUENCY = Duration.ofMinutes(1);
 
-    private final transient @NotNull EventService eventService;
-    private final @NotNull Duration nextSessionTimeout;
+    private final transient EventService eventService;
+    private final Duration nextSessionTimeout;
     private final boolean showLegend;
     private final boolean showEmptyRooms;
-    private final @NotNull Div roomContainer = new Div();
-    private final @NotNull Span legend = new Span();
-    private final @NotNull ZoneId timezone;
+    private final Div roomContainer = new Div();
+    private final Span legend = new Span();
+    private final ZoneId timezone;
 
-    public EventView(final @NotNull EventService eventService,
-                     final @NotNull TaskScheduler taskScheduler,
-                     final @NotNull AppConfig appConfig) {
+    public EventView(final EventService eventService,
+                     final TaskScheduler taskScheduler,
+                     final AppConfig appConfig) {
         this.eventService = eventService;
         this.timezone = appConfig.timezone();
         this.nextSessionTimeout = Duration.ofMinutes(appConfig.event().nextSessionTimeout());
@@ -102,11 +101,11 @@ public final class EventView extends Div {
         }
     }
 
-    private @NotNull H2 createTitle() {
+    private H2 createTitle() {
         return new H2(getTranslation("event.heading"));
     }
 
-    private @NotNull Component createLegend() {
+    private Component createLegend() {
         legend.addClassName("legend");
         return legend;
     }
@@ -118,7 +117,7 @@ public final class EventView extends Div {
      *
      * @param roomStylesInUse a <code>Set</code> of all <code>RoomStyle</code>s in use
      */
-    private void updateLegend(final @NotNull Set<@NotNull RoomStyle> roomStylesInUse) {
+    private void updateLegend(final Set<RoomStyle> roomStylesInUse) {
         legend.removeAll();
         for (final RoomStyle roomStyle : RoomStyle.values()) {
             if (roomStylesInUse.contains(roomStyle)) {
@@ -130,7 +129,7 @@ public final class EventView extends Div {
         }
     }
 
-    private @NotNull RoomView createRoomView(final @NotNull Map.Entry<@NotNull Room, @NotNull List<@NotNull Session>> roomWithSessions) {
+    private RoomView createRoomView(final Map.Entry<Room, List<Session>> roomWithSessions) {
         final LocalDate today = LocalDate.now(timezone);
         final ZonedDateTime timeLimitNextSession = ZonedDateTime.now(timezone).plus(nextSessionTimeout);
         final Room room = roomWithSessions.getKey();
@@ -151,7 +150,7 @@ public final class EventView extends Div {
         return roomView;
     }
 
-    private @NotNull Component createImage(final @NotNull String imageUrl) {
+    private Component createImage(final String imageUrl) {
         final var image = new Image(imageUrl, "Event Image");
         image.setId("event-image");
         return image;
